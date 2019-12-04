@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A1618AC6-53F4-4F1D-99B3-84A5CA81706E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IntoTheCode</RootNamespace>
+    <AssemblyName>IntoTheCode</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Basic\DotNetUtil.cs" />
+    <Compile Include="Basic\NotifyChanges.cs" />
+    <Compile Include="Message\MessageRes.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageRes.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Basic\TreeNode.cs" />
+    <Compile Include="Read\MetaParserTest.cs" />
+    <Compile Include="Read\LoadProces.cs" />
+    <Compile Include="Read\ParserFactory.cs" />
+    <Compile Include="Read\Element\Word\WordName.cs" />
+    <Compile Include="Read\Element\Word\WordString.cs" />
+    <Compile Include="Buffer\FlatBuffer.cs" />
+    <Compile Include="Buffer\FlatPointer.cs" />
+    <Compile Include="Buffer\FlatSubString.cs" />
+    <Compile Include="Buffer\ITextBuffer.cs" />
+    <Compile Include="Buffer\TextPointer.cs" />
+    <Compile Include="Buffer\TextSubString.cs" />
+    <Compile Include="Read\Element\ElementContentType.cs" />
+    <Compile Include="Read\Element\Word\Word.cs" />
+    <Compile Include="Text\HardElement.cs" />
+    <Compile Include="Text\CodeElement.cs" />
+    <Compile Include="Basic\SyntaxErrorException.cs" />
+    <Compile Include="Read\Element\Structure\XmlSyntax.cs" />
+    <Compile Include="Read\MetaParser.cs" />
+    <Compile Include="Read\Element\SequenceBase.cs" />
+    <Compile Include="Read\Element\ElementStringEscapeStyle.cs" />
+    <Compile Include="Read\Element\ParserElementBase.cs" />
+    <Compile Include="Read\Element\Rule.cs" />
+    <Compile Include="Read\Element\Optional.cs" />
+    <Compile Include="Read\Element\Or.cs" />
+    <Compile Include="Read\Element\Parentheses.cs" />
+    <Compile Include="Read\Parser.cs" />
+    <Compile Include="Read\Element\Quote.cs" />
+    <Compile Include="Read\Element\Sequence.cs" />
+    <Compile Include="Read\Element\Structure\SyntaxAttribute.cs" />
+    <Compile Include="Read\Element\Symbol.cs" />
+    <Compile Include="Read\Element\Structure\SyntaxClass.cs" />
+    <Compile Include="Text\CodeDocument.cs" />
+    <Compile Include="Read\Element\Structure\TextSchema.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Basic\Message\" />
+    <Folder Include="obj\Debug\TempPE\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Message\MessageRes.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>IntoTheCode.Message</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>MessageRes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
