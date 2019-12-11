@@ -24,5 +24,11 @@ namespace IntoTheCode.Read.Element
                 outElements.AddRange(elements);
             return true;
         }
+
+        public override bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        {
+            LoadSetAnalyze(proces, errorWords);
+            return true;
+        }
     }
 }

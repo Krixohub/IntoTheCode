@@ -47,8 +47,8 @@
             return new FlatSubString() { From = ((FlatPointer)PointerNextChar).index };
         }
 
-        // todo redundant function
-        void SetSubStringTo(TextSubString ss) { ((FlatSubString)ss).To = ((FlatPointer)PointerNextChar).index; }
+        //// redundant function
+        //void SetSubStringTo(TextSubString ss) { ((FlatSubString)ss).To = ((FlatPointer)PointerNextChar).index; }
 
         public char GetChar() { return _buf[((FlatPointer)PointerNextChar).index]; }
         public string GetSubString(int length) { return _buf.Substring(((FlatPointer)PointerNextChar).index, length); }
@@ -67,5 +67,24 @@
         public void SetToIndexOf(TextSubString sub, string find) { SetToIndexOf(sub, find, PointerNextChar); }
         private void SetToIndexOf(TextSubString sub, string find, TextPointer start)
         { ((FlatSubString)sub).To = _buf.IndexOf(find, ((FlatPointer)start).index, System.StringComparison.Ordinal); }
+
+        public string GetLineAndColumn(TextPointer pos = null)
+        {
+            if (pos == null)
+                pos = PointerNextChar.Clone();
+            int index = ((FlatPointer)pos).index;
+            string find = "\n";
+            int nlPos = 0;
+            int line = 1;
+            int findPos = _buf.IndexOf(find, nlPos, System.StringComparison.Ordinal);
+            while (_buf.Length > nlPos && findPos > 0 && index > findPos)
+            {
+                line++;
+                nlPos = findPos + find.Length;
+                findPos = _buf.IndexOf(find, nlPos, System.StringComparison.Ordinal);
+            }
+            return string.Format("line {0}, colomn {1}", line, index - nlPos);
+        }
+
     }
 }

@@ -22,5 +22,10 @@ namespace IntoTheCode.Read.Element
         {
             return LoadSet(proces, outElements);
         }
+
+        public override bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        {
+            return LoadSetAnalyze(proces, errorWords);
+        }
     }
 }

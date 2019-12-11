@@ -3,8 +3,9 @@
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
 using IntoTheCode.Read.Element;
+using System;
 
-namespace IntoTheCode.Read.Word
+namespace IntoTheCode.Read.Element.Words
 {
     internal class WordString : Word
     {
@@ -35,7 +36,7 @@ namespace IntoTheCode.Read.Word
 
 
             if (proces.TextBuffer.GetChar() != '\'')
-                return SetPointerBack(proces, from);
+                return SetPointerBack(proces, from, this);
 
             proces.TextBuffer.IncPointer();
             TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
@@ -43,9 +44,51 @@ namespace IntoTheCode.Read.Word
             proces.TextBuffer.SetToIndexOf(subStr, "'");
 
             if (subStr.ToIsValid())
-                return SetPointerBack(proces, from);
+                return SetPointerBack(proces, from, this);
 
             outElements.Add(new CodeElement(proces.TextBuffer, this, subStr));
+            proces.TextBuffer.SetPointerTo(subStr);
+            proces.TextBuffer.IncPointer();
+
+            return true;
+        }
+
+        public override bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        {
+            //TextSubString subStr1 = proces.TextBuffer.NewSubStringFrom();
+            TextPointer from = proces.TextBuffer.PointerNextChar;
+            SkipWhiteSpace(proces);
+            TextSubString subStr1 = proces.TextBuffer.NewSubStringFrom();
+
+            if (proces.TextBuffer.IsEnd(2))
+            {
+                subStr1.SetTo(subStr1.GetFrom());
+                var element = new CodeElement(proces.TextBuffer, this, subStr1, "Expecting quote, found EOF");
+                errorWords.Add(element);
+                return false;
+            };
+
+
+            if (proces.TextBuffer.GetChar() != '\'')
+            {
+                subStr1.SetTo(subStr1.GetFrom());
+                errorWords.Add(new CodeElement(proces.TextBuffer, this, subStr1, "Expecting starting \"'\""));
+                return SetPointerBack(proces, from, this);
+            }
+
+            proces.TextBuffer.IncPointer();
+            TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
+            proces.TextBuffer.IncPointer();
+            proces.TextBuffer.SetToIndexOf(subStr, "'");
+
+            if (subStr.ToIsValid())
+            {
+                subStr.SetTo(subStr.GetFrom());
+                errorWords.Add(new CodeElement(proces.TextBuffer, this, subStr, "Expecting ending \"'\""));
+                return SetPointerBack(proces, from, this);
+            }
+
+            //outElements.Add(new CodeElement(proces.TextBuffer, this, subStr));
             proces.TextBuffer.SetPointerTo(subStr);
             proces.TextBuffer.IncPointer();
 
@@ -61,7 +104,6 @@ namespace IntoTheCode.Read.Word
                 return null;
             return list;
         }
-
 
     }
 }

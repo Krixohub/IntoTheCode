@@ -25,7 +25,7 @@ namespace IntoTheCode.Read
         public Parser(string syntax)
         {
             DefinitionError = string.Empty;
-            SetSyntax(string.IsNullOrWhiteSpace(syntax) ? MetaParser.Instance.GetSyntax() : syntax);
+            SetSyntax(string.IsNullOrWhiteSpace(syntax) ? MetaParser.SoftMetaSyntaxAndSettings : syntax);
         }
 
         /// <summary>Create <see cref="Parser"/>. Only for MetaParser and test.</summary>
@@ -96,7 +96,11 @@ namespace IntoTheCode.Read
                     throw new SyntaxErrorException(string.Format("Syntax error proces '{0}'", Rules[0].Name));
 
                 if (!proces.TextBuffer.IsEnd())
-                    proces.LoadError = "End of input not reached";
+                {
+                    if (string.IsNullOrEmpty(proces.LoadError)) 
+                        proces.LoadError = "End of input not reached. " + proces.TextBuffer.GetLineAndColumn();
+                    return null;
+                }
                 //throw new SyntaxErrorException("End of input not reached");
 
                 if (elements.Count == 1 && elements[0] is CodeDocument)
@@ -109,7 +113,7 @@ namespace IntoTheCode.Read
             }
             catch (Exception e)
             {
-                proces.LoadError = DefinitionError == null ? e.Message: "DefinitionError: " + DefinitionError;
+                proces.LoadError = DefinitionError == null ? e.Message : "DefinitionError: " + DefinitionError;
                 return null;
             }
         }

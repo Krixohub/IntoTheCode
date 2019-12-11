@@ -5,6 +5,7 @@ using System.Linq;
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
 using IntoTheCode.Read;
+using IntoTheCode.Read.Element.Words;
 
 namespace IntoTheCode.Read.Element
 {
@@ -34,14 +35,32 @@ namespace IntoTheCode.Read.Element
             //TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
             TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             List<TreeNode> elements = new List<TreeNode>();
-            int i = SubElements.Count;
+            //int i = SubElements.Count;
             foreach (var item in SubElements.OfType<ParserElementBase>())
                 if (!item.Load(proces, elements))
                     //if (!item.Load(buf, elements))
-                    return SetPointerBack(proces, from);
+                    return SetPointerBack(proces, from, item);
+                //else
+                //    from = proces.TextBuffer.PointerNextChar.Clone();
 
             foreach (var item in elements)
                 outElements.Add(item);
+
+            return true;
+        }
+
+        protected bool LoadSetAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        {
+            //TextSubString ptr = new TextSubString { From = buf.pointer };
+            //TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
+            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
+            List<Word> elements = new List<Word>();
+            //int i = SubElements.Count;
+            foreach (var item in SubElements.OfType<ParserElementBase>())
+                if (!item.LoadAnalyze(proces, errorWords))
+                    //if (!item.Load(buf, elements))
+                    return SetPointerBack(proces, from, item);
+            
 
             return true;
         }

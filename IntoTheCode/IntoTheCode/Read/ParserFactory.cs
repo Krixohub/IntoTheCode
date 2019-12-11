@@ -4,7 +4,7 @@ using System.Linq;
 
 using IntoTheCode.Basic;
 using IntoTheCode.Read.Element;
-using IntoTheCode.Read.Word;
+using IntoTheCode.Read.Element.Words;
 using IntoTheCode.Basic.Util;
 
 namespace IntoTheCode.Read
@@ -40,7 +40,7 @@ namespace IntoTheCode.Read
                 string debug2 = debug1 + rule.GetSyntax();
             }
 
-            return LinkSyntax(parser) &&
+            return InitializeSyntax(parser) &&
                     ApplySettingsFromSyntax(parser, doc) &&
                     ValidateSyntax(parser);
         }
@@ -97,9 +97,23 @@ namespace IntoTheCode.Read
                         return new List<ParserElementBase> { new Or(el1, el2) };
                     //elements.Add(new Or(el1, el2));
                     //break;
+
+
                     case MetaParser.Symbol_____:
-                        elements.Add(new Symbol(element.Value));
+                        var sym = new Symbol(element.Value);
+                        switch (element.Value)
+                        {
+                            case MetaParser.WordString_:
+                                sym.SymbolElement = new WordString();// { TodoResolve = true };
+                                break;
+                            case MetaParser.WordName___:
+                                sym.SymbolElement = new WordName(element.Value);// { TodoResolve = true };
+                                break;
+                        }
+                        elements.Add(sym);
                         break;
+
+
                     case MetaParser.Quote______:
                         elements.Add(new Quote(element.Value));
                         break;
@@ -153,14 +167,6 @@ namespace IntoTheCode.Read
                     }
 
                 }
-
-                //< setter >
-                //  < name > element </ name >
-                //  < assignment >
-                //    < property > tag </ property >
-                //    < value > false </ value >
-                //  </ assignment >
-                //</ setter >
             }
             return true;
         }
@@ -194,7 +200,7 @@ namespace IntoTheCode.Read
                 ValidateSyntaxElement(sub);
         }
 
-        internal static bool LinkSyntax(Parser parser)
+        internal static bool InitializeSyntax(Parser parser)
         {
             foreach (Rule rule in parser.Rules)
             {
@@ -206,35 +212,32 @@ namespace IntoTheCode.Read
                         rule.Name, parser.Name));
             }
 
-            List<Symbol> symbolsToResolve = new List<Symbol>();
             foreach (Rule rule in parser.Rules)
-                LinkSyntaxExtractSymbols(rule.SubElements.OfType<ParserElementBase>(), symbolsToResolve);
-
-            foreach (Symbol symbol in symbolsToResolve)
-                symbol.SymbolElement = Resolve(parser, symbol.Name);
+                InitializeElements(parser, rule.SubElements.OfType<ParserElementBase>());
 
             return true;
         }
 
-        internal static void LinkSyntaxExtractSymbols(IEnumerable<ParserElementBase> elements, List<Symbol> symbolsToResolve)
+        internal static void InitializeElements(Parser parser, IEnumerable<ParserElementBase> elements)
         {
             if (elements == null || elements.Count() == 0) return;
             foreach (ParserElementBase element in elements)
 
             {
                 var symbol = element as Symbol;
-                if (symbol != null) symbolsToResolve.Add(symbol);
-                LinkSyntaxExtractSymbols(element.SubElements.OfType<ParserElementBase>(), symbolsToResolve);
+                if (symbol != null && symbol.SymbolElement == null) symbol.SymbolElement = Resolve(parser, symbol.Name);
+                InitializeElements(parser, element.SubElements.OfType<ParserElementBase>());
+                element.Initialize();
             }
         }
 
         private static ParserElementBase Resolve(Parser parser, string name)
         {
-            switch (name)
-            {
-                case MetaParser.WordString_: return new WordString();// { TodoResolve = true };
-                case MetaParser.WordName___: return new WordName(name);// { TodoResolve = true };
-            }
+            //switch (name)
+            //{
+            //    case MetaParser.WordString_: return new WordString();// { TodoResolve = true };
+            //    case MetaParser.WordName___: return new WordName(name);// { TodoResolve = true };
+            //}
 
             Rule rule = parser.Rules.FirstOrDefault(r => r.Name == name);
             if (rule == null)

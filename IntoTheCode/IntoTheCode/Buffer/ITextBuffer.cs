@@ -38,5 +38,6 @@
         //void SetToIndexOf(TextSubString sub, string find, TextPointer from);
         //bool IsEnd();
         bool IsEnd(int length = 1);
+        string GetLineAndColumn(TextPointer from = null);
     }
 }

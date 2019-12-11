@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using IntoTheCode.Basic;
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic.Util;
+using IntoTheCode.Read.Element.Words;
 
 namespace IntoTheCode.Read.Element
 {
@@ -18,7 +19,21 @@ namespace IntoTheCode.Read.Element
         internal Rule(string name, params ParserElementBase[] elements) : base(elements)
         {
             Name = name;
+
+            // Set 'div' property if this is the last of many elements
+        //    IList<TreeNode> siblings = Parent.SubElements;
+            if ((elements.Length > 2 && elements[elements.Length - 1] is Quote) ||
+                AnyNested(elem => elem is Quote && ((Quote)elem).Value.Length > 2))
+                Div = true;
+
+
         }
+
+        //public override void Initialize()
+        //{
+
+
+        //}
 
         public override ElementContentType GetElementContent()
         {
@@ -52,6 +67,19 @@ namespace IntoTheCode.Read.Element
         public override bool Load(LoadProces proces, List<TreeNode> outElements)
         {
             TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
+            bool b = Load2(proces, outElements);
+            subStr.SetTo(proces.TextBuffer.PointerNextChar);
+
+            // If this is a 'division' set unambiguous
+            if (b && Div && subStr.Length() > 0) proces.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1], 2);
+            return b;
+
+        }
+
+        //
+        private bool Load2(LoadProces proces, List<TreeNode> outElements)
+        {
+            TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
             TextPointer from = proces.TextBuffer.PointerNextChar;
             List<TreeNode> outSubNotes = new List<TreeNode>();
             CodeElement element;
@@ -64,7 +92,7 @@ namespace IntoTheCode.Read.Element
             if (ElementContent == ElementContentType.OneValue)
             {
                 if (!(SubElements[0] as ParserElementBase).Load(proces, outSubNotes))
-                    return SetPointerBack(proces, from);
+                    return SetPointerBack(proces, from, SubElements[0] as ParserElementBase);
 
                 if (outSubNotes.Count == 1)
                 {
@@ -82,11 +110,11 @@ namespace IntoTheCode.Read.Element
             else
             {
                 if (!LoadSet(proces, outSubNotes))
-                    return SetPointerBack(proces, from);
+                    return SetPointerBack(proces, from, this);
 
                 subStr.SetTo(proces.TextBuffer.PointerNextChar);
                 if (subStr.Length() == 0)
-                    return true;
+                    return true;  // returns true if this rule is optional and not read.
 
                 element = new CodeElement(proces.TextBuffer, this, subStr);
                 element.Add(outSubNotes);
@@ -96,6 +124,34 @@ namespace IntoTheCode.Read.Element
 
             string debug2 = "Out:" + element.ToMarkupProtected(string.Empty);
 
+            return true;
+        }
+
+        public override bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        {
+            //TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
+            TextPointer from = proces.TextBuffer.PointerNextChar;
+            //List<TreeNode> outSubNotes = new List<TreeNode>();
+            //CodeElement element;
+
+            if (Collapse)
+                return LoadSetAnalyze(proces, errorWords);
+
+            string debug1 = "(" + Parent?.Name + ") Rule:" + GetSyntax();
+
+            if (ElementContent == ElementContentType.OneValue)
+            {
+                if (!(SubElements[0] as ParserElementBase).LoadAnalyze(proces, errorWords))
+                    return SetPointerBack(proces, from, SubElements[0] as ParserElementBase);
+            }
+
+            else
+            {
+                if (!LoadSetAnalyze(proces, errorWords))
+                    return SetPointerBack(proces, from, this);
+
+            }
+            
             return true;
         }
     }

@@ -2,6 +2,7 @@
 
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
+using System;
 
 namespace IntoTheCode.Read.Element
 {
@@ -41,10 +42,18 @@ namespace IntoTheCode.Read.Element
             List<TreeNode> subs = new List<TreeNode>();
             if (!(SubElements[0] as ParserElementBase).Load(proces, subs))
                 if (!(SubElements[1] as ParserElementBase).Load(proces, subs))
-                    return SetPointerBack(proces, from);
+                    return false;
 
             outElements.AddRange(subs);
             return true;
+        }
+
+        public override bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        {
+            bool ok = (SubElements[0] as ParserElementBase).LoadAnalyze(proces, errorWords);
+            ok = ok || (SubElements[1] as ParserElementBase).LoadAnalyze(proces, errorWords);
+
+            return ok;
         }
     }
 }

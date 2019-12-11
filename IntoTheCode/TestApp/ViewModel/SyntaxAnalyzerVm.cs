@@ -150,7 +150,8 @@ namespace TestCodeInternal.ViewModel
             string actualTags, expectTags, msg;
 
             // Get expected syntax document.
-            CodeDocument metaRef = MetaParserTest.TestMetaSyntaxDoc();
+            //CodeDocument metaRef = MetaParserTest.TestMetaSyntaxDoc();
+            CodeDocument metaRef = CodeDocument.Load(MetaParser.Instance, MetaParser.SoftMetaSyntaxAndSettings);
             expectTags = metaRef.ToMarkup();
 
             // Get actual meta syntax document.

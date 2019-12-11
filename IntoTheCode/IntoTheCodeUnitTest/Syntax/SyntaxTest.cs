@@ -9,7 +9,7 @@ using IntoTheCode.Basic;
 using IntoTheCode.Buffer;
 using IntoTheCode.Read;
 using IntoTheCode.Read.Element;
-using IntoTheCode.Read.Word;
+using IntoTheCode.Read.Element.Words;
 
 namespace TestCodeInternal.UnitTest
 {
@@ -17,7 +17,7 @@ namespace TestCodeInternal.UnitTest
     public class SyntaxTest
     {
         [TestMethod]
-        public void TestSyntaxHardcode()
+        public void Parser11SyntaxHardcode()
         {
             //Parser parser = new Parser();
             var syntax = new Parser();
@@ -153,60 +153,60 @@ namespace TestCodeInternal.UnitTest
             //parser2 = new Parser();
             var hardcodeParser = MetaParser.GetHardCodeParser();
             string actual = hardcodeParser.GetSyntax();
-            string expect = MetaParserTest.TestHardCodeSyntax;
+            string expect = GetExpectHardCodeSyntax();
             string msg = CompareTextLines(actual, expect);
             Assert.AreEqual(string.Empty, msg, "Hardcode syntax diff error");
 
         }
 
         [TestMethod]
-        public void TestSyntaxMeta()
+        public void Parser12SyntaxMeta()
         {
             // Build a syntax to test meta syntax
-            var parser = new Parser(MetaParser.SoftMetaSyntaxAndSettings);
-            string actual, expect, msg;
+            string actual1, actual2, expect, msg;
             expect = MetaParser.MetaSyntax;
 
-            // Test Meta syntax after after compilation in a Parser.
-            actual = parser.GetSyntax();
-            msg = CompareTextLines(actual, expect);
+            var parser = new Parser(MetaParser.SoftMetaSyntaxAndSettings);
+            actual1 = parser.GetSyntax();              // Test Meta syntax after after compilation in a Parser.
+            actual2 = MetaParser.Instance.GetSyntax(); // Test Meta syntax in internal Parser.
+            msg = CompareTextLines(actual1, expect);
             Assert.AreEqual(string.Empty, msg, "Meta syntax diff error");
-
-            Parser _metaparser = new Parser(string.Empty);
-
-            // Test Meta syntax in the BaseParser.
-            actual = _metaparser.GetSyntax();
-            msg = CompareTextLines(actual, expect);
+            msg = CompareTextLines(actual2, expect);
             Assert.AreEqual(string.Empty, msg, "Meta syntax internal diff error");
 
             // Compare generated CodeDocument with 'selected nodes'
-            string actualTags, expectTags;
-            CodeDocument metaExpect = MetaParserTest.TestMetaSyntaxDoc();
+            string actualTags1, actualTags2, expectTags;
+            CodeDocument docExpect = TestMetaSyntaxDoc();
 
-            var hardcodeParser = MetaParser.GetHardCodeParser();
+            //var metaParser = _metaparser;
+            // todo MetaParser has not the settings.
             LoadProces reading = new LoadProces(new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings));
-            CodeDocument metaActual = CodeDocument.Load(hardcodeParser, reading);
+            CodeDocument docActual1 = CodeDocument.Load(parser, reading);
+            reading = new LoadProces(new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings));
+            CodeDocument docActual2 = CodeDocument.Load(MetaParser.Instance, reading);
 
-            actualTags = metaActual.ToMarkup();
-            expectTags = metaExpect.ToMarkup();
-            msg = CodeDocument.CompareCode(metaActual, metaExpect);
+            expectTags = docExpect.ToMarkup();
+            actualTags1 = docActual1.ToMarkup();
+            actualTags2 = docActual2.ToMarkup();
+            msg = CodeDocument.CompareCode(docActual1, docExpect);
             Assert.AreEqual(string.Empty, msg, "Meta syntax document diff error");
+            msg = CodeDocument.CompareCode(docActual2, docExpect);
+            Assert.AreEqual(string.Empty, msg, "Meta syntax internal document diff error");
 
             // TODO SKAL RETTES
-            //Assert.AreEqual(metaExpect.Name, metaActual.Name, "Document name diff error");
+            Assert.AreEqual(docExpect.Name, docActual1.Name, "Document name diff error");
         }
 
+        /// <summary>Test that the parser can read a syntax and load code. Simple.</summary>
         [TestMethod]
-        public void TestParser()
+        public void Parser13SyntaxInternal()
         {
             string stx = "syntax = {o};\r\no = 'o';settings o collapse = 'false';";
             var parser = new Parser(stx);
-            Assert.IsNotNull(parser, "parser er null");
-            //string msg = string.Format("Difinition status: {0}\r\n",
-            //    string.IsNullOrEmpty(parser.DifinitionError) ? parser.DifinitionError : "Ok");
-            Assert.AreEqual(string.Empty, parser.DefinitionError, "DifinitionError");
-
             LoadProces reading = new LoadProces(new FlatBuffer("ooo"));
+
+            Assert.IsNotNull(parser, "parser er null");
+            Assert.AreEqual(string.Empty, parser.DefinitionError, "DifinitionError");
             CodeDocument doc = CodeDocument.Load(parser, reading);
             Assert.IsNotNull(doc, "doc er null");
             Assert.AreEqual(string.Empty, reading.LoadError, "ReadingError");
@@ -219,6 +219,55 @@ namespace TestCodeInternal.UnitTest
 ";
 
             Assert.AreEqual(markup, doc.ToMarkup(), "Markup");
+        }
+
+
+        /// <summary>Test different types of syntax error.</summary>
+        [TestMethod]
+        public void Parser14SyntaxError()
+        {
+            // Set syntax
+            string syntax = @"
+stx = nam | seq | str;
+seq = {o};
+o = 'o';
+str = 'str' | fail;
+fail = 'fail';
+nam = fnam lnam;
+fnam = 'name';
+lnam = wordname;";
+            var parser = new Parser(syntax);
+            LoadProces proces;
+            CodeDocument doc;
+
+            //// What the parser CAN read
+            //proces = new LoadProces(new FlatBuffer("ooo"));
+            //doc = CodeDocument.Load(parser, proces);
+            //Assert.IsNotNull(doc, "doc er null");
+            //Assert.AreEqual(string.Empty, proces.LoadError, "Parse error");
+
+            //// Error: End of text not reached.
+            //proces = new LoadProces(new FlatBuffer("oop"));
+            //doc = CodeDocument.Load(parser, proces);
+            //Assert.IsNull(doc, "doc er ikke null");
+            //Assert.AreEqual("End of input not reached. line 1, colomn 2", proces.LoadError, "EOF error");
+
+
+            // Read word-name, EOF error.
+            
+            // Read word-name, not allowed first letter.
+            // todo fejl: der bruges ikke 'div' ; sæt 'div' når der er læst en quote
+            proces = new LoadProces(new FlatBuffer("name 2r"));
+            doc = CodeDocument.Load(parser, proces);
+            Assert.IsNull(doc, "doc er ikke null");
+            Assert.AreEqual("syntax error. First charactor is not allowed. line 1, colomn 5", proces.LoadError, "First letter error");
+
+            // Read word-quote, EOF error.
+
+            // Read word-quote, starting ' not found.
+
+            // Read word-quote, ending ' not found.
+
         }
 
         /// <summary>A syntax for test. Hard coded.</summary>
@@ -271,9 +320,121 @@ namespace TestCodeInternal.UnitTest
 
             syntax.Rules = list;
             foreach (var eq in list) eq.Parser = syntax;
-            ParserFactory.LinkSyntax(syntax);
+            ParserFactory.InitializeSyntax(syntax);
             ParserFactory.ValidateSyntax(syntax);
             return list;
+        }
+
+        /// <summary>A hard coded text syntax.</summary>
+        private string GetExpectHardCodeSyntax()
+        {
+            return
+         @"
+HardSyntax  = {Rule} [settings];
+Rule        = symbol '=' expression ';';
+expression  = element {[or] element};
+element     = symbol | quote | block;
+block       = sequence | optional | parentheses;
+sequence    = '{' expression '}';
+optional    = '[' expression ']';
+parentheses = '(' expression ')';
+or          = '|';
+symbol      = wordname;
+quote       = wordstring;
+settings    = 'settings' {setter};
+setter      = wordname assignment {',' assignment} ';';
+assignment  = property ['=' value];
+property    = wordname;
+value       = wordstring;";
+            //property    = wordname;
+            //property    = 'collapse' | 'milestone' | 'ws' | 'wsdef';
+        }
+
+        /// <summary>To test changes to the meta syntax.</summary>
+        private static CodeDocument TestMetaSyntaxDoc()
+        {
+            CodeDocument syntax = new CodeDocument { Name = MetaParser.MetaSyntax_ };
+
+            // syntax   = {rule}
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("symbol", "MetaSyntax"),
+                new HardElement("sequence", string.Empty,
+                    new HardElement("symbol", "Rule")),
+                new HardElement("optional", string.Empty,
+                    new HardElement("symbol", MetaParser.Settings___))));
+
+            // rule = symbol '=' expression ';'
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("symbol", "Rule"),
+                new HardElement("symbol", "symbol"),
+                new HardElement("quote", "="),
+                new HardElement("symbol", "expression"),
+                new HardElement("quote", ";")));
+
+            // expression = element {[or] element};
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("symbol", "expression"),
+                new HardElement("symbol", MetaParser.Element____),
+                new HardElement("sequence", string.Empty,
+                    new HardElement("optional", string.Empty,
+                        new HardElement("symbol", MetaParser.Or_________)),
+                    new HardElement("symbol", MetaParser.Element____))));
+
+            // element    = symbol | quote | block; Husk ny block
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("symbol", MetaParser.Element____),
+                new HardElement("symbol", "symbol"),
+                new HardElement(MetaParser.Or_________, string.Empty),
+                new HardElement("symbol", "quote"),
+                new HardElement(MetaParser.Or_________, string.Empty),
+                new HardElement("symbol", MetaParser.Block______)));
+
+            // block      = sequence | optional | parentheses);
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("symbol", MetaParser.Block______),
+                new HardElement("symbol", "sequence"),
+                new HardElement(MetaParser.Or_________, string.Empty),
+                new HardElement("symbol", "optional"),
+                new HardElement("or", string.Empty),
+                new HardElement("symbol", "parentheses")));
+
+            // sequence      = '{' expression '}';
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("symbol", "sequence"),
+                new HardElement("quote", "{"),
+                new HardElement("symbol", "expression"),
+                new HardElement("quote", "}")));
+
+            // optional     = '[' expression ']';
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("symbol", "optional"),
+                new HardElement("quote", "["),
+                new HardElement("symbol", "expression"),
+                new HardElement("quote", "]")));
+
+            // parentheses      = '(' expression ')';
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("symbol", "parentheses"),
+                new HardElement("quote", "("),
+                new HardElement("symbol", "expression"),
+                new HardElement("quote", ")")));
+
+            // or         = '|';
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("symbol", "or"),
+                new HardElement("quote", "|")));
+
+            // symbol      > wordname;
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("symbol", "symbol"),
+                new HardElement("symbol", "wordname")));
+
+            // quote     = wordstring;
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("symbol", "quote"),
+                new HardElement("symbol", "wordstring")));
+
+            return syntax;
         }
 
         /// <summary>Compare two strings. Line for line and char for char.</summary>

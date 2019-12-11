@@ -73,6 +73,17 @@ namespace IntoTheCode.Basic
             return SubElements.Where(predicate);
         }
 
+        /// <summary>Find sub elements with a predicate.</summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns>A enumerable of elements.</returns>
+        public virtual bool AnyNested(Func<TreeNode, bool> predicate)
+        {
+            if (SubElements == null)
+                return false;
+            Func <TreeNode, bool> pred = tn => predicate(tn) || tn.AnyNested(predicate);
+            return SubElements.Any(pred);
+        }
+
         internal protected string ToMarkupProtected(string indent)
         {
             if (SubElements.Count == 0 && string.IsNullOrEmpty(Value))

@@ -4,6 +4,7 @@ using System.Linq;
 
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
+using IntoTheCode.Read.Element.Words;
 
 namespace IntoTheCode.Read.Element
 {
@@ -26,6 +27,8 @@ namespace IntoTheCode.Read.Element
 
         public override string GetValue() { return _value; }
 
+        public virtual void Initialize() { }
+
         //public byte Color
         //{
         //    get;
@@ -33,17 +36,30 @@ namespace IntoTheCode.Read.Element
         //}
 
         /// <summary>If the element cant read; use this to reset (set pointer back):</summary>
-        /// <param name="proces"></param>
-        /// <param name="subStr"></param>
-        /// <returns></returns>
-        protected bool SetPointerBack(LoadProces proces, TextPointer txtPtr)
+        /// <param name="proces">The load proces.</param>
+        /// <param name="txtPtr">Pointer to set.</param>
+        /// <param name="item">The parser item that fails to load.</param>
+        /// <returns>Always return false.</returns>
+        protected bool SetPointerBack(LoadProces proces, TextPointer txtPtr, ParserElementBase item)
         {
-            if (txtPtr.CompareTo(proces.UnambiguousPointer) < 0)
-            {
-                throw new SyntaxErrorException("syntax error at ...");
-            }
-            //proces.TextBuffer.SetPointerBackToFrom(subStr);
             proces.TextBuffer.SetPointer(txtPtr);
+            if (txtPtr.CompareTo(proces.UnambiguousPointer) < 0 && proces.LoadError == string.Empty)
+            {
+                proces.LoadError = "syntax error. ";
+                var errorWords = new List<CodeElement>();
+                //item.LoadAnalyze(proces, errorWords);
+                LoadAnalyze(proces, errorWords);
+                var errorMax = errorWords.FirstOrDefault();
+                foreach (CodeElement word in errorWords)
+                {
+                    if (word.ValuePointer.ToGtPointer(errorMax.ValuePointer.GetTo()))
+                        errorMax = word;
+                }
+                proces.LoadError += errorMax.Error + " " + proces.TextBuffer.GetLineAndColumn(errorMax.ValuePointer.GetTo());
+
+            }
+
+            //proces.TextBuffer.SetPointerBackToFrom(subStr);
             return false;
         }
 
@@ -63,18 +79,28 @@ namespace IntoTheCode.Read.Element
 
         public abstract string GetSyntax();
 
+        // todo implement GetSettings on decendants
         public virtual string GetSettings()
         { return string.Empty; }
 
         //protected abstract string Read(int begin, ITextBuffer buffer);
 
         /// <summary>
-        /// Read an element from the buffer, and increase the buffer pointer if element is ok.
+        /// Load/read an element from the buffer, and increase the buffer pointer if element is ok.
         /// Insert output in 'outElements'.
         /// </summary>
+        /// <param name="proces"></param>
         /// <param name="outElements">Read elements.</param>
         /// <returns>True = succes.</returns>
         public abstract bool Load(LoadProces proces, List<TreeNode> outElements);
+
+        /// <summary>
+        /// Load an element while storing possible errors.
+        /// </summary>
+        /// <param name="proces"></param>
+        /// <param name="errorWords">Read elements.</param>
+        /// <returns>True = succes.</returns>
+        public abstract bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords);
 
         protected void SkipWhiteSpace(LoadProces proces)
         {

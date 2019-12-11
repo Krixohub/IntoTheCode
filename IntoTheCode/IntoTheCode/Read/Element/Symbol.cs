@@ -33,5 +33,10 @@ namespace IntoTheCode.Read.Element
         {
             return SymbolElement.Load(proces, outElements);
         }
+
+        public override bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        {
+            return SymbolElement.LoadAnalyze(proces, errorWords);
+        }
     }
 }

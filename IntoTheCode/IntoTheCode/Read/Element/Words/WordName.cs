@@ -2,8 +2,9 @@
 
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
+using System;
 
-namespace IntoTheCode.Read.Word
+namespace IntoTheCode.Read.Element.Words
 {
     internal class WordName : Word
     {
@@ -33,7 +34,7 @@ namespace IntoTheCode.Read.Word
             TextPointer from = proces.TextBuffer.PointerNextChar;
 
             if (!AllowedCharsFirst.Contains(proces.TextBuffer.GetSubString(proces.TextBuffer.PointerNextChar, 1).ToLower()))
-                return SetPointerBack(proces, from);
+                return SetPointerBack(proces, from, this);
             else
                 proces.TextBuffer.IncPointer();
 
@@ -45,6 +46,38 @@ namespace IntoTheCode.Read.Word
 
             var element = new CodeElement(proces.TextBuffer, this, subStr);
             outElements.Add(element);
+
+            return true;
+        }
+
+        public override bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        {
+            SkipWhiteSpace(proces);
+
+            TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
+            TextPointer from = proces.TextBuffer.PointerNextChar;
+
+            if (proces.TextBuffer.IsEnd(1))
+            {
+                subStr.SetTo(subStr.GetFrom());
+                var element = new CodeElement(proces.TextBuffer, this, subStr, "Expecting name, found EOF");
+                errorWords.Add(element);
+                return SetPointerBack(proces, from, this);
+            }
+
+            if (!AllowedCharsFirst.Contains(proces.TextBuffer.GetSubString(proces.TextBuffer.PointerNextChar, 1).ToLower()))
+            {
+                subStr.SetTo(proces.TextBuffer.PointerNextChar);
+                var element = new CodeElement(proces.TextBuffer, this, subStr, "First charactor is not allowed.");
+                errorWords.Add(element);
+                return SetPointerBack(proces, from, this);
+            }
+            else
+                proces.TextBuffer.IncPointer();
+
+
+            while (!proces.TextBuffer.IsEnd() && AllowedCharsNext.Contains(proces.TextBuffer.GetSubString(proces.TextBuffer.PointerNextChar, 1).ToLower()))
+            { proces.TextBuffer.IncPointer(); }
 
             return true;
         }

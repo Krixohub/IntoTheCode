@@ -5,6 +5,7 @@ using IntoTheCode.Message;
 using System;
 using IntoTheCode.Read;
 using IntoTheCode.Buffer;
+using IntoTheCode.Read.Element.Words;
 
 namespace IntoTheCode.Read
 {
@@ -22,7 +23,6 @@ namespace IntoTheCode.Read
         {
         }
 
-        //todo rename to MetaParser
         internal static Parser Instance
         {
             get
@@ -49,8 +49,8 @@ namespace IntoTheCode.Read
         internal const string Operator___ = "operator";    // 
         internal const string Or_________ = "or";          // 
         internal const string Equal______ = "equal";       // 
-        internal const string Symbol_____ = "symbol";      // identifier(ebnf), Word, Symbol(bnf), Term, literal,
-        internal const string Quote______ = "quote";       // 
+        internal const string Symbol_____ = "symbol";      // ruleId, identifier(ebnf), Word, Symbol(bnf), Term, literal,
+        internal const string Quote______ = "quote";       // wordsymbol
         internal const string WordName___ = "wordname";    // word
         internal const string WordString_ = "wordstring";  // , Token, symbol, id
         internal const string Settings___ = "settings";    // 
@@ -171,11 +171,12 @@ settings   collapse;";
             list.Add(new Rule(Or_________,
                 new Quote("|")));
             // symbol     = wordname;
+            // todo eliminate symbols with wordname or wordstring
             list.Add(new Rule(Symbol_____,
-                new Symbol(WordName___)));
+                new Symbol(WordName___) { SymbolElement = new WordName(WordName___) }));
             // quote       = wordstring;
             list.Add(new Rule(Quote______,
-                new Symbol(WordString_)));
+                new Symbol(WordString_) { SymbolElement = new WordString() }));
 
             // settings   > 'settings' {setter};
             list.Add(new Rule(Settings___,
@@ -187,7 +188,7 @@ settings   collapse;";
 
             // setter     > wordname assignment {',' assignment} ';';
             list.Add(new Rule("setter",
-                new Symbol(WordName___),
+                new Symbol(WordName___) { SymbolElement = new WordName(WordName___) },
                 new Symbol(Assignment_),
                 new Sequence(
                     new Quote(","),
@@ -204,16 +205,16 @@ settings   collapse;";
 
             // property   > wordname;
             list.Add(new Rule(Property___,
-                new Symbol(WordName___)));
+                new Symbol(WordName___) { SymbolElement = new WordName(WordName___) }));
 
             // value      > string;";
             list.Add(new Rule(Value______,
-                new Symbol(WordString_)));
+                new Symbol(WordString_) { SymbolElement = new WordString() }));
 
             Parser parser = new Parser() { Level = 1 }; // { Name = HardSyntax_ };
             parser.Rules = list;
             foreach (var eq in list) eq.Parser = parser;
-            ParserFactory.LinkSyntax(parser);
+            ParserFactory.InitializeSyntax(parser);
 
             return parser;
         }

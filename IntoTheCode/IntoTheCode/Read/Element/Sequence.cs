@@ -32,6 +32,15 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
+        public override bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        {
+            TextPointer p = proces.TextBuffer.PointerNextChar.Clone();
+            while (LoadSetAnalyze(proces, errorWords) && proces.TextBuffer.PointerNextChar.CompareTo(p) > 0)
+                proces.TextBuffer.PointerNextChar.CopyTo(p);
+
+            return true;
+        }
+
         public override string GetSyntax() { return "{" + base.GetSyntax() + "}"; }
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
     }
