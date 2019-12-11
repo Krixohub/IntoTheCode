@@ -6,9 +6,9 @@ using System;
 
 namespace IntoTheCode.Read.Element.Words
 {
-    internal class WordName : Word
+    internal class WordId : Word
     {
-        internal WordName(string name)
+        internal WordId(string name)
         {
             Name = name;
             //ElementContent = ElementContentType.OneValue;
@@ -18,7 +18,7 @@ namespace IntoTheCode.Read.Element.Words
             //Reader = parser;
         }
 
-        public override string GetSyntax() { return MetaParser.WordName___; }
+        public override string GetSyntax() { return MetaParser.WordId_____; }
         //protected override string Read(int begin, ITextBuffer buffer) { return ""; }
 
         private const string AllowedCharsFirst = "abcdefghijklmnopqrstuvwxyz";

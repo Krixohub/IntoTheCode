@@ -28,24 +28,24 @@ namespace TestCodeInternal.UnitTest
 //            reader.TextBuffer = new FlatBuffer("  sym01  ");
             //var buf = new FlatBuffer("  sym01  ");
             var outNo = new List<TreeNode>();
-            var idn = new WordName("kurt");
+            var idn = new WordId("kurt");
             Assert.AreEqual(true, idn.Load(reading, outNo), "Identifier: Can't read");
             var node = outNo[0] as CodeElement;
             Assert.IsNotNull(node, "Identifier: Can't find node after reading");
             Assert.AreEqual("sym01", node.Value, "Identifier: The value is not correct");
-            Assert.AreEqual("kurt", node.Name, "Identifier: The wordname is not correct");
+            Assert.AreEqual("kurt", node.Name, "Identifier: The id is not correct");
             Assert.AreEqual(2, ((FlatSubString)node.ValuePointer).From, "Identifier: The start is not correct");
             Assert.AreEqual(7, ((FlatSubString)node.ValuePointer).To, "Identifier: The end is not correct");
             Assert.AreEqual(7, ((FlatPointer)reading.TextBuffer.PointerNextChar).index, "Identifier: The buffer pointer is of after reading");
 
-            // load quote
+            // load symbol
             reading.TextBuffer = new FlatBuffer(" 'Abcde' ");
             var str = new WordString();
             Assert.AreEqual(true, str.Load(reading, outNo), "String: Can't read");
             node = outNo[1] as CodeElement;
             Assert.IsNotNull(node, "String: Can't find node after reading");
             Assert.AreEqual("Abcde", node.Value, "String: The value is not correct");
-            Assert.AreEqual("string", node.Name, "String: The wordname is not correct");
+            Assert.AreEqual("string", node.Name, "String: The id is not correct");
             Assert.AreEqual(2, ((FlatSubString)node.ValuePointer).From, "String: The start is not correct");
             Assert.AreEqual(7, ((FlatSubString)node.ValuePointer).To, "String: The end is not correct");
             Assert.AreEqual(8, ((FlatPointer)reading.TextBuffer.PointerNextChar).index, "String: The buffer pointer is of after reading");
@@ -53,12 +53,12 @@ namespace TestCodeInternal.UnitTest
 
             // load string
             reading.TextBuffer = new FlatBuffer("  symbol1  ");
-            var sym = new Quote("symbol1");
+            var sym = new WordSymbol("symbol1");
             Assert.AreEqual(true, sym.Load(reading, outNo), "Symbol: Can't read");
             Assert.AreEqual(2, outNo.Count, "Symbol: Load should not add any nodes");
             Assert.AreEqual(9, ((FlatPointer)reading.TextBuffer.PointerNextChar).index, "Symbol: The buffer pointer is of after");
 
-            // load string + string + wordname
+            // load string + string + id
             reading.TextBuffer = new FlatBuffer("  Aname     symbol1      'Fghij'      sym02  ");
             Assert.AreEqual(true, idn.Load(reading, outNo), "Can't read a combinded Identifier");
             Assert.AreEqual(true, sym.Load(reading, outNo), "Can't read a combinded Symbol");
@@ -235,7 +235,7 @@ str = 'str' | fail;
 fail = 'fail';
 nam = fnam lnam;
 fnam = 'name';
-lnam = wordname;";
+lnam = id;";
             var parser = new Parser(syntax);
             LoadProces proces;
             CodeDocument doc;
@@ -256,17 +256,17 @@ lnam = wordname;";
             // Read word-name, EOF error.
             
             // Read word-name, not allowed first letter.
-            // todo fejl: der bruges ikke 'div' ; sæt 'div' når der er læst en quote
+            // todo fejl: der bruges ikke 'div' ; sæt 'div' når der er læst en symbol
             proces = new LoadProces(new FlatBuffer("name 2r"));
             doc = CodeDocument.Load(parser, proces);
             Assert.IsNull(doc, "doc er ikke null");
             Assert.AreEqual("syntax error. First charactor is not allowed. line 1, colomn 5", proces.LoadError, "First letter error");
 
-            // Read word-quote, EOF error.
+            // Read word-symbol, EOF error.
 
-            // Read word-quote, starting ' not found.
+            // Read word-symbol, starting ' not found.
 
-            // Read word-quote, ending ' not found.
+            // Read word-symbol, ending ' not found.
 
         }
 
@@ -275,18 +275,18 @@ lnam = wordname;";
         {
             //bool equal = false;
             //bool tag = true;
-            List<Symbol> symbolsToResolve = new List<Symbol>();
+            List<RuleId> symbolsToResolve = new List<RuleId>();
             List<Rule> list = new List<Rule>();
             list.Add(new Rule("syntax",
-                    new Or( new Symbol("TestIdentifier"),
-                    new Or( new Symbol("TestString"),
-                    new Symbol("TestSymbol")))) /*{ Tag = true }*/);
+                    new Or( new RuleId("TestIdentifier"),
+                    new Or( new RuleId("TestString"),
+                    new RuleId("TestSymbol")))) /*{ Tag = true }*/);
             // TestIdentifier     = varName;
             list.Add(new Rule("TestIdentifier",
-                new WordName("VarName")) /*{ Tag = true }*/);
+                new WordId("VarName")) /*{ Tag = true }*/);
             // TestSymbol       = 'Abcde';
             list.Add(new Rule("TestSymbol",
-                new Quote("Abcde"))
+                new WordSymbol("Abcde"))
             { Collapse = true });
 
             // TestString       = Quote;
@@ -296,14 +296,14 @@ lnam = wordname;";
 
             // TestSeries       = 'TestSeries' { VarName };
             list.Add(new Rule("TestSeries",
-                new Quote("TestSeries"),
-                new Sequence( new WordName("finn")))
+                new WordSymbol("TestSeries"),
+                new Sequence( new WordId("finn")))
             /*{ Tag = true }*/);
             // TestOption       = 'TestOption' [TestIdentifier] [TestString];
             list.Add(new Rule("TestOption",
-                new Quote("TestOption"),
-                new Optional( new Symbol("TestIdentifier")),
-                new Optional( new Symbol("TestQuote2")))
+                new WordSymbol("TestOption"),
+                new Optional( new RuleId("TestIdentifier")),
+                new Optional( new RuleId("TestQuote2")))
             /*{ Tag = true }*/);
             // TestQuote2      = Quote;
             list.Add(new Rule("TestQuote2",
@@ -311,8 +311,8 @@ lnam = wordname;";
             /*{ Tag = true }*/);
             // TestLines       = 'TestLines' { VarName '=' Quote ';' };
             list.Add(new Rule("TestLines",
-                new Quote("TestLines"),
-                new Sequence( new WordName("localVar"), new Quote("="), new WordString(), new Quote(";")))
+                new WordSymbol("TestLines"),
+                new Sequence( new WordId("localVar"), new WordSymbol("="), new WordString(), new WordSymbol(";")))
             /*{ Tag = true }*/);
             // TestQuote2      = Quote;
             //list.Add(new Equation("TestQuote2",
@@ -331,22 +331,22 @@ lnam = wordname;";
             return
          @"
 HardSyntax  = {Rule} [settings];
-Rule        = symbol '=' expression ';';
+Rule        = ruleId '=' expression ';';
 expression  = element {[or] element};
-element     = symbol | quote | block;
+element     = ruleId | symbol | block;
 block       = sequence | optional | parentheses;
 sequence    = '{' expression '}';
 optional    = '[' expression ']';
 parentheses = '(' expression ')';
 or          = '|';
-symbol      = wordname;
-quote       = wordstring;
+ruleId      = id;
+symbol      = string;
 settings    = 'settings' {setter};
-setter      = wordname assignment {',' assignment} ';';
+setter      = id assignment {',' assignment} ';';
 assignment  = property ['=' value];
-property    = wordname;
-value       = wordstring;";
-            //property    = wordname;
+property    = id;
+value       = string;";
+            //property    = id;
             //property    = 'collapse' | 'milestone' | 'ws' | 'wsdef';
         }
 
@@ -357,82 +357,82 @@ value       = wordstring;";
 
             // syntax   = {rule}
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("symbol", "MetaSyntax"),
+                new HardElement("ruleId", "MetaSyntax"),
                 new HardElement("sequence", string.Empty,
-                    new HardElement("symbol", "Rule")),
+                    new HardElement("ruleId", "Rule")),
                 new HardElement("optional", string.Empty,
-                    new HardElement("symbol", MetaParser.Settings___))));
+                    new HardElement("ruleId", MetaParser.Settings___))));
 
-            // rule = symbol '=' expression ';'
+            // rule = ruleId '=' expression ';'
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("symbol", "Rule"),
-                new HardElement("symbol", "symbol"),
-                new HardElement("quote", "="),
-                new HardElement("symbol", "expression"),
-                new HardElement("quote", ";")));
+                new HardElement("ruleId", "Rule"),
+                new HardElement("ruleId", "ruleId"),
+                new HardElement("symbol", "="),
+                new HardElement("ruleId", "expression"),
+                new HardElement("symbol", ";")));
 
             // expression = element {[or] element};
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("symbol", "expression"),
-                new HardElement("symbol", MetaParser.Element____),
+                new HardElement("ruleId", "expression"),
+                new HardElement("ruleId", MetaParser.Element____),
                 new HardElement("sequence", string.Empty,
                     new HardElement("optional", string.Empty,
-                        new HardElement("symbol", MetaParser.Or_________)),
-                    new HardElement("symbol", MetaParser.Element____))));
+                        new HardElement("ruleId", MetaParser.Or_________)),
+                    new HardElement("ruleId", MetaParser.Element____))));
 
-            // element    = symbol | quote | block; Husk ny block
+            // element    = ruleIdsymbol | symbol | block; Husk ny block
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("symbol", MetaParser.Element____),
-                new HardElement("symbol", "symbol"),
+                new HardElement("ruleId", MetaParser.Element____),
+                new HardElement("ruleId", "ruleId"),
                 new HardElement(MetaParser.Or_________, string.Empty),
-                new HardElement("symbol", "quote"),
+                new HardElement("ruleId", "symbol"),
                 new HardElement(MetaParser.Or_________, string.Empty),
-                new HardElement("symbol", MetaParser.Block______)));
+                new HardElement("ruleId", MetaParser.Block______)));
 
             // block      = sequence | optional | parentheses);
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("symbol", MetaParser.Block______),
-                new HardElement("symbol", "sequence"),
+                new HardElement("ruleId", MetaParser.Block______),
+                new HardElement("ruleId", "sequence"),
                 new HardElement(MetaParser.Or_________, string.Empty),
-                new HardElement("symbol", "optional"),
+                new HardElement("ruleId", "optional"),
                 new HardElement("or", string.Empty),
-                new HardElement("symbol", "parentheses")));
+                new HardElement("ruleId", "parentheses")));
 
             // sequence      = '{' expression '}';
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("symbol", "sequence"),
-                new HardElement("quote", "{"),
-                new HardElement("symbol", "expression"),
-                new HardElement("quote", "}")));
+                new HardElement("ruleId", "sequence"),
+                new HardElement("symbol", "{"),
+                new HardElement("ruleId", "expression"),
+                new HardElement("symbol", "}")));
 
             // optional     = '[' expression ']';
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("symbol", "optional"),
-                new HardElement("quote", "["),
-                new HardElement("symbol", "expression"),
-                new HardElement("quote", "]")));
+                new HardElement("ruleId", "optional"),
+                new HardElement("symbol", "["),
+                new HardElement("ruleId", "expression"),
+                new HardElement("symbol", "]")));
 
             // parentheses      = '(' expression ')';
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("symbol", "parentheses"),
-                new HardElement("quote", "("),
-                new HardElement("symbol", "expression"),
-                new HardElement("quote", ")")));
+                new HardElement("ruleId", "parentheses"),
+                new HardElement("symbol", "("),
+                new HardElement("ruleId", "expression"),
+                new HardElement("symbol", ")")));
 
             // or         = '|';
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("symbol", "or"),
-                new HardElement("quote", "|")));
+                new HardElement("ruleId", "or"),
+                new HardElement("symbol", "|")));
 
-            // symbol      > wordname;
+            // ruleId      > id;
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("symbol", "symbol"),
-                new HardElement("symbol", "wordname")));
+                new HardElement("ruleId", "ruleId"),
+                new HardElement("ruleId", "id")));
 
-            // quote     = wordstring;
+            // symbol     = string;
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("symbol", "quote"),
-                new HardElement("symbol", "wordstring")));
+                new HardElement("ruleId", "symbol"),
+                new HardElement("ruleId", "string")));
 
             return syntax;
         }

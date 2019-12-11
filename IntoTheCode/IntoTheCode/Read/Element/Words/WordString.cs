@@ -63,7 +63,7 @@ namespace IntoTheCode.Read.Element.Words
             if (proces.TextBuffer.IsEnd(2))
             {
                 subStr1.SetTo(subStr1.GetFrom());
-                var element = new CodeElement(proces.TextBuffer, this, subStr1, "Expecting quote, found EOF");
+                var element = new CodeElement(proces.TextBuffer, this, subStr1, "Expecting symbol, found EOF");
                 errorWords.Add(element);
                 return false;
             };

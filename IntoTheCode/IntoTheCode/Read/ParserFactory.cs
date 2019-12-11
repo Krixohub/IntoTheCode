@@ -45,9 +45,9 @@ namespace IntoTheCode.Read
                     ValidateSyntax(parser);
         }
 
-        private static Rule AddRule(Parser parser, string symbol, params ParserElementBase[] elements)
+        private static Rule AddRule(Parser parser, string ruleId, params ParserElementBase[] elements)
         {
-            var rule = new Rule(symbol, elements) { Parser = parser/*, Tag = true*/ };
+            var rule = new Rule(ruleId, elements) { Parser = parser/*, Tag = true*/ };
             parser.Rules.Add(rule);
             return rule;
         }
@@ -99,23 +99,23 @@ namespace IntoTheCode.Read
                     //break;
 
 
-                    case MetaParser.Symbol_____:
-                        var sym = new Symbol(element.Value);
+                    case MetaParser.RuleId_____:
+                        var sym = new RuleId(element.Value);
                         switch (element.Value)
                         {
                             case MetaParser.WordString_:
                                 sym.SymbolElement = new WordString();// { TodoResolve = true };
                                 break;
-                            case MetaParser.WordName___:
-                                sym.SymbolElement = new WordName(element.Value);// { TodoResolve = true };
+                            case MetaParser.WordId_____:
+                                sym.SymbolElement = new WordId(element.Value);// { TodoResolve = true };
                                 break;
                         }
                         elements.Add(sym);
                         break;
 
 
-                    case MetaParser.Quote______:
-                        elements.Add(new Quote(element.Value));
+                    case MetaParser.WordSymbol_:
+                        elements.Add(new WordSymbol(element.Value));
                         break;
                     case MetaParser.Sequence___:
                         elements.Add(new Sequence(BuildExpression(parser, element.SubElements).ToArray()));
@@ -224,8 +224,8 @@ namespace IntoTheCode.Read
             foreach (ParserElementBase element in elements)
 
             {
-                var symbol = element as Symbol;
-                if (symbol != null && symbol.SymbolElement == null) symbol.SymbolElement = Resolve(parser, symbol.Name);
+                var ruleId = element as RuleId;
+                if (ruleId != null && ruleId.SymbolElement == null) ruleId.SymbolElement = Resolve(parser, ruleId.Name);
                 InitializeElements(parser, element.SubElements.OfType<ParserElementBase>());
                 element.Initialize();
             }

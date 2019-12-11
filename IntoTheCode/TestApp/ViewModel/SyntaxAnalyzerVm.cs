@@ -191,15 +191,15 @@ sub er,d5,""hj""";
 headerline = headerA ',' headerA ',' headerA;
 valueline  = 'main' valueA ',' valueB ',' valueC {subLine};
 subLine    = 'sub' value0 ',' value1 ',' value2;
-headerA    = wordname;
-headerB    = wordname;
-headerC    = wordname;
-valueA     = wordname;
-valueB     = wordname;
-valueC     = wordname;
-value0     = wordname;
-value1     = wordname;
-value2     = '""' wordname '""';";
+headerA    = id;
+headerB    = id;
+headerC    = id;
+valueA     = id;
+valueB     = id;
+valueC     = id;
+value0     = id;
+value1     = id;
+value2     = '""' id '""';";
         }
 
     }

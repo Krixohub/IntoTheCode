@@ -6,10 +6,10 @@ namespace IntoTheCode.Read.Element
     /// <summary>
     /// Base class for syntax symbols.
     /// </summary>
-    internal class Symbol : ParserElementBase
+    internal class RuleId : ParserElementBase
     {
-        /// <summary>Creator for <see cref="Symbol"/>.</summary>
-        internal Symbol(string name)
+        /// <summary>Creator for <see cref="RuleId"/>.</summary>
+        internal RuleId(string name)
         {
             Name = name;
         }

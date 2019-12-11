@@ -36,8 +36,8 @@ namespace IntoTheCode.Basic.Util
             const string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
             if (string.IsNullOrEmpty(chars)) chars = Chars;
             var random = new Random();
-            string identifier = new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
-            return identifier;
+            string id = new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
+            return id;
         }
 
         /// <summary>Escapes sql string to sql script streng. Empty string if null.</summary>

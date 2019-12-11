@@ -105,8 +105,8 @@ namespace IntoTheCode
         {
             if (rule == null) return "Rule is null";
             if (rule.SubElements == null) return "Rule has no sub elements";
-            TreeNode ident = rule.SubElements.FirstOrDefault(n => n.Name == MetaParser.Symbol_____);
-            if (ident == null) return "Rule has no symbol element";
+            TreeNode ident = rule.SubElements.FirstOrDefault(n => n.Name == MetaParser.RuleId_____);
+            if (ident == null) return "Rule has no ruleId element";
             return string.IsNullOrEmpty(ident.Value) ? "Rule has no name" : ident.Value;
         }
 

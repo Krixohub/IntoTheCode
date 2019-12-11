@@ -22,8 +22,8 @@ namespace IntoTheCode.Read.Element
 
             // Set 'div' property if this is the last of many elements
         //    IList<TreeNode> siblings = Parent.SubElements;
-            if ((elements.Length > 2 && elements[elements.Length - 1] is Quote) ||
-                AnyNested(elem => elem is Quote && ((Quote)elem).Value.Length > 2))
+            if ((elements.Length > 2 && elements[elements.Length - 1] is WordSymbol) ||
+                AnyNested(elem => elem is WordSymbol && ((WordSymbol)elem).Value.Length > 2))
                 Div = true;
 
 

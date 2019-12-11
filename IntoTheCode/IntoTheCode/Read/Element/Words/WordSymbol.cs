@@ -5,12 +5,12 @@ using IntoTheCode.Basic;
 
 namespace IntoTheCode.Read.Element.Words
 {
-    internal class Quote : Word
+    internal class WordSymbol : Word
     {
-        internal Quote(string value)
+        internal WordSymbol(string value)
         {
             _value = value;
-            Name = "Quote";
+            Name = MetaParser.WordSymbol_;
             //Color = 2;
 
             // Only for unittest, when syntax is not linked.
