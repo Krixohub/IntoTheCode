@@ -100,17 +100,21 @@ namespace IntoTheCode.Read
 
 
                     case MetaParser.RuleId_____:
-                        var sym = new RuleId(element.Value);
+                        ParserElementBase elem;
+                        //var sym =
                         switch (element.Value)
                         {
                             case MetaParser.WordString_:
-                                sym.SymbolElement = new WordString();// { TodoResolve = true };
+                                elem = new WordString();// { TodoResolve = true };
                                 break;
-                            case MetaParser.WordId_____:
-                                sym.SymbolElement = new WordId(element.Value);// { TodoResolve = true };
+                            case MetaParser.WordName___:
+                                elem = new WordName(element.Value);// { TodoResolve = true };
+                                break;
+                            default:
+                                elem = new RuleId(element.Value);
                                 break;
                         }
-                        elements.Add(sym);
+                        elements.Add(elem);
                         break;
 
 

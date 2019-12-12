@@ -5,7 +5,7 @@ using IntoTheCode.Basic;
 
 namespace IntoTheCode.Read.Element.Words
 {
-    internal class WordSymbol : Word
+    internal class WordSymbol : WordBase
     {
         internal WordSymbol(string value)
         {

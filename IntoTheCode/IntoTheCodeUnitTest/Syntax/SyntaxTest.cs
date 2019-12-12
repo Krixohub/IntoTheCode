@@ -28,12 +28,12 @@ namespace TestCodeInternal.UnitTest
 //            reader.TextBuffer = new FlatBuffer("  sym01  ");
             //var buf = new FlatBuffer("  sym01  ");
             var outNo = new List<TreeNode>();
-            var idn = new WordId("kurt");
+            var idn = new WordName("kurt");
             Assert.AreEqual(true, idn.Load(reading, outNo), "Identifier: Can't read");
             var node = outNo[0] as CodeElement;
             Assert.IsNotNull(node, "Identifier: Can't find node after reading");
             Assert.AreEqual("sym01", node.Value, "Identifier: The value is not correct");
-            Assert.AreEqual("kurt", node.Name, "Identifier: The id is not correct");
+            Assert.AreEqual("kurt", node.Name, "Identifier: The name is not correct");
             Assert.AreEqual(2, ((FlatSubString)node.ValuePointer).From, "Identifier: The start is not correct");
             Assert.AreEqual(7, ((FlatSubString)node.ValuePointer).To, "Identifier: The end is not correct");
             Assert.AreEqual(7, ((FlatPointer)reading.TextBuffer.PointerNextChar).index, "Identifier: The buffer pointer is of after reading");
@@ -45,7 +45,7 @@ namespace TestCodeInternal.UnitTest
             node = outNo[1] as CodeElement;
             Assert.IsNotNull(node, "String: Can't find node after reading");
             Assert.AreEqual("Abcde", node.Value, "String: The value is not correct");
-            Assert.AreEqual("string", node.Name, "String: The id is not correct");
+            Assert.AreEqual("string", node.Name, "String: The name is not correct");
             Assert.AreEqual(2, ((FlatSubString)node.ValuePointer).From, "String: The start is not correct");
             Assert.AreEqual(7, ((FlatSubString)node.ValuePointer).To, "String: The end is not correct");
             Assert.AreEqual(8, ((FlatPointer)reading.TextBuffer.PointerNextChar).index, "String: The buffer pointer is of after reading");
@@ -58,7 +58,7 @@ namespace TestCodeInternal.UnitTest
             Assert.AreEqual(2, outNo.Count, "Symbol: Load should not add any nodes");
             Assert.AreEqual(9, ((FlatPointer)reading.TextBuffer.PointerNextChar).index, "Symbol: The buffer pointer is of after");
 
-            // load string + string + id
+            // load string + string + name
             reading.TextBuffer = new FlatBuffer("  Aname     symbol1      'Fghij'      sym02  ");
             Assert.AreEqual(true, idn.Load(reading, outNo), "Can't read a combinded Identifier");
             Assert.AreEqual(true, sym.Load(reading, outNo), "Can't read a combinded Symbol");
@@ -235,7 +235,7 @@ str = 'str' | fail;
 fail = 'fail';
 nam = fnam lnam;
 fnam = 'name';
-lnam = id;";
+lnam = name;";
             var parser = new Parser(syntax);
             LoadProces proces;
             CodeDocument doc;
@@ -283,7 +283,7 @@ lnam = id;";
                     new RuleId("TestSymbol")))) /*{ Tag = true }*/);
             // TestIdentifier     = varName;
             list.Add(new Rule("TestIdentifier",
-                new WordId("VarName")) /*{ Tag = true }*/);
+                new WordName("VarName")) /*{ Tag = true }*/);
             // TestSymbol       = 'Abcde';
             list.Add(new Rule("TestSymbol",
                 new WordSymbol("Abcde"))
@@ -297,7 +297,7 @@ lnam = id;";
             // TestSeries       = 'TestSeries' { VarName };
             list.Add(new Rule("TestSeries",
                 new WordSymbol("TestSeries"),
-                new Sequence( new WordId("finn")))
+                new Sequence( new WordName("finn")))
             /*{ Tag = true }*/);
             // TestOption       = 'TestOption' [TestIdentifier] [TestString];
             list.Add(new Rule("TestOption",
@@ -312,7 +312,7 @@ lnam = id;";
             // TestLines       = 'TestLines' { VarName '=' Quote ';' };
             list.Add(new Rule("TestLines",
                 new WordSymbol("TestLines"),
-                new Sequence( new WordId("localVar"), new WordSymbol("="), new WordString(), new WordSymbol(";")))
+                new Sequence( new WordName("localVar"), new WordSymbol("="), new WordString(), new WordSymbol(";")))
             /*{ Tag = true }*/);
             // TestQuote2      = Quote;
             //list.Add(new Equation("TestQuote2",
@@ -339,14 +339,14 @@ sequence    = '{' expression '}';
 optional    = '[' expression ']';
 parentheses = '(' expression ')';
 or          = '|';
-ruleId      = id;
+ruleId      = name;
 symbol      = string;
 settings    = 'settings' {setter};
-setter      = id assignment {',' assignment} ';';
+setter      = name assignment {',' assignment} ';';
 assignment  = property ['=' value];
-property    = id;
+property    = name;
 value       = string;";
-            //property    = id;
+            //property    = name;
             //property    = 'collapse' | 'milestone' | 'ws' | 'wsdef';
         }
 
@@ -424,10 +424,10 @@ value       = string;";
                 new HardElement("ruleId", "or"),
                 new HardElement("symbol", "|")));
 
-            // ruleId      > id;
+            // ruleId      > name;
             syntax.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("ruleId", "ruleId"),
-                new HardElement("ruleId", "id")));
+                new HardElement("ruleId", "name")));
 
             // symbol     = string;
             syntax.AddElement(new HardElement("Rule", string.Empty,

@@ -54,7 +54,7 @@ namespace IntoTheCode.Read.Element
             //TextSubString ptr = new TextSubString { From = buf.pointer };
             //TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
             TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
-            List<Word> elements = new List<Word>();
+            List<WordBase> elements = new List<WordBase>();
             //int i = SubElements.Count;
             foreach (var item in SubElements.OfType<ParserElementBase>())
                 if (!item.LoadAnalyze(proces, errorWords))

@@ -21,12 +21,12 @@ namespace IntoTheCode
             _buffer = buffer;
             _syntaxElement = element;
             _valuePointer = pointer;
-            ValueReader = element as Word;
+            ValueReader = element as WordBase;
             Error = error;
         }
 
         internal TextSubString ValuePointer { get { return _valuePointer; } }
-        internal Word ValueReader { get; set; }
+        internal WordBase ValueReader { get; set; }
         //internal int ValueLength { get { return ValuePointer == null ? 0 : ValuePointer.Length(); }}
 
         public override string GetValue() {

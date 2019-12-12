@@ -7,7 +7,7 @@ using System;
 
 namespace IntoTheCode.Read.Element.Words
 {
-    internal class WordString : Word
+    internal class WordString : WordBase
     {
         internal WordString()
         {

@@ -48,8 +48,8 @@ namespace IntoTheCode.Read
         internal const string Optional___ = "optional";    // 
         internal const string Parentheses = "parentheses"; // 
         internal const string Or_________ = "or";          // 
-        internal const string WordId_____ = "id";          // word, ident, didentifier(ebnf)
-        internal const string WordString_ = "string";      // string, Token, symbol, id
+        internal const string WordName___ = "name";        // name, name, word, ident, didentifier(ebnf)
+        internal const string WordString_ = "string";      // string, Token, symbol, name
         internal const string WordSymbol_ = "symbol";      // wordsymbol, symbol
         //internal const string Operator___ = "operator";    // 
         //internal const string Equal______ = "equal";       // 
@@ -87,19 +87,19 @@ sequence    = '{' expression '}';
 optional    = '[' expression ']';
 parentheses = '(' expression ')';
 or          = '|';
-ruleId      = id;
+ruleId      = name;
 symbol      = string;
 settings    = 'settings' {setter};
-setter      = id assignment {',' assignment} ';';
+setter      = name assignment {',' assignment} ';';
 assignment  = property ['=' value];
-property    = id;
+property    = name;
 value       = string;";
                 return syntax;
             } 
         }
 /*
 property    = 'collapse' | 'div' | 'ws' | 'wsdef';
-property    = id;
+property    = name;
  */ 
         /// <summary>The shapin syntax.</summary>
         internal static string MetaSettings
@@ -172,13 +172,13 @@ settings   collapse;";
             // or         = '|';
             list.Add(new Rule(Or_________,
                 new WordSymbol("|")));
-            // ruleId     = id;
-            // todo eliminate ruleIds with id or string
+            // ruleId     = name;
+            // todo eliminate ruleIds with name or string
             list.Add(new Rule(RuleId_____,
-                new RuleId(WordId_____) { SymbolElement = new WordId(WordId_____) }));
+                new WordName(WordName___)));
             // symbol       = string;
             list.Add(new Rule(WordSymbol_,
-                new RuleId(WordString_) { SymbolElement = new WordString() }));
+                new WordString()));
 
             // settings   > 'settings' {setter};
             list.Add(new Rule(Settings___,
@@ -188,9 +188,9 @@ settings   collapse;";
             { Collapse = true });
 
 
-            // setter     > id assignment {',' assignment} ';';
+            // setter     > name assignment {',' assignment} ';';
             list.Add(new Rule("setter",
-                new RuleId(WordId_____) { SymbolElement = new WordId(WordId_____) },
+                new RuleId(WordName___) { SymbolElement = new WordName(WordName___) },
                 new RuleId(Assignment_),
                 new Sequence(
                     new WordSymbol(","),
@@ -205,9 +205,9 @@ settings   collapse;";
                     new RuleId(Value______))));
 
 
-            // property   > id;
+            // property   > name;
             list.Add(new Rule(Property___,
-                new RuleId(WordId_____) { SymbolElement = new WordId(WordId_____) }));
+                new RuleId(WordName___) { SymbolElement = new WordName(WordName___) }));
 
             // value      > string;";
             list.Add(new Rule(Value______,
