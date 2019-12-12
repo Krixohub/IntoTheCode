@@ -99,7 +99,7 @@ namespace IntoTheCode.Read
                     //break;
 
 
-                    case MetaParser.RuleId_____:
+                    case MetaParser.WordName___:
                         ParserElementBase elem;
                         //var sym =
                         switch (element.Value)
@@ -111,10 +111,30 @@ namespace IntoTheCode.Read
                                 elem = new WordName(element.Value);// { TodoResolve = true };
                                 break;
                             default:
-                                elem = new RuleId(element.Value);
+                                elem = new RuleLink(element.Value);
                                 break;
                         }
                         elements.Add(elem);
+                        break;
+
+
+                    // todo remove this RuleId_____
+                    case MetaParser.RuleId_____:
+                        ParserElementBase elem2;
+                        //var sym =
+                        switch (element.Value)
+                        {
+                            case MetaParser.WordString_:
+                                elem2 = new WordString();// { TodoResolve = true };
+                                break;
+                            case MetaParser.WordName___:
+                                elem2 = new WordName(element.Value);// { TodoResolve = true };
+                                break;
+                            default:
+                                elem2 = new RuleLink(element.Value);
+                                break;
+                        }
+                        elements.Add(elem2);
                         break;
 
 
@@ -228,8 +248,8 @@ namespace IntoTheCode.Read
             foreach (ParserElementBase element in elements)
 
             {
-                var ruleId = element as RuleId;
-                if (ruleId != null && ruleId.SymbolElement == null) ruleId.SymbolElement = Resolve(parser, ruleId.Name);
+                var ruleId = element as RuleLink;
+                if (ruleId != null && ruleId.SymbolElement == null) ruleId.SymbolElement = Resolve(parser, ruleId.GetValue());
                 InitializeElements(parser, element.SubElements.OfType<ParserElementBase>());
                 element.Initialize();
             }

@@ -20,7 +20,7 @@ namespace TestCodeInternal.UnitTest
         public void Parser11SyntaxHardcode()
         {
             //Parser parser = new Parser();
-            var syntax = new Parser();
+            var parser = new Parser();
 
             // test loading of basic syntax elements
             // load varname
@@ -72,13 +72,13 @@ namespace TestCodeInternal.UnitTest
             Assert.AreEqual("sym02", node.Value, "The combinded VarName value is not correct");
             Assert.AreEqual(43, ((FlatPointer)reading.TextBuffer.PointerNextChar).index, "The buffer pointer is of after reading combinded values");
 
-
+            var debug = MetaParser.GetHardCodeParser().GetSyntax();
 
             // Build a syntax to test basic syntactic elements
            // parser = new SyntaxReader();
            // var reader = new SyntaxReader();
             string doc = string.Empty;
-            syntax.Rules = GetSyntaxTestElements(syntax);
+            parser.Rules = GetSyntaxTestElements(parser);
             //parser.Syntax = reader;
             //parser.LinkSyntax(parser.Syntax);
             //reader.LinkSyntax();
@@ -86,7 +86,7 @@ namespace TestCodeInternal.UnitTest
             outNo = new List<TreeNode>();
             Rule eq = null;
             //  Read a varname
-            eq = syntax.Rules.FirstOrDefault(e => e.Name == "TestIdentifier");
+            eq = parser.Rules.FirstOrDefault(e => e.Name == "TestIdentifier");
             reading.TextBuffer = new FlatBuffer("  Bname  ");
             //parser.TextBuffer = new FlatBuffer("  Bname  ");
             Assert.AreEqual(true, eq.Load(reading, outNo), "Equation TestIdentifier: cant read");
@@ -94,7 +94,7 @@ namespace TestCodeInternal.UnitTest
             Assert.AreEqual("<TestIdentifier>Bname</TestIdentifier>\r\n", doc, "Equation TestOption: document fail");
 
             // Read a 'or syntax = varname'
-            eq = syntax.Rules.FirstOrDefault(e => e.Name == "syntax");
+            eq = parser.Rules.FirstOrDefault(e => e.Name == "syntax");
             reading.TextBuffer = new FlatBuffer("  Bcccc  ");
             //parser.TextBuffer = new FlatBuffer("  Bcccc  ");
             Assert.AreEqual(true, eq.Load(reading, outNo), "Equation syntax varname: cant read");
@@ -102,14 +102,14 @@ namespace TestCodeInternal.UnitTest
             Assert.AreEqual("<syntax>\r\n  <TestIdentifier>Bcccc</TestIdentifier>\r\n</syntax>\r\n", doc, "Equation TestOption: document fail");
 
             // Read a 'or TestString'
-            eq = syntax.Rules.FirstOrDefault(e => e.Name == "syntax");
+            eq = parser.Rules.FirstOrDefault(e => e.Name == "syntax");
             reading.TextBuffer = new FlatBuffer(" 'Ccccc'  ");
             Assert.AreEqual(true, eq.Load(reading, outNo), "Equation syntax TestString: cant read");
             doc = ((CodeElement)outNo[2]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<syntax>\r\n  <string>Ccccc</string>\r\n</syntax>\r\n", doc, "Equation TestOption: document fail");
 
             // Read a TestSeries
-            eq = syntax.Rules.FirstOrDefault(e => e.Name == "TestSeries");
+            eq = parser.Rules.FirstOrDefault(e => e.Name == "TestSeries");
             reading.TextBuffer = new FlatBuffer("  TestSeries jan ole Mat  ");
             Assert.AreEqual(true, eq.Load(reading, outNo), "Equation TestSeries: cant read");
 
@@ -122,7 +122,7 @@ namespace TestCodeInternal.UnitTest
 ", doc, "Equation TestOption: document fail");
 
             // Read a TestOption
-            eq = syntax.Rules.FirstOrDefault(e => e.Name == "TestOption");
+            eq = parser.Rules.FirstOrDefault(e => e.Name == "TestOption");
             reading.TextBuffer = new FlatBuffer("  TestOption 'qwerty'  ");
             Assert.AreEqual(true, eq.Load(reading, outNo), "Equation TestOption: cant read");
             doc = ((CodeElement)outNo[4]).ToMarkupProtected(string.Empty);
@@ -133,7 +133,7 @@ namespace TestCodeInternal.UnitTest
             Assert.AreEqual("<TestOption>\r\n  <TestIdentifier>wer</TestIdentifier>\r\n</TestOption>\r\n", doc, "Equation TestOption: document fail");
 
             // Read: TestLines       = 'TestLines' { VarName '=' Quote ';' };
-            eq = syntax.Rules.FirstOrDefault(e => e.Name == "TestLines");
+            eq = parser.Rules.FirstOrDefault(e => e.Name == "TestLines");
             reading.TextBuffer = new FlatBuffer("  TestLines name = 'Oscar'; addr = 'GoRoad'; \r\n mobile = '555 55'; ");
             Assert.AreEqual(true, eq.Load(reading, outNo), "Equation TestLines: cant read");
             doc = ((CodeElement)outNo[6]).ToMarkupProtected(string.Empty);
@@ -275,12 +275,12 @@ lnam = name;";
         {
             //bool equal = false;
             //bool tag = true;
-            List<RuleId> symbolsToResolve = new List<RuleId>();
+            List<RuleLink> symbolsToResolve = new List<RuleLink>();
             List<Rule> list = new List<Rule>();
             list.Add(new Rule("syntax",
-                    new Or( new RuleId("TestIdentifier"),
-                    new Or( new RuleId("TestString"),
-                    new RuleId("TestSymbol")))) /*{ Tag = true }*/);
+                    new Or( new RuleLink("TestIdentifier"),
+                    new Or( new RuleLink("TestString"),
+                    new RuleLink("TestSymbol")))) /*{ Tag = true }*/);
             // TestIdentifier     = varName;
             list.Add(new Rule("TestIdentifier",
                 new WordName("VarName")) /*{ Tag = true }*/);
@@ -302,8 +302,8 @@ lnam = name;";
             // TestOption       = 'TestOption' [TestIdentifier] [TestString];
             list.Add(new Rule("TestOption",
                 new WordSymbol("TestOption"),
-                new Optional( new RuleId("TestIdentifier")),
-                new Optional( new RuleId("TestQuote2")))
+                new Optional( new RuleLink("TestIdentifier")),
+                new Optional( new RuleLink("TestQuote2")))
             /*{ Tag = true }*/);
             // TestQuote2      = Quote;
             list.Add(new Rule("TestQuote2",

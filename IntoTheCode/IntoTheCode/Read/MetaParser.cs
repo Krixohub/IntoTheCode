@@ -124,50 +124,53 @@ settings   collapse;";
             // Build Mo Backus Naur Form in code.
             // syntax   = {rule} [settings];
             list.Add(new Rule(HardSyntax_,
-                new Sequence(new RuleId(Rule_______)),
-                new Optional(new RuleId(Settings___))));
+                new Sequence(new RuleLink(Rule_______)),
+                new Optional(new RuleLink(Settings___))));
 
             // rule = ruleId '=' expression ';'
             list.Add(new Rule(Rule_______,
-                new RuleId(RuleId_____),
+                new RuleLink(RuleId_____),
                 new WordSymbol("="),
-                new RuleId(Expression_),
+                new RuleLink(Expression_),
                 new WordSymbol(";")));
 
             // expression = element {[or] element};
             list.Add(new Rule(Expression_,
-                new RuleId(Element____),
-                new Sequence(new Optional(new RuleId(Or_________)), new RuleId(Element____)))
+                new RuleLink(Element____),
+                new Sequence(
+                    new Optional(
+                        new RuleLink(Or_________)), 
+                    new RuleLink(Element____)))
             { Collapse = true });
 
             // element    = ruleId | symbol | block; Husk ny block
             list.Add(new Rule(Element____,
-                new Or(new RuleId(RuleId_____),
-                new Or(new RuleId(WordSymbol_),
-                new RuleId(Block______))))
+                new Or(new RuleLink(RuleId_____),
+                new Or(new RuleLink(WordSymbol_),
+                new RuleLink(Block______))))
             { Collapse = true });
 
             // block      = sequence | optional | parentheses;
             list.Add(new Rule(Block______,
-                new Or(new RuleId(Sequence___),
-                new Or(new RuleId(Optional___),
-                new RuleId(Parentheses))))
+                new Or(new RuleLink(Sequence___),
+                new Or(new RuleLink(Optional___),
+                new RuleLink(Parentheses))))
             { Collapse = true });
 
             // sequence     = '{' expression '}';
             list.Add(new Rule(Sequence___,
                 new WordSymbol("{"),
-                new RuleId(Expression_),
+                new RuleLink(Expression_),
                 new WordSymbol("}")));
             // optional     = '[' expression ']';
             list.Add(new Rule(Optional___,
                 new WordSymbol("["),
-                new RuleId(Expression_),
+                new RuleLink(Expression_),
                 new WordSymbol("]")));
             // parentheses      = '(' expression ')';
             list.Add(new Rule(Parentheses,
                 new WordSymbol("("),
-                new RuleId(Expression_),
+                new RuleLink(Expression_),
                 new WordSymbol(")")));
             // or         = '|';
             list.Add(new Rule(Or_________,
@@ -175,43 +178,43 @@ settings   collapse;";
             // ruleId     = name;
             // todo eliminate ruleIds with name or string
             list.Add(new Rule(RuleId_____,
-                new RuleId(WordName___) { SymbolElement = new WordName(WordName___) }));
+                new WordName(WordName___)));
             // symbol       = string;
             list.Add(new Rule(WordSymbol_,
-                new RuleId(WordString_) { SymbolElement = new WordString() }));
+                new WordString()));
 
             // settings   > 'settings' {setter};
             list.Add(new Rule(Settings___,
                 new WordSymbol(Settings___),
                 new Sequence(
-                    new RuleId(Setter_____)))
+                    new RuleLink(Setter_____)))
             { Collapse = true });
 
 
             // setter     > name assignment {',' assignment} ';';
             list.Add(new Rule("setter",
-                new RuleId(WordName___) { SymbolElement = new WordName(WordName___) },
-                new RuleId(Assignment_),
+                new WordName(WordName___),
+                new RuleLink(Assignment_),
                 new Sequence(
                     new WordSymbol(","),
-                    new RuleId(Assignment_)),
+                    new RuleLink(Assignment_)),
                 new WordSymbol(";")));
 
             // assignment > property '=' value;
             list.Add(new Rule(Assignment_,
-                new RuleId(Property___),
+                new RuleLink(Property___),
                 new Optional(
                     new WordSymbol("="),
-                    new RuleId(Value______))));
+                    new RuleLink(Value______))));
 
 
             // property   > name;
             list.Add(new Rule(Property___,
-                new RuleId(WordName___) { SymbolElement = new WordName(WordName___) }));
+                new WordName(WordName___)));
 
             // value      > string;";
             list.Add(new Rule(Value______,
-                new RuleId(WordString_) { SymbolElement = new WordString() }));
+                new WordString()));
 
             Parser parser = new Parser() { Level = 1 }; // { Name = HardSyntax_ };
             parser.Rules = list;

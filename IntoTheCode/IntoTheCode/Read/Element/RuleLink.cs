@@ -6,12 +6,13 @@ namespace IntoTheCode.Read.Element
     /// <summary>
     /// Base class for syntax symbols.
     /// </summary>
-    internal class RuleId : ParserElementBase
+    internal class RuleLink : ParserElementBase
     {
-        /// <summary>Creator for <see cref="RuleId"/>.</summary>
-        internal RuleId(string name)
+        /// <summary>Creator for <see cref="RuleLink"/>.</summary>
+        internal RuleLink(string name)
         {
-            Name = name;
+            Name = "name";
+            _value = name;
         }
 
         /// <summary>The Reader has the current pointer of reading, and the context.</summary>
@@ -26,7 +27,7 @@ namespace IntoTheCode.Read.Element
 
         public override string GetSyntax()
         {
-            return Name;
+            return GetValue();
         }
 
         public override bool Load(LoadProces proces, List<TreeNode> outElements)

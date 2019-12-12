@@ -78,7 +78,7 @@
     <Compile Include="Read\Element\Words\WordSymbol.cs" />
     <Compile Include="Read\Element\Sequence.cs" />
     <Compile Include="Read\Element\Structure\SyntaxAttribute.cs" />
-    <Compile Include="Read\Element\RuleId.cs" />
+    <Compile Include="Read\Element\RuleLink.cs" />
     <Compile Include="Read\Element\Structure\SyntaxClass.cs" />
     <Compile Include="Text\CodeDocument.cs" />
     <Compile Include="Read\Element\Structure\TextSchema.cs" />
