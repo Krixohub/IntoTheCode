@@ -175,10 +175,10 @@ settings   collapse;";
             // ruleId     = name;
             // todo eliminate ruleIds with name or string
             list.Add(new Rule(RuleId_____,
-                new WordName(WordName___)));
+                new RuleId(WordName___) { SymbolElement = new WordName(WordName___) }));
             // symbol       = string;
             list.Add(new Rule(WordSymbol_,
-                new WordString()));
+                new RuleId(WordString_) { SymbolElement = new WordString() }));
 
             // settings   > 'settings' {setter};
             list.Add(new Rule(Settings___,
