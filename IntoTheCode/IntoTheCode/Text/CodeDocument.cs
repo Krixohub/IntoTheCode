@@ -87,6 +87,10 @@ namespace IntoTheCode
         internal static string CompareCode(CodeDocument actual, CodeDocument expect)
         {
             string msg;
+            if (expect == null && actual == null) return string.Empty;
+            if (expect == null) return "Expected doc is null";
+            if (actual == null) return "Actual doc is null";
+            if (actual.SubElements == null && expect.SubElements == null) return string.Empty;
             if (expect == null || expect.SubElements == null) return "Expected doc has no elements";
             if (actual == null || actual.SubElements == null) return "Actual doc has no elements";
             foreach (TreeNode xpct in expect.SubElements)
@@ -105,7 +109,7 @@ namespace IntoTheCode
         {
             if (rule == null) return "Rule is null";
             if (rule.SubElements == null) return "Rule has no sub elements";
-            TreeNode ident = rule.SubElements.FirstOrDefault(n => n.Name == MetaParser.RuleId_____);
+            TreeNode ident = rule.SubElements.FirstOrDefault(n => n.Name == MetaParser.WordName___);
             if (ident == null) return "Rule has no ruleId element";
             return string.IsNullOrEmpty(ident.Value) ? "Rule has no name" : ident.Value;
         }

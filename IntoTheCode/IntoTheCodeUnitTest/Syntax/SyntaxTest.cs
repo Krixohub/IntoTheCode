@@ -357,82 +357,142 @@ value       = string;";
 
             // syntax   = {rule}
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("ruleId", "MetaSyntax"),
+                new HardElement("name", "MetaSyntax"),
                 new HardElement("sequence", string.Empty,
-                    new HardElement("ruleId", "Rule")),
+                    new HardElement("name", "Rule")),
                 new HardElement("optional", string.Empty,
-                    new HardElement("ruleId", MetaParser.Settings___))));
+                    new HardElement("name", MetaParser.Settings___))));
 
             // rule = ruleId '=' expression ';'
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("ruleId", "Rule"),
-                new HardElement("ruleId", "ruleId"),
+                new HardElement("name", "Rule"),
+                new HardElement("name", "name"),
                 new HardElement("symbol", "="),
-                new HardElement("ruleId", "expression"),
+                new HardElement("name", "expression"),
                 new HardElement("symbol", ";")));
 
             // expression = element {[or] element};
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("ruleId", "expression"),
-                new HardElement("ruleId", MetaParser.Element____),
+                new HardElement("name", "expression"),
+                new HardElement("name", MetaParser.Element____),
                 new HardElement("sequence", string.Empty,
                     new HardElement("optional", string.Empty,
-                        new HardElement("ruleId", MetaParser.Or_________)),
-                    new HardElement("ruleId", MetaParser.Element____))));
+                        new HardElement("name", MetaParser.Or_________)),
+                    new HardElement("name", MetaParser.Element____))));
 
             // element    = ruleIdsymbol | symbol | block; Husk ny block
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("ruleId", MetaParser.Element____),
-                new HardElement("ruleId", "ruleId"),
+                new HardElement("name", MetaParser.Element____),
+                new HardElement("name", "name"),
                 new HardElement(MetaParser.Or_________, string.Empty),
-                new HardElement("ruleId", "symbol"),
+                new HardElement("name", "symbol"),
                 new HardElement(MetaParser.Or_________, string.Empty),
-                new HardElement("ruleId", MetaParser.Block______)));
+                new HardElement("name", MetaParser.Block______)));
 
             // block      = sequence | optional | parentheses);
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("ruleId", MetaParser.Block______),
-                new HardElement("ruleId", "sequence"),
+                new HardElement("name", MetaParser.Block______),
+                new HardElement("name", "sequence"),
                 new HardElement(MetaParser.Or_________, string.Empty),
-                new HardElement("ruleId", "optional"),
+                new HardElement("name", "optional"),
                 new HardElement("or", string.Empty),
-                new HardElement("ruleId", "parentheses")));
+                new HardElement("name", "parentheses")));
 
             // sequence      = '{' expression '}';
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("ruleId", "sequence"),
+                new HardElement("name", "sequence"),
                 new HardElement("symbol", "{"),
-                new HardElement("ruleId", "expression"),
+                new HardElement("name", "expression"),
                 new HardElement("symbol", "}")));
 
             // optional     = '[' expression ']';
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("ruleId", "optional"),
+                new HardElement("name", "optional"),
                 new HardElement("symbol", "["),
-                new HardElement("ruleId", "expression"),
+                new HardElement("name", "expression"),
                 new HardElement("symbol", "]")));
 
             // parentheses      = '(' expression ')';
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("ruleId", "parentheses"),
+                new HardElement("name", "parentheses"),
                 new HardElement("symbol", "("),
-                new HardElement("ruleId", "expression"),
+                new HardElement("name", "expression"),
                 new HardElement("symbol", ")")));
 
             // or         = '|';
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("ruleId", "or"),
+                new HardElement("name", "or"),
                 new HardElement("symbol", "|")));
 
             // ruleId      > name;
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("ruleId", "ruleId"),
-                new HardElement("ruleId", "name")));
+                new HardElement("name", "ruleId"),
+                new HardElement("name", "name")));
 
             // symbol     = string;
             syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("ruleId", "symbol"),
-                new HardElement("ruleId", "string")));
+                new HardElement("name", "symbol"),
+                new HardElement("name", "string")));
+
+            // settings    = 'settings' {setter};
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("name", "settings"),
+                new HardElement("symbol", "settings"),
+                new HardElement("sequence", string.Empty,
+                    new HardElement("name", MetaParser.Setter_____))));
+
+            // setter      = name assignment {',' assignment} ';';
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("name", "setter"),
+                new HardElement("name", "name"),
+                new HardElement("name", "assignment"),
+                new HardElement("sequence", string.Empty,
+                    new HardElement("symbol", ","),
+                    new HardElement("name", "assignment")),
+                new HardElement("symbol", ";")));
+
+            // assignment  = property ['=' value];
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("name", "assignment"),
+                new HardElement("name", MetaParser.Property___),
+                new HardElement("optional", string.Empty,
+                    new HardElement("symbol", "="),
+                    new HardElement("name", MetaParser.Value______))));
+
+            // property    = name;
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("name", "property"),
+                new HardElement("name", "name")));
+
+            // value       = string;
+            syntax.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("name", "value"),
+                new HardElement("name", "string")));
+
+            // settings
+            // expression collapse;
+            syntax.AddElement(new HardElement("setter", string.Empty,
+                new HardElement("name", "expression"),
+                new HardElement("assignment", string.Empty,
+                    new HardElement("property", "collapse"))));
+
+            // element    collapse;
+            syntax.AddElement(new HardElement("setter", string.Empty,
+                new HardElement("name", "element"),
+                new HardElement("assignment", string.Empty,
+                    new HardElement("property", "collapse"))));
+
+            // block collapse;
+            syntax.AddElement(new HardElement("setter", string.Empty,
+                new HardElement("name", "block"),
+                new HardElement("assignment", string.Empty,
+                    new HardElement("property", "collapse"))));
+
+            // settings collapse;
+            syntax.AddElement(new HardElement("setter", string.Empty,
+                new HardElement("name", "settings"),
+                new HardElement("assignment", string.Empty,
+                    new HardElement("property", "collapse"))));
 
             return syntax;
         }

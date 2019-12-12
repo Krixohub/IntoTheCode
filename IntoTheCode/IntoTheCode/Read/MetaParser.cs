@@ -79,9 +79,9 @@ namespace IntoTheCode.Read
             get
             {
                 string syntax = @"MetaSyntax  = {Rule} [settings];
-Rule        = ruleId '=' expression ';';
+Rule        = name '=' expression ';';
 expression  = element {[or] element};
-element     = ruleId | symbol | block;
+element     = name | symbol | block;
 block       = sequence | optional | parentheses;
 sequence    = '{' expression '}';
 optional    = '[' expression ']';
