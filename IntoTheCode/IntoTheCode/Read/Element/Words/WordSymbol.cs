@@ -41,7 +41,7 @@ namespace IntoTheCode.Read.Element.Words
             return true;
         }
 
-        public override bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        public override bool ExtractError(LoadProces proces, List<CodeElement> errorWords)
         {
             TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
             TextPointer from = proces.TextBuffer.PointerNextChar;
@@ -49,8 +49,9 @@ namespace IntoTheCode.Read.Element.Words
             if (proces.TextBuffer.IsEnd(Value.Length))
             {
                 subStr.SetTo(subStr.GetFrom());
-                var element = new CodeElement(proces.TextBuffer, this, subStr, "Expecting name, found EOF");
+                var element = new CodeElement(proces.TextBuffer, this, subStr, "Expecting symbol, found EOF.");
                 errorWords.Add(element);
+                proces.LoadErrors.Add(new LoadError(this, subStr.GetFrom(), 2, "Expecting symbol, found EOF."));
                 return SetPointerBack(proces, from, this);
             }
 
@@ -60,8 +61,9 @@ namespace IntoTheCode.Read.Element.Words
                 else
                 {
                     subStr.SetTo(proces.TextBuffer.PointerNextChar);
-                    var element = new CodeElement(proces.TextBuffer, this, subStr, string.Format("reding '{0}', expecting '{1}', found '{2}'", Value, ch, proces.TextBuffer.GetChar()));
+                    var element = new CodeElement(proces.TextBuffer, this, subStr, string.Format("reading '{0}', expecting '{1}', found '{2}'.", Value, ch, proces.TextBuffer.GetChar()));
                     errorWords.Add(element);
+                    proces.LoadErrors.Add(new LoadError(this, proces.TextBuffer.PointerNextChar.Clone(), 2, string.Format("reading '{0}', expecting '{1}', found '{2}'.", Value, ch, proces.TextBuffer.GetChar())));
                     return SetPointerBack(proces, from, this);
                 }
 

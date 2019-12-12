@@ -43,6 +43,7 @@ namespace IntoTheCode.Read.Element.Words
             proces.TextBuffer.IncPointer();
             proces.TextBuffer.SetToIndexOf(subStr, "'");
 
+            // todo: This should be NOT isValid !!!!!!!!!!!!!!!!!!!!!!!!!!!!
             if (subStr.ToIsValid())
                 return SetPointerBack(proces, from, this);
 
@@ -53,7 +54,7 @@ namespace IntoTheCode.Read.Element.Words
             return true;
         }
 
-        public override bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        public override bool ExtractError(LoadProces proces, List<CodeElement> errorWords)
         {
             //TextSubString subStr1 = proces.TextBuffer.NewSubStringFrom();
             TextPointer from = proces.TextBuffer.PointerNextChar;
@@ -63,8 +64,9 @@ namespace IntoTheCode.Read.Element.Words
             if (proces.TextBuffer.IsEnd(2))
             {
                 subStr1.SetTo(subStr1.GetFrom());
-                var element = new CodeElement(proces.TextBuffer, this, subStr1, "Expecting symbol, found EOF");
+                var element = new CodeElement(proces.TextBuffer, this, subStr1, "Expecting string, found EOF.");
                 errorWords.Add(element);
+                proces.LoadErrors.Add(new LoadError(this, proces.TextBuffer.PointerNextChar.Clone(), 2, "Expecting string, found EOF."));
                 return false;
             };
 
@@ -72,7 +74,8 @@ namespace IntoTheCode.Read.Element.Words
             if (proces.TextBuffer.GetChar() != '\'')
             {
                 subStr1.SetTo(subStr1.GetFrom());
-                errorWords.Add(new CodeElement(proces.TextBuffer, this, subStr1, "Expecting starting \"'\""));
+                errorWords.Add(new CodeElement(proces.TextBuffer, this, subStr1, "Expecting string."));
+                proces.LoadErrors.Add(new LoadError(this, subStr1.GetFrom(), 2, "Expecting string."));
                 return SetPointerBack(proces, from, this);
             }
 
@@ -84,7 +87,8 @@ namespace IntoTheCode.Read.Element.Words
             if (subStr.ToIsValid())
             {
                 subStr.SetTo(subStr.GetFrom());
-                errorWords.Add(new CodeElement(proces.TextBuffer, this, subStr, "Expecting ending \"'\""));
+                errorWords.Add(new CodeElement(proces.TextBuffer, this, subStr, "Expecting string ending."));
+                proces.LoadErrors.Add(new LoadError(this, subStr.GetFrom(), 2, "Expecting string ending."));
                 return SetPointerBack(proces, from, this);
             }
 

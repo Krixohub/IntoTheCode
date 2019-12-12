@@ -25,7 +25,7 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        public override bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        public override bool ExtractError(LoadProces proces, List<CodeElement> errorWords)
         {
             LoadSetAnalyze(proces, errorWords);
             return true;

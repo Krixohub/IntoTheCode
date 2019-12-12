@@ -228,45 +228,64 @@ namespace TestCodeInternal.UnitTest
         {
             // Set syntax
             string syntax = @"
-stx = nam | seq | str;
+stx = str | nam | sym | seq;
 seq = {o};
 o = 'o';
-str = 'str' | fail;
-fail = 'fail';
-nam = fnam lnam;
+str = fstr failStr;
+nam = fnam failId;
+sym = fsym failSym;
 fnam = 'name';
-lnam = identifier;";
+fstr = 'string';
+fsym = 'symbol';
+failId = identifier;
+failStr = string;
+failSym = 'fail';";
             var parser = new Parser(syntax);
             LoadProces proces;
             CodeDocument doc;
 
-            //// What the parser CAN read
-            //proces = new LoadProces(new FlatBuffer("ooo"));
-            //doc = CodeDocument.Load(parser, proces);
-            //Assert.IsNotNull(doc, "doc er null");
-            //Assert.AreEqual(string.Empty, proces.LoadError, "Parse error");
+            // What the parser CAN read
+            proces = new LoadProces(new FlatBuffer("ooo"));
+            doc = CodeDocument.Load(parser, proces);
+            Assert.IsNotNull(doc, "doc er null");
+            Assert.AreEqual(string.Empty, proces.LoadError, "Parse error");
 
-            //// Error: End of text not reached.
-            //proces = new LoadProces(new FlatBuffer("oop"));
-            //doc = CodeDocument.Load(parser, proces);
-            //Assert.IsNull(doc, "doc er ikke null");
-            //Assert.AreEqual("End of input not reached. line 1, colomn 2", proces.LoadError, "EOF error");
+            // Error: End of text not reached.
+            proces = new LoadProces(new FlatBuffer("oop"));
+            doc = CodeDocument.Load(parser, proces);
+            Assert.IsNull(doc, "doc er ikke null");
+            Assert.AreEqual("End of input not reached. Line 1, colomn 2", proces.LoadError, "EOF error");
 
+            // Read 'identifier', EOF error.
+            proces = new LoadProces(new FlatBuffer("name "));
+            doc = CodeDocument.Load(parser, proces);
+            Assert.IsNull(doc, "doc er ikke null");
+            Assert.AreEqual("Syntax error. Expecting identifier, found EOF. Line 1, colomn 5", proces.LoadError, "Ident EOF error");
 
-            // Read word-identifier, EOF error.
-            
-            // Read word-identifier, not allowed first letter.
-            // todo fejl: der bruges ikke 'div' ; sæt 'div' når der er læst en symbol
+            // Read 'identifier', not allowed first letter.
             proces = new LoadProces(new FlatBuffer("name 2r"));
             doc = CodeDocument.Load(parser, proces);
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("syntax error. First charactor is not allowed. line 1, colomn 5", proces.LoadError, "First letter error");
+            Assert.AreEqual("Syntax error. First charactor is not allowed. Line 1, colomn 5", proces.LoadError, "Ident first letter error");
 
-            // Read word-symbol, EOF error.
+            // Read 'string', EOF error.
+            proces = new LoadProces(new FlatBuffer("string "));
+            doc = CodeDocument.Load(parser, proces);
+            Assert.IsNull(doc, "doc er ikke null");
+            Assert.AreEqual("Syntax error. Expecting string, found EOF. Line 1, colomn 7", proces.LoadError, "String EOF error");
 
-            // Read word-symbol, starting ' not found.
+            // Read 'string', Expecting string (starting ' not found).
+            proces = new LoadProces(new FlatBuffer("string fail"));
+            doc = CodeDocument.Load(parser, proces);
+            Assert.IsNull(doc, "doc er ikke null");
+            Assert.AreEqual("Syntax error. Expecting string. Line 1, colomn 7", proces.LoadError, "String not found error");
 
-            // Read word-symbol, ending ' not found.
+
+            //// Read 'string', ending ' not found.
+            //proces = new LoadProces(new FlatBuffer("string 'fail"));
+            //doc = CodeDocument.Load(parser, proces);
+            //Assert.IsNull(doc, "doc er ikke null");
+            //Assert.AreEqual("Syntax error. Expecting string ending. Line 1, colomn 7", proces.LoadError, "String not found error");
 
         }
 

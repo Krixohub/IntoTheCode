@@ -48,10 +48,10 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        public override bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        public override bool ExtractError(LoadProces proces, List<CodeElement> errorWords)
         {
-            bool ok = (SubElements[0] as ParserElementBase).LoadAnalyze(proces, errorWords);
-            ok = ok || (SubElements[1] as ParserElementBase).LoadAnalyze(proces, errorWords);
+            bool ok = (SubElements[0] as ParserElementBase).ExtractError(proces, errorWords);
+            ok = ok || (SubElements[1] as ParserElementBase).ExtractError(proces, errorWords);
 
             return ok;
         }

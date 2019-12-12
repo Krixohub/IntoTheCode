@@ -50,7 +50,7 @@ namespace IntoTheCode.Read.Element.Words
             return true;
         }
 
-        public override bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        public override bool ExtractError(LoadProces proces, List<CodeElement> errorWords)
         {
             SkipWhiteSpace(proces);
 
@@ -60,8 +60,9 @@ namespace IntoTheCode.Read.Element.Words
             if (proces.TextBuffer.IsEnd(1))
             {
                 subStr.SetTo(subStr.GetFrom());
-                var element = new CodeElement(proces.TextBuffer, this, subStr, "Expecting name, found EOF");
+                var element = new CodeElement(proces.TextBuffer, this, subStr, "Expecting identifier, found EOF.");
                 errorWords.Add(element);
+                proces.LoadErrors.Add(new LoadError(this, subStr.GetFrom(), 2, "Expecting identifier, found EOF."));
                 return SetPointerBack(proces, from, this);
             }
 
@@ -70,6 +71,7 @@ namespace IntoTheCode.Read.Element.Words
                 subStr.SetTo(proces.TextBuffer.PointerNextChar);
                 var element = new CodeElement(proces.TextBuffer, this, subStr, "First charactor is not allowed.");
                 errorWords.Add(element);
+                proces.LoadErrors.Add(new LoadError(this, proces.TextBuffer.PointerNextChar.Clone(), 2, "First charactor is not allowed."));
                 return SetPointerBack(proces, from, this);
             }
             else

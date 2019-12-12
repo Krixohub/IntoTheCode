@@ -45,18 +45,32 @@ namespace IntoTheCode.Read.Element
             proces.TextBuffer.SetPointer(txtPtr);
             if (txtPtr.CompareTo(proces.UnambiguousPointer) < 0 && proces.LoadError == string.Empty)
             {
-                proces.LoadError = "syntax error. ";
+                proces.LoadError = "Syntax error. ";
+
+                // todo: delete errorWords
                 var errorWords = new List<CodeElement>();
+                proces.LoadErrors = new List<LoadError>();
                 //item.LoadAnalyze(proces, errorWords);
-                LoadAnalyze(proces, errorWords);
+                ExtractError(proces, errorWords);
+
                 var errorMax = errorWords.FirstOrDefault();
                 foreach (CodeElement word in errorWords)
                 {
                     if (word.ValuePointer.ToGtPointer(errorMax.ValuePointer.GetTo()))
                         errorMax = word;
                 }
-                proces.LoadError += errorMax.Error + " " + proces.TextBuffer.GetLineAndColumn(errorMax.ValuePointer.GetTo());
 
+                string err = proces.LoadError;
+                var errorMax2 = proces.LoadErrors.FirstOrDefault();
+                foreach (LoadError error in proces.LoadErrors)
+                {
+                    if (error.ErrorPoint.CompareTo(errorMax2.ErrorPoint) > 0)
+                        errorMax2 = error;
+                }
+
+                proces.LoadError += errorMax.Error + " " + proces.TextBuffer.GetLineAndColumn(errorMax.ValuePointer.GetTo());
+                err += errorMax2.Error + " " + proces.TextBuffer.GetLineAndColumn(errorMax2.ErrorPoint);
+                proces.LoadError = err;
             }
 
             //proces.TextBuffer.SetPointerBackToFrom(subStr);
@@ -100,7 +114,7 @@ namespace IntoTheCode.Read.Element
         /// <param name="proces"></param>
         /// <param name="errorWords">Read elements.</param>
         /// <returns>True = succes.</returns>
-        public abstract bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords);
+        public abstract bool ExtractError(LoadProces proces, List<CodeElement> errorWords);
 
         protected void SkipWhiteSpace(LoadProces proces)
         {

@@ -127,7 +127,7 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        public override bool LoadAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        public override bool ExtractError(LoadProces proces, List<CodeElement> errorWords)
         {
             //TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
             TextPointer from = proces.TextBuffer.PointerNextChar;
@@ -137,11 +137,9 @@ namespace IntoTheCode.Read.Element
             if (Collapse)
                 return LoadSetAnalyze(proces, errorWords);
 
-            string debug1 = "(" + Parent?.Name + ") Rule:" + GetSyntax();
-
             if (ElementContent == ElementContentType.OneValue)
             {
-                if (!(SubElements[0] as ParserElementBase).LoadAnalyze(proces, errorWords))
+                if (!(SubElements[0] as ParserElementBase).ExtractError(proces, errorWords))
                     return SetPointerBack(proces, from, SubElements[0] as ParserElementBase);
             }
 

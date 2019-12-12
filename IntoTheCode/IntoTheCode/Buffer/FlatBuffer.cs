@@ -83,7 +83,7 @@
                 nlPos = findPos + find.Length;
                 findPos = _buf.IndexOf(find, nlPos, System.StringComparison.Ordinal);
             }
-            return string.Format("line {0}, colomn {1}", line, index - nlPos);
+            return string.Format("Line {0}, colomn {1}", line, index - nlPos);
         }
 
     }

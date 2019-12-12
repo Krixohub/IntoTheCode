@@ -1,5 +1,6 @@
 ﻿using IntoTheCode.Buffer;
 using IntoTheCode.Read.Element;
+using System.Collections.Generic;
 
 namespace IntoTheCode.Read
 {
@@ -25,6 +26,10 @@ namespace IntoTheCode.Read
         /// <summary>Error message after parsing/reading input text.</summary>
         /// <exclude/>
         public string LoadError { get; internal set; }
+
+        /// <summary>Error message after parsing/reading input text.</summary>
+        /// <exclude/>
+        public List<LoadError> LoadErrors { get; internal set; }
 
         #region Next 
 

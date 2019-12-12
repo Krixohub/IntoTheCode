@@ -57,7 +57,7 @@ namespace IntoTheCode.Read.Element
             List<WordBase> elements = new List<WordBase>();
             //int i = SubElements.Count;
             foreach (var item in SubElements.OfType<ParserElementBase>())
-                if (!item.LoadAnalyze(proces, errorWords))
+                if (!item.ExtractError(proces, errorWords))
                     //if (!item.Load(buf, elements))
                     return SetPointerBack(proces, from, item);
             
