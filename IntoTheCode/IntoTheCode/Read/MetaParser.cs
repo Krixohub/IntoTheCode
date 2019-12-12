@@ -40,7 +40,7 @@ namespace IntoTheCode.Read
         internal const string MetaSyntax_ = "MetaSyntax";  // Grammer
         internal const string HardSyntax_ = "HardSyntax";  // Grammer
         internal const string Rule_______ = "Rule";        // Equation , Statement, Action, Definition, Assignment,
-        internal const string RuleId_____ = "ruleId";      // ruleId, Word, Symbol(bnf), Term, literal,
+        //internal const string RuleId_____ = "ruleId";      // ruleId, Word, Symbol(bnf), Term, literal,
         internal const string Expression_ = "expression";  // 
         internal const string Element____ = "element";     // 
         internal const string Block______ = "block";       // 
@@ -48,7 +48,7 @@ namespace IntoTheCode.Read
         internal const string Optional___ = "optional";    // 
         internal const string Parentheses = "parentheses"; // 
         internal const string Or_________ = "or";          // 
-        internal const string WordName___ = "name";        // name, name, word, ident, didentifier(ebnf)
+        internal const string WordIdent__ = "identifier";  // name, id, word, ident, didentifier(ebnf)
         internal const string WordString_ = "string";      // string, Token, symbol, name
         internal const string WordSymbol_ = "symbol";      // wordsymbol, symbol
         //internal const string Operator___ = "operator";    // 
@@ -79,27 +79,26 @@ namespace IntoTheCode.Read
             get
             {
                 string syntax = @"MetaSyntax  = {Rule} [settings];
-Rule        = name '=' expression ';';
+Rule        = identifier '=' expression ';';
 expression  = element {[or] element};
-element     = name | symbol | block;
+element     = identifier | symbol | block;
 block       = sequence | optional | parentheses;
 sequence    = '{' expression '}';
 optional    = '[' expression ']';
 parentheses = '(' expression ')';
 or          = '|';
-ruleId      = name;
 symbol      = string;
 settings    = 'settings' {setter};
-setter      = name assignment {',' assignment} ';';
+setter      = identifier assignment {',' assignment} ';';
 assignment  = property ['=' value];
-property    = name;
+property    = identifier;
 value       = string;";
                 return syntax;
             } 
         }
 /*
 property    = 'collapse' | 'div' | 'ws' | 'wsdef';
-property    = name;
+property    = identifier;
  */ 
         /// <summary>The shapin syntax.</summary>
         internal static string MetaSettings
@@ -127,9 +126,9 @@ settings   collapse;";
                 new Sequence(new RuleLink(Rule_______)),
                 new Optional(new RuleLink(Settings___))));
 
-            // rule = ruleId '=' expression ';'
+            // rule = identifier '=' expression ';'
             list.Add(new Rule(Rule_______,
-                new RuleLink(RuleId_____),
+                new WordIdent(WordIdent__),
                 new WordSymbol("="),
                 new RuleLink(Expression_),
                 new WordSymbol(";")));
@@ -143,9 +142,9 @@ settings   collapse;";
                     new RuleLink(Element____)))
             { Collapse = true });
 
-            // element    = ruleId | symbol | block; Husk ny block
+            // element    = identifier | symbol | block; Husk ny block
             list.Add(new Rule(Element____,
-                new Or(new RuleLink(RuleId_____),
+                new Or(new WordIdent(WordIdent__),
                 new Or(new RuleLink(WordSymbol_),
                 new RuleLink(Block______))))
             { Collapse = true });
@@ -175,10 +174,12 @@ settings   collapse;";
             // or         = '|';
             list.Add(new Rule(Or_________,
                 new WordSymbol("|")));
-            // ruleId     = name;
-            // todo eliminate ruleIds with name or string
-            list.Add(new Rule(RuleId_____,
-                new WordName(WordName___)));
+            
+            //// ruleId     = identifier;
+            //// todo eliminate ruleIds with identifier or string
+            //list.Add(new Rule(RuleId_____,
+            //    new WordName(WordName___)));
+
             // symbol       = string;
             list.Add(new Rule(WordSymbol_,
                 new WordString()));
@@ -191,9 +192,9 @@ settings   collapse;";
             { Collapse = true });
 
 
-            // setter     > name assignment {',' assignment} ';';
+            // setter     > identifier assignment {',' assignment} ';';
             list.Add(new Rule("setter",
-                new WordName(WordName___),
+                new WordIdent(WordIdent__),
                 new RuleLink(Assignment_),
                 new Sequence(
                     new WordSymbol(","),
@@ -208,9 +209,9 @@ settings   collapse;";
                     new RuleLink(Value______))));
 
 
-            // property   > name;
+            // property   > identifier;
             list.Add(new Rule(Property___,
-                new WordName(WordName___)));
+                new WordIdent(WordIdent__)));
 
             // value      > string;";
             list.Add(new Rule(Value______,

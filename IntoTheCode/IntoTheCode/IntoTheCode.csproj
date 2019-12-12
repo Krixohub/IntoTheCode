@@ -52,7 +52,7 @@
     <Compile Include="Read\LoadError.cs" />
     <Compile Include="Read\LoadProces.cs" />
     <Compile Include="Read\ParserFactory.cs" />
-    <Compile Include="Read\Element\Words\WordName.cs" />
+    <Compile Include="Read\Element\Words\WordIdent.cs" />
     <Compile Include="Read\Element\Words\WordString.cs" />
     <Compile Include="Buffer\FlatBuffer.cs" />
     <Compile Include="Buffer\FlatPointer.cs" />

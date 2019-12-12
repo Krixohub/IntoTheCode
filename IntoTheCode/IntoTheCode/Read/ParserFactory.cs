@@ -52,13 +52,6 @@ namespace IntoTheCode.Read
             return rule;
         }
 
-        //internal static Rule AddRule(Parser parser, Rule rule)
-        //{
-        //    rule.Parser = parser;
-        //    parser.Rules.Add(rule);
-        //    return rule;
-        //}
-
         private static List<ParserElementBase> BuildExpression(Parser parser, IList<TreeNode> docNotes)
         {
             //string debug1 = "(" + parser.Name + ")".NL() + docNotes.Aggregate("", (s, n) => s + n.ToMarkupProtected(""));
@@ -98,17 +91,15 @@ namespace IntoTheCode.Read
                     //elements.Add(new Or(el1, el2));
                     //break;
 
-
-                    case MetaParser.WordName___:
+                    case MetaParser.WordIdent__:
                         ParserElementBase elem;
-                        //var sym =
                         switch (element.Value)
                         {
                             case MetaParser.WordString_:
-                                elem = new WordString();// { TodoResolve = true };
+                                elem = new WordString();
                                 break;
-                            case MetaParser.WordName___:
-                                elem = new WordName(element.Value);// { TodoResolve = true };
+                            case MetaParser.WordIdent__:
+                                elem = new WordIdent(element.Value);
                                 break;
                             default:
                                 elem = new RuleLink(element.Value);
@@ -116,28 +107,6 @@ namespace IntoTheCode.Read
                         }
                         elements.Add(elem);
                         break;
-
-
-                    // todo remove this RuleId_____
-                    case MetaParser.RuleId_____:
-                        ParserElementBase elem2;
-                        //var sym =
-                        switch (element.Value)
-                        {
-                            case MetaParser.WordString_:
-                                elem2 = new WordString();// { TodoResolve = true };
-                                break;
-                            case MetaParser.WordName___:
-                                elem2 = new WordName(element.Value);// { TodoResolve = true };
-                                break;
-                            default:
-                                elem2 = new RuleLink(element.Value);
-                                break;
-                        }
-                        elements.Add(elem2);
-                        break;
-
-
                     case MetaParser.WordSymbol_:
                         elements.Add(new WordSymbol(element.Value));
                         break;
