@@ -286,13 +286,13 @@ failSym = 'fail';";
             proces = new LoadProces(new FlatBuffer("string 'fail"));
             doc = CodeDocument.Load(parser, proces);
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting string ending. Line 1, colomn 8", proces.ErrorMsg, "String ending not found error");
+            Assert.AreEqual("Syntax error. Expecting string ending. Line 1, colomn 7", proces.ErrorMsg, "String ending not found error");
 
             // Read 'symbol', EOF error.
             proces = new LoadProces(new FlatBuffer("symbol fai"));
             doc = CodeDocument.Load(parser, proces);
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting symbol 'fail', found EOF. Line 1, colomn 6", proces.ErrorMsg, "Symbol EOF error");
+            Assert.AreEqual("Syntax error. Expecting symbol 'fail', found EOF. Line 1, colomn 7", proces.ErrorMsg, "Symbol EOF error");
 
             // Read 'symbol',  error.
             proces = new LoadProces(new FlatBuffer("symbol faiL "));

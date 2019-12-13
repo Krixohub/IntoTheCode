@@ -38,41 +38,32 @@ namespace IntoTheCode.Read.Element
         /// <summary>If the element cant read; use this to reset (set pointer back):</summary>
         /// <param name="proces">The load proces.</param>
         /// <param name="txtPtr">Pointer to set.</param>
-        /// <param name="item">The parser item that fails to load.</param>
         /// <returns>Always return false.</returns>
         protected bool SetPointerBack(LoadProces proces, TextPointer txtPtr, ParserElementBase item)
         {
             proces.TextBuffer.SetPointer(txtPtr);
-            if (txtPtr.CompareTo(proces.UnambiguousPointer) < 0 && proces.ErrorMsg == string.Empty)
+            if (txtPtr.CompareTo(proces.UnambiguousPointer) < 0 && !proces.Error)
             {
-                proces.ErrorMsg = "Syntax error. ";
-
-                // todo: delete errorWords
-                //var errorWords = new List<CodeElement>();
+                proces.Error = true;
                 proces.Errors = new List<LoadError>();
-                //item.LoadAnalyze(proces, errorWords);
                 ExtractError(proces);
 
-                //var errorMax = errorWords.FirstOrDefault();
-                //foreach (CodeElement word in errorWords)
-                //{
-                //    if (word.ValuePointer.ToGtPointer(errorMax.ValuePointer.GetTo()))
-                //        errorMax = word;
-                //}
-
-                string err = proces.ErrorMsg;
+                proces.Errors = proces.Errors.OrderByDescending(e => e.ErrorPoint.CompareTo(txtPtr)).ToList();
                 var errorMax2 = proces.Errors.FirstOrDefault();
-                foreach (LoadError error in proces.Errors)
-                {
-                    if (error.ErrorPoint.CompareTo(errorMax2.ErrorPoint) > 0)
-                        errorMax2 = error;
-                }
 
-                //proces.ErrorMsg += errorMax.Error + " " + proces.TextBuffer.GetLineAndColumn(errorMax.ValuePointer.GetTo());
-                err += errorMax2.Error + " " + proces.TextBuffer.GetLineAndColumn(errorMax2.ErrorPoint);
-                proces.ErrorMsg = err;
+                proces.ErrorMsg = "Syntax error. " + errorMax2.Error + " " + proces.TextBuffer.GetLineAndColumn(errorMax2.ErrorPoint);
             }
 
+            return false;
+        }
+
+        /// <summary>If the element cant read; use this to reset pointer, after an error has occured.</summary>
+        /// <param name="proces">The load proces.</param>
+        /// <param name="txtPtr">Pointer to set.</param>
+        /// <returns>Always return false.</returns>
+        protected bool SetPointerBackError(LoadProces proces, TextPointer txtPtr)
+        {
+            proces.TextBuffer.SetPointer(txtPtr);
             return false;
         }
 

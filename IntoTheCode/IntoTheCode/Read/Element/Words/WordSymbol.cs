@@ -27,8 +27,8 @@ namespace IntoTheCode.Read.Element.Words
 
             // todo: think: Some elements sets 'from' after white spaces
 
-            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             SkipWhiteSpace(proces);
+            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             if (proces.TextBuffer.IsEnd(Value.Length))
                 return SetPointerBack(proces, from, this);
 
@@ -43,14 +43,14 @@ namespace IntoTheCode.Read.Element.Words
 
         public override bool ExtractError(LoadProces proces)
         {
+            SkipWhiteSpace(proces);
             TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             //TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
-            SkipWhiteSpace(proces);
             if (proces.TextBuffer.IsEnd(Value.Length))
             {
                 //subStr.SetTo(from);
                 proces.Errors.Add(new LoadError(this, from, 2, string.Format("Expecting symbol '{0}', found EOF.", Value)));
-                return SetPointerBack(proces, from, this);
+                return SetPointerBackError(proces, from);
             }
 
             foreach (char ch in Value)
@@ -60,7 +60,7 @@ namespace IntoTheCode.Read.Element.Words
                 {
                     //subStr.SetTo(proces.TextBuffer.PointerNextChar);
                     proces.Errors.Add(new LoadError(this, proces.TextBuffer.PointerNextChar.Clone(), 2, string.Format("reading '{0}', expecting '{1}', found '{2}'.", Value, ch, proces.TextBuffer.GetChar())));
-                    return SetPointerBack(proces, from, this);
+                    return SetPointerBackError(proces, from);
                 }
 
             return true;

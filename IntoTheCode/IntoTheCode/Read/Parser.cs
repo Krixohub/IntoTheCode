@@ -70,7 +70,7 @@ namespace IntoTheCode.Read
 
             LoadProces loadProces = new LoadProces(new FlatBuffer(syntax));
             syntaxDoc = CodeDocument.Load(MetaParser.Instance, loadProces);
-            if (!string.IsNullOrEmpty(loadProces.ErrorMsg))
+            if (loadProces.Error)
                 throw new SyntaxErrorException(loadProces.ErrorMsg);
 
             if (syntaxDoc == null)
@@ -94,14 +94,14 @@ namespace IntoTheCode.Read
                 var elements = new List<TreeNode>();
                 if (!Rules[0].Load(proces, elements))
                 {
-                    if (string.IsNullOrEmpty(proces.ErrorMsg))
+                    if (!proces.Error)
                         proces.ErrorMsg = string.Format("Syntax error proces '{0}'", Rules[0].Name);
                     return null;
                 }
 
                 if (!proces.TextBuffer.IsEnd())
                 {
-                    if (string.IsNullOrEmpty(proces.ErrorMsg)) 
+                    if (!proces.Error)
                         proces.ErrorMsg = "End of input not reached. " + proces.TextBuffer.GetLineAndColumn();
                     return null;
                 }

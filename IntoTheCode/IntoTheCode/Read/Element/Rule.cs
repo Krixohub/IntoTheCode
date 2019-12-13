@@ -142,13 +142,13 @@ namespace IntoTheCode.Read.Element
             if (ElementContent == ElementContentType.OneValue)
             {
                 if (!(SubElements[0] as ParserElementBase).ExtractError(proces))
-                    return SetPointerBack(proces, from, SubElements[0] as ParserElementBase);
+                    return SetPointerBackError(proces, from);
             }
 
             else
             {
                 if (!LoadSetAnalyze(proces))
-                    return SetPointerBack(proces, from, this);
+                    return SetPointerBackError(proces, from);
 
             }
             
