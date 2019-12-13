@@ -38,20 +38,20 @@ namespace IntoTheCode.Read.Element
         public override bool Load(LoadProces proces, List<TreeNode> outElements)
         {
             //TextSubString ptr = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = proces.TextBuffer.PointerNextChar;
+            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             List<TreeNode> subs = new List<TreeNode>();
-            if (!(SubElements[0] as ParserElementBase).Load(proces, subs))
-                if (!(SubElements[1] as ParserElementBase).Load(proces, subs))
+            if (!(SubElements[0] as ParserElementBase).Load(proces, subs) || from.CompareTo(proces.TextBuffer.PointerNextChar) == 0)
+                if (!(SubElements[1] as ParserElementBase).Load(proces, subs) || from.CompareTo(proces.TextBuffer.PointerNextChar) == 0)
                     return false;
 
             outElements.AddRange(subs);
             return true;
         }
 
-        public override bool ExtractError(LoadProces proces, List<CodeElement> errorWords)
+        public override bool ExtractError(LoadProces proces)
         {
-            bool ok = (SubElements[0] as ParserElementBase).ExtractError(proces, errorWords);
-            ok = ok || (SubElements[1] as ParserElementBase).ExtractError(proces, errorWords);
+            bool ok = (SubElements[0] as ParserElementBase).ExtractError(proces);
+            ok = ok || (SubElements[1] as ParserElementBase).ExtractError(proces);
 
             return ok;
         }

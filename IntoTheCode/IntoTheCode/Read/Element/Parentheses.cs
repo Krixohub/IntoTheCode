@@ -23,9 +23,9 @@ namespace IntoTheCode.Read.Element
             return LoadSet(proces, outElements);
         }
 
-        public override bool ExtractError(LoadProces proces, List<CodeElement> errorWords)
+        public override bool ExtractError(LoadProces proces)
         {
-            return LoadSetAnalyze(proces, errorWords);
+            return LoadSetAnalyze(proces);
         }
     }
 }

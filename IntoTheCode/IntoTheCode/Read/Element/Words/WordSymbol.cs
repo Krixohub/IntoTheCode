@@ -27,7 +27,7 @@ namespace IntoTheCode.Read.Element.Words
 
             // todo: think: Some elements sets 'from' after white spaces
 
-            TextPointer from = proces.TextBuffer.PointerNextChar;
+            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             SkipWhiteSpace(proces);
             if (proces.TextBuffer.IsEnd(Value.Length))
                 return SetPointerBack(proces, from, this);
@@ -41,17 +41,15 @@ namespace IntoTheCode.Read.Element.Words
             return true;
         }
 
-        public override bool ExtractError(LoadProces proces, List<CodeElement> errorWords)
+        public override bool ExtractError(LoadProces proces)
         {
-            TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = proces.TextBuffer.PointerNextChar;
+            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
+            //TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             SkipWhiteSpace(proces);
             if (proces.TextBuffer.IsEnd(Value.Length))
             {
-                subStr.SetTo(subStr.GetFrom());
-                var element = new CodeElement(proces.TextBuffer, this, subStr, "Expecting symbol, found EOF.");
-                errorWords.Add(element);
-                proces.LoadErrors.Add(new LoadError(this, subStr.GetFrom(), 2, "Expecting symbol, found EOF."));
+                //subStr.SetTo(from);
+                proces.Errors.Add(new LoadError(this, from, 2, string.Format("Expecting symbol '{0}', found EOF.", Value)));
                 return SetPointerBack(proces, from, this);
             }
 
@@ -60,10 +58,8 @@ namespace IntoTheCode.Read.Element.Words
                     proces.TextBuffer.IncPointer();
                 else
                 {
-                    subStr.SetTo(proces.TextBuffer.PointerNextChar);
-                    var element = new CodeElement(proces.TextBuffer, this, subStr, string.Format("reading '{0}', expecting '{1}', found '{2}'.", Value, ch, proces.TextBuffer.GetChar()));
-                    errorWords.Add(element);
-                    proces.LoadErrors.Add(new LoadError(this, proces.TextBuffer.PointerNextChar.Clone(), 2, string.Format("reading '{0}', expecting '{1}', found '{2}'.", Value, ch, proces.TextBuffer.GetChar())));
+                    //subStr.SetTo(proces.TextBuffer.PointerNextChar);
+                    proces.Errors.Add(new LoadError(this, proces.TextBuffer.PointerNextChar.Clone(), 2, string.Format("reading '{0}', expecting '{1}', found '{2}'.", Value, ch, proces.TextBuffer.GetChar())));
                     return SetPointerBack(proces, from, this);
                 }
 

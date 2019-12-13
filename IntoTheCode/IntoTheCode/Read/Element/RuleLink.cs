@@ -35,9 +35,9 @@ namespace IntoTheCode.Read.Element
             return SymbolElement.Load(proces, outElements);
         }
 
-        public override bool ExtractError(LoadProces proces, List<CodeElement> errorWords)
+        public override bool ExtractError(LoadProces proces)
         {
-            return SymbolElement.ExtractError(proces, errorWords);
+            return SymbolElement.ExtractError(proces);
         }
     }
 }

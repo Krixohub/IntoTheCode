@@ -66,13 +66,15 @@ namespace IntoTheCode.Read.Element
 
         public override bool Load(LoadProces proces, List<TreeNode> outElements)
         {
-            TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
-            bool b = Load2(proces, outElements);
-            subStr.SetTo(proces.TextBuffer.PointerNextChar);
+//            TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
+            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
+            if (!Load2(proces, outElements)) return false;
+
+            //subStr.SetTo(proces.TextBuffer.PointerNextChar);
 
             // If this is a 'division' set unambiguous
-            if (b && Div && subStr.Length() > 0) proces.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1], 2);
-            return b;
+            if (Div && proces.TextBuffer.PointerNextChar.CompareTo(from) > 0) proces.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
+            return true;
 
         }
 
@@ -80,7 +82,7 @@ namespace IntoTheCode.Read.Element
         private bool Load2(LoadProces proces, List<TreeNode> outElements)
         {
             TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = proces.TextBuffer.PointerNextChar;
+            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             List<TreeNode> outSubNotes = new List<TreeNode>();
             CodeElement element;
 
@@ -127,25 +129,25 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        public override bool ExtractError(LoadProces proces, List<CodeElement> errorWords)
+        public override bool ExtractError(LoadProces proces)
         {
             //TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = proces.TextBuffer.PointerNextChar;
+            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             //List<TreeNode> outSubNotes = new List<TreeNode>();
             //CodeElement element;
 
             if (Collapse)
-                return LoadSetAnalyze(proces, errorWords);
+                return LoadSetAnalyze(proces);
 
             if (ElementContent == ElementContentType.OneValue)
             {
-                if (!(SubElements[0] as ParserElementBase).ExtractError(proces, errorWords))
+                if (!(SubElements[0] as ParserElementBase).ExtractError(proces))
                     return SetPointerBack(proces, from, SubElements[0] as ParserElementBase);
             }
 
             else
             {
-                if (!LoadSetAnalyze(proces, errorWords))
+                if (!LoadSetAnalyze(proces))
                     return SetPointerBack(proces, from, this);
 
             }

@@ -17,7 +17,7 @@
         public override TextPointer GetTo() { return new FlatPointer { index = To }; }
         public override TextPointer GetFrom() { return new FlatPointer { index = From }; }
 
-        public override bool ToIsValid() { return To == -notValidPtr; }
+        public override bool ToIsValid() { return To != notValidPtr; }
 
 
     }

@@ -12,7 +12,7 @@ namespace IntoTheCode.Read
         internal LoadProces(ITextBuffer buf)
         {
             TextBuffer = buf;
-            LoadError = string.Empty;
+            ErrorMsg = string.Empty;
             UnambiguousPointer = new FlatPointer();
         }
 
@@ -25,23 +25,27 @@ namespace IntoTheCode.Read
 
         /// <summary>Error message after parsing/reading input text.</summary>
         /// <exclude/>
-        public string LoadError { get; internal set; }
+        public string ErrorMsg { get; internal set; }
 
         /// <summary>Error message after parsing/reading input text.</summary>
         /// <exclude/>
-        public List<LoadError> LoadErrors { get; internal set; }
+        public bool Error { get; internal set; }
+
+        /// <summary>Error message after parsing/reading input text.</summary>
+        /// <exclude/>
+        public List<LoadError> Errors { get; internal set; }
 
         #region Next 
 
-        public void ThisIsUnambiguous(ParserElementBase reader, CodeElement code, int numberOfWords)
+        public void ThisIsUnambiguous(ParserElementBase reader, CodeElement code)
         {
             // Set SafePointer to char after element
             UnambiguousPointer = code.ValuePointer.GetTo();
-            UnambiguousWordCount = numberOfWords; 
+            //UnambiguousWordCount = numberOfWords; 
         }
 
         public TextPointer UnambiguousPointer;
-        public int UnambiguousWordCount;
+        //public int UnambiguousWordCount;
 
         #endregion Next 
     }

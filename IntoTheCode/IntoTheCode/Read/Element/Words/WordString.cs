@@ -30,10 +30,10 @@ namespace IntoTheCode.Read.Element.Words
             //}
 
             //TextSubString subStr1 = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = proces.TextBuffer.PointerNextChar;
+            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
+
             SkipWhiteSpace(proces);
             if (proces.TextBuffer.IsEnd(2)) return false;
-
 
             if (proces.TextBuffer.GetChar() != '\'')
                 return SetPointerBack(proces, from, this);
@@ -43,8 +43,7 @@ namespace IntoTheCode.Read.Element.Words
             proces.TextBuffer.IncPointer();
             proces.TextBuffer.SetToIndexOf(subStr, "'");
 
-            // todo: This should be NOT isValid !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            if (subStr.ToIsValid())
+            if (!subStr.ToIsValid())
                 return SetPointerBack(proces, from, this);
 
             outElements.Add(new CodeElement(proces.TextBuffer, this, subStr));
@@ -54,28 +53,29 @@ namespace IntoTheCode.Read.Element.Words
             return true;
         }
 
-        public override bool ExtractError(LoadProces proces, List<CodeElement> errorWords)
+        public override bool ExtractError(LoadProces proces)
         {
             //TextSubString subStr1 = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = proces.TextBuffer.PointerNextChar;
+            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             SkipWhiteSpace(proces);
-            TextSubString subStr1 = proces.TextBuffer.NewSubStringFrom();
+            TextPointer from1 = proces.TextBuffer.PointerNextChar.Clone();
+            //TextSubString subStr1 = proces.TextBuffer.NewSubStringFrom();
 
             if (proces.TextBuffer.IsEnd(2))
             {
-                subStr1.SetTo(subStr1.GetFrom());
-                var element = new CodeElement(proces.TextBuffer, this, subStr1, "Expecting string, found EOF.");
-                errorWords.Add(element);
-                proces.LoadErrors.Add(new LoadError(this, proces.TextBuffer.PointerNextChar.Clone(), 2, "Expecting string, found EOF."));
+                //subStr1.SetTo(subStr1.GetFrom());
+                //var element = new CodeElement(proces.TextBuffer, this, subStr1, "Expecting string, found EOF.");
+                //errorWords.Add(element);
+                proces.Errors.Add(new LoadError(this, proces.TextBuffer.PointerNextChar.Clone(), 2, "Expecting string, found EOF."));
                 return false;
             };
 
 
             if (proces.TextBuffer.GetChar() != '\'')
             {
-                subStr1.SetTo(subStr1.GetFrom());
-                errorWords.Add(new CodeElement(proces.TextBuffer, this, subStr1, "Expecting string."));
-                proces.LoadErrors.Add(new LoadError(this, subStr1.GetFrom(), 2, "Expecting string."));
+                //subStr1.SetTo(subStr1.GetFrom());
+                //errorWords.Add(new CodeElement(proces.TextBuffer, this, subStr1, "Expecting string."));
+                proces.Errors.Add(new LoadError(this, from1, 2, "Expecting string."));
                 return SetPointerBack(proces, from, this);
             }
 
@@ -84,11 +84,11 @@ namespace IntoTheCode.Read.Element.Words
             proces.TextBuffer.IncPointer();
             proces.TextBuffer.SetToIndexOf(subStr, "'");
 
-            if (subStr.ToIsValid())
+            if (!subStr.ToIsValid())
             {
                 subStr.SetTo(subStr.GetFrom());
-                errorWords.Add(new CodeElement(proces.TextBuffer, this, subStr, "Expecting string ending."));
-                proces.LoadErrors.Add(new LoadError(this, subStr.GetFrom(), 2, "Expecting string ending."));
+                //errorWords.Add(new CodeElement(proces.TextBuffer, this, subStr, "Expecting string ending."));
+                proces.Errors.Add(new LoadError(this, subStr.GetFrom(), 2, "Expecting string ending."));
                 return SetPointerBack(proces, from, this);
             }
 

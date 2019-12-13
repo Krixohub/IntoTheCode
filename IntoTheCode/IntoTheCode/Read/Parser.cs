@@ -70,8 +70,8 @@ namespace IntoTheCode.Read
 
             LoadProces loadProces = new LoadProces(new FlatBuffer(syntax));
             syntaxDoc = CodeDocument.Load(MetaParser.Instance, loadProces);
-            if (!string.IsNullOrEmpty(loadProces.LoadError))
-                throw new SyntaxErrorException(loadProces.LoadError);
+            if (!string.IsNullOrEmpty(loadProces.ErrorMsg))
+                throw new SyntaxErrorException(loadProces.ErrorMsg);
 
             if (syntaxDoc == null)
                 throw new SyntaxErrorException("Can't read syntax.");
@@ -93,12 +93,16 @@ namespace IntoTheCode.Read
             {
                 var elements = new List<TreeNode>();
                 if (!Rules[0].Load(proces, elements))
-                    throw new SyntaxErrorException(string.Format("Syntax error proces '{0}'", Rules[0].Name));
+                {
+                    if (string.IsNullOrEmpty(proces.ErrorMsg))
+                        proces.ErrorMsg = string.Format("Syntax error proces '{0}'", Rules[0].Name);
+                    return null;
+                }
 
                 if (!proces.TextBuffer.IsEnd())
                 {
-                    if (string.IsNullOrEmpty(proces.LoadError)) 
-                        proces.LoadError = "End of input not reached. " + proces.TextBuffer.GetLineAndColumn();
+                    if (string.IsNullOrEmpty(proces.ErrorMsg)) 
+                        proces.ErrorMsg = "End of input not reached. " + proces.TextBuffer.GetLineAndColumn();
                     return null;
                 }
                 //throw new SyntaxErrorException("End of input not reached");
@@ -113,7 +117,7 @@ namespace IntoTheCode.Read
             }
             catch (Exception e)
             {
-                proces.LoadError = DefinitionError == null ? e.Message : "DefinitionError: " + DefinitionError;
+                proces.ErrorMsg = DefinitionError == null ? e.Message : "DefinitionError: " + DefinitionError;
                 return null;
             }
         }

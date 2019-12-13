@@ -43,37 +43,36 @@ namespace IntoTheCode.Read.Element
         protected bool SetPointerBack(LoadProces proces, TextPointer txtPtr, ParserElementBase item)
         {
             proces.TextBuffer.SetPointer(txtPtr);
-            if (txtPtr.CompareTo(proces.UnambiguousPointer) < 0 && proces.LoadError == string.Empty)
+            if (txtPtr.CompareTo(proces.UnambiguousPointer) < 0 && proces.ErrorMsg == string.Empty)
             {
-                proces.LoadError = "Syntax error. ";
+                proces.ErrorMsg = "Syntax error. ";
 
                 // todo: delete errorWords
-                var errorWords = new List<CodeElement>();
-                proces.LoadErrors = new List<LoadError>();
+                //var errorWords = new List<CodeElement>();
+                proces.Errors = new List<LoadError>();
                 //item.LoadAnalyze(proces, errorWords);
-                ExtractError(proces, errorWords);
+                ExtractError(proces);
 
-                var errorMax = errorWords.FirstOrDefault();
-                foreach (CodeElement word in errorWords)
-                {
-                    if (word.ValuePointer.ToGtPointer(errorMax.ValuePointer.GetTo()))
-                        errorMax = word;
-                }
+                //var errorMax = errorWords.FirstOrDefault();
+                //foreach (CodeElement word in errorWords)
+                //{
+                //    if (word.ValuePointer.ToGtPointer(errorMax.ValuePointer.GetTo()))
+                //        errorMax = word;
+                //}
 
-                string err = proces.LoadError;
-                var errorMax2 = proces.LoadErrors.FirstOrDefault();
-                foreach (LoadError error in proces.LoadErrors)
+                string err = proces.ErrorMsg;
+                var errorMax2 = proces.Errors.FirstOrDefault();
+                foreach (LoadError error in proces.Errors)
                 {
                     if (error.ErrorPoint.CompareTo(errorMax2.ErrorPoint) > 0)
                         errorMax2 = error;
                 }
 
-                proces.LoadError += errorMax.Error + " " + proces.TextBuffer.GetLineAndColumn(errorMax.ValuePointer.GetTo());
+                //proces.ErrorMsg += errorMax.Error + " " + proces.TextBuffer.GetLineAndColumn(errorMax.ValuePointer.GetTo());
                 err += errorMax2.Error + " " + proces.TextBuffer.GetLineAndColumn(errorMax2.ErrorPoint);
-                proces.LoadError = err;
+                proces.ErrorMsg = err;
             }
 
-            //proces.TextBuffer.SetPointerBackToFrom(subStr);
             return false;
         }
 
@@ -112,9 +111,8 @@ namespace IntoTheCode.Read.Element
         /// Load an element while storing possible errors.
         /// </summary>
         /// <param name="proces"></param>
-        /// <param name="errorWords">Read elements.</param>
         /// <returns>True = succes.</returns>
-        public abstract bool ExtractError(LoadProces proces, List<CodeElement> errorWords);
+        public abstract bool ExtractError(LoadProces proces);
 
         protected void SkipWhiteSpace(LoadProces proces)
         {

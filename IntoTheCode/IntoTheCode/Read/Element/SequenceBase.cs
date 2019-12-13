@@ -49,7 +49,7 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        protected bool LoadSetAnalyze(LoadProces proces, List<CodeElement> errorWords)
+        protected bool LoadSetAnalyze(LoadProces proces)
         {
             //TextSubString ptr = new TextSubString { From = buf.pointer };
             //TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
@@ -57,7 +57,7 @@ namespace IntoTheCode.Read.Element
             List<WordBase> elements = new List<WordBase>();
             //int i = SubElements.Count;
             foreach (var item in SubElements.OfType<ParserElementBase>())
-                if (!item.ExtractError(proces, errorWords))
+                if (!item.ExtractError(proces))
                     //if (!item.Load(buf, elements))
                     return SetPointerBack(proces, from, item);
             

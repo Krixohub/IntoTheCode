@@ -31,15 +31,13 @@ namespace IntoTheCode.Read.Element.Words
             if (proces.TextBuffer.IsEnd(1)) return false;
 
             TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = proces.TextBuffer.PointerNextChar;
 
-            if (!AllowedCharsFirst.Contains(proces.TextBuffer.GetSubString(proces.TextBuffer.PointerNextChar, 1).ToLower()))
-                return SetPointerBack(proces, from, this);
+            if (!AllowedCharsFirst.Contains(proces.TextBuffer.GetChar().ToString().ToLower()))
+                return false;// SetPointerBack(proces, proces.TextBuffer.PointerNextChar, this);
             else
                 proces.TextBuffer.IncPointer();
 
-
-            while (!proces.TextBuffer.IsEnd() && AllowedCharsNext.Contains(proces.TextBuffer.GetSubString(proces.TextBuffer.PointerNextChar, 1).ToLower()))
+            while (!proces.TextBuffer.IsEnd() && AllowedCharsNext.Contains(proces.TextBuffer.GetChar().ToString().ToLower()))
             { proces.TextBuffer.IncPointer(); }
             
             subStr.SetTo(proces.TextBuffer.PointerNextChar);
@@ -50,34 +48,34 @@ namespace IntoTheCode.Read.Element.Words
             return true;
         }
 
-        public override bool ExtractError(LoadProces proces, List<CodeElement> errorWords)
+        public override bool ExtractError(LoadProces proces)
         {
             SkipWhiteSpace(proces);
 
-            TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = proces.TextBuffer.PointerNextChar;
+            //TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
+            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
 
             if (proces.TextBuffer.IsEnd(1))
             {
-                subStr.SetTo(subStr.GetFrom());
-                var element = new CodeElement(proces.TextBuffer, this, subStr, "Expecting identifier, found EOF.");
-                errorWords.Add(element);
-                proces.LoadErrors.Add(new LoadError(this, subStr.GetFrom(), 2, "Expecting identifier, found EOF."));
-                return SetPointerBack(proces, from, this);
+                //subStr.SetTo(subStr.GetFrom());
+                proces.Errors.Add(new LoadError(this, from, 2, "Expecting identifier, found EOF."));
+                return false; // SetPointerBack(proces, from, this);
             }
 
-            if (!AllowedCharsFirst.Contains(proces.TextBuffer.GetSubString(proces.TextBuffer.PointerNextChar, 1).ToLower()))
+            // todo brug getchar()
+            if (!AllowedCharsFirst.Contains(proces.TextBuffer.GetChar().ToString().ToLower()))
             {
-                subStr.SetTo(proces.TextBuffer.PointerNextChar);
-                var element = new CodeElement(proces.TextBuffer, this, subStr, "First charactor is not allowed.");
-                errorWords.Add(element);
-                proces.LoadErrors.Add(new LoadError(this, proces.TextBuffer.PointerNextChar.Clone(), 2, "First charactor is not allowed."));
-                return SetPointerBack(proces, from, this);
+                //subStr.SetTo(proces.TextBuffer.PointerNextChar);
+                //var element = new CodeElement(proces.TextBuffer, this, subStr, "First charactor is not allowed.");
+                //errorWords.Add(element);
+                proces.Errors.Add(new LoadError(this, proces.TextBuffer.PointerNextChar.Clone(), 2, "First charactor is not allowed."));
+                return false; // SetPointerBack(proces, from, this);
             }
             else
                 proces.TextBuffer.IncPointer();
 
 
+            // todo brug getchar()
             while (!proces.TextBuffer.IsEnd() && AllowedCharsNext.Contains(proces.TextBuffer.GetSubString(proces.TextBuffer.PointerNextChar, 1).ToLower()))
             { proces.TextBuffer.IncPointer(); }
 

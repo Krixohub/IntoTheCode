@@ -48,7 +48,7 @@ namespace IntoTheCode.Read
         internal const string Optional___ = "optional";    // 
         internal const string Parentheses = "parentheses"; // 
         internal const string Or_________ = "or";          // 
-        internal const string WordIdent__ = "identifier";  // name, id, word, ident, didentifier(ebnf)
+        internal const string WordIdent__ = "identifier";  // id, name, word, ident, didentifier(ebnf)
         internal const string WordString_ = "string";      // string, Token, symbol, name
         internal const string WordSymbol_ = "symbol";      // wordsymbol, symbol
         //internal const string Operator___ = "operator";    // 
@@ -240,7 +240,7 @@ settings   collapse;";
                 LoadProces proces = new LoadProces(new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings));
                 CodeDocument metaSyntaxDoc = CodeDocument.Load(hardcodeParser, proces);
                 if (metaSyntaxDoc == null)
-                    throw new Exception(MessageRes.DevelOnly + hardcodeParser.Name + ". " + proces.LoadError);
+                    throw new Exception(MessageRes.DevelOnly + hardcodeParser.Name + ". " + proces.ErrorMsg);
 
                 string gg = metaSyntaxDoc.ToMarkup();
 

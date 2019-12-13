@@ -32,10 +32,10 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        public override bool ExtractError(LoadProces proces, List<CodeElement> errorWords)
+        public override bool ExtractError(LoadProces proces)
         {
             TextPointer p = proces.TextBuffer.PointerNextChar.Clone();
-            while (LoadSetAnalyze(proces, errorWords) && proces.TextBuffer.PointerNextChar.CompareTo(p) > 0)
+            while (LoadSetAnalyze(proces) && proces.TextBuffer.PointerNextChar.CompareTo(p) > 0)
                 proces.TextBuffer.PointerNextChar.CopyTo(p);
 
             return true;
