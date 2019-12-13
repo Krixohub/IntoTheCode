@@ -9,9 +9,9 @@ using IntoTheCode.Read.Element.Words;
 
 namespace IntoTheCode.Read.Element
 {
-    internal abstract class SequenceBase : ParserElementBase
+    internal abstract class SetOfElementsBase : ParserElementBase
     {
-        protected SequenceBase(params ParserElementBase[] elements)
+        protected SetOfElementsBase(params ParserElementBase[] elements)
         {
             if (elements.Count() == 0)
                 throw new Exception("A sequence of syntax elements must contain at least one element");
@@ -20,7 +20,7 @@ namespace IntoTheCode.Read.Element
         }
 
         /// <summary>To create unlinked syntax.</summary>
-        protected SequenceBase()
+        protected SetOfElementsBase()
         {
         }
 
@@ -31,17 +31,11 @@ namespace IntoTheCode.Read.Element
 
         protected bool LoadSet(LoadProces proces, List<TreeNode> outElements)
         {
-            //TextSubString ptr = new TextSubString { From = buf.pointer };
-            //TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
             TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             List<TreeNode> elements = new List<TreeNode>();
-            //int i = SubElements.Count;
             foreach (var item in SubElements.OfType<ParserElementBase>())
                 if (!item.Load(proces, elements))
-                    //if (!item.Load(buf, elements))
                     return SetPointerBack(proces, from, item);
-                //else
-                //    from = proces.TextBuffer.PointerNextChar.Clone();
 
             foreach (var item in elements)
                 outElements.Add(item);
@@ -49,18 +43,13 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        protected bool LoadSetAnalyze(LoadProces proces)
+        protected bool ExtractErrorSet(LoadProces proces)
         {
-            //TextSubString ptr = new TextSubString { From = buf.pointer };
-            //TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
             TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             List<WordBase> elements = new List<WordBase>();
-            //int i = SubElements.Count;
             foreach (var item in SubElements.OfType<ParserElementBase>())
                 if (!item.ExtractError(proces))
-                    //if (!item.Load(buf, elements))
                     return SetPointerBack(proces, from, item);
-            
 
             return true;
         }

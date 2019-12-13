@@ -5,7 +5,7 @@ using IntoTheCode.Basic;
 
 namespace IntoTheCode.Read.Element
 {
-    internal class Sequence : SequenceBase
+    internal class Sequence : SetOfElementsBase
     {
         /// <summary>Creator for <see cref="Sequence"/>.</summary>
         internal Sequence(params ParserElementBase[] elements) : base(elements)
@@ -20,22 +20,17 @@ namespace IntoTheCode.Read.Element
 
         public override bool Load(LoadProces proces, List<TreeNode> outElements)
         {
-            var subs = new List<TreeNode>();
-
             TextPointer p = proces.TextBuffer.PointerNextChar.Clone();
-            while (LoadSet(proces, subs) && proces.TextBuffer.PointerNextChar.CompareTo(p) > 0) 
+            while (LoadSet(proces, outElements) && proces.TextBuffer.PointerNextChar.CompareTo(p) > 0) 
                 proces.TextBuffer.PointerNextChar.CopyTo(p);
 
-            foreach (var item in subs)
-                outElements.Add(item);
-
-            return true;
+            return !proces.Error;
         }
 
         public override bool ExtractError(LoadProces proces)
         {
             TextPointer p = proces.TextBuffer.PointerNextChar.Clone();
-            while (LoadSetAnalyze(proces) && proces.TextBuffer.PointerNextChar.CompareTo(p) > 0)
+            while (ExtractErrorSet(proces) && proces.TextBuffer.PointerNextChar.CompareTo(p) > 0)
                 proces.TextBuffer.PointerNextChar.CopyTo(p);
 
             return true;

@@ -24,13 +24,6 @@ namespace IntoTheCode.Read.Element.Words
 
         public override bool Load(LoadProces proces, List<TreeNode> outElements)
         {
-            //if (Reader == null)
-            //{
-            //    SkipWhiteSpace(proces);
-            //}
-
-            //TextSubString subStr1 = proces.TextBuffer.NewSubStringFrom();
-
             SkipWhiteSpace(proces);
 
             TextPointer from = proces.TextBuffer.PointerNextChar.Clone();

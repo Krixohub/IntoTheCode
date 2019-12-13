@@ -67,7 +67,7 @@
     <Compile Include="Basic\SyntaxErrorException.cs" />
     <Compile Include="Read\Element\Structure\XmlSyntax.cs" />
     <Compile Include="Read\MetaParser.cs" />
-    <Compile Include="Read\Element\SequenceBase.cs" />
+    <Compile Include="Read\Element\SetOfElementsBase.cs" />
     <Compile Include="Read\Element\ElementStringEscapeStyle.cs" />
     <Compile Include="Read\Element\ParserElementBase.cs" />
     <Compile Include="Read\Element\Rule.cs" />

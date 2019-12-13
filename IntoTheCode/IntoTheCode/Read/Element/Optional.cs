@@ -5,7 +5,7 @@ using IntoTheCode.Basic;
 
 namespace IntoTheCode.Read.Element
 {
-    internal class Optional : SequenceBase
+    internal class Optional : SetOfElementsBase
     {
         /// <summary>Creator for <see cref="Optional"/>.</summary>
         internal Optional(params ParserElementBase[] elements)
@@ -22,12 +22,12 @@ namespace IntoTheCode.Read.Element
             List<TreeNode> elements = new List<TreeNode>();
             if (LoadSet(proces, outElements))
                 outElements.AddRange(elements);
-            return true;
+            return !proces.Error;
         }
 
         public override bool ExtractError(LoadProces proces)
         {
-            LoadSetAnalyze(proces);
+            ExtractErrorSet(proces);
             return true;
         }
     }

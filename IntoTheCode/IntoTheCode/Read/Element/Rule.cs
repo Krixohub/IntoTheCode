@@ -7,7 +7,7 @@ using IntoTheCode.Read.Element.Words;
 
 namespace IntoTheCode.Read.Element
 {
-    internal class Rule : SequenceBase
+    internal class Rule : SetOfElementsBase
     {
         internal Parser Parser { get; set; }
 
@@ -66,67 +66,50 @@ namespace IntoTheCode.Read.Element
 
         public override bool Load(LoadProces proces, List<TreeNode> outElements)
         {
-//            TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
-            if (!Load2(proces, outElements)) return false;
-
-            //subStr.SetTo(proces.TextBuffer.PointerNextChar);
-
-            // If this is a 'division' set unambiguous
-            if (Div && proces.TextBuffer.PointerNextChar.CompareTo(from) > 0) proces.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
-            return true;
-
-        }
-
-        //
-        private bool Load2(LoadProces proces, List<TreeNode> outElements)
-        {
             TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
-            List<TreeNode> outSubNotes = new List<TreeNode>();
-            CodeElement element;
 
             if (Collapse)
-                return LoadSet(proces, outElements);
-
-            string debug1 = "(" + Parent?.Name + ") Rule:" + GetSyntax();
-
-            if (ElementContent == ElementContentType.OneValue)
             {
-                if (!(SubElements[0] as ParserElementBase).Load(proces, outSubNotes))
-                    return SetPointerBack(proces, from, SubElements[0] as ParserElementBase);
-
-                if (outSubNotes.Count == 1)
+                if (!LoadSet(proces, outElements))
+                    return false;
+            }
+            else
+            {
+                List<TreeNode> outSubNotes = new List<TreeNode>();
+                CodeElement element;
+                if (ElementContent == ElementContentType.OneValue)
                 {
-                    element = new CodeElement(proces.TextBuffer, this, ((CodeElement)outSubNotes[0]).ValuePointer);
-                    element.ValueReader = ((CodeElement)outSubNotes[0]).ValueReader;
+                    if (!(SubElements[0] as ParserElementBase).Load(proces, outSubNotes))
+                        return false; // SetPointerBack(proces, from, SubElements[0] as ParserElementBase);
+
+                    if (outSubNotes.Count == 1)
+                    {
+                        element = new CodeElement(proces.TextBuffer, this, ((CodeElement)outSubNotes[0]).ValuePointer);
+                        element.ValueReader = ((CodeElement)outSubNotes[0]).ValueReader;
+                    }
+                    else // count = 0
+                    {
+                        subStr.SetTo(proces.TextBuffer.PointerNextChar);
+                        element = new CodeElement(proces.TextBuffer, this, subStr);
+                    }
+
+                    outElements.Add(element);
                 }
                 else
                 {
-                    subStr.SetTo(proces.TextBuffer.PointerNextChar);
+                    if (!LoadSet(proces, outSubNotes))
+                        return false;
+
                     element = new CodeElement(proces.TextBuffer, this, subStr);
+                    element.Add(outSubNotes);
+                    outElements.Add(element);
                 }
-
             }
 
-            else
-            {
-                if (!LoadSet(proces, outSubNotes))
-                    return SetPointerBack(proces, from, this);
-
-                subStr.SetTo(proces.TextBuffer.PointerNextChar);
-                if (subStr.Length() == 0)
-                    return true;  // returns true if this rule is optional and not read.
-
-                element = new CodeElement(proces.TextBuffer, this, subStr);
-                element.Add(outSubNotes);
-            }
-
-            outElements.Add(element);
-
-            string debug2 = "Out:" + element.ToMarkupProtected(string.Empty);
-
+            // If this is a 'division' set unambiguous
+            if (Div && proces.TextBuffer.PointerNextChar.CompareTo(subStr.GetFrom()) > 0) proces.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
             return true;
+
         }
 
         public override bool ExtractError(LoadProces proces)
@@ -137,7 +120,7 @@ namespace IntoTheCode.Read.Element
             //CodeElement element;
 
             if (Collapse)
-                return LoadSetAnalyze(proces);
+                return ExtractErrorSet(proces);
 
             if (ElementContent == ElementContentType.OneValue)
             {
@@ -147,7 +130,7 @@ namespace IntoTheCode.Read.Element
 
             else
             {
-                if (!LoadSetAnalyze(proces))
+                if (!ExtractErrorSet(proces))
                     return SetPointerBackError(proces, from);
 
             }

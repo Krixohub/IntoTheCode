@@ -6,7 +6,7 @@ using IntoTheCode.Read;
 
 namespace IntoTheCode.Read.Element
 {
-    internal class Parentheses : SequenceBase
+    internal class Parentheses : SetOfElementsBase
     {
         /// <summary>Creator for <see cref="Parentheses"/>.</summary>
         internal Parentheses(params ParserElementBase[] elements)
@@ -25,7 +25,7 @@ namespace IntoTheCode.Read.Element
 
         public override bool ExtractError(LoadProces proces)
         {
-            return LoadSetAnalyze(proces);
+            return ExtractErrorSet(proces);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace IntoTheCode.Read.Element.Words
             SkipWhiteSpace(proces);
             TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             if (proces.TextBuffer.IsEnd(Value.Length))
-                return SetPointerBack(proces, from, this);
+                return false;// SetPointerBack(proces, from, this);
 
             foreach (char ch in Value)
                 if ((proces.TextBuffer.GetChar() == ch))

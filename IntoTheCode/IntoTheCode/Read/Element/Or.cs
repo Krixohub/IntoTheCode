@@ -41,9 +41,11 @@ namespace IntoTheCode.Read.Element
             TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             List<TreeNode> subs = new List<TreeNode>();
             if (!(SubElements[0] as ParserElementBase).Load(proces, subs) || from.CompareTo(proces.TextBuffer.PointerNextChar) == 0)
-                if (!(SubElements[1] as ParserElementBase).Load(proces, subs) || from.CompareTo(proces.TextBuffer.PointerNextChar) == 0)
+                if (proces.Error || 
+                    (!(SubElements[1] as ParserElementBase).Load(proces, subs) 
+                    || from.CompareTo(proces.TextBuffer.PointerNextChar) == 0))
                     return false;
-
+            
             outElements.AddRange(subs);
             return true;
         }
