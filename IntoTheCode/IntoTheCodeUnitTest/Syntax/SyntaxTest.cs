@@ -226,12 +226,12 @@ namespace TestCodeInternal.UnitTest
         {
             // Set syntax
             string syntax = @"
-stx =  sym | seq | str | id;
+stx =  symRule | seq | strRule | idRule;
 seq = {o};
 o = 'o';
-str = fstr failStr;
-id  = fid failId;
-sym = fsym failSym;
+strRule = fstr failStr;
+symRule = fsym failSym;
+idRule  = fid failId;
 fstr = 'string'; failStr = string;
 fid  = 'id';   failId = identifier;
 fsym = 'symbol'; failSym = 'fail';
@@ -260,49 +260,49 @@ settings fid trust; fstr trust; fsym trust;";
             //                   "1234
             doc = CodeDocument.Load(parser, proces = new LoadProces(buf)); ;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting identifier, found EOF. Line 1, colomn 4", proces.ErrorMsg, "Ident EOF error");
+            Assert.AreEqual("Syntax error (idRule). Expecting identifier, found EOF. Line 1, colomn 4", proces.ErrorMsg, "Ident EOF error");
 
             // Read 'identifier', not allowed first letter.
             buf = new FlatBuffer("id 2r");
             //                   "1234
             doc = CodeDocument.Load(parser, proces = new LoadProces(buf)); ;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. First charactor is not allowed. Line 1, colomn 4", proces.ErrorMsg, "Ident first letter error");
+            Assert.AreEqual("Syntax error (idRule). First charactor is not allowed. Line 1, colomn 4", proces.ErrorMsg, "Ident first letter error");
 
             // Read 'string', EOF error.
             buf = new FlatBuffer("string ");
             //                   "12345678
             doc = CodeDocument.Load(parser, proces = new LoadProces(buf)); ;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting string, found EOF. Line 1, colomn 8", proces.ErrorMsg, "String EOF error");
+            Assert.AreEqual("Syntax error (strRule). Expecting string, found EOF. Line 1, colomn 8", proces.ErrorMsg, "String EOF error");
 
             // Read 'string', Expecting string (starting ' not found).
             buf = new FlatBuffer("string fail");
             //                   "12345678
             doc = CodeDocument.Load(parser, proces = new LoadProces(buf)); ;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting string. Line 1, colomn 8", proces.ErrorMsg, "String not found error");
+            Assert.AreEqual("Syntax error (strRule). Expecting string. Line 1, colomn 8", proces.ErrorMsg, "String not found error");
 
             // Read 'string', ending ' not found.
             buf = new FlatBuffer("string 'fail");
             //                   "123456789
             doc = CodeDocument.Load(parser, proces = new LoadProces(buf)); ;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting string ending. Line 1, colomn 9", proces.ErrorMsg, "String ending not found error");
+            Assert.AreEqual("Syntax error (strRule). Expecting string ending. Line 1, colomn 9", proces.ErrorMsg, "String ending not found error");
 
             // Read 'symbol', EOF error.
             buf = new FlatBuffer("symbol fai");
             //                   "12345678901
             doc = CodeDocument.Load(parser, proces = new LoadProces(buf));;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting symbol 'fail', found EOF. Line 1, colomn 11", proces.ErrorMsg, "Symbol EOF error");
+            Assert.AreEqual("Syntax error (symRule). Expecting symbol 'fail', found EOF. Line 1, colomn 11", proces.ErrorMsg, "Symbol EOF error");
 
             // Read 'symbol',  error.
             buf = new FlatBuffer("symbol faiL ");
             //                   "12345678
             doc = CodeDocument.Load(parser, proces = new LoadProces(buf));;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting symbol 'fail', found 'faiL'. Line 1, colomn 8", proces.ErrorMsg, "Symbol error");
+            Assert.AreEqual("Syntax error (symRule). Expecting symbol 'fail', found 'faiL'. Line 1, colomn 8", proces.ErrorMsg, "Symbol error");
         }
 
         /// <summary>Test different types of syntax error.</summary>
@@ -311,8 +311,9 @@ settings fid trust; fstr trust; fsym trust;";
         {
             // Set syntax
             string syntax = @"
-stx =  {rule};
-rule = type identifier ';'; type = 'string'; ";
+stx =  {cmd};
+cmd = type identifier ';'; 
+type = 'string'; ";
             var parser = new Parser(syntax);
             LoadProces proces;
             CodeDocument doc;
@@ -328,14 +329,14 @@ rule = type identifier ';'; type = 'string'; ";
             //                   "1234567890   
             doc = CodeDocument.Load(parser, proces = new LoadProces(buf));
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting symbol ';', found EOF. Line 1, colomn 10", proces.ErrorMsg, "missing seperator, EOF error");
+            Assert.AreEqual("Syntax error (cmd). Expecting symbol ';', found EOF. Line 1, colomn 10", proces.ErrorMsg, "missing seperator, EOF error");
 
             // Error: Missing ';'.
             buf = new FlatBuffer("string s dfgsd");
             //                   "1234567890   
             doc = CodeDocument.Load(parser, proces = new LoadProces(buf));
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting symbol ';', found 'd'. Line 1, colomn 10", proces.ErrorMsg, "missing seperator");
+            Assert.AreEqual("Syntax error (cmd). Expecting symbol ';', found 'd'. Line 1, colomn 10", proces.ErrorMsg, "missing seperator");
         }
 
         #region utillity functions

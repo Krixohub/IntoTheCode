@@ -6,18 +6,19 @@ namespace IntoTheCode.Read
 {
     public class LoadError
     {
+        private string _error;
+
         public LoadError(WordBase element, TextPointer errorPoint, int wordCount, string error)
         {
-            Element = element;
             ErrorPoint = errorPoint;
             //StartPoint = startPoint;
             WordCount = wordCount;
-            Error = error;
+            _error = error;
         }
         public TextPointer ErrorPoint;
         //public TextPointer StartPoint;
-        public ParserElementBase Element;
         public int WordCount; //?
-        public string Error; //?
+        public string Error { get { return _error; } } //?
+
     }
 }

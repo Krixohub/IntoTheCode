@@ -51,7 +51,10 @@ namespace IntoTheCode.Read.Element
                 proces.Errors = proces.Errors.OrderByDescending(e => e.ErrorPoint.CompareTo(txtPtr)).ToList();
                 var errorMax2 = proces.Errors.FirstOrDefault();
 
-                proces.ErrorMsg = "Syntax error. " + errorMax2.Error + " " + proces.TextBuffer.GetLineAndColumn(errorMax2.ErrorPoint);
+                proces.ErrorMsg = "Syntax error (" +
+                    GetRule(this).Name +
+                    "). " + errorMax2.Error + " " + 
+                    proces.TextBuffer.GetLineAndColumn(errorMax2.ErrorPoint);
             }
 
             return false;
@@ -115,7 +118,11 @@ namespace IntoTheCode.Read.Element
                 proces.TextBuffer.IncPointer();
         }
 
-        //public abstract
+        private Rule GetRule(ParserElementBase e)
+        {
+            if (e is Rule) return (Rule)e;
+            else return GetRule((ParserElementBase)e.Parent);
+        }
     }
 
     public class AmbiguousDef

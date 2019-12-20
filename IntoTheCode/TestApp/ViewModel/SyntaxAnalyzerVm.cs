@@ -11,6 +11,7 @@ using System.Windows;
 using IntoTheCode.Read;
 using MoehlData.Basic.Layer;
 using MoehlData.Basic.Message;
+using System;
 
 namespace TestCodeInternal.ViewModel
 {
@@ -38,6 +39,22 @@ namespace TestCodeInternal.ViewModel
             OpenSyntaxLab = new DelegateCommand(i => SyntaxLabOpen());
 
             #endregion commands
+        }
+
+        /// <summary>Code For Documentation.</summary>
+        public void CodeForDocumentation()
+        {
+            string syntax = "syntax";
+            try
+            {
+                var parser = new Parser(syntax);
+                // parser is null
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("The syntax isn't working: " + e.Message);
+            }
+
         }
 
 
