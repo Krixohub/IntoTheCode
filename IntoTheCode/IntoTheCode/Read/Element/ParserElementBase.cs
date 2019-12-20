@@ -63,6 +63,9 @@ namespace IntoTheCode.Read.Element
         /// <returns>Always return false.</returns>
         protected bool SetPointerBackError(LoadProces proces, TextPointer txtPtr)
         {
+            //if (this is WordBase)
+            //    proces.Errors.Add(new LoadError((WordBase)this, proces.TextBuffer.PointerNextChar.Clone(), 2, "Unexpected string."));
+            //if (proces.TextBuffer.PointerNextChar.CompareTo())
             proces.TextBuffer.SetPointer(txtPtr);
             return false;
         }
@@ -105,7 +108,8 @@ namespace IntoTheCode.Read.Element
         /// <returns>True = succes.</returns>
         public abstract bool ExtractError(LoadProces proces);
 
-        protected void SkipWhiteSpace(LoadProces proces)
+        // todo:2 consider remove this method to parser.
+        internal protected void SkipWhiteSpace(LoadProces proces)
         {
             while (!proces.TextBuffer.IsEnd() && " \r\n\t".Contains(proces.TextBuffer.GetChar()))
                 proces.TextBuffer.IncPointer();

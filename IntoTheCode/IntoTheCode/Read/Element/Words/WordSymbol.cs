@@ -45,12 +45,14 @@ namespace IntoTheCode.Read.Element.Words
         {
             SkipWhiteSpace(proces);
             TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
+            TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
+
             //TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
             if (proces.TextBuffer.IsEnd(Value.Length))
             {
                 //subStr.SetTo(from);
-                proces.Errors.Add(new LoadError(this, from, 2, string.Format("Expecting symbol '{0}', found EOF.", Value)));
-                return SetPointerBackError(proces, from);
+                proces.Errors.Add(new LoadError(this, proces.TextBuffer.PointerEnd, 2, string.Format("Expecting symbol '{0}', found EOF.", Value)));
+                return SetPointerBackError(proces, subStr.GetFrom());
             }
 
             foreach (char ch in Value)
@@ -58,8 +60,9 @@ namespace IntoTheCode.Read.Element.Words
                     proces.TextBuffer.IncPointer();
                 else
                 {
+                    subStr.SetTo(subStr.GetFrom().Clone(Value.Length));
                     //subStr.SetTo(proces.TextBuffer.PointerNextChar);
-                    proces.Errors.Add(new LoadError(this, proces.TextBuffer.PointerNextChar.Clone(), 2, string.Format("reading '{0}', expecting '{1}', found '{2}'.", Value, ch, proces.TextBuffer.GetChar())));
+                    proces.Errors.Add(new LoadError(this, subStr.GetFrom(), 2, string.Format("Expecting symbol '{0}', found '{1}'.", Value,  proces.TextBuffer.GetSubString(subStr))));
                     return SetPointerBackError(proces, from);
                 }
 

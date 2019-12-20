@@ -63,7 +63,7 @@ namespace IntoTheCode.Read
         //internal const string HardCode = "hc_";          // 
         //internal const string Tag________ = "tag";         // 
         internal const string Collapse___ = "collapse";    // 
-        internal const string Div________ = "div";   // 
+        internal const string Trust______ = "trust";   // 
         internal const string Comment____ = "comment";     // 
         internal const string Whitespace_ = "ws";          // 
         internal const string WsDef______ = "wsdef";       // 
@@ -97,7 +97,7 @@ value       = string;";
             } 
         }
 /*
-property    = 'collapse' | 'div' | 'ws' | 'wsdef';
+property    = 'collapse' | 'trust' | 'ws' | 'wsdef';
 property    = identifier;
  */ 
         /// <summary>The shapin syntax.</summary>

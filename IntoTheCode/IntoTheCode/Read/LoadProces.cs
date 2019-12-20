@@ -20,7 +20,7 @@ namespace IntoTheCode.Read
         internal ITextBuffer TextBuffer
         {
             get { return _textBuffer; }
-            set { _textBuffer = value; TextBuffer.NewPointer(); }
+            set { _textBuffer = value; }
         }
 
         /// <summary>Error message after parsing/reading input text.</summary>

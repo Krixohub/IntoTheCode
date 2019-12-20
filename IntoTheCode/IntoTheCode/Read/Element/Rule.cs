@@ -20,11 +20,11 @@ namespace IntoTheCode.Read.Element
         {
             Name = name;
 
-            // Set 'div' property if this is the last of many elements
+            // Set 'trust' property if this is the last of many elements
         //    IList<TreeNode> siblings = Parent.SubElements;
             if ((elements.Length > 2 && elements[elements.Length - 1] is WordSymbol) ||
                 AnyNested(elem => elem is WordSymbol && ((WordSymbol)elem).Value.Length > 2))
-                Div = true;
+                Trust = true;
 
 
         }
@@ -44,7 +44,7 @@ namespace IntoTheCode.Read.Element
 
 
         internal bool Collapse { get; set; }
-        internal bool Div { get; set; }
+        internal bool Trust { get; set; }
 
         public override string GetSyntax()
         {
@@ -107,7 +107,7 @@ namespace IntoTheCode.Read.Element
             }
 
             // If this is a 'division' set unambiguous
-            if (Div && proces.TextBuffer.PointerNextChar.CompareTo(subStr.GetFrom()) > 0) proces.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
+            if (Trust && proces.TextBuffer.PointerNextChar.CompareTo(subStr.GetFrom()) > 0) proces.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
             return true;
 
         }

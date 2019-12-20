@@ -8,11 +8,13 @@
         {
             _buf = text;
             PointerNextChar = new FlatPointer { index = 0 };
+            PointerEnd = new FlatPointer { index = _buf.Length };
         }
 
-       
+
         /// <summary>Pointing at the next char to read. When end is reached Buf.Length == pointer.</summary>
         public TextPointer PointerNextChar { get; private set; }
+        public TextPointer PointerEnd { get; private set; }
 
         //public bool IsEnd()
         //{
@@ -83,7 +85,8 @@
                 nlPos = findPos + find.Length;
                 findPos = _buf.IndexOf(find, nlPos, System.StringComparison.Ordinal);
             }
-            return string.Format("Line {0}, colomn {1}", line, index - nlPos);
+            // add 1; the line starts with column 1.
+            return string.Format("Line {0}, colomn {1}", line, index - nlPos + 1); 
         }
 
     }

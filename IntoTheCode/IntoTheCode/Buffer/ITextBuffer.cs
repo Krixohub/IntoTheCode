@@ -7,6 +7,7 @@
         /// <summary>Pointing at the next char to read. When end is reached Buf.Length == pointer.</summary>
         //int pointer { get; set; }
         TextPointer PointerNextChar { get; }
+        TextPointer PointerEnd { get; }
 
         void SetPointerBackToFrom(TextSubString sub);
         void SetPointerTo(TextSubString sub);
@@ -34,6 +35,7 @@
         string GetSubString(TextPointer from, int offset, int length);
 
         TextPointer GetIndexAfter(string find, TextPointer start);
+
         void SetToIndexOf(TextSubString sub, string find);
         //void SetToIndexOf(TextSubString sub, string find, TextPointer from);
         //bool IsEnd();

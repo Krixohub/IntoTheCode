@@ -70,16 +70,16 @@ namespace IntoTheCode.Read
 
             LoadProces loadProces = new LoadProces(new FlatBuffer(syntax));
             syntaxDoc = CodeDocument.Load(MetaParser.Instance, loadProces);
+
             if (loadProces.Error)
                 throw new SyntaxErrorException(loadProces.ErrorMsg);
-
             if (syntaxDoc == null)
-                throw new SyntaxErrorException("Can't read syntax.");
+                throw new SyntaxErrorException("Can't read syntax." + loadProces.ErrorMsg);
+
             ParserFactory.BuildRules(this, syntaxDoc);
             if (!string.IsNullOrEmpty(DefinitionError))
                 throw new SyntaxErrorException(DefinitionError);
 
-            //return true;
         }
 
         /// <summary>Read from a text buffer and create a text document.</summary>
@@ -98,6 +98,9 @@ namespace IntoTheCode.Read
                         proces.ErrorMsg = string.Format("Syntax error proces '{0}'", Rules[0].Name);
                     return null;
                 }
+
+                // skip remaining white spaces
+                Rules[0].SkipWhiteSpace(proces);
 
                 if (!proces.TextBuffer.IsEnd())
                 {

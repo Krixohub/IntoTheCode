@@ -149,8 +149,8 @@ namespace IntoTheCode.Read
                         //case MetaParser.Tag________:
                         //    rule.Tag = propValue != "false";
                         //    break;
-                        case MetaParser.Div________:
-                            rule.Div = propValue != "false";
+                        case MetaParser.Trust______:
+                            rule.Trust = propValue != "false";
                             break;
                         case MetaParser.Collapse___:
                             rule.Collapse = propValue != "false";
@@ -172,7 +172,7 @@ namespace IntoTheCode.Read
             //if (!parser.Rules[0].Tag)
             //    throw new Exception(string.Format("First rule '{0} must represent all document and have Tag=true", parser.Rules[0].Name));
             if (parser.Rules[0].Collapse)
-                throw new Exception(string.Format("First rule '{0} must represent all document and have Tag=true", parser.Rules[0].Name));
+                throw new Exception(string.Format("First rule '{0} must represent all document and have Collapse=false", parser.Rules[0].Name));
 
             //recursive check
             foreach (Rule rule in parser.Rules)

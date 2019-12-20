@@ -61,7 +61,7 @@ namespace IntoTheCode.Read.Element.Words
                 //subStr1.SetTo(subStr1.GetFrom());
                 //var element = new CodeElement(proces.TextBuffer, this, subStr1, "Expecting string, found EOF.");
                 //errorWords.Add(element);
-                proces.Errors.Add(new LoadError(this, from, 2, "Expecting string, found EOF."));
+                proces.Errors.Add(new LoadError(this, proces.TextBuffer.PointerEnd, 2, "Expecting string, found EOF."));
                 return false;
             };
 
@@ -83,7 +83,7 @@ namespace IntoTheCode.Read.Element.Words
             {
                 //subStr.SetTo(subStr.GetFrom());
                 //errorWords.Add(new CodeElement(proces.TextBuffer, this, subStr, "Expecting string ending."));
-                proces.Errors.Add(new LoadError(this, from, 2, "Expecting string ending."));
+                proces.Errors.Add(new LoadError(this, from.Clone(1), 2, "Expecting string ending."));
                 return SetPointerBackError(proces, from);
             }
 

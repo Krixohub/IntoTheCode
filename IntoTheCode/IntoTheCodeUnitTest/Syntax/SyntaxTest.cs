@@ -17,15 +17,12 @@ namespace TestCodeInternal.UnitTest
     public class SyntaxTest
     {
         [TestMethod]
-        public void Parser11SyntaxHardcode()
+        public void Parser10Words()
         {
-            //Parser parser = new Parser();
-            var parser = new Parser();
-
             // test loading of basic syntax elements
             // load varname
             LoadProces reading = new LoadProces(new FlatBuffer("  sym01  "));
-//            reader.TextBuffer = new FlatBuffer("  sym01  ");
+            //            reader.TextBuffer = new FlatBuffer("  sym01  ");
             //var buf = new FlatBuffer("  sym01  ");
             var outNo = new List<TreeNode>();
             var idn = new WordIdent("kurt");
@@ -72,46 +69,48 @@ namespace TestCodeInternal.UnitTest
             Assert.AreEqual("sym02", node.Value, "The combinded VarName value is not correct");
             Assert.AreEqual(43, ((FlatPointer)reading.TextBuffer.PointerNextChar).index, "The buffer pointer is of after reading combinded values");
 
-            var debug = MetaParser.GetHardCodeParser().GetSyntax();
+        }
 
-            // Build a syntax to test basic syntactic elements
-           // parser = new SyntaxReader();
-           // var reader = new SyntaxReader();
-            string doc = string.Empty;
+        [TestMethod]
+        public void Parser11SyntaxHardcode()
+        {
+            var parser = new Parser();
             parser.Rules = GetSyntaxTestElements(parser);
-            //parser.Syntax = reader;
-            //parser.LinkSyntax(parser.Syntax);
-            //reader.LinkSyntax();
-            //reader.LinkSyntax(reader);
+
+            var debug = MetaParser.GetHardCodeParser().GetSyntax();
+            var outNo = new List<TreeNode>();
+            LoadProces proces = new LoadProces(null);
+            string doc = string.Empty;
             outNo = new List<TreeNode>();
-            Rule eq = null;
+            Rule rule;
+
             //  Read a varname
-            eq = parser.Rules.FirstOrDefault(e => e.Name == "TestIdentifier");
-            reading.TextBuffer = new FlatBuffer("  Bname  ");
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "TestIdentifier");
+            proces.TextBuffer = new FlatBuffer("  Bname  ");
             //parser.TextBuffer = new FlatBuffer("  Bname  ");
-            Assert.AreEqual(true, eq.Load(reading, outNo), "Equation TestIdentifier: cant read");
+            Assert.AreEqual(true, rule.Load(proces, outNo), "Equation TestIdentifier: cant read");
             doc = ((CodeElement)outNo[0]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<TestIdentifier>Bname</TestIdentifier>\r\n", doc, "Equation TestOption: document fail");
 
             // Read a 'or syntax = varname'
-            eq = parser.Rules.FirstOrDefault(e => e.Name == "syntax");
-            reading.TextBuffer = new FlatBuffer("  Bcccc  ");
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "syntax");
+            proces.TextBuffer = new FlatBuffer("  Bcccc  ");
             //parser.TextBuffer = new FlatBuffer("  Bcccc  ");
-            Assert.AreEqual(true, eq.Load(reading, outNo), "Equation syntax varname: cant read");
+            Assert.AreEqual(true, rule.Load(proces, outNo), "Equation syntax varname: cant read");
             doc = ((CodeElement)outNo[1]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<syntax>\r\n  <TestIdentifier>Bcccc</TestIdentifier>\r\n</syntax>\r\n", doc, "Equation TestOption: document fail");
 
             // Read a 'or TestString'
-            eq = parser.Rules.FirstOrDefault(e => e.Name == "syntax");
-            reading.TextBuffer = new FlatBuffer(" 'Ccccc'  ");
-            Assert.AreEqual(true, eq.Load(reading, outNo), "Equation syntax TestString: cant read");
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "syntax");
+            proces.TextBuffer = new FlatBuffer(" 'Ccccc'  ");
+            Assert.AreEqual(true, rule.Load(proces, outNo), "Equation syntax TestString: cant read");
             doc = ((CodeElement)outNo[2]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<syntax>\r\n  <string>Ccccc</string>\r\n</syntax>\r\n", doc, "Equation TestOption: document fail");
 
             // Read a TestSeries
-            eq = parser.Rules.FirstOrDefault(e => e.Name == "TestSeries");
-            reading.TextBuffer = new FlatBuffer("  TestSeries jan ole Mat  ");
-            Assert.AreEqual(true, eq.Load(reading, outNo), "Equation TestSeries: cant read");
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "TestSeries");
+            proces.TextBuffer = new FlatBuffer("  TestSeries jan ole Mat  ");
+            Assert.AreEqual(true, rule.Load(proces, outNo), "Equation TestSeries: cant read");
 
             doc = ((CodeElement)outNo[3]).ToMarkupProtected(string.Empty);
             Assert.AreEqual(@"<TestSeries>
@@ -122,20 +121,20 @@ namespace TestCodeInternal.UnitTest
 ", doc, "Equation TestOption: document fail");
 
             // Read a TestOption
-            eq = parser.Rules.FirstOrDefault(e => e.Name == "TestOption");
-            reading.TextBuffer = new FlatBuffer("  TestOption 'qwerty'  ");
-            Assert.AreEqual(true, eq.Load(reading, outNo), "Equation TestOption: cant read");
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "TestOption");
+            proces.TextBuffer = new FlatBuffer("  TestOption 'qwerty'  ");
+            Assert.AreEqual(true, rule.Load(proces, outNo), "Equation TestOption: cant read");
             doc = ((CodeElement)outNo[4]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<TestOption>\r\n  <TestQuote2>qwerty</TestQuote2>\r\n</TestOption>\r\n", doc, "Equation TestOption: document fail");
-            reading.TextBuffer = new FlatBuffer("  TestOption wer  ");
-            Assert.AreEqual(true, eq.Load(reading, outNo), "Equation TestOption: cant read");
+            proces.TextBuffer = new FlatBuffer("  TestOption wer  ");
+            Assert.AreEqual(true, rule.Load(proces, outNo), "Equation TestOption: cant read");
             doc = ((CodeElement)outNo[5]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<TestOption>\r\n  <TestIdentifier>wer</TestIdentifier>\r\n</TestOption>\r\n", doc, "Equation TestOption: document fail");
 
             // Read: TestLines       = 'TestLines' { VarName '=' Quote ';' };
-            eq = parser.Rules.FirstOrDefault(e => e.Name == "TestLines");
-            reading.TextBuffer = new FlatBuffer("  TestLines name = 'Oscar'; addr = 'GoRoad'; \r\n mobile = '555 55'; ");
-            Assert.AreEqual(true, eq.Load(reading, outNo), "Equation TestLines: cant read");
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "TestLines");
+            proces.TextBuffer = new FlatBuffer("  TestLines name = 'Oscar'; addr = 'GoRoad'; \r\n mobile = '555 55'; ");
+            Assert.AreEqual(true, rule.Load(proces, outNo), "Equation TestLines: cant read");
             doc = ((CodeElement)outNo[6]).ToMarkupProtected(string.Empty);
             Assert.AreEqual(@"<TestLines>
   <localVar>name</localVar>
@@ -221,162 +220,125 @@ namespace TestCodeInternal.UnitTest
             Assert.AreEqual(markup, doc.ToMarkup(), "Markup");
         }
 
-
         /// <summary>Test different types of syntax error.</summary>
         [TestMethod]
-        public void Parser14SyntaxError()
-        {
-            // Set syntax
-            string syntax = @"
-stx = str | sym | seq | nam;
-seq = {o};
-o = 'o';
-str = fstr failStr;
-nam = fnam failId;
-sym = fsym failSym;
-fnam = 'name';
-fstr = 'string';
-fsym = 'symbol';
-failId = identifier;
-failStr = string;
-failSym = 'fail';";
-            var parser = new Parser(syntax);
-            LoadProces proces;
-            CodeDocument doc;
-
-            // What the parser CAN read
-            proces = new LoadProces(new FlatBuffer("ooo"));
-            doc = CodeDocument.Load(parser, proces);
-            Assert.IsNotNull(doc, "doc er null");
-            Assert.AreEqual(string.Empty, proces.ErrorMsg, "Parse error");
-
-            // Error: End of text not reached.
-            proces = new LoadProces(new FlatBuffer("oop"));
-            doc = CodeDocument.Load(parser, proces);
-            Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("End of input not reached. Line 1, colomn 2", proces.ErrorMsg, "EOF error");
-
-            string stx = parser.GetSyntax();
-
-            // Read 'identifier', EOF error.
-            proces = new LoadProces(new FlatBuffer("name "));
-            doc = CodeDocument.Load(parser, proces);
-            Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting identifier, found EOF. Line 1, colomn 5", proces.ErrorMsg, "Ident EOF error");
-
-            // Read 'identifier', not allowed first letter.
-            proces = new LoadProces(new FlatBuffer("name 2r"));
-            doc = CodeDocument.Load(parser, proces);
-            Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. First charactor is not allowed. Line 1, colomn 5", proces.ErrorMsg, "Ident first letter error");
-
-            // Read 'string', EOF error.
-            proces = new LoadProces(new FlatBuffer("string "));
-            doc = CodeDocument.Load(parser, proces);
-            Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting string, found EOF. Line 1, colomn 7", proces.ErrorMsg, "String EOF error");
-
-            // Read 'string', Expecting string (starting ' not found).
-            proces = new LoadProces(new FlatBuffer("string fail"));
-            doc = CodeDocument.Load(parser, proces);
-            Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting string. Line 1, colomn 7", proces.ErrorMsg, "String not found error");
-
-            // Read 'string', ending ' not found.
-            proces = new LoadProces(new FlatBuffer("string 'fail"));
-            doc = CodeDocument.Load(parser, proces);
-            Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting string ending. Line 1, colomn 7", proces.ErrorMsg, "String ending not found error");
-
-            // Read 'symbol', EOF error.
-            proces = new LoadProces(new FlatBuffer("symbol fai"));
-            doc = CodeDocument.Load(parser, proces);
-            Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting symbol 'fail', found EOF. Line 1, colomn 7", proces.ErrorMsg, "Symbol EOF error");
-
-            // Read 'symbol',  error.
-            proces = new LoadProces(new FlatBuffer("symbol faiL "));
-            doc = CodeDocument.Load(parser, proces);
-            Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. reading 'fail', expecting 'l', found 'L'. Line 1, colomn 10", proces.ErrorMsg, "Symbol error");
-        }
-
-        /// <summary>Test different types of syntax error.</summary>
-       // [TestMethod]
         public void Parser15SyntaxError()
         {
             // Set syntax
             string syntax = @"
-stx =  sym | seq;
+stx =  sym | seq | str | id;
 seq = {o};
 o = 'o';
 str = fstr failStr;
-nam = fnam failId;
+id  = fid failId;
 sym = fsym failSym;
-fnam = 'name';
-fstr = 'string';
-fsym = 'symbol';
-failId = identifier;
-failStr = string;
-failSym = 'fail';";
+fstr = 'string'; failStr = string;
+fid  = 'id';   failId = identifier;
+fsym = 'symbol'; failSym = 'fail';
+settings fid trust; fstr trust; fsym trust;";
             var parser = new Parser(syntax);
             LoadProces proces;
             CodeDocument doc;
 
             // What the parser CAN read
-            proces = new LoadProces(new FlatBuffer("ooo"));
-            doc = CodeDocument.Load(parser, proces);
+            var buf = new FlatBuffer("ooo");
+            doc = CodeDocument.Load(parser, proces = new LoadProces(buf));;
             Assert.IsNotNull(doc, "doc er null");
             Assert.AreEqual(string.Empty, proces.ErrorMsg, "Parse error");
 
-            //// Error: End of text not reached.
-            //proces = new LoadProces(new FlatBuffer("oop"));
-            //doc = CodeDocument.Load(parser, proces);
-            //Assert.IsNull(doc, "doc er ikke null");
-            //Assert.AreEqual("End of input not reached. Line 1, colomn 2", proces.LoadError, "EOF error");
+            // Error: End of text not reached.
+            buf = new FlatBuffer("oop");
+            //                   "123   
+            doc = CodeDocument.Load(parser, proces = new LoadProces(buf));
+            Assert.IsNull(doc, "doc er ikke null");
+            Assert.AreEqual("End of input not reached. Line 1, colomn 3", proces.ErrorMsg, "EOF error");
 
-            //// Read 'identifier', EOF error.
-            //proces = new LoadProces(new FlatBuffer("name "));
-            //doc = CodeDocument.Load(parser, proces);
-            //Assert.IsNull(doc, "doc er ikke null");
-            //Assert.AreEqual("Syntax error. Expecting identifier, found EOF. Line 1, colomn 5", proces.LoadError, "Ident EOF error");
+            string stx = parser.GetSyntax();
 
-            //// Read 'identifier', not allowed first letter.
-            //proces = new LoadProces(new FlatBuffer("name 2r"));
-            //doc = CodeDocument.Load(parser, proces);
-            //Assert.IsNull(doc, "doc er ikke null");
-            //Assert.AreEqual("Syntax error. First charactor is not allowed. Line 1, colomn 5", proces.LoadError, "Ident first letter error");
+            // Read 'identifier', EOF error.
+            buf = new FlatBuffer("id ");
+            //                   "1234
+            doc = CodeDocument.Load(parser, proces = new LoadProces(buf)); ;
+            Assert.IsNull(doc, "doc er ikke null");
+            Assert.AreEqual("Syntax error. Expecting identifier, found EOF. Line 1, colomn 4", proces.ErrorMsg, "Ident EOF error");
 
-            //// Read 'string', EOF error.
-            //proces = new LoadProces(new FlatBuffer("string "));
-            //doc = CodeDocument.Load(parser, proces);
-            //Assert.IsNull(doc, "doc er ikke null");
-            //Assert.AreEqual("Syntax error. Expecting string, found EOF. Line 1, colomn 7", proces.LoadError, "String EOF error");
+            // Read 'identifier', not allowed first letter.
+            buf = new FlatBuffer("id 2r");
+            //                   "1234
+            doc = CodeDocument.Load(parser, proces = new LoadProces(buf)); ;
+            Assert.IsNull(doc, "doc er ikke null");
+            Assert.AreEqual("Syntax error. First charactor is not allowed. Line 1, colomn 4", proces.ErrorMsg, "Ident first letter error");
+
+            // Read 'string', EOF error.
+            buf = new FlatBuffer("string ");
+            //                   "12345678
+            doc = CodeDocument.Load(parser, proces = new LoadProces(buf)); ;
+            Assert.IsNull(doc, "doc er ikke null");
+            Assert.AreEqual("Syntax error. Expecting string, found EOF. Line 1, colomn 8", proces.ErrorMsg, "String EOF error");
 
             // Read 'string', Expecting string (starting ' not found).
-            proces = new LoadProces(new FlatBuffer("string fail"));
-            doc = CodeDocument.Load(parser, proces);
+            buf = new FlatBuffer("string fail");
+            //                   "12345678
+            doc = CodeDocument.Load(parser, proces = new LoadProces(buf)); ;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting string. Line 1, colomn 7", proces.ErrorMsg, "String not found error");
+            Assert.AreEqual("Syntax error. Expecting string. Line 1, colomn 8", proces.ErrorMsg, "String not found error");
 
             // Read 'string', ending ' not found.
-            proces = new LoadProces(new FlatBuffer("string 'fail"));
-            doc = CodeDocument.Load(parser, proces);
+            buf = new FlatBuffer("string 'fail");
+            //                   "123456789
+            doc = CodeDocument.Load(parser, proces = new LoadProces(buf)); ;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting string ending. Line 1, colomn 8", proces.ErrorMsg, "String ending not found error");
+            Assert.AreEqual("Syntax error. Expecting string ending. Line 1, colomn 9", proces.ErrorMsg, "String ending not found error");
 
             // Read 'symbol', EOF error.
-            proces = new LoadProces(new FlatBuffer("symbol fai"));
-            doc = CodeDocument.Load(parser, proces);
+            buf = new FlatBuffer("symbol fai");
+            //                   "12345678901
+            doc = CodeDocument.Load(parser, proces = new LoadProces(buf));;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. Expecting symbol 'fail', found EOF. Line 1, colomn 6", proces.ErrorMsg, "Symbol EOF error");
+            Assert.AreEqual("Syntax error. Expecting symbol 'fail', found EOF. Line 1, colomn 11", proces.ErrorMsg, "Symbol EOF error");
 
             // Read 'symbol',  error.
-            proces = new LoadProces(new FlatBuffer("symbol faiL "));
-            doc = CodeDocument.Load(parser, proces);
+            buf = new FlatBuffer("symbol faiL ");
+            //                   "12345678
+            doc = CodeDocument.Load(parser, proces = new LoadProces(buf));;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error. reading 'fail', expecting 'l', found 'L'. Line 1, colomn 10", proces.ErrorMsg, "Symbol error");
+            Assert.AreEqual("Syntax error. Expecting symbol 'fail', found 'faiL'. Line 1, colomn 8", proces.ErrorMsg, "Symbol error");
         }
+
+        /// <summary>Test different types of syntax error.</summary>
+        [TestMethod]
+        public void Parser16SyntaxErrorSet()
+        {
+            // Set syntax
+            string syntax = @"
+stx =  {rule};
+rule = type identifier ';'; type = 'string'; ";
+            var parser = new Parser(syntax);
+            LoadProces proces;
+            CodeDocument doc;
+
+            // What the parser CAN read
+            var buf = new FlatBuffer("string s; string str;");
+            doc = CodeDocument.Load(parser, proces = new LoadProces(buf)); ;
+            Assert.IsNotNull(doc, "doc er null");
+            Assert.AreEqual(string.Empty, proces.ErrorMsg, "Parse error");
+
+            // Error: Missing ';'.
+            buf = new FlatBuffer("string s ");
+            //                   "1234567890   
+            doc = CodeDocument.Load(parser, proces = new LoadProces(buf));
+            Assert.IsNull(doc, "doc er ikke null");
+            Assert.AreEqual("Syntax error. Expecting symbol ';', found EOF. Line 1, colomn 10", proces.ErrorMsg, "missing seperator, EOF error");
+
+            // Error: Missing ';'.
+            buf = new FlatBuffer("string s dfgsd");
+            //                   "1234567890   
+            doc = CodeDocument.Load(parser, proces = new LoadProces(buf));
+            Assert.IsNull(doc, "doc er ikke null");
+            Assert.AreEqual("Syntax error. Expecting symbol ';', found 'd'. Line 1, colomn 10", proces.ErrorMsg, "missing seperator");
+        }
+
+        #region utillity functions
 
         /// <summary>A syntax for test. Hard coded.</summary>
         private List<Rule> GetSyntaxTestElements(Parser syntax)
@@ -627,5 +589,7 @@ value       = string;";
                 return string.Format("Actual text has only {0} lines, expected text {1} lines", actualList.Length, expectList.Length);
             return string.Empty;
         }
+
+        #endregion utillity functions
     }
 }
