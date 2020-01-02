@@ -450,6 +450,23 @@ value       = string;";
                         new HardElement("identifier", MetaParser.Or_________)),
                     new HardElement("identifier", MetaParser.Element____))));
 
+            //// element    = identifier | symbol | block; Husk ny block
+            //syntax.AddElement(new HardElement("Rule", string.Empty,
+            //    new HardElement("identifier", MetaParser.Element____),
+            //    new HardElement("identifier", "identifier"),
+            //    new HardElement(MetaParser.Or_________, string.Empty),
+            //    new HardElement("identifier", "symbol"),
+            //    new HardElement(MetaParser.Or_________, string.Empty),
+            //    new HardElement("identifier", MetaParser.Block______)));
+
+            //// block      = sequence | optional | parentheses);
+            //syntax.AddElement(new HardElement("Rule", string.Empty,
+            //    new HardElement("identifier", MetaParser.Block______),
+            //    new HardElement("identifier", "sequence"),
+            //    new HardElement(MetaParser.Or_________, string.Empty),
+            //    new HardElement("identifier", "optional"),
+            //    new HardElement("or", string.Empty),
+            //    new HardElement("identifier", "parentheses")));
             // element    = identifier | symbol | block; Husk ny block
             syntax.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("identifier", MetaParser.Element____),
@@ -457,11 +474,6 @@ value       = string;";
                 new HardElement(MetaParser.Or_________, string.Empty),
                 new HardElement("identifier", "symbol"),
                 new HardElement(MetaParser.Or_________, string.Empty),
-                new HardElement("identifier", MetaParser.Block______)));
-
-            // block      = sequence | optional | parentheses);
-            syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("identifier", MetaParser.Block______),
                 new HardElement("identifier", "sequence"),
                 new HardElement(MetaParser.Or_________, string.Empty),
                 new HardElement("identifier", "optional"),
@@ -552,11 +564,11 @@ value       = string;";
                 new HardElement("assignment", string.Empty,
                     new HardElement("property", "collapse"))));
 
-            // block collapse;
-            syntax.AddElement(new HardElement("setter", string.Empty,
-                new HardElement("identifier", "block"),
-                new HardElement("assignment", string.Empty,
-                    new HardElement("property", "collapse"))));
+            //// block collapse;
+            //syntax.AddElement(new HardElement("setter", string.Empty,
+            //    new HardElement("identifier", "block"),
+            //    new HardElement("assignment", string.Empty,
+            //        new HardElement("property", "collapse"))));
 
             // settings collapse;
             syntax.AddElement(new HardElement("setter", string.Empty,

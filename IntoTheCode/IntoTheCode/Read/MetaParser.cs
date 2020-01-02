@@ -81,8 +81,7 @@ namespace IntoTheCode.Read
                 string syntax = @"MetaSyntax  = {Rule} [settings];
 Rule        = identifier '=' expression ';';
 expression  = element {[or] element};
-element     = identifier | symbol | block;
-block       = sequence | optional | parentheses;
+element     = identifier | symbol | sequence | optional | parentheses;
 sequence    = '{' expression '}';
 optional    = '[' expression ']';
 parentheses = '(' expression ')';
@@ -93,6 +92,21 @@ setter      = identifier assignment {',' assignment} ';';
 assignment  = property ['=' value];
 property    = identifier;
 value       = string;";
+//                string syntax = @"MetaSyntax  = {Rule} [settings];
+//Rule        = identifier '=' expression ';';
+//expression  = element {[or] element};
+//element     = identifier | symbol | block;
+//block       = sequence | optional | parentheses;
+//sequence    = '{' expression '}';
+//optional    = '[' expression ']';
+//parentheses = '(' expression ')';
+//or          = '|';
+//symbol      = string;
+//settings    = 'settings' {setter};
+//setter      = identifier assignment {',' assignment} ';';
+//assignment  = property ['=' value];
+//property    = identifier;
+//value       = string;";
                 return syntax;
             } 
         }
@@ -105,13 +119,18 @@ property    = identifier;
         {
             get
             {
-                //    return "";
                 string syntax = @"
 settings
 expression collapse;
 element    collapse;
-block      collapse;
 settings   collapse;";
+                //    return "";
+//                string syntax = @"
+//settings
+//expression collapse;
+//element    collapse;
+//block      collapse;
+//settings   collapse;";
                 return syntax;
             }
         }

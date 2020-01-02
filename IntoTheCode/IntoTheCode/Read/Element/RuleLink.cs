@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using IntoTheCode.Basic;
+using IntoTheCode.Buffer;
 
 namespace IntoTheCode.Read.Element
 {
@@ -13,6 +14,10 @@ namespace IntoTheCode.Read.Element
         {
             Name = "name";
             _value = name;
+
+            if (name == "expression")
+                Recursive = true;
+            //    LastRuleInvoke = new List<TextPointer>();
         }
 
         /// <summary>The Reader has the current pointer of reading, and the context.</summary>
@@ -30,8 +35,20 @@ namespace IntoTheCode.Read.Element
             return GetValue();
         }
 
+        //public List<TextPointer> LastRuleInvoke;
+        public bool Recursive;
+        public TextPointer LastRuleInvoke;
+
         public override bool Load(LoadProces proces, List<TreeNode> outElements)
         {
+            // End too many recursive calls
+            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
+            if (Recursive)
+            {
+                if (LastRuleInvoke != null && LastRuleInvoke.CompareTo(from) == 0) return false;
+                LastRuleInvoke = from;
+            }
+
             return SymbolElement.Load(proces, outElements);
         }
 
