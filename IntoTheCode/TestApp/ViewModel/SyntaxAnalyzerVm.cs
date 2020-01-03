@@ -44,16 +44,17 @@ namespace TestCodeInternal.ViewModel
         /// <summary>Code For Documentation.</summary>
         public void CodeForDocumentation()
         {
-            string syntax = "syntax";
-            try
-            {
-                var parser = new Parser(syntax);
-                // parser is null
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("The syntax isn't working: " + e.Message);
-            }
+        string syntax = "syntax";
+        Parser parser = null;
+        try
+        {
+            parser = new Parser(syntax);
+        }
+        catch (Exception e)
+        {
+            // parser is null
+            MessageBox.Show("The syntax isn't working: " + e.Message);
+        }
 
         }
 

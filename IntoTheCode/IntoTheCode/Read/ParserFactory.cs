@@ -121,7 +121,7 @@ namespace IntoTheCode.Read
                         elements.Add(new Parentheses(BuildExpression(parser, element.SubElements).ToArray()));
                         break;
                     default:
-                        throw new SyntaxErrorException(string.Format("Parser factory: No read element for '{0}'", element.Name));
+                        throw new ParserException(string.Format("Parser factory: No read element for '{0}'", element.Name));
                         break;
                 }
             }
@@ -156,7 +156,7 @@ namespace IntoTheCode.Read
                             rule.Collapse = propValue != "false";
                             break;
                         default:
-                            throw new SyntaxErrorException(string.Format("Parser factory: No property for '{0}'", propName));
+                            throw new ParserException(string.Format("Parser factory: No property for '{0}'", propName));
                     }
 
                 }
@@ -201,7 +201,7 @@ namespace IntoTheCode.Read
                     rule.ToMarkupProtected(string.Empty);
 
                 if (parser.Rules.Any(r => r != rule && r.Name.ToLower() == rule.Name.ToLower()))
-                    throw new SyntaxErrorException(string.Format("Link syntax {1}. Identifier {0} is defined twice",
+                    throw new ParserException(string.Format("Link syntax {1}. Identifier {0} is defined twice",
                         rule.Name, parser.Name));
             }
 
@@ -234,7 +234,7 @@ namespace IntoTheCode.Read
 
             Rule rule = parser.Rules.FirstOrDefault(r => r.Name == name);
             if (rule == null)
-                throw new SyntaxErrorException(string.Format("Identifier '{0}' not found in syntax", name));
+                throw new ParserException(string.Format("Identifier '{0}' not found in syntax", name));
             return rule;
         }
 

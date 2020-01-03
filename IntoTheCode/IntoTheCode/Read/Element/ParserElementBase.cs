@@ -45,7 +45,7 @@ namespace IntoTheCode.Read.Element
             if (txtPtr.CompareTo(proces.UnambiguousPointer) < 0 && !proces.Error)
             {
                 proces.Error = true;
-                proces.Errors = new List<LoadError>();
+                proces.Errors = new List<ParserError>();
                 ExtractError(proces);
 
                 proces.Errors = proces.Errors.OrderByDescending(e => e.ErrorPoint.CompareTo(txtPtr)).ToList();

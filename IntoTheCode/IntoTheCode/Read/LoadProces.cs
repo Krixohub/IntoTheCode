@@ -33,7 +33,7 @@ namespace IntoTheCode.Read
 
         /// <summary>Error message after parsing/reading input text.</summary>
         /// <exclude/>
-        public List<LoadError> Errors { get; internal set; }
+        public List<ParserError> Errors { get; internal set; }
 
         #region Next 
 

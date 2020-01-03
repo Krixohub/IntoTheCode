@@ -72,13 +72,13 @@ namespace IntoTheCode.Read
             syntaxDoc = CodeDocument.Load(MetaParser.Instance, loadProces);
 
             if (loadProces.Error)
-                throw new SyntaxErrorException(loadProces.ErrorMsg);
+                throw new ParserException(loadProces.ErrorMsg);
             if (syntaxDoc == null)
-                throw new SyntaxErrorException("Can't read syntax." + loadProces.ErrorMsg);
+                throw new ParserException("Can't read syntax." + loadProces.ErrorMsg);
 
             ParserFactory.BuildRules(this, syntaxDoc);
             if (!string.IsNullOrEmpty(DefinitionError))
-                throw new SyntaxErrorException(DefinitionError);
+                throw new ParserException(DefinitionError);
 
         }
 

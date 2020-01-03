@@ -49,7 +49,7 @@
       <DependentUpon>MessageRes.resx</DependentUpon>
     </Compile>
     <Compile Include="Basic\TreeNode.cs" />
-    <Compile Include="Read\LoadError.cs" />
+    <Compile Include="Read\ParserError.cs" />
     <Compile Include="Read\LoadProces.cs" />
     <Compile Include="Read\ParserFactory.cs" />
     <Compile Include="Read\Element\Words\WordIdent.cs" />
@@ -64,7 +64,7 @@
     <Compile Include="Read\Element\Words\WordBase.cs" />
     <Compile Include="Text\HardElement.cs" />
     <Compile Include="Text\CodeElement.cs" />
-    <Compile Include="Basic\SyntaxErrorException.cs" />
+    <Compile Include="Read\ParserException.cs" />
     <Compile Include="Read\Element\Structure\XmlSyntax.cs" />
     <Compile Include="Read\MetaParser.cs" />
     <Compile Include="Read\Element\SetOfElementsBase.cs" />

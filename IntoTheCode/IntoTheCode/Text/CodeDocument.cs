@@ -30,7 +30,12 @@ namespace IntoTheCode
         public static CodeDocument Load(Parser parser, string input)
         {
             LoadProces proces = new LoadProces(new FlatBuffer(input));
-            return Load(parser, proces);
+            CodeDocument doc = parser.ParseString(proces);
+            if (doc != null) return doc;
+
+            var error = new ParserException(proces.ErrorMsg);
+            error.Errors.AddRange(proces.Errors);
+            throw error;
         }
 
         internal static CodeDocument Load(Parser parser, LoadProces proces)

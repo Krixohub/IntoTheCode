@@ -51,7 +51,7 @@ namespace IntoTheCode.Read.Element.Words
             if (proces.TextBuffer.IsEnd(Value.Length))
             {
                 //subStr.SetTo(from);
-                proces.Errors.Add(new LoadError(this, proces.TextBuffer.PointerEnd, 2, string.Format("Expecting symbol '{0}', found EOF.", Value)));
+                proces.Errors.Add(new ParserError(this, proces.TextBuffer.PointerEnd, 2, string.Format("Expecting symbol '{0}', found EOF.", Value)));
                 return SetPointerBackError(proces, subStr.GetFrom());
             }
 
@@ -62,7 +62,7 @@ namespace IntoTheCode.Read.Element.Words
                 {
                     subStr.SetTo(subStr.GetFrom().Clone(Value.Length));
                     //subStr.SetTo(proces.TextBuffer.PointerNextChar);
-                    proces.Errors.Add(new LoadError(this, subStr.GetFrom(), 2, string.Format("Expecting symbol '{0}', found '{1}'.", Value,  proces.TextBuffer.GetSubString(subStr))));
+                    proces.Errors.Add(new ParserError(this, subStr.GetFrom(), 2, string.Format("Expecting symbol '{0}', found '{1}'.", Value,  proces.TextBuffer.GetSubString(subStr))));
                     return SetPointerBackError(proces, from);
                 }
 
