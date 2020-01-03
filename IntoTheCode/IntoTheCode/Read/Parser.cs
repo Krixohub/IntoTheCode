@@ -105,10 +105,10 @@ namespace IntoTheCode.Read
                 if (!proces.TextBuffer.IsEnd())
                 {
                     if (!proces.Error)
-                        proces.ErrorMsg = "End of input not reached. " + proces.TextBuffer.GetLineAndColumn();
+                        //proces.ErrorMsg = "End of input not reached. " + proces.TextBuffer.GetLineAndColumn();
+                        proces.AddSyntaxErrorEof("End of input not reached.");
                     return null;
                 }
-                //throw new SyntaxErrorException("End of input not reached");
 
                 if (elements.Count == 1 && elements[0] is CodeDocument)
                     return elements[0] as CodeDocument;

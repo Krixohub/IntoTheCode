@@ -40,6 +40,6 @@
         //void SetToIndexOf(TextSubString sub, string find, TextPointer from);
         //bool IsEnd();
         bool IsEnd(int length = 1);
-        string GetLineAndColumn(TextPointer from = null);
+        void GetLineAndColumn(out int line, out int column, TextPointer from = null);
     }
 }

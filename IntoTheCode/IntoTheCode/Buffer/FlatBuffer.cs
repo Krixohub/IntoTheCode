@@ -70,14 +70,14 @@
         private void SetToIndexOf(TextSubString sub, string find, TextPointer start)
         { ((FlatSubString)sub).To = _buf.IndexOf(find, ((FlatPointer)start).index, System.StringComparison.Ordinal); }
 
-        public string GetLineAndColumn(TextPointer pos = null)
+        public void GetLineAndColumn(out int line, out int column, TextPointer pos = null)
         {
             if (pos == null)
                 pos = PointerNextChar.Clone();
             int index = ((FlatPointer)pos).index;
             string find = "\n";
             int nlPos = 0;
-            int line = 1;
+            line = 1;
             int findPos = _buf.IndexOf(find, nlPos, System.StringComparison.Ordinal);
             while (_buf.Length > nlPos && findPos > 0 && index > findPos)
             {
@@ -86,7 +86,8 @@
                 findPos = _buf.IndexOf(find, nlPos, System.StringComparison.Ordinal);
             }
             // add 1; the line starts with column 1.
-            return string.Format("Line {0}, colomn {1}", line, index - nlPos + 1); 
+            column = index - nlPos + 1;
+            //return string.Format("Line {0}, colomn {1}", line, index - nlPos + 1); 
         }
 
     }

@@ -44,17 +44,16 @@ namespace IntoTheCode.Read.Element
             proces.TextBuffer.SetPointer(txtPtr);
             if (txtPtr.CompareTo(proces.UnambiguousPointer) < 0 && !proces.Error)
             {
-                proces.Error = true;
-                proces.Errors = new List<ParserError>();
                 ExtractError(proces);
 
                 proces.Errors = proces.Errors.OrderByDescending(e => e.ErrorPoint.CompareTo(txtPtr)).ToList();
                 var errorMax2 = proces.Errors.FirstOrDefault();
 
-                proces.ErrorMsg = "Syntax error (" +
-                    GetRule(this).Name +
-                    "). " + errorMax2.Error + " " + 
-                    proces.TextBuffer.GetLineAndColumn(errorMax2.ErrorPoint);
+                proces.ErrorMsg = errorMax2.Message;
+                //proces.ErrorMsg = "Syntax error (" +
+                //    GetRule(this).Name +
+                //    "). " + errorMax2.Error + " " + 
+                //    proces.TextBuffer.GetLineAndColumn(errorMax2.ErrorPoint);
             }
 
             return false;
@@ -118,7 +117,7 @@ namespace IntoTheCode.Read.Element
                 proces.TextBuffer.IncPointer();
         }
 
-        private Rule GetRule(ParserElementBase e)
+        internal Rule GetRule(ParserElementBase e)
         {
             if (e is Rule) return (Rule)e;
             else return GetRule((ParserElementBase)e.Parent);
