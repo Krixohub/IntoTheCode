@@ -44,22 +44,22 @@ namespace IntoTheCode.Read.Element
         public bool Recursive;
         public TextPointer LastRuleInvoke;
 
-        public override bool Load(LoadProces proces, List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements)
         {
             // End too many recursive calls
-            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
+            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
             if (Recursive)
             {
                 if (LastRuleInvoke != null && LastRuleInvoke.CompareTo(from) == 0) return false;
                 LastRuleInvoke = from;
             }
 
-            return SymbolElement.Load(proces, outElements);
+            return SymbolElement.Load(outElements);
         }
 
-        public override bool ExtractError(LoadProces proces)
+        public override bool ExtractError()
         {
-            return SymbolElement.ExtractError(proces);
+            return SymbolElement.ExtractError();
         }
     }
 }

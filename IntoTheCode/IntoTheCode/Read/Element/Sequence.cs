@@ -23,20 +23,20 @@ namespace IntoTheCode.Read.Element
             return new Sequence(CloneSubElementsWithProces(proces)) { Proces = proces };
         }
 
-        public override bool Load(LoadProces proces, List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements)
         {
-            TextPointer p = proces.TextBuffer.PointerNextChar.Clone();
-            while (LoadSet(proces, outElements) && proces.TextBuffer.PointerNextChar.CompareTo(p) > 0) 
-                proces.TextBuffer.PointerNextChar.CopyTo(p);
+            TextPointer p = Proces.TextBuffer.PointerNextChar.Clone();
+            while (LoadSet(outElements) && Proces.TextBuffer.PointerNextChar.CompareTo(p) > 0)
+                Proces.TextBuffer.PointerNextChar.CopyTo(p);
 
-            return !proces.Error;
+            return !Proces.Error;
         }
 
-        public override bool ExtractError(LoadProces proces)
+        public override bool ExtractError()
         {
-            TextPointer p = proces.TextBuffer.PointerNextChar.Clone();
-            while (ExtractErrorSet(proces) && proces.TextBuffer.PointerNextChar.CompareTo(p) > 0)
-                proces.TextBuffer.PointerNextChar.CopyTo(p);
+            TextPointer p = Proces.TextBuffer.PointerNextChar.Clone();
+            while (ExtractErrorSet() && Proces.TextBuffer.PointerNextChar.CompareTo(p) > 0)
+                Proces.TextBuffer.PointerNextChar.CopyTo(p);
 
             return true;
         }

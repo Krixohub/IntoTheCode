@@ -27,77 +27,77 @@ namespace IntoTheCode.Read.Element.Words
         public override string GetSyntax() { return MetaParser.WordString_; }
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(LoadProces proces, List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements)
         {
-            SkipWhiteSpace(proces);
+            SkipWhiteSpace();
 
-            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
+            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
 
-            if (proces.TextBuffer.IsEnd(2)) return false;
+            if (Proces.TextBuffer.IsEnd(2)) return false;
 
-            if (proces.TextBuffer.GetChar() != '\'')
-                return false; // SetPointerBack(proces, from, this);
+            if (Proces.TextBuffer.GetChar() != '\'')
+                return false; // SetPointerBack(Proces, from, this);
 
-            proces.TextBuffer.IncPointer();
-            TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
-            proces.TextBuffer.IncPointer();
-            proces.TextBuffer.SetToIndexOf(subStr, "'");
+            Proces.TextBuffer.IncPointer();
+            TextSubString subStr = Proces.TextBuffer.NewSubStringFrom();
+            Proces.TextBuffer.IncPointer();
+            Proces.TextBuffer.SetToIndexOf(subStr, "'");
 
             if (!subStr.ToIsValid())
-                return SetPointerBack(proces, from, this);
+                return SetPointerBack(from, this);
 
-            outElements.Add(new CodeElement(proces.TextBuffer, this, subStr));
-            proces.TextBuffer.SetPointerTo(subStr);
-            proces.TextBuffer.IncPointer();
+            outElements.Add(new CodeElement(Proces.TextBuffer, this, subStr));
+            Proces.TextBuffer.SetPointerTo(subStr);
+            Proces.TextBuffer.IncPointer();
 
             return true;
         }
 
-        public override bool ExtractError(LoadProces proces)
+        public override bool ExtractError()
         {
-            //TextSubString subStr1 = proces.TextBuffer.NewSubStringFrom();
-            //TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
-            SkipWhiteSpace(proces);
-            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
-            //TextSubString subStr1 = proces.TextBuffer.NewSubStringFrom();
+            //TextSubString subStr1 = Proces.TextBuffer.NewSubStringFrom();
+            //TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
+            SkipWhiteSpace();
+            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
+            //TextSubString subStr1 = Proces.TextBuffer.NewSubStringFrom();
 
-            if (proces.TextBuffer.IsEnd(2))
+            if (Proces.TextBuffer.IsEnd(2))
             {
                 //subStr1.SetTo(subStr1.GetFrom());
-                //var element = new CodeElement(proces.TextBuffer, this, subStr1, "Expecting string, found EOF.");
+                //var element = new CodeElement(Proces.TextBuffer, this, subStr1, "Expecting string, found EOF.");
                 //errorWords.Add(element);
-                //proces.Errors.Add(new ParserError(this, proces.TextBuffer.PointerEnd, 2, "Expecting string, found EOF."));
-                proces.AddSyntaxError(this, proces.TextBuffer.PointerEnd, 2, "Expecting string, found EOF.");
+                //Proces.Errors.Add(new ParserError(this, Proces.TextBuffer.PointerEnd, 2, "Expecting string, found EOF."));
+                Proces.AddSyntaxError(this, Proces.TextBuffer.PointerEnd, 2, "Expecting string, found EOF.");
                 return false;
             };
 
 
-            if (proces.TextBuffer.GetChar() != '\'')
+            if (Proces.TextBuffer.GetChar() != '\'')
             {
                 //subStr1.SetTo(subStr1.GetFrom());
-                //errorWords.Add(new CodeElement(proces.TextBuffer, this, subStr1, "Expecting string."));
-                //proces.Errors.Add(new ParserError(this, from, 2, "Expecting string."));
-                proces.AddSyntaxError(this, from, 2, "Expecting string.");
+                //errorWords.Add(new CodeElement(Proces.TextBuffer, this, subStr1, "Expecting string."));
+                //Proces.Errors.Add(new ParserError(this, from, 2, "Expecting string."));
+                Proces.AddSyntaxError(this, from, 2, "Expecting string.");
                 return false;
             }
 
-            proces.TextBuffer.IncPointer();
-            TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
-            proces.TextBuffer.IncPointer();
-            proces.TextBuffer.SetToIndexOf(subStr, "'");
+            Proces.TextBuffer.IncPointer();
+            TextSubString subStr = Proces.TextBuffer.NewSubStringFrom();
+            Proces.TextBuffer.IncPointer();
+            Proces.TextBuffer.SetToIndexOf(subStr, "'");
 
             if (!subStr.ToIsValid())
             {
                 //subStr.SetTo(subStr.GetFrom());
-                //errorWords.Add(new CodeElement(proces.TextBuffer, this, subStr, "Expecting string ending."));
-                //proces.Errors.Add(new ParserError(this, from.Clone(1), 2, "Expecting string ending."));
-                proces.AddSyntaxError(this, from.Clone(1), 2, "Expecting string ending.");
-                return SetPointerBackError(proces, from);
+                //errorWords.Add(new CodeElement(Proces.TextBuffer, this, subStr, "Expecting string ending."));
+                //Proces.Errors.Add(new ParserError(this, from.Clone(1), 2, "Expecting string ending."));
+                Proces.AddSyntaxError(this, from.Clone(1), 2, "Expecting string ending.");
+                return SetPointerBackError(from);
             }
 
-            //outElements.Add(new CodeElement(proces.TextBuffer, this, subStr));
-            proces.TextBuffer.SetPointerTo(subStr);
-            proces.TextBuffer.IncPointer();
+            //outElements.Add(new CodeElement(Proces.TextBuffer, this, subStr));
+            Proces.TextBuffer.SetPointerTo(subStr);
+            Proces.TextBuffer.IncPointer();
 
             return true;
         }

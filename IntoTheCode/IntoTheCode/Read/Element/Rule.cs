@@ -34,6 +34,8 @@ namespace IntoTheCode.Read.Element
         {
             var element = new Rule(Name, SubElements.Select(r => ((ParserElementBase)r).CloneWithProces(proces)).ToArray());// { Parser = Parser };
             element.Proces = proces;
+            element.Collapse = Collapse;
+            element.Trust = Trust;
             //element._elementContent = ElementContent;
             return element;
         }
@@ -73,13 +75,13 @@ namespace IntoTheCode.Read.Element
 
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(LoadProces proces, List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements)
         {
-            TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
+            TextSubString subStr = Proces.TextBuffer.NewSubStringFrom();
 
             if (Collapse)
             {
-                if (!LoadSet(proces, outElements))
+                if (!LoadSet(outElements))
                     return false;
             }
             else
@@ -88,59 +90,59 @@ namespace IntoTheCode.Read.Element
                 CodeElement element;
                 if (ElementContent == ElementContentType.OneValue)
                 {
-                    if (!(SubElements[0] as ParserElementBase).Load(proces, outSubNotes))
+                    if (!(SubElements[0] as ParserElementBase).Load(outSubNotes))
                         return false; // SetPointerBack(proces, from, SubElements[0] as ParserElementBase);
 
                     if (outSubNotes.Count == 1)
                     {
-                        element = new CodeElement(proces.TextBuffer, this, ((CodeElement)outSubNotes[0]).ValuePointer);
+                        element = new CodeElement(Proces.TextBuffer, this, ((CodeElement)outSubNotes[0]).ValuePointer);
                         element.ValueReader = ((CodeElement)outSubNotes[0]).ValueReader;
                     }
                     else // count = 0
                     {
-                        subStr.SetTo(proces.TextBuffer.PointerNextChar);
-                        element = new CodeElement(proces.TextBuffer, this, subStr);
+                        subStr.SetTo(Proces.TextBuffer.PointerNextChar);
+                        element = new CodeElement(Proces.TextBuffer, this, subStr);
                     }
 
                     outElements.Add(element);
                 }
                 else
                 {
-                    if (!LoadSet(proces, outSubNotes))
+                    if (!LoadSet(outSubNotes))
                         return false;
 
-                    element = new CodeElement(proces.TextBuffer, this, subStr);
+                    element = new CodeElement(Proces.TextBuffer, this, subStr);
                     element.Add(outSubNotes);
                     outElements.Add(element);
                 }
             }
 
             // If this is a 'division' set unambiguous
-            if (Trust && proces.TextBuffer.PointerNextChar.CompareTo(subStr.GetFrom()) > 0) proces.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
+            if (Trust && Proces.TextBuffer.PointerNextChar.CompareTo(subStr.GetFrom()) > 0) Proces.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
             return true;
 
         }
 
-        public override bool ExtractError(LoadProces proces)
+        public override bool ExtractError()
         {
             //TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
+            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
             //List<TreeNode> outSubNotes = new List<TreeNode>();
             //CodeElement element;
 
             if (Collapse)
-                return ExtractErrorSet(proces);
+                return ExtractErrorSet();
 
             if (ElementContent == ElementContentType.OneValue)
             {
-                if (!(SubElements[0] as ParserElementBase).ExtractError(proces))
-                    return SetPointerBackError(proces, from);
+                if (!(SubElements[0] as ParserElementBase).ExtractError())
+                    return SetPointerBackError(from);
             }
 
             else
             {
-                if (!ExtractErrorSet(proces))
-                    return SetPointerBackError(proces, from);
+                if (!ExtractErrorSet())
+                    return SetPointerBackError(from);
 
             }
             

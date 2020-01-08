@@ -90,45 +90,35 @@ namespace IntoTheCode.Read
         {
             List<Rule> procesRules = Rules.Select(r => r.CloneWithProces(proces) as Rule).ToList();
             ParserFactory.InitializeSyntax(this, procesRules);
+            var elements = new List<TreeNode>();
+            bool ok;
             try
             {
-                var elements = new List<TreeNode>();
-                if (!procesRules[0].Load(proces, elements))
-                //if (!Rules[0].Load(proces, elements))
-                {
-                    if (!proces.Error)
-                        proces.ErrorMsg = string.Format("Syntax error proces '{0}'", procesRules[0].Name);
-                    //proces.ErrorMsg = string.Format("Syntax error proces '{0}'", Rules[0].Name);
-                    return null;
-                }
+                ok = procesRules[0].Load(elements);
 
                 // skip remaining white spaces
-                //Rules[0].SkipWhiteSpace(proces);
-                procesRules[0].SkipWhiteSpace(proces);
-
-                if (!proces.TextBuffer.IsEnd())
-                    if (!proces.TextBuffer.IsEnd())
-                    {
-                        if (!proces.Error)
-                        //proces.ErrorMsg = "End of input not reached. " + proces.TextBuffer.GetLineAndColumn();
-                        proces.AddSyntaxErrorEof("End of input not reached.");
-                    return null;
-                }
-
-                if (elements.Count == 1 && elements[0] is CodeDocument)
-                    return elements[0] as CodeDocument;
-
-                if (elements.Count == 1)
-                    return new CodeDocument(elements[0].SubElements) { Name = elements[0].Name };
-
-                throw new Exception(string.Format("First rule '{0} must represent all document and have Tag=true", procesRules[0].Name));
-                //throw new Exception(string.Format("First rule '{0} must represent all document and have Tag=true", Rules[0].Name));
+                procesRules[0].SkipWhiteSpace();
             }
             catch (Exception e)
             {
-                proces.ErrorMsg = DefinitionError == null ? e.Message : "DefinitionError: " + DefinitionError;
+                proces.ErrorMsg = "IntoTheCode developer error: " + e.Message;
                 return null;
             }
+
+            if (proces.Error) return null;
+
+            if (!ok)
+                proces.AddParseError(string.Format("Can't read '{0}'", procesRules[0].Name));
+            else if (!proces.TextBuffer.IsEnd())
+                proces.AddSyntaxErrorEof("End of input not reached.");
+            else if (elements.Count == 1 && elements[0] is CodeDocument)
+                return elements[0] as CodeDocument;
+            else if (elements.Count == 1)
+                return new CodeDocument(elements[0].SubElements) { Name = elements[0].Name };
+            else
+                proces.AddParseError(string.Format("First rule '{0} must represent all document and have Tag=true", procesRules[0].Name));
+
+            return null;
         }
 
         //#endregion Build syntax elements from dokument

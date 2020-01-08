@@ -53,25 +53,25 @@ namespace IntoTheCode.Read.Element
         }
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(LoadProces proces, List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements)
         {
             //TextSubString ptr = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
+            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
             List<TreeNode> subs = new List<TreeNode>();
-            if (!(SubElements[0] as ParserElementBase).Load(proces, subs) || from.CompareTo(proces.TextBuffer.PointerNextChar) == 0)
-                if (proces.Error || 
-                    (!(SubElements[1] as ParserElementBase).Load(proces, subs) 
-                    || from.CompareTo(proces.TextBuffer.PointerNextChar) == 0))
+            if (!(SubElements[0] as ParserElementBase).Load(subs) || from.CompareTo(Proces.TextBuffer.PointerNextChar) == 0)
+                if (Proces.Error || 
+                    (!(SubElements[1] as ParserElementBase).Load(subs) 
+                    || from.CompareTo(Proces.TextBuffer.PointerNextChar) == 0))
                     return false;
             
             outElements.AddRange(subs);
             return true;
         }
 
-        public override bool ExtractError(LoadProces proces)
+        public override bool ExtractError()
         {
-            bool ok = (SubElements[0] as ParserElementBase).ExtractError(proces);
-            ok = ok || (SubElements[1] as ParserElementBase).ExtractError(proces);
+            bool ok = (SubElements[0] as ParserElementBase).ExtractError();
+            ok = ok || (SubElements[1] as ParserElementBase).ExtractError();
 
             return ok;
         }

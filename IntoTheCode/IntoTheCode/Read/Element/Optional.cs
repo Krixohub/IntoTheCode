@@ -25,17 +25,17 @@ namespace IntoTheCode.Read.Element
         public override string GetSyntax() { return "[" + base.GetSyntax() + "]"; }
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(LoadProces proces, List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements)
         {
             List<TreeNode> elements = new List<TreeNode>();
-            if (LoadSet(proces, outElements))
+            if (LoadSet(outElements))
                 outElements.AddRange(elements);
-            return !proces.Error;
+            return !Proces.Error;
         }
 
-        public override bool ExtractError(LoadProces proces)
+        public override bool ExtractError()
         {
-            ExtractErrorSet(proces);
+            ExtractErrorSet();
             return true;
         }
     }

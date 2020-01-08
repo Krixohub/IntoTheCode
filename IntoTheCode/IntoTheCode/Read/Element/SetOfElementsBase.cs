@@ -34,13 +34,13 @@ namespace IntoTheCode.Read.Element
             return ElementContentType.Many;
         }
 
-        protected bool LoadSet(LoadProces proces, List<TreeNode> outElements)
+        protected bool LoadSet(List<TreeNode> outElements)
         {
-            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
+            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
             List<TreeNode> elements = new List<TreeNode>();
             foreach (var item in SubElements.OfType<ParserElementBase>())
-                if (!item.Load(proces, elements))
-                    return SetPointerBack(proces, from, item);
+                if (!item.Load(elements))
+                    return SetPointerBack(from, item);
 
             foreach (var item in elements)
                 outElements.Add(item);
@@ -48,13 +48,13 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        protected bool ExtractErrorSet(LoadProces proces)
+        protected bool ExtractErrorSet()
         {
-            TextPointer from = proces.TextBuffer.PointerNextChar.Clone();
+            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
             List<WordBase> elements = new List<WordBase>();
             foreach (var item in SubElements.OfType<ParserElementBase>())
-                if (!item.ExtractError(proces))
-                    return SetPointerBack(proces, from, item);
+                if (!item.ExtractError())
+                    return SetPointerBack(from, item);
 
             return true;
         }

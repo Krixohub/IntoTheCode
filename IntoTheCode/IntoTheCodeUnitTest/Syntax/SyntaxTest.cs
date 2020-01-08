@@ -25,8 +25,8 @@ namespace TestCodeInternal.UnitTest
             //            reader.TextBuffer = new FlatBuffer("  sym01  ");
             //var buf = new FlatBuffer("  sym01  ");
             var outNo = new List<TreeNode>();
-            var idn = new WordIdent("kurt");
-            Assert.AreEqual(true, idn.Load(reading, outNo), "Identifier: Can't read");
+            var idn = new WordIdent("kurt") { Proces = reading };
+            Assert.AreEqual(true, idn.Load(outNo), "Identifier: Can't read");
             var node = outNo[0] as CodeElement;
             Assert.IsNotNull(node, "Identifier: Can't find node after reading");
             Assert.AreEqual("sym01", node.Value, "Identifier: The value is not correct");
@@ -37,8 +37,8 @@ namespace TestCodeInternal.UnitTest
 
             // load symbol
             reading.TextBuffer = new FlatBuffer(" 'Abcde' ");
-            var str = new WordString();
-            Assert.AreEqual(true, str.Load(reading, outNo), "String: Can't read");
+            var str = new WordString() { Proces = reading };
+            Assert.AreEqual(true, str.Load(outNo), "String: Can't read");
             node = outNo[1] as CodeElement;
             Assert.IsNotNull(node, "String: Can't find node after reading");
             Assert.AreEqual("Abcde", node.Value, "String: The value is not correct");
@@ -50,17 +50,18 @@ namespace TestCodeInternal.UnitTest
 
             // load string
             reading.TextBuffer = new FlatBuffer("  symbol1  ");
-            var sym = new WordSymbol("symbol1");
-            Assert.AreEqual(true, sym.Load(reading, outNo), "Symbol: Can't read");
+            var sym = new WordSymbol("symbol1") { Proces = reading };
+            Assert.AreEqual(true, sym.Load(outNo), "Symbol: Can't read");
             Assert.AreEqual(2, outNo.Count, "Symbol: Load should not add any nodes");
             Assert.AreEqual(9, ((FlatPointer)reading.TextBuffer.PointerNextChar).index, "Symbol: The buffer pointer is of after");
 
             // load string + string + name
             reading.TextBuffer = new FlatBuffer("  Aname     symbol1      'Fghij'      sym02  ");
-            Assert.AreEqual(true, idn.Load(reading, outNo), "Can't read a combinded Identifier");
-            Assert.AreEqual(true, sym.Load(reading, outNo), "Can't read a combinded Symbol");
-            Assert.AreEqual(true, str.Load(reading, outNo), "Can't read a combinded String");
-            Assert.AreEqual(true, idn.Load(reading, outNo), "Can't read a combinded Identifier");
+            
+            Assert.AreEqual(true, idn.Load(outNo), "Can't read a combinded Identifier");
+            Assert.AreEqual(true, sym.Load(outNo), "Can't read a combinded Symbol");
+            Assert.AreEqual(true, str.Load(outNo), "Can't read a combinded String");
+            Assert.AreEqual(true, idn.Load(outNo), "Can't read a combinded Identifier");
             node = outNo[3] as CodeElement;
             Assert.IsNotNull(node, "Can't find node after reading combinded Quote");
             Assert.AreEqual("Fghij", node.Value, "The combinded Quote value is not correct");
@@ -75,42 +76,46 @@ namespace TestCodeInternal.UnitTest
         public void Parser11SyntaxHardcode()
         {
             var parser = new Parser();
-            parser.Rules = GetSyntaxTestElements(parser);
 
             var debug = MetaParser.GetHardCodeParser().GetSyntax();
             var outNo = new List<TreeNode>();
             LoadProces proces = new LoadProces(null);
+            GetSyntaxTestElements(parser, proces);
             string doc = string.Empty;
             outNo = new List<TreeNode>();
             Rule rule;
 
             //  Read a varname
-            rule = parser.Rules.FirstOrDefault(e => e.Name == "TestIdentifier");
             proces.TextBuffer = new FlatBuffer("  Bname  ");
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "TestIdentifier");
             //parser.TextBuffer = new FlatBuffer("  Bname  ");
-            Assert.AreEqual(true, rule.Load(proces, outNo), "Equation TestIdentifier: cant read");
+            Assert.AreEqual(true, rule.Load(outNo), "Equation TestIdentifier: cant read");
             doc = ((CodeElement)outNo[0]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<TestIdentifier>Bname</TestIdentifier>\r\n", doc, "Equation TestOption: document fail");
 
+
+
+
             // Read a 'or syntax = varname'
-            rule = parser.Rules.FirstOrDefault(e => e.Name == "syntax");
             proces.TextBuffer = new FlatBuffer("  Bcccc  ");
+            //parser.Rules = GetSyntaxTestElements(parser, proces);
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "syntax");
             //parser.TextBuffer = new FlatBuffer("  Bcccc  ");
-            Assert.AreEqual(true, rule.Load(proces, outNo), "Equation syntax varname: cant read");
+            Assert.AreEqual(true, rule.Load(outNo), "Equation syntax varname: cant read");
             doc = ((CodeElement)outNo[1]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<syntax>\r\n  <TestIdentifier>Bcccc</TestIdentifier>\r\n</syntax>\r\n", doc, "Equation TestOption: document fail");
 
             // Read a 'or TestString'
-            rule = parser.Rules.FirstOrDefault(e => e.Name == "syntax");
             proces.TextBuffer = new FlatBuffer(" 'Ccccc'  ");
-            Assert.AreEqual(true, rule.Load(proces, outNo), "Equation syntax TestString: cant read");
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "syntax");
+            Assert.AreEqual(true, rule.Load(outNo), "Equation syntax TestString: cant read");
             doc = ((CodeElement)outNo[2]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<syntax>\r\n  <string>Ccccc</string>\r\n</syntax>\r\n", doc, "Equation TestOption: document fail");
 
             // Read a TestSeries
-            rule = parser.Rules.FirstOrDefault(e => e.Name == "TestSeries");
             proces.TextBuffer = new FlatBuffer("  TestSeries jan ole Mat  ");
-            Assert.AreEqual(true, rule.Load(proces, outNo), "Equation TestSeries: cant read");
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "TestSeries");
+            Assert.AreEqual(true, rule.Load(outNo), "Equation TestSeries: cant read");
 
             doc = ((CodeElement)outNo[3]).ToMarkupProtected(string.Empty);
             Assert.AreEqual(@"<TestSeries>
@@ -121,20 +126,21 @@ namespace TestCodeInternal.UnitTest
 ", doc, "Equation TestOption: document fail");
 
             // Read a TestOption
-            rule = parser.Rules.FirstOrDefault(e => e.Name == "TestOption");
             proces.TextBuffer = new FlatBuffer("  TestOption 'qwerty'  ");
-            Assert.AreEqual(true, rule.Load(proces, outNo), "Equation TestOption: cant read");
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "TestOption");
+            Assert.AreEqual(true, rule.Load(outNo), "Equation TestOption: cant read");
             doc = ((CodeElement)outNo[4]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<TestOption>\r\n  <TestQuote2>qwerty</TestQuote2>\r\n</TestOption>\r\n", doc, "Equation TestOption: document fail");
             proces.TextBuffer = new FlatBuffer("  TestOption wer  ");
-            Assert.AreEqual(true, rule.Load(proces, outNo), "Equation TestOption: cant read");
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "TestOption");
+            Assert.AreEqual(true, rule.Load(outNo), "Equation TestOption: cant read");
             doc = ((CodeElement)outNo[5]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<TestOption>\r\n  <TestIdentifier>wer</TestIdentifier>\r\n</TestOption>\r\n", doc, "Equation TestOption: document fail");
 
             // Read: TestLines       = 'TestLines' { VarName '=' Quote ';' };
-            rule = parser.Rules.FirstOrDefault(e => e.Name == "TestLines");
             proces.TextBuffer = new FlatBuffer("  TestLines name = 'Oscar'; addr = 'GoRoad'; \r\n mobile = '555 55'; ");
-            Assert.AreEqual(true, rule.Load(proces, outNo), "Equation TestLines: cant read");
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "TestLines");
+            Assert.AreEqual(true, rule.Load(outNo), "Equation TestLines: cant read");
             doc = ((CodeElement)outNo[6]).ToMarkupProtected(string.Empty);
             Assert.AreEqual(@"<TestLines>
   <localVar>name</localVar>
@@ -342,7 +348,7 @@ type = 'string'; ";
         #region utillity functions
 
         /// <summary>A syntax for test. Hard coded.</summary>
-        private List<Rule> GetSyntaxTestElements(Parser parser)
+        private void GetSyntaxTestElements(Parser parser, LoadProces proces)
         {
             //bool equal = false;
             //bool tag = true;
@@ -389,11 +395,16 @@ type = 'string'; ";
             //list.Add(new Equation("TestQuote2",
             //    new Quote()));
 
-            parser.Rules = list;
+            //parser.Rules = list;
+            //ParserFactory.InitializeSyntax(parser, parser.Rules);
+            //ParserFactory.ValidateSyntax(parser);
+
+
+            parser.Rules = list.Select(r => r.CloneWithProces(proces) as Rule).ToList();
             //foreach (var eq in list) eq.Parser = syntax;
             ParserFactory.InitializeSyntax(parser, parser.Rules);
             ParserFactory.ValidateSyntax(parser);
-            return list;
+            //return list;
         }
 
         /// <summary>A hard coded text syntax.</summary>

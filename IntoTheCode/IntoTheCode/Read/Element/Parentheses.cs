@@ -24,14 +24,14 @@ namespace IntoTheCode.Read.Element
         public override string GetSyntax() { return "(" + base.GetSyntax() + ")"; }
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(LoadProces proces, List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements)
         {
-            return LoadSet(proces, outElements);
+            return LoadSet(outElements);
         }
 
-        public override bool ExtractError(LoadProces proces)
+        public override bool ExtractError()
         {
-            return ExtractErrorSet(proces);
+            return ExtractErrorSet();
         }
     }
 }

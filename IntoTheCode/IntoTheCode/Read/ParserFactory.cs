@@ -208,25 +208,25 @@ namespace IntoTheCode.Read
             }
 
             foreach (Rule rule in rules)
-                InitializeElements(parser, rule.SubElements.OfType<ParserElementBase>());
+                InitializeElements(parser, rule.SubElements.OfType<ParserElementBase>(), rules);
 
             return true;
         }
 
-        internal static void InitializeElements(Parser parser, IEnumerable<ParserElementBase> elements)
+        internal static void InitializeElements(Parser parser, IEnumerable<ParserElementBase> elements, List<Rule> rules)
         {
             if (elements == null || elements.Count() == 0) return;
             foreach (ParserElementBase element in elements)
 
             {
                 var ruleId = element as RuleLink;
-                if (ruleId != null && ruleId.SymbolElement == null) ruleId.SymbolElement = Resolve(parser, ruleId.GetValue());
-                InitializeElements(parser, element.SubElements.OfType<ParserElementBase>());
+                if (ruleId != null && ruleId.SymbolElement == null) ruleId.SymbolElement = Resolve(rules, ruleId.GetValue());
+                InitializeElements(parser, element.SubElements.OfType<ParserElementBase>(), rules);
                 element.Initialize();
             }
         }
 
-        private static ParserElementBase Resolve(Parser parser, string name)
+        private static ParserElementBase Resolve(List<Rule> rules, string name)
         {
             //switch (name)
             //{
@@ -234,7 +234,7 @@ namespace IntoTheCode.Read
             //    case MetaParser.WordName___: return new WordName(name);// { TodoResolve = true };
             //}
 
-            Rule rule = parser.Rules.FirstOrDefault(r => r.Name == name);
+            Rule rule = rules.FirstOrDefault(r => r.Name == name);
             if (rule == null)
                 throw new ParserException(string.Format("Identifier '{0}' not found in syntax", name));
             return rule;

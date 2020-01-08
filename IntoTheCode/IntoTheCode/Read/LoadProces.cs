@@ -71,6 +71,20 @@ namespace IntoTheCode.Read
             Errors.Add(err);
         }
 
+        public void AddParseError(string error)
+        {
+            var err = new ParserError();
+            TextBuffer.GetLineAndColumn(out err.Line, out err.Column);
+            string s = string.Format("Line {0}, colomn {1}", err.Line, err.Column);
+
+            err.Message = error + " " + s;
+
+            // todo is this ok?
+            ErrorMsg = err.Message;
+            if (Errors == null) Errors = new List<ParserError>();
+            Errors.Add(err);
+        }
+
         #endregion add errors
 
         #region Next 

@@ -25,37 +25,17 @@ namespace IntoTheCode.Read.Element
         }
         public abstract ElementContentType GetElementContent();
 
+        /// <summary>Clone this parser element, with sub elements, and set proces.</summary>
+        /// <param name="proces">The load proces.</param>
+        /// <returns>The new clone.</returns>
         public abstract ParserElementBase CloneWithProces(LoadProces proces);
 
         public override string GetValue() { return _value; }
 
         public virtual void Initialize() { }
 
-        protected LoadProces Proces;
-
-        /// <summary>Clone this parser element, with sub elements, and set proces.</summary>
-        /// <param name="proces">The load proces.</param>
-        /// <returns>The new clone.</returns>
-        //public ParserElementBase CloneWithProces(LoadProces proces)
-        ////element.Proces = proces;
-        ////element._elementContent = ElementContent;
-        //{
-        //    ParserElementBase element;
-        //    try
-        //    {
-
-        //         element = Clone();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return null;
-        //    }
-        //    //element.Proces = proces;
-        //    //element._elementContent = ElementContent;
-        //    //if (SubElements != null)
-        //    //    element.Add(SubElements.Select(r => ((ParserElementBase)r).CloneWithProces(proces)));
-        //    return element;
-        //}
+        protected internal LoadProces Proces;
+        
 
         //public byte Color
         //{
@@ -67,21 +47,17 @@ namespace IntoTheCode.Read.Element
         /// <param name="proces">The load proces.</param>
         /// <param name="txtPtr">Pointer to set.</param>
         /// <returns>Always return false.</returns>
-        protected bool SetPointerBack(LoadProces proces, TextPointer txtPtr, ParserElementBase item)
+        protected bool SetPointerBack(TextPointer txtPtr, ParserElementBase item)
         {
-            proces.TextBuffer.SetPointer(txtPtr);
-            if (txtPtr.CompareTo(proces.UnambiguousPointer) < 0 && !proces.Error)
+            Proces.TextBuffer.SetPointer(txtPtr);
+            if (txtPtr.CompareTo(Proces.UnambiguousPointer) < 0 && !Proces.Error)
             {
-                ExtractError(proces);
+                ExtractError();
 
-                proces.Errors = proces.Errors.OrderByDescending(e => e.ErrorPoint.CompareTo(txtPtr)).ToList();
-                var errorMax2 = proces.Errors.FirstOrDefault();
+                Proces.Errors = Proces.Errors.OrderByDescending(e => e.ErrorPoint.CompareTo(txtPtr)).ToList();
+                var errorMax2 = Proces.Errors.FirstOrDefault();
 
-                proces.ErrorMsg = errorMax2.Message;
-                //proces.ErrorMsg = "Syntax error (" +
-                //    GetRule(this).Name +
-                //    "). " + errorMax2.Error + " " + 
-                //    proces.TextBuffer.GetLineAndColumn(errorMax2.ErrorPoint);
+                Proces.ErrorMsg = errorMax2.Message;
             }
 
             return false;
@@ -91,12 +67,12 @@ namespace IntoTheCode.Read.Element
         /// <param name="proces">The load proces.</param>
         /// <param name="txtPtr">Pointer to set.</param>
         /// <returns>Always return false.</returns>
-        protected bool SetPointerBackError(LoadProces proces, TextPointer txtPtr)
+        protected bool SetPointerBackError(TextPointer txtPtr)
         {
             //if (this is WordBase)
             //    proces.Errors.Add(new LoadError((WordBase)this, proces.TextBuffer.PointerNextChar.Clone(), 2, "Unexpected string."));
             //if (proces.TextBuffer.PointerNextChar.CompareTo())
-            proces.TextBuffer.SetPointer(txtPtr);
+            Proces.TextBuffer.SetPointer(txtPtr);
             return false;
         }
 
@@ -129,20 +105,20 @@ namespace IntoTheCode.Read.Element
         /// <param name="proces"></param>
         /// <param name="outElements">Read elements.</param>
         /// <returns>True = succes.</returns>
-        public abstract bool Load(LoadProces proces, List<TreeNode> outElements);
+        public abstract bool Load(List<TreeNode> outElements);
 
         /// <summary>
         /// Load an element while storing possible errors.
         /// </summary>
         /// <param name="proces"></param>
         /// <returns>True = succes.</returns>
-        public abstract bool ExtractError(LoadProces proces);
+        public abstract bool ExtractError();
 
         // todo:2 consider remove this method to parser.
-        internal protected void SkipWhiteSpace(LoadProces proces)
+        internal protected void SkipWhiteSpace()
         {
-            while (!proces.TextBuffer.IsEnd() && " \r\n\t".Contains(proces.TextBuffer.GetChar()))
-                proces.TextBuffer.IncPointer();
+            while (!Proces.TextBuffer.IsEnd() && " \r\n\t".Contains(Proces.TextBuffer.GetChar()))
+                Proces.TextBuffer.IncPointer();
         }
 
         internal Rule GetRule(ParserElementBase e)
