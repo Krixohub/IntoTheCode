@@ -342,7 +342,7 @@ type = 'string'; ";
         #region utillity functions
 
         /// <summary>A syntax for test. Hard coded.</summary>
-        private List<Rule> GetSyntaxTestElements(Parser syntax)
+        private List<Rule> GetSyntaxTestElements(Parser parser)
         {
             //bool equal = false;
             //bool tag = true;
@@ -389,10 +389,10 @@ type = 'string'; ";
             //list.Add(new Equation("TestQuote2",
             //    new Quote()));
 
-            syntax.Rules = list;
-            foreach (var eq in list) eq.Parser = syntax;
-            ParserFactory.InitializeSyntax(syntax);
-            ParserFactory.ValidateSyntax(syntax);
+            parser.Rules = list;
+            //foreach (var eq in list) eq.Parser = syntax;
+            ParserFactory.InitializeSyntax(parser, parser.Rules);
+            ParserFactory.ValidateSyntax(parser);
             return list;
         }
 

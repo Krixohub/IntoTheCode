@@ -40,14 +40,14 @@ namespace IntoTheCode.Read
                 string debug2 = debug1 + rule.GetSyntax();
             }
 
-            return InitializeSyntax(parser) &&
+            return InitializeSyntax(parser, parser.Rules) &&
                     ApplySettingsFromSyntax(parser, doc) &&
                     ValidateSyntax(parser);
         }
 
         private static Rule AddRule(Parser parser, string ruleId, params ParserElementBase[] elements)
         {
-            var rule = new Rule(ruleId, elements) { Parser = parser/*, Tag = true*/ };
+            var rule = new Rule(ruleId, elements);// { Parser = parser/*, Tag = true*/ };
             parser.Rules.Add(rule);
             return rule;
         }
@@ -193,19 +193,21 @@ namespace IntoTheCode.Read
                 ValidateSyntaxElement(sub);
         }
 
-        internal static bool InitializeSyntax(Parser parser)
+        internal static bool InitializeSyntax(Parser parser, List<Rule> rules)
         {
-            foreach (Rule rule in parser.Rules)
+            foreach (Rule rule in rules)
             {
+                rule.Parser = parser;
+
                 string debug1 = "" + parser.Level + ": " + rule.GetSyntax().NL() + 
                     rule.ToMarkupProtected(string.Empty);
 
-                if (parser.Rules.Any(r => r != rule && r.Name.ToLower() == rule.Name.ToLower()))
+                if (rules.Any(r => r != rule && r.Name.ToLower() == rule.Name.ToLower()))
                     throw new ParserException(string.Format("Link syntax {1}. Identifier {0} is defined twice",
                         rule.Name, parser.Name));
             }
 
-            foreach (Rule rule in parser.Rules)
+            foreach (Rule rule in rules)
                 InitializeElements(parser, rule.SubElements.OfType<ParserElementBase>());
 
             return true;

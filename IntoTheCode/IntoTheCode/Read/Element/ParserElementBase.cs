@@ -25,9 +25,37 @@ namespace IntoTheCode.Read.Element
         }
         public abstract ElementContentType GetElementContent();
 
+        public abstract ParserElementBase CloneWithProces(LoadProces proces);
+
         public override string GetValue() { return _value; }
 
         public virtual void Initialize() { }
+
+        protected LoadProces Proces;
+
+        /// <summary>Clone this parser element, with sub elements, and set proces.</summary>
+        /// <param name="proces">The load proces.</param>
+        /// <returns>The new clone.</returns>
+        //public ParserElementBase CloneWithProces(LoadProces proces)
+        ////element.Proces = proces;
+        ////element._elementContent = ElementContent;
+        //{
+        //    ParserElementBase element;
+        //    try
+        //    {
+
+        //         element = Clone();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return null;
+        //    }
+        //    //element.Proces = proces;
+        //    //element._elementContent = ElementContent;
+        //    //if (SubElements != null)
+        //    //    element.Add(SubElements.Select(r => ((ParserElementBase)r).CloneWithProces(proces)));
+        //    return element;
+        //}
 
         //public byte Color
         //{

@@ -18,6 +18,11 @@ namespace IntoTheCode.Read.Element.Words
             //Reader = parser;
         }
 
+        public override ParserElementBase CloneWithProces(LoadProces proces)
+        {
+            return new WordIdent(Name) { Proces = proces };
+        }
+
         public override string GetSyntax() { return MetaParser.WordIdent__; }
         //protected override string Read(int begin, ITextBuffer buffer) { return ""; }
 

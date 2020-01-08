@@ -238,8 +238,8 @@ settings   collapse;";
 
             Parser parser = new Parser() { Level = 1 }; // { Name = HardSyntax_ };
             parser.Rules = list;
-            foreach (var eq in list) eq.Parser = parser;
-            ParserFactory.InitializeSyntax(parser);
+            //foreach (var eq in list) eq.Parser = parser;
+            ParserFactory.InitializeSyntax(parser, parser.Rules);
 
             return parser;
         }

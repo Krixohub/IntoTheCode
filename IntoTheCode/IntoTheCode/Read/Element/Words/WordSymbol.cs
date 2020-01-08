@@ -16,7 +16,12 @@ namespace IntoTheCode.Read.Element.Words
             // Only for unittest, when syntax is not linked.
             //Reader = reader;
         }
-        
+
+        public override ParserElementBase CloneWithProces(LoadProces proces)
+        {
+            return new WordSymbol(_value) { Name = Name, Proces = proces };
+        }
+
         public override string GetValue(ITextBuffer buf, TextSubString ptr) { return _value; }
         
         public override string GetSyntax() { return "'" + Value + "'"; }

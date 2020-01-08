@@ -88,23 +88,28 @@ namespace IntoTheCode.Read
         /// <exclude/>
         internal CodeDocument ParseString(LoadProces proces)
         {
-           
+            List<Rule> procesRules = Rules.Select(r => r.CloneWithProces(proces) as Rule).ToList();
+            ParserFactory.InitializeSyntax(this, procesRules);
             try
             {
                 var elements = new List<TreeNode>();
-                if (!Rules[0].Load(proces, elements))
+                if (!procesRules[0].Load(proces, elements))
+                //if (!Rules[0].Load(proces, elements))
                 {
                     if (!proces.Error)
-                        proces.ErrorMsg = string.Format("Syntax error proces '{0}'", Rules[0].Name);
+                        proces.ErrorMsg = string.Format("Syntax error proces '{0}'", procesRules[0].Name);
+                    //proces.ErrorMsg = string.Format("Syntax error proces '{0}'", Rules[0].Name);
                     return null;
                 }
 
                 // skip remaining white spaces
-                Rules[0].SkipWhiteSpace(proces);
+                //Rules[0].SkipWhiteSpace(proces);
+                procesRules[0].SkipWhiteSpace(proces);
 
                 if (!proces.TextBuffer.IsEnd())
-                {
-                    if (!proces.Error)
+                    if (!proces.TextBuffer.IsEnd())
+                    {
+                        if (!proces.Error)
                         //proces.ErrorMsg = "End of input not reached. " + proces.TextBuffer.GetLineAndColumn();
                         proces.AddSyntaxErrorEof("End of input not reached.");
                     return null;
@@ -116,7 +121,8 @@ namespace IntoTheCode.Read
                 if (elements.Count == 1)
                     return new CodeDocument(elements[0].SubElements) { Name = elements[0].Name };
 
-                throw new Exception(string.Format("First rule '{0} must represent all document and have Tag=true", Rules[0].Name));
+                throw new Exception(string.Format("First rule '{0} must represent all document and have Tag=true", procesRules[0].Name));
+                //throw new Exception(string.Format("First rule '{0} must represent all document and have Tag=true", Rules[0].Name));
             }
             catch (Exception e)
             {

@@ -3,6 +3,7 @@
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
 using IntoTheCode.Read;
+using System.Linq;
 
 namespace IntoTheCode.Read.Element
 {
@@ -13,6 +14,11 @@ namespace IntoTheCode.Read.Element
             : base(elements)
         {
             //Attributter = new ObservableCollection<Attribute>();
+        }
+
+        public override ParserElementBase CloneWithProces(LoadProces proces)
+        {
+            return new Parentheses(CloneSubElementsWithProces(proces)) { Proces = proces };
         }
 
         public override string GetSyntax() { return "(" + base.GetSyntax() + ")"; }

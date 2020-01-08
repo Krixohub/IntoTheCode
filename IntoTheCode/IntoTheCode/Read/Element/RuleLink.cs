@@ -10,14 +10,19 @@ namespace IntoTheCode.Read.Element
     internal class RuleLink : ParserElementBase
     {
         /// <summary>Creator for <see cref="RuleLink"/>.</summary>
-        internal RuleLink(string name)
+        internal RuleLink(string value)
         {
             Name = "name";
-            _value = name;
+            _value = value;
 
-            if (name == "expression")
+            if (value == "expression")
                 Recursive = true;
             //    LastRuleInvoke = new List<TextPointer>();
+        }
+
+        public override ParserElementBase CloneWithProces(LoadProces proces)
+        {
+            return new RuleLink(_value) { Name = "name", Proces = proces };
         }
 
         /// <summary>The Reader has the current pointer of reading, and the context.</summary>

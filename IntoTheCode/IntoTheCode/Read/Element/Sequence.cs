@@ -18,6 +18,11 @@ namespace IntoTheCode.Read.Element
         {
         }
 
+        public override ParserElementBase CloneWithProces(LoadProces proces)
+        {
+            return new Sequence(CloneSubElementsWithProces(proces)) { Proces = proces };
+        }
+
         public override bool Load(LoadProces proces, List<TreeNode> outElements)
         {
             TextPointer p = proces.TextBuffer.PointerNextChar.Clone();

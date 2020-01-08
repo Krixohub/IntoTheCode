@@ -24,6 +24,11 @@ namespace IntoTheCode.Read.Element
         {
         }
 
+        protected ParserElementBase[] CloneSubElementsWithProces(LoadProces proces)
+        {
+            return SubElements.Select(r => ((ParserElementBase)r).CloneWithProces(proces)).ToArray();
+        }
+
         public override ElementContentType GetElementContent()
         {
             return ElementContentType.Many;

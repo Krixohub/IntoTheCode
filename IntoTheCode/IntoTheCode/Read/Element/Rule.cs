@@ -4,6 +4,7 @@ using IntoTheCode.Basic;
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic.Util;
 using IntoTheCode.Read.Element.Words;
+using System.Linq;
 
 namespace IntoTheCode.Read.Element
 {
@@ -29,6 +30,14 @@ namespace IntoTheCode.Read.Element
 
         }
 
+        public override ParserElementBase CloneWithProces(LoadProces proces)
+        {
+            var element = new Rule(Name, SubElements.Select(r => ((ParserElementBase)r).CloneWithProces(proces)).ToArray());// { Parser = Parser };
+            element.Proces = proces;
+            //element._elementContent = ElementContent;
+            return element;
+        }
+
         //public override void Initialize()
         //{
 
@@ -48,7 +57,7 @@ namespace IntoTheCode.Read.Element
 
         public override string GetSyntax()
         {
-            string syntax = Name.PadRight(Parser.SymbolFixWidth) + " = ";
+            string syntax = Name.PadRight(Parser != null ? Parser.SymbolFixWidth : 4) + " = ";
             //string syntax = Identifier.Name.PadRight(Syntax.SymbolFixWidth) + (Tag ? " => " : " =  ");
             syntax += base.GetSyntax();
             syntax += ";";

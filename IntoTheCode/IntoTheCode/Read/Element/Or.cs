@@ -19,6 +19,24 @@ namespace IntoTheCode.Read.Element
             //    ElementContent = ElementContentType.Many;
         }
 
+        ///// <summary>Just for clone().</summary>
+        //internal Or()
+        //{
+        //}
+
+        public override ParserElementBase CloneWithProces(LoadProces proces)
+        {
+            var element = new Or(((ParserElementBase)SubElements[0]).CloneWithProces(proces),
+                ((ParserElementBase)SubElements[1]).CloneWithProces(proces));
+            element.Proces = proces;
+            return element;
+        }
+
+        //public override ParserElementBase Clone()
+        //{
+        //    return new Or();
+        //}
+
         public override ElementContentType GetElementContent()
         {
             // todo fejl ved Rule.Tag = true
