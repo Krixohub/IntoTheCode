@@ -10,7 +10,7 @@ namespace IntoTheCode.Buffer
         //int pointer { get; set; }
         TextPointer PointerNextChar { get; }
         TextPointer PointerEnd { get; }
-        LoadProces Proces { get; }
+        ParserStatus Status { get; }
 
         void SetPointerBackToFrom(TextSubString sub);
         void SetPointerTo(TextSubString sub);

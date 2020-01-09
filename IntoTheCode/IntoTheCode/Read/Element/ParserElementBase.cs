@@ -35,7 +35,8 @@ namespace IntoTheCode.Read.Element
        // public virtual void Initialize() { }
 
         protected internal ITextBuffer TextBuffer;
-        
+
+        protected internal CodeElement DefinitionCodeElement;
 
         //public byte Color
         //{
@@ -50,14 +51,14 @@ namespace IntoTheCode.Read.Element
         protected bool SetPointerBack(TextPointer txtPtr, ParserElementBase item)
         {
             TextBuffer.SetPointer(txtPtr);
-            if (txtPtr.CompareTo(TextBuffer.Proces.UnambiguousPointer) < 0 && !TextBuffer.Proces.Error)
+            if (txtPtr.CompareTo(TextBuffer.Status.UnambiguousPointer) < 0 && !TextBuffer.Status.Error)
             {
                 ExtractError();
 
-                TextBuffer.Proces.Errors = TextBuffer.Proces.Errors.OrderByDescending(e => e.ErrorPoint.CompareTo(txtPtr)).ToList();
-                var errorMax2 = TextBuffer.Proces.Errors.FirstOrDefault();
+                TextBuffer.Status.Errors = TextBuffer.Status.Errors.OrderByDescending(e => e.ErrorPoint.CompareTo(txtPtr)).ToList();
+                var errorMax2 = TextBuffer.Status.Errors.FirstOrDefault();
 
-                TextBuffer.Proces.ErrorMsg = errorMax2.Message;
+                TextBuffer.Status.ErrorMsg = errorMax2.Message;
             }
 
             return false;

@@ -154,8 +154,10 @@ namespace TestCodeInternal.ViewModel
         private void setSyntaxHardcode(CommandInformation ci)
         {
             var hardcodeParser = new Parser();
-            hardcodeParser = MetaParser.GetHardCodeParser();
-            //hardcodeParser.Syntax.LinkSyntax();
+
+            // Status er kun til opsamling af fejl
+            ParserStatus status = new ParserStatus(null);
+            hardcodeParser = MetaParser.GetHardCodeParser(status);
 
             SetSyntaxInp(hardcodeParser.GetSyntax());
         }
@@ -175,7 +177,7 @@ namespace TestCodeInternal.ViewModel
             // Get actual meta syntax document.
             //if (Parser.MetaParser == null) _parser = new Parser("");
             ITextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
-            CodeDocument metaActual = CodeDocument.Load(_metaparser, buffer);
+            CodeDocument metaActual = _metaparser.ParseString(buffer);
 
             actualTags = metaActual.ToMarkup();
 //            actualTags = _metaparser.Syntax.doc.ToMarkup();

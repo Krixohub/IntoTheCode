@@ -11,14 +11,14 @@ namespace IntoTheCode.Buffer
             _buf = text;
             PointerNextChar = new FlatPointer { index = 0 };
             PointerEnd = new FlatPointer { index = _buf.Length };
-            Proces = new LoadProces(this);
+            Status = new ParserStatus(this);
         }
 
 
         /// <summary>Pointing at the next char to read. When end is reached Buf.Length == pointer.</summary>
         public TextPointer PointerNextChar { get; private set; }
         public TextPointer PointerEnd { get; private set; }
-        public LoadProces Proces { get; private set; }
+        public ParserStatus Status { get; private set; }
 
         //public bool IsEnd()
         //{

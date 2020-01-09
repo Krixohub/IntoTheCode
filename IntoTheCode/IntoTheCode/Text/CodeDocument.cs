@@ -33,14 +33,10 @@ namespace IntoTheCode
             CodeDocument doc = parser.ParseString(buffer);
             if (doc != null) return doc;
 
-            var error = new ParserException(buffer.Proces.ErrorMsg);
-            error.Errors.AddRange(buffer.Proces.Errors);
+            // only place to throw exception is CodeDocument.Load and Parser.SetSyntax (and MetaSyntax)
+            var error = new ParserException(buffer.Status.ErrorMsg);
+            error.Errors.AddRange(buffer.Status.Errors);
             throw error;
-        }
-
-        internal static CodeDocument Load(Parser parser, ITextBuffer buffer)
-        {
-            return parser.ParseString(buffer);
         }
 
         public override string GetValue() { return _value; }

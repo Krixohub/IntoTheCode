@@ -5,24 +5,17 @@ using System.Collections.Generic;
 
 namespace IntoTheCode.Read
 {
-    public class LoadProces
+    public class ParserStatus
     {
         /// <summary>Field for text buffer.</summary>
         private ITextBuffer _textBuffer;
 
-        internal LoadProces(ITextBuffer buf)
+        internal ParserStatus(ITextBuffer buf)
         {
             _textBuffer = buf;
             ErrorMsg = string.Empty;
             UnambiguousPointer = new FlatPointer();
         }
-
-        ///// <summary>The text buffer to read from.</summary>
-        //internal ITextBuffer TextBuffer
-        //{
-        //    get { return _textBuffer; }
-        //    set { _textBuffer = value; }
-        //}
 
         /// <summary>Error message after parsing/reading input text.</summary>
         /// <exclude/>
@@ -67,6 +60,23 @@ namespace IntoTheCode.Read
 
             // todo is this ok?
             ErrorMsg = err.Message;
+            if (Errors == null) Errors = new List<ParserError>();
+            Errors.Add(err);
+        }
+
+        public void AddBuildError(string error, CodeElement elem = null)
+        {
+            var err = new ParserError();
+            string s = string.Empty;
+            if (elem != null)
+            {
+                _textBuffer.GetLineAndColumn(out err.Line, out err.Column, elem.SubString.GetFrom());
+                s = " " + string.Format("Line {0}, colomn {1}", err.Line, err.Column);
+            }
+
+            err.Message = error + s;
+
+            if (string.IsNullOrEmpty(ErrorMsg)) ErrorMsg = err.Message;
             if (Errors == null) Errors = new List<ParserError>();
             Errors.Add(err);
         }

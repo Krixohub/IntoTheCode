@@ -22,7 +22,7 @@ namespace IntoTheCode.Read.Element
             Name = name;
 
             // Set 'trust' property if this is the last of many elements
-        //    IList<TreeNode> siblings = Parent.SubElements;
+            //    IList<TreeNode> siblings = Parent.SubElements;
             if ((elements.Length > 2 && elements[elements.Length - 1] is WordSymbol) ||
                 AnyNested(elem => elem is WordSymbol && ((WordSymbol)elem).Value.Length > 2))
                 Trust = true;
@@ -32,11 +32,14 @@ namespace IntoTheCode.Read.Element
 
         public override ParserElementBase CloneForParse(ITextBuffer buffer)
         {
-            var element = new Rule(Name, SubElements.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray());// { Parser = Parser };
-            element.TextBuffer = buffer;
-            element.Collapse = Collapse;
-            element.Trust = Trust;
-            //element._elementContent = ElementContent;
+            var element = new Rule(Name, SubElements.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray())
+            {
+                DefinitionCodeElement = DefinitionCodeElement,
+                TextBuffer = buffer,
+                Collapse = Collapse,
+                Trust = Trust
+            };
+
             return element;
         }
 
@@ -95,7 +98,7 @@ namespace IntoTheCode.Read.Element
 
                     if (outSubNotes.Count == 1)
                     {
-                        element = new CodeElement(this , ((CodeElement)outSubNotes[0]).SubString);
+                        element = new CodeElement(this, ((CodeElement)outSubNotes[0]).SubString);
                         element.WordParser = ((CodeElement)outSubNotes[0]).WordParser;
                     }
                     else // count = 0
@@ -118,7 +121,7 @@ namespace IntoTheCode.Read.Element
             }
 
             // If this is a 'division' set unambiguous
-            if (Trust && TextBuffer.PointerNextChar.CompareTo(subStr.GetFrom()) > 0) TextBuffer.Proces.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
+            if (Trust && TextBuffer.PointerNextChar.CompareTo(subStr.GetFrom()) > 0) TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
             return true;
 
         }
@@ -145,7 +148,7 @@ namespace IntoTheCode.Read.Element
                     return SetPointerBackError(from);
 
             }
-            
+
             return true;
         }
     }

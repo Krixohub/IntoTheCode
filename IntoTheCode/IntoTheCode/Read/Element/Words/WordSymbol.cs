@@ -57,7 +57,7 @@ namespace IntoTheCode.Read.Element.Words
             {
                 //subStr.SetTo(from);
                 //proces.Errors.Add(new ParserError(this, TextBuffer.PointerEnd, 2, string.Format("Expecting symbol '{0}', found EOF.", Value)));
-                TextBuffer.Proces.AddSyntaxError(this, TextBuffer.PointerEnd, 2, string.Format("Expecting symbol '{0}', found EOF.", Value));
+                TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, 2, string.Format("Expecting symbol '{0}', found EOF.", Value));
                 return SetPointerBackError(subStr.GetFrom());
             }
 
@@ -69,7 +69,7 @@ namespace IntoTheCode.Read.Element.Words
                     subStr.SetTo(subStr.GetFrom().Clone(Value.Length));
                     //subStr.SetTo(TextBuffer.PointerNextChar);
                     //proces.Errors.Add(new ParserError(this, subStr.GetFrom(), 2, string.Format("Expecting symbol '{0}', found '{1}'.", Value, TextBuffer.GetSubString(subStr))));
-                    TextBuffer.Proces.AddSyntaxError(this, subStr.GetFrom(), 2, string.Format("Expecting symbol '{0}', found '{1}'.", Value, TextBuffer.GetSubString(subStr)));
+                    TextBuffer.Status.AddSyntaxError(this, subStr.GetFrom(), 2, string.Format("Expecting symbol '{0}', found '{1}'.", Value, TextBuffer.GetSubString(subStr)));
                     return SetPointerBackError(from);
                 }
 

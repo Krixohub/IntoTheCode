@@ -80,7 +80,10 @@ namespace TestCodeInternal.UnitTest
         {
             var parser = new Parser();
 
-            var debug = MetaParser.GetHardCodeParser().GetSyntax();
+            // Status er kun til opsamling af fejl
+            ParserStatus status = new ParserStatus(null);
+            //hardcodeParser = MetaParser.GetHardCodeParser();
+            var debug = MetaParser.GetHardCodeParser(status).GetSyntax();
             var outNo = new List<TreeNode>();
             
             string doc = string.Empty;
@@ -166,7 +169,8 @@ namespace TestCodeInternal.UnitTest
 
             // Test hard coded syntax
             //parser2 = new Parser();
-            var hardcodeParser = MetaParser.GetHardCodeParser();
+            // Status er kun til opsamling af fejl
+            var hardcodeParser = MetaParser.GetHardCodeParser(status);
             string actual = hardcodeParser.GetSyntax();
             string expect = GetExpectHardCodeSyntax();
             string msg = CompareTextLines(actual, expect);
@@ -196,9 +200,9 @@ namespace TestCodeInternal.UnitTest
             //var metaParser = _metaparser;
             // todo MetaParser has not the settings.
             ITextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
-            CodeDocument docActual1 = CodeDocument.Load(parser, buffer);
+            CodeDocument docActual1 = parser.ParseString(buffer);
             buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
-            CodeDocument docActual2 = CodeDocument.Load(MetaParser.Instance, buffer);
+            CodeDocument docActual2 = MetaParser.Instance.ParseString(buffer);
 
             expectTags = docExpect.ToMarkup();
             actualTags1 = docActual1.ToMarkup();
@@ -222,9 +226,9 @@ namespace TestCodeInternal.UnitTest
 
             Assert.IsNotNull(parser, "parser er null");
             Assert.AreEqual(string.Empty, parser.DefinitionError, "DifinitionError");
-            CodeDocument doc = CodeDocument.Load(parser, buffer);
+            CodeDocument doc = parser.ParseString(buffer);
             Assert.IsNotNull(doc, "doc er null");
-            Assert.AreEqual(string.Empty, buffer.Proces.ErrorMsg, "ReadingError");
+            Assert.AreEqual(string.Empty, buffer.Status.ErrorMsg, "ReadingError");
 
             string markup = @"<syntax>
   <o/>
@@ -253,72 +257,72 @@ fid  = 'id';   failId = identifier;
 fsym = 'symbol'; failSym = 'fail';
 settings fid trust; fstr trust; fsym trust;";
             var parser = new Parser(syntax);
-            LoadProces proces;
+            //ParserStatus proces;
             CodeDocument doc;
 
             // What the parser CAN read
             ITextBuffer buf = new FlatBuffer("ooo");
-            doc = CodeDocument.Load(parser, buf);;
+            doc = parser.ParseString(buf);;
             Assert.IsNotNull(doc, "doc er null");
-            Assert.AreEqual(string.Empty, buf.Proces.ErrorMsg, "Parse error");
+            Assert.AreEqual(string.Empty, buf.Status.ErrorMsg, "Parse error");
 
             // Error: End of text not reached.
             buf = new FlatBuffer("oop");
             //                   "123   
-            doc = CodeDocument.Load(parser, buf);
+            doc = parser.ParseString(buf);
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("End of input not reached. Line 1, colomn 3", buf.Proces.ErrorMsg, "EOF error");
+            Assert.AreEqual("End of input not reached. Line 1, colomn 3", buf.Status.ErrorMsg, "EOF error");
 
             string stx = parser.GetSyntax();
 
             // Read 'identifier', EOF error.
             buf = new FlatBuffer("id ");
             //                   "1234
-            doc = CodeDocument.Load(parser, buf); ;
+            doc = parser.ParseString(buf); ;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error (failId). Expecting identifier, found EOF. Line 1, colomn 4", buf.Proces.ErrorMsg, "Ident EOF error");
+            Assert.AreEqual("Syntax error (failId). Expecting identifier, found EOF. Line 1, colomn 4", buf.Status.ErrorMsg, "Ident EOF error");
 
             // Read 'identifier', not allowed first letter.
             buf = new FlatBuffer("id 2r");
             //                   "1234
-            doc = CodeDocument.Load(parser, buf); ;
+            doc = parser.ParseString(buf); ;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error (failId). First charactor is not allowed. Line 1, colomn 4", buf.Proces.ErrorMsg, "Ident first letter error");
+            Assert.AreEqual("Syntax error (failId). First charactor is not allowed. Line 1, colomn 4", buf.Status.ErrorMsg, "Ident first letter error");
 
             // Read 'string', EOF error.
             buf = new FlatBuffer("string ");
             //                   "12345678
-            doc = CodeDocument.Load(parser, buf); ;
+            doc = parser.ParseString(buf); ;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error (failStr). Expecting string, found EOF. Line 1, colomn 8", buf.Proces.ErrorMsg, "String EOF error");
+            Assert.AreEqual("Syntax error (failStr). Expecting string, found EOF. Line 1, colomn 8", buf.Status.ErrorMsg, "String EOF error");
 
             // Read 'string', Expecting string (starting ' not found).
             buf = new FlatBuffer("string fail");
             //                   "12345678
-            doc = CodeDocument.Load(parser, buf); ;
+            doc = parser.ParseString(buf); ;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error (failStr). Expecting string. Line 1, colomn 8", buf.Proces.ErrorMsg, "String not found error");
+            Assert.AreEqual("Syntax error (failStr). Expecting string. Line 1, colomn 8", buf.Status.ErrorMsg, "String not found error");
 
             // Read 'string', ending ' not found.
             buf = new FlatBuffer("string 'fail");
             //                   "123456789
-            doc = CodeDocument.Load(parser, buf); ;
+            doc = parser.ParseString(buf); ;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error (failStr). Expecting string ending. Line 1, colomn 9", buf.Proces.ErrorMsg, "String ending not found error");
+            Assert.AreEqual("Syntax error (failStr). Expecting string ending. Line 1, colomn 9", buf.Status.ErrorMsg, "String ending not found error");
 
             // Read 'symbol', EOF error.
             buf = new FlatBuffer("symbol fai");
             //                   "12345678901
-            doc = CodeDocument.Load(parser, buf);;
+            doc = parser.ParseString(buf);;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error (failSym). Expecting symbol 'fail', found EOF. Line 1, colomn 11", buf.Proces.ErrorMsg, "Symbol EOF error");
+            Assert.AreEqual("Syntax error (failSym). Expecting symbol 'fail', found EOF. Line 1, colomn 11", buf.Status.ErrorMsg, "Symbol EOF error");
 
             // Read 'symbol',  error.
             buf = new FlatBuffer("symbol faiL ");
             //                   "12345678
-            doc = CodeDocument.Load(parser, buf);;
+            doc = parser.ParseString(buf);;
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error (failSym). Expecting symbol 'fail', found 'faiL'. Line 1, colomn 8", buf.Proces.ErrorMsg, "Symbol error");
+            Assert.AreEqual("Syntax error (failSym). Expecting symbol 'fail', found 'faiL'. Line 1, colomn 8", buf.Status.ErrorMsg, "Symbol error");
         }
 
         /// <summary>Test different types of syntax error.</summary>
@@ -331,28 +335,27 @@ stx =  {cmd};
 cmd = type identifier ';'; 
 type = 'string'; ";
             var parser = new Parser(syntax);
-            LoadProces proces;
             CodeDocument doc;
 
             // What the parser CAN read
             ITextBuffer buf = new FlatBuffer("string s; string str;");
-            doc = CodeDocument.Load(parser, buf); ;
+            doc = parser.ParseString(buf); ;
             Assert.IsNotNull(doc, "doc er null");
-            Assert.AreEqual(string.Empty, buf.Proces.ErrorMsg, "Parse error");
+            Assert.AreEqual(string.Empty, buf.Status.ErrorMsg, "Parse error");
 
             // Error: Missing ';'.
             buf = new FlatBuffer("string s ");
             //                   "1234567890   
-            doc = CodeDocument.Load(parser, buf);
+            doc = parser.ParseString(buf);
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error (cmd). Expecting symbol ';', found EOF. Line 1, colomn 10", buf.Proces.ErrorMsg, "missing seperator, EOF error");
+            Assert.AreEqual("Syntax error (cmd). Expecting symbol ';', found EOF. Line 1, colomn 10", buf.Status.ErrorMsg, "missing seperator, EOF error");
 
             // Error: Missing ';'.
             buf = new FlatBuffer("string s dfgsd");
             //                   "1234567890   
-            doc = CodeDocument.Load(parser, buf);
+            doc = parser.ParseString(buf);
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("Syntax error (cmd). Expecting symbol ';', found 'd'. Line 1, colomn 10", buf.Proces.ErrorMsg, "missing seperator");
+            Assert.AreEqual("Syntax error (cmd). Expecting symbol ';', found 'd'. Line 1, colomn 10", buf.Status.ErrorMsg, "missing seperator");
         }
 
         #region utillity functions
@@ -384,8 +387,7 @@ type = 'string'; ";
             // TestSeries       = 'TestSeries' { VarName };
             list.Add(new Rule("TestSeries",
                 new WordSymbol("TestSeries"),
-                new Sequence( new WordIdent("finn")))
-            /*{ Tag = true }*/);
+                new Sequence( new WordIdent("finn"))));
             // TestOption       = 'TestOption' [TestIdentifier] [TestString];
             list.Add(new Rule("TestOption",
                 new WordSymbol("TestOption"),
@@ -394,27 +396,16 @@ type = 'string'; ";
             /*{ Tag = true }*/);
             // TestQuote2      = Quote;
             list.Add(new Rule("TestQuote2",
-                new WordString())
-            /*{ Tag = true }*/);
+                new WordString()));
             // TestLines       = 'TestLines' { VarName '=' Quote ';' };
             list.Add(new Rule("TestLines",
                 new WordSymbol("TestLines"),
-                new Sequence( new WordIdent("localVar"), new WordSymbol("="), new WordString(), new WordSymbol(";")))
-            /*{ Tag = true }*/);
-            // TestQuote2      = Quote;
-            //list.Add(new Equation("TestQuote2",
-            //    new Quote()));
+                new Sequence(new WordIdent("localVar"), new WordSymbol("="), new WordString(), new WordSymbol(";"))));
 
-            //parser.Rules = list;
-            //ParserFactory.InitializeSyntax(parser, parser.Rules);
-            //ParserFactory.ValidateSyntax(parser);
-
-
+            
             parser.Rules = list.Select(r => r.CloneForParse(buffer) as Rule).ToList();
-            //foreach (var eq in list) eq.Parser = syntax;
-            ParserFactory.InitializeSyntax(parser, parser.Rules);
-            ParserFactory.ValidateSyntax(parser);
-            //return list;
+            ParserFactory.InitializeSyntax(parser, parser.Rules, buffer.Status);
+            ParserFactory.ValidateSyntax(parser, buffer.Status);
         }
 
         /// <summary>A hard coded text syntax.</summary>

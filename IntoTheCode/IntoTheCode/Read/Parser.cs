@@ -69,17 +69,15 @@ namespace IntoTheCode.Read
             CodeDocument syntaxDoc = null;
 
             ITextBuffer buffer = new FlatBuffer(syntax);
-            syntaxDoc = CodeDocument.Load(MetaParser.Instance, buffer);
+            syntaxDoc = MetaParser.Instance.ParseString(buffer);
 
-            if (buffer.Proces.Error)
-                throw new ParserException(buffer.Proces.ErrorMsg);
-            if (syntaxDoc == null)
-                throw new ParserException("Can't read syntax." + buffer.Proces.ErrorMsg);
-
-            ParserFactory.BuildRules(this, syntaxDoc);
-            if (!string.IsNullOrEmpty(DefinitionError))
-                throw new ParserException(DefinitionError);
-
+            if (buffer.Status.Error || !ParserFactory.BuildRules(this, syntaxDoc, buffer.Status))
+            {
+                // only place to throw exception is CodeDocument.Load and Parser.SetSyntax (and MetaSyntax)
+                var error = new ParserException(buffer.Status.ErrorMsg);
+                error.Errors.AddRange(buffer.Status.Errors);
+                throw error;
+            }
         }
 
         /// <summary>Read from a text buffer and create a text document.</summary>
@@ -89,9 +87,11 @@ namespace IntoTheCode.Read
         internal CodeDocument ParseString(ITextBuffer buffer)
         {
             List<Rule> procesRules = Rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
-            ParserFactory.InitializeSyntax(this, procesRules);
+            if (!ParserFactory.InitializeSyntax(this, procesRules, buffer.Status))
+                return null;
             var elements = new List<TreeNode>();
             bool ok;
+
             try
             {
                 ok = procesRules[0].Load(elements);
@@ -101,22 +101,23 @@ namespace IntoTheCode.Read
             }
             catch (Exception e)
             {
-                buffer.Proces.ErrorMsg = "IntoTheCode developer error: " + e.Message;
+                buffer.Status.AddParseError("IntoTheCode developer error: " + e.Message);
+                //buffer.Status.ErrorMsg = "IntoTheCode developer error: " + e.Message;
                 return null;
             }
 
-            if (buffer.Proces.Error) return null;
+            if (buffer.Status.Error) return null;
 
             if (!ok)
-                buffer.Proces.AddParseError(string.Format("Can't read '{0}'", procesRules[0].Name));
+                buffer.Status.AddParseError(string.Format("Can't read '{0}'", procesRules[0].Name));
             else if (!buffer.IsEnd())
-                buffer.Proces.AddSyntaxErrorEof("End of input not reached.");
+                buffer.Status.AddSyntaxErrorEof("End of input not reached.");
             else if (elements.Count == 1 && elements[0] is CodeDocument)
                 return elements[0] as CodeDocument;
             else if (elements.Count == 1)
                 return new CodeDocument(elements[0].SubElements) { Name = elements[0].Name };
             else
-                buffer.Proces.AddParseError(string.Format("First rule '{0} must represent all document and have Tag=true", procesRules[0].Name));
+                buffer.Status.AddParseError(string.Format("First rule '{0} must represent all document and have Tag=true", procesRules[0].Name));
 
             return null;
         }

@@ -92,28 +92,28 @@ setter      = identifier assignment {',' assignment} ';';
 assignment  = property ['=' value];
 property    = identifier;
 value       = string;";
-//                string syntax = @"MetaSyntax  = {Rule} [settings];
-//Rule        = identifier '=' expression ';';
-//expression  = element {[or] element};
-//element     = identifier | symbol | block;
-//block       = sequence | optional | parentheses;
-//sequence    = '{' expression '}';
-//optional    = '[' expression ']';
-//parentheses = '(' expression ')';
-//or          = '|';
-//symbol      = string;
-//settings    = 'settings' {setter};
-//setter      = identifier assignment {',' assignment} ';';
-//assignment  = property ['=' value];
-//property    = identifier;
-//value       = string;";
+                //                string syntax = @"MetaSyntax  = {Rule} [settings];
+                //Rule        = identifier '=' expression ';';
+                //expression  = element {[or] element};
+                //element     = identifier | symbol | block;
+                //block       = sequence | optional | parentheses;
+                //sequence    = '{' expression '}';
+                //optional    = '[' expression ']';
+                //parentheses = '(' expression ')';
+                //or          = '|';
+                //symbol      = string;
+                //settings    = 'settings' {setter};
+                //setter      = identifier assignment {',' assignment} ';';
+                //assignment  = property ['=' value];
+                //property    = identifier;
+                //value       = string;";
                 return syntax;
-            } 
+            }
         }
-/*
-property    = 'collapse' | 'trust' | 'ws' | 'wsdef';
-property    = identifier;
- */ 
+        /*
+        property    = 'collapse' | 'trust' | 'ws' | 'wsdef';
+        property    = identifier;
+         */
         /// <summary>The shapin syntax.</summary>
         internal static string MetaSettings
         {
@@ -125,18 +125,18 @@ expression collapse;
 element    collapse;
 settings   collapse;";
                 //    return "";
-//                string syntax = @"
-//settings
-//expression collapse;
-//element    collapse;
-//block      collapse;
-//settings   collapse;";
+                //                string syntax = @"
+                //settings
+                //expression collapse;
+                //element    collapse;
+                //block      collapse;
+                //settings   collapse;";
                 return syntax;
             }
         }
 
-        internal static Parser GetHardCodeParser()
-        { 
+        internal static Parser GetHardCodeParser(ParserStatus status)
+        {
             List<Rule> list = new List<Rule>();
 
             // Build Mo Backus Naur Form in code.
@@ -157,7 +157,7 @@ settings   collapse;";
                 new RuleLink(Element____),
                 new Sequence(
                     new Optional(
-                        new RuleLink(Or_________)), 
+                        new RuleLink(Or_________)),
                     new RuleLink(Element____)))
             { Collapse = true });
 
@@ -193,7 +193,7 @@ settings   collapse;";
             // or         = '|';
             list.Add(new Rule(Or_________,
                 new WordSymbol("|")));
-            
+
             //// ruleId     = identifier;
             //// todo eliminate ruleIds with identifier or string
             //list.Add(new Rule(RuleId_____,
@@ -239,7 +239,7 @@ settings   collapse;";
             Parser parser = new Parser() { Level = 1 }; // { Name = HardSyntax_ };
             parser.Rules = list;
             //foreach (var eq in list) eq.Parser = parser;
-            ParserFactory.InitializeSyntax(parser, parser.Rules);
+            ParserFactory.InitializeSyntax(parser, parser.Rules, status);
 
             return parser;
         }
@@ -249,37 +249,42 @@ settings   collapse;";
         private static void CreateMetaParser()
         {
             if (_instance != null) return;
-
+            int step = 1;
+            ITextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
+            CodeDocument metaSyntaxDoc = null;
             try
             {
                 // Hard coded parser
-                var hardcodeParser = GetHardCodeParser();
+                var hardcodeParser = GetHardCodeParser(buffer.Status);
 
-                // Use hard coded syntax to read meta syntax.
-                ITextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
-                CodeDocument metaSyntaxDoc = CodeDocument.Load(hardcodeParser, buffer);
-                if (metaSyntaxDoc == null)
-                    throw new Exception(MessageRes.DevelOnly + hardcodeParser.Name + ". " + buffer.Proces.ErrorMsg);
-
-                string gg = metaSyntaxDoc.ToMarkup();
-
-                _instance = new Parser() { Level = 2 };
-                try
+                if (!buffer.Status.Error)
                 {
-                    ParserFactory.BuildRules(_instance, metaSyntaxDoc);
+                    step = 2;
+                    // Use hard coded syntax to read meta syntax.
+                    metaSyntaxDoc = hardcodeParser.ParseString(buffer);
+
+                    string gg = metaSyntaxDoc.ToMarkup();
+                    step = 3;
                 }
-                catch (Exception e)
+                if (!buffer.Status.Error)
                 {
-                    _instance.DefinitionError = MessageRes.DevelOnly + metaSyntaxDoc.Name + ". " + e.Message;
-                    //_metaParser.DefinitionError = MessageRes.DevelOnly + _metaParser.Syntax.Name + ". " + e.Message;
-                    //throw new Exception(_metaSyntax.DefinitionError);
+                    _instance = new Parser() { Level = 2 };
+                    ParserFactory.BuildRules(_instance, metaSyntaxDoc, buffer.Status);
                 }
             }
             catch (Exception e)
             {
-                //DefinitionError = e.Message;
-                _instance.DefinitionError = e.Message;
-                throw new Exception(MessageRes.DevelOnly + e.Message);
+                // if an exception occurs under parsing MetaSyntax it is an HardSyntax error
+                var e2 = new ParserException((step <= 2 ? HardSyntax_ : MetaSyntax_) + " " + e.Message);
+                if (e is ParserException) e2.Errors = ((ParserException)e).Errors;
+                throw e2;
+            }
+            if (buffer.Status.Error)
+            {
+                // if an proces-error occurs under parsing MetaSyntax it is an MetaSyntax error
+                var e2 = new ParserException((step == 1 ? HardSyntax_ : MetaSyntax_) + " " + buffer.Status.ErrorMsg);
+                e2.Errors = buffer.Status.Errors;
+                throw e2;
             }
         }
 

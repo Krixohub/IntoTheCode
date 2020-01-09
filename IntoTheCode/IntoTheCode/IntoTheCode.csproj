@@ -50,7 +50,7 @@
     </Compile>
     <Compile Include="Basic\TreeNode.cs" />
     <Compile Include="Read\ParserError.cs" />
-    <Compile Include="Read\LoadProces.cs" />
+    <Compile Include="Read\ParserStatus.cs" />
     <Compile Include="Read\ParserFactory.cs" />
     <Compile Include="Read\Element\Words\WordIdent.cs" />
     <Compile Include="Read\Element\Words\WordString.cs" />
