@@ -16,9 +16,9 @@ namespace IntoTheCode.Read.Element
             //Attributter = new ObservableCollection<Attribute>();
         }
 
-        public override ParserElementBase CloneWithProces(LoadProces proces)
+        public override ParserElementBase CloneForParse(ITextBuffer buffer)
         {
-            return new Parentheses(CloneSubElementsWithProces(proces)) { Proces = proces };
+            return new Parentheses(CloneSubElementsForParse(buffer)) { TextBuffer = buffer };
         }
 
         public override string GetSyntax() { return "(" + base.GetSyntax() + ")"; }

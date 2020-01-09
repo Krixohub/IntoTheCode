@@ -29,18 +29,18 @@ namespace IntoTheCode
         /// <returns></returns>
         public static CodeDocument Load(Parser parser, string input)
         {
-            LoadProces proces = new LoadProces(new FlatBuffer(input));
-            CodeDocument doc = parser.ParseString(proces);
+            ITextBuffer buffer = new FlatBuffer(input);
+            CodeDocument doc = parser.ParseString(buffer);
             if (doc != null) return doc;
 
-            var error = new ParserException(proces.ErrorMsg);
-            error.Errors.AddRange(proces.Errors);
+            var error = new ParserException(buffer.Proces.ErrorMsg);
+            error.Errors.AddRange(buffer.Proces.Errors);
             throw error;
         }
 
-        internal static CodeDocument Load(Parser parser, LoadProces proces)
+        internal static CodeDocument Load(Parser parser, ITextBuffer buffer)
         {
-            return parser.ParseString(proces);
+            return parser.ParseString(buffer);
         }
 
         public override string GetValue() { return _value; }

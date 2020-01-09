@@ -19,9 +19,9 @@ namespace IntoTheCode.Read.Element.Words
             //Reader = reader;
         }
 
-        public override ParserElementBase CloneWithProces(LoadProces proces)
+        public override ParserElementBase CloneForParse(ITextBuffer buffer)
         {
-            return new WordString() { Name = Name, Proces = proces };
+            return new WordString() { Name = Name, TextBuffer = buffer };
         }
 
         public override string GetSyntax() { return MetaParser.WordString_; }
@@ -31,73 +31,73 @@ namespace IntoTheCode.Read.Element.Words
         {
             SkipWhiteSpace();
 
-            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
+            TextPointer from = TextBuffer.PointerNextChar.Clone();
 
-            if (Proces.TextBuffer.IsEnd(2)) return false;
+            if (TextBuffer.IsEnd(2)) return false;
 
-            if (Proces.TextBuffer.GetChar() != '\'')
+            if (TextBuffer.GetChar() != '\'')
                 return false; // SetPointerBack(Proces, from, this);
 
-            Proces.TextBuffer.IncPointer();
-            TextSubString subStr = Proces.TextBuffer.NewSubStringFrom();
-            Proces.TextBuffer.IncPointer();
-            Proces.TextBuffer.SetToIndexOf(subStr, "'");
+            TextBuffer.IncPointer();
+            TextSubString subStr = TextBuffer.NewSubStringFrom();
+            TextBuffer.IncPointer();
+            TextBuffer.SetToIndexOf(subStr, "'");
 
             if (!subStr.ToIsValid())
                 return SetPointerBack(from, this);
 
-            outElements.Add(new CodeElement(Proces.TextBuffer, this, subStr));
-            Proces.TextBuffer.SetPointerTo(subStr);
-            Proces.TextBuffer.IncPointer();
+            outElements.Add(new CodeElement(this, subStr));
+            TextBuffer.SetPointerTo(subStr);
+            TextBuffer.IncPointer();
 
             return true;
         }
 
         public override bool ExtractError()
         {
-            //TextSubString subStr1 = Proces.TextBuffer.NewSubStringFrom();
-            //TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
+            //TextSubString subStr1 = TextBuffer.NewSubStringFrom();
+            //TextPointer from = TextBuffer.PointerNextChar.Clone();
             SkipWhiteSpace();
-            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
-            //TextSubString subStr1 = Proces.TextBuffer.NewSubStringFrom();
+            TextPointer from = TextBuffer.PointerNextChar.Clone();
+            //TextSubString subStr1 = TextBuffer.NewSubStringFrom();
 
-            if (Proces.TextBuffer.IsEnd(2))
+            if (TextBuffer.IsEnd(2))
             {
                 //subStr1.SetTo(subStr1.GetFrom());
                 //var element = new CodeElement(Proces.TextBuffer, this, subStr1, "Expecting string, found EOF.");
                 //errorWords.Add(element);
-                //Proces.Errors.Add(new ParserError(this, Proces.TextBuffer.PointerEnd, 2, "Expecting string, found EOF."));
-                Proces.AddSyntaxError(this, Proces.TextBuffer.PointerEnd, 2, "Expecting string, found EOF.");
+                //Proces.Errors.Add(new ParserError(this, TextBuffer.PointerEnd, 2, "Expecting string, found EOF."));
+                TextBuffer.Proces.AddSyntaxError(this, TextBuffer.PointerEnd, 2, "Expecting string, found EOF.");
                 return false;
             };
 
 
-            if (Proces.TextBuffer.GetChar() != '\'')
+            if (TextBuffer.GetChar() != '\'')
             {
                 //subStr1.SetTo(subStr1.GetFrom());
                 //errorWords.Add(new CodeElement(Proces.TextBuffer, this, subStr1, "Expecting string."));
                 //Proces.Errors.Add(new ParserError(this, from, 2, "Expecting string."));
-                Proces.AddSyntaxError(this, from, 2, "Expecting string.");
+                TextBuffer.Proces.AddSyntaxError(this, from, 2, "Expecting string.");
                 return false;
             }
 
-            Proces.TextBuffer.IncPointer();
-            TextSubString subStr = Proces.TextBuffer.NewSubStringFrom();
-            Proces.TextBuffer.IncPointer();
-            Proces.TextBuffer.SetToIndexOf(subStr, "'");
+            TextBuffer.IncPointer();
+            TextSubString subStr = TextBuffer.NewSubStringFrom();
+            TextBuffer.IncPointer();
+            TextBuffer.SetToIndexOf(subStr, "'");
 
             if (!subStr.ToIsValid())
             {
                 //subStr.SetTo(subStr.GetFrom());
                 //errorWords.Add(new CodeElement(Proces.TextBuffer, this, subStr, "Expecting string ending."));
                 //Proces.Errors.Add(new ParserError(this, from.Clone(1), 2, "Expecting string ending."));
-                Proces.AddSyntaxError(this, from.Clone(1), 2, "Expecting string ending.");
+                TextBuffer.Proces.AddSyntaxError(this, from.Clone(1), 2, "Expecting string ending.");
                 return SetPointerBackError(from);
             }
 
             //outElements.Add(new CodeElement(Proces.TextBuffer, this, subStr));
-            Proces.TextBuffer.SetPointerTo(subStr);
-            Proces.TextBuffer.IncPointer();
+            TextBuffer.SetPointerTo(subStr);
+            TextBuffer.IncPointer();
 
             return true;
         }

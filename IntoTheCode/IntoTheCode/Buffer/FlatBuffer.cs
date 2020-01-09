@@ -1,4 +1,6 @@
-﻿namespace IntoTheCode.Buffer
+﻿using IntoTheCode.Read;
+
+namespace IntoTheCode.Buffer
 {
     internal class FlatBuffer : ITextBuffer
     {
@@ -9,12 +11,14 @@
             _buf = text;
             PointerNextChar = new FlatPointer { index = 0 };
             PointerEnd = new FlatPointer { index = _buf.Length };
+            Proces = new LoadProces(this);
         }
 
 
         /// <summary>Pointing at the next char to read. When end is reached Buf.Length == pointer.</summary>
         public TextPointer PointerNextChar { get; private set; }
         public TextPointer PointerEnd { get; private set; }
+        public LoadProces Proces { get; private set; }
 
         //public bool IsEnd()
         //{

@@ -20,9 +20,9 @@ namespace IntoTheCode.Read.Element
             //    LastRuleInvoke = new List<TextPointer>();
         }
 
-        public override ParserElementBase CloneWithProces(LoadProces proces)
+        public override ParserElementBase CloneForParse(ITextBuffer buffer)
         {
-            return new RuleLink(_value) { Name = "name", Proces = proces };
+            return new RuleLink(_value) { Name = "name", TextBuffer = buffer };
         }
 
         /// <summary>The Reader has the current pointer of reading, and the context.</summary>
@@ -47,7 +47,7 @@ namespace IntoTheCode.Read.Element
         public override bool Load(List<TreeNode> outElements)
         {
             // End too many recursive calls
-            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
+            TextPointer from = TextBuffer.PointerNextChar.Clone();
             if (Recursive)
             {
                 if (LastRuleInvoke != null && LastRuleInvoke.CompareTo(from) == 0) return false;

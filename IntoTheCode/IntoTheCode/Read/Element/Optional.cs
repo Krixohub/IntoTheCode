@@ -3,6 +3,7 @@
 using IntoTheCode.Read;
 using IntoTheCode.Basic;
 using System.Linq;
+using IntoTheCode.Buffer;
 
 namespace IntoTheCode.Read.Element
 {
@@ -15,10 +16,10 @@ namespace IntoTheCode.Read.Element
             //Attributter = new ObservableCollection<Attribute>();
         }
 
-        public override ParserElementBase CloneWithProces(LoadProces proces)
+        public override ParserElementBase CloneForParse(ITextBuffer buffer)
         {
-            var element = new Optional(SubElements.Select(r => ((ParserElementBase)r).CloneWithProces(proces)).ToArray());// { Parser = Parser };
-            element.Proces = proces;
+            var element = new Optional(SubElements.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray());// { Parser = Parser };
+            element.TextBuffer = buffer;
             return element;
         }
 
@@ -30,7 +31,7 @@ namespace IntoTheCode.Read.Element
             List<TreeNode> elements = new List<TreeNode>();
             if (LoadSet(outElements))
                 outElements.AddRange(elements);
-            return !Proces.Error;
+            return !TextBuffer.Proces.Error;
         }
 
         public override bool ExtractError()

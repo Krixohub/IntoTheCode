@@ -68,13 +68,13 @@ namespace IntoTheCode.Read
         {
             CodeDocument syntaxDoc = null;
 
-            LoadProces loadProces = new LoadProces(new FlatBuffer(syntax));
-            syntaxDoc = CodeDocument.Load(MetaParser.Instance, loadProces);
+            ITextBuffer buffer = new FlatBuffer(syntax);
+            syntaxDoc = CodeDocument.Load(MetaParser.Instance, buffer);
 
-            if (loadProces.Error)
-                throw new ParserException(loadProces.ErrorMsg);
+            if (buffer.Proces.Error)
+                throw new ParserException(buffer.Proces.ErrorMsg);
             if (syntaxDoc == null)
-                throw new ParserException("Can't read syntax." + loadProces.ErrorMsg);
+                throw new ParserException("Can't read syntax." + buffer.Proces.ErrorMsg);
 
             ParserFactory.BuildRules(this, syntaxDoc);
             if (!string.IsNullOrEmpty(DefinitionError))
@@ -83,12 +83,12 @@ namespace IntoTheCode.Read
         }
 
         /// <summary>Read from a text buffer and create a text document.</summary>
-        /// <param name="buf">The text buffer.</param>
+        /// <param name="buffer">The text buffer.</param>
         /// <returns>A text document, or null if error.</returns>
         /// <exclude/>
-        internal CodeDocument ParseString(LoadProces proces)
+        internal CodeDocument ParseString(ITextBuffer buffer)
         {
-            List<Rule> procesRules = Rules.Select(r => r.CloneWithProces(proces) as Rule).ToList();
+            List<Rule> procesRules = Rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
             ParserFactory.InitializeSyntax(this, procesRules);
             var elements = new List<TreeNode>();
             bool ok;
@@ -101,22 +101,22 @@ namespace IntoTheCode.Read
             }
             catch (Exception e)
             {
-                proces.ErrorMsg = "IntoTheCode developer error: " + e.Message;
+                buffer.Proces.ErrorMsg = "IntoTheCode developer error: " + e.Message;
                 return null;
             }
 
-            if (proces.Error) return null;
+            if (buffer.Proces.Error) return null;
 
             if (!ok)
-                proces.AddParseError(string.Format("Can't read '{0}'", procesRules[0].Name));
-            else if (!proces.TextBuffer.IsEnd())
-                proces.AddSyntaxErrorEof("End of input not reached.");
+                buffer.Proces.AddParseError(string.Format("Can't read '{0}'", procesRules[0].Name));
+            else if (!buffer.IsEnd())
+                buffer.Proces.AddSyntaxErrorEof("End of input not reached.");
             else if (elements.Count == 1 && elements[0] is CodeDocument)
                 return elements[0] as CodeDocument;
             else if (elements.Count == 1)
                 return new CodeDocument(elements[0].SubElements) { Name = elements[0].Name };
             else
-                proces.AddParseError(string.Format("First rule '{0} must represent all document and have Tag=true", procesRules[0].Name));
+                buffer.Proces.AddParseError(string.Format("First rule '{0} must represent all document and have Tag=true", procesRules[0].Name));
 
             return null;
         }

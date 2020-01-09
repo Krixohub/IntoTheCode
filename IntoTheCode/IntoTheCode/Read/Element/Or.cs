@@ -24,11 +24,11 @@ namespace IntoTheCode.Read.Element
         //{
         //}
 
-        public override ParserElementBase CloneWithProces(LoadProces proces)
+        public override ParserElementBase CloneForParse(ITextBuffer buffer)
         {
-            var element = new Or(((ParserElementBase)SubElements[0]).CloneWithProces(proces),
-                ((ParserElementBase)SubElements[1]).CloneWithProces(proces));
-            element.Proces = proces;
+            var element = new Or(((ParserElementBase)SubElements[0]).CloneForParse(buffer),
+                ((ParserElementBase)SubElements[1]).CloneForParse(buffer));
+            element.TextBuffer = buffer;
             return element;
         }
 
@@ -55,13 +55,13 @@ namespace IntoTheCode.Read.Element
 
         public override bool Load(List<TreeNode> outElements)
         {
-            //TextSubString ptr = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
+            //TextSubString ptr = TextBuffer.NewSubStringFrom();
+            TextPointer from = TextBuffer.PointerNextChar.Clone();
             List<TreeNode> subs = new List<TreeNode>();
-            if (!(SubElements[0] as ParserElementBase).Load(subs) || from.CompareTo(Proces.TextBuffer.PointerNextChar) == 0)
-                if (Proces.Error || 
+            if (!(SubElements[0] as ParserElementBase).Load(subs) || from.CompareTo(TextBuffer.PointerNextChar) == 0)
+                if (TextBuffer.Proces.Error || 
                     (!(SubElements[1] as ParserElementBase).Load(subs) 
-                    || from.CompareTo(Proces.TextBuffer.PointerNextChar) == 0))
+                    || from.CompareTo(TextBuffer.PointerNextChar) == 0))
                     return false;
             
             outElements.AddRange(subs);

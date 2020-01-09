@@ -10,27 +10,23 @@ namespace IntoTheCode
     /// <summary>The Elements that build up a CodeDokument.</summary>
     public class CodeElement : TreeNode
     {
-        private readonly ITextBuffer _buffer;
-        private readonly ParserElementBase _syntaxElement;
-        private readonly TextSubString _valuePointer;
+        private readonly TextSubString _subString;
 
-        internal CodeElement(ITextBuffer buffer, ParserElementBase element, TextSubString pointer, string error = null)
+        internal CodeElement(ParserElementBase element, TextSubString pointer, string error = null)
         {
             Name = element.Name;
-            _buffer = buffer;
-            _syntaxElement = element;
-            _valuePointer = pointer;
-            ValueReader = element as WordBase;
+            _subString = pointer;
+            WordParser = element as WordBase;
             Error = error;
         }
 
-        internal TextSubString ValuePointer { get { return _valuePointer; } }
-        internal WordBase ValueReader { get; set; }
+        internal TextSubString SubString { get { return _subString; } }
+        internal WordBase WordParser { get; set; }
         //internal int ValueLength { get { return ValuePointer == null ? 0 : ValuePointer.Length(); }}
 
         public override string GetValue() {
             //ParserElement reader = ValueReader == null ? _syntaxElement : ValueReader;
-            return ValueReader == null ? string.Empty : ValueReader.GetValue(_buffer, ValuePointer); }
+            return WordParser == null ? string.Empty : WordParser.GetValue(SubString); }
 
         public string Error { get; private set; }
 

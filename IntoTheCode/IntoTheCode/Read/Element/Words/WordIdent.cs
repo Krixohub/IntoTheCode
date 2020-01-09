@@ -18,9 +18,9 @@ namespace IntoTheCode.Read.Element.Words
             //Reader = parser;
         }
 
-        public override ParserElementBase CloneWithProces(LoadProces proces)
+        public override ParserElementBase CloneForParse(ITextBuffer buffer)
         {
-            return new WordIdent(Name) { Proces = proces };
+            return new WordIdent(Name) { TextBuffer = buffer };
         }
 
         public override string GetSyntax() { return MetaParser.WordIdent__; }
@@ -33,21 +33,21 @@ namespace IntoTheCode.Read.Element.Words
         {
             SkipWhiteSpace();
 
-            if (Proces.TextBuffer.IsEnd(1)) return false;
+            if (TextBuffer.IsEnd(1)) return false;
 
-            TextSubString subStr = Proces.TextBuffer.NewSubStringFrom();
+            TextSubString subStr = TextBuffer.NewSubStringFrom();
 
-            if (!AllowedCharsFirst.Contains(Proces.TextBuffer.GetChar().ToString().ToLower()))
-                return false;// SetPointerBack(proces, proces.TextBuffer.PointerNextChar, this);
+            if (!AllowedCharsFirst.Contains(TextBuffer.GetChar().ToString().ToLower()))
+                return false;// SetPointerBack(proces, TextBuffer.PointerNextChar, this);
             else
-                Proces.TextBuffer.IncPointer();
+                TextBuffer.IncPointer();
 
-            while (!Proces.TextBuffer.IsEnd() && AllowedCharsNext.Contains(Proces.TextBuffer.GetChar().ToString().ToLower()))
-            { Proces.TextBuffer.IncPointer(); }
+            while (!TextBuffer.IsEnd() && AllowedCharsNext.Contains(TextBuffer.GetChar().ToString().ToLower()))
+            { TextBuffer.IncPointer(); }
             
-            subStr.SetTo(Proces.TextBuffer.PointerNextChar);
+            subStr.SetTo(TextBuffer.PointerNextChar);
 
-            var element = new CodeElement(Proces.TextBuffer, this, subStr);
+            var element = new CodeElement(this, subStr);
             outElements.Add(element);
 
             return true;
@@ -57,34 +57,34 @@ namespace IntoTheCode.Read.Element.Words
         {
             SkipWhiteSpace();
 
-            //TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
+            //TextSubString subStr = TextBuffer.NewSubStringFrom();
+            TextPointer from = TextBuffer.PointerNextChar.Clone();
 
-            if (Proces.TextBuffer.IsEnd(1))
+            if (TextBuffer.IsEnd(1))
             {
                 //subStr.SetTo(subStr.GetFrom());
-                //proces.Errors.Add(new ParserError(this, proces.TextBuffer.PointerEnd, 2, "Expecting identifier, found EOF."));
-                Proces.AddSyntaxError(this, Proces.TextBuffer.PointerEnd, 2, "Expecting identifier, found EOF.");
+                //proces.Errors.Add(new ParserError(this, TextBuffer.PointerEnd, 2, "Expecting identifier, found EOF."));
+                TextBuffer.Proces.AddSyntaxError(this, TextBuffer.PointerEnd, 2, "Expecting identifier, found EOF.");
                 return false; // SetPointerBack(proces, from, this);
             }
 
             // todo brug getchar()
-            if (!AllowedCharsFirst.Contains(Proces.TextBuffer.GetChar().ToString().ToLower()))
+            if (!AllowedCharsFirst.Contains(TextBuffer.GetChar().ToString().ToLower()))
             {
-                //subStr.SetTo(proces.TextBuffer.PointerNextChar);
+                //subStr.SetTo(TextBuffer.PointerNextChar);
                 //var element = new CodeElement(proces.TextBuffer, this, subStr, "First charactor is not allowed.");
                 //errorWords.Add(element);
                 //proces.Errors.Add(new ParserError(this, from, 2, "First charactor is not allowed."));
-                Proces.AddSyntaxError(this, from, 2, "First charactor is not allowed.");
+                TextBuffer.Proces.AddSyntaxError(this, from, 2, "First charactor is not allowed.");
                 return false; // SetPointerBack(proces, from, this);
             }
             else
-                Proces.TextBuffer.IncPointer();
+                TextBuffer.IncPointer();
 
 
             // todo brug getchar()
-            while (!Proces.TextBuffer.IsEnd() && AllowedCharsNext.Contains(Proces.TextBuffer.GetSubString(Proces.TextBuffer.PointerNextChar, 1).ToLower()))
-            { Proces.TextBuffer.IncPointer(); }
+            while (!TextBuffer.IsEnd() && AllowedCharsNext.Contains(TextBuffer.GetSubString(TextBuffer.PointerNextChar, 1).ToLower()))
+            { TextBuffer.IncPointer(); }
 
             return true;
         }

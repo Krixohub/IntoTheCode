@@ -1,4 +1,6 @@
-﻿namespace IntoTheCode.Buffer
+﻿using IntoTheCode.Read;
+
+namespace IntoTheCode.Buffer
 {
     public interface ITextBuffer
     {
@@ -8,6 +10,7 @@
         //int pointer { get; set; }
         TextPointer PointerNextChar { get; }
         TextPointer PointerEnd { get; }
+        LoadProces Proces { get; }
 
         void SetPointerBackToFrom(TextSubString sub);
         void SetPointerTo(TextSubString sub);

@@ -24,9 +24,9 @@ namespace IntoTheCode.Read.Element
         {
         }
 
-        protected ParserElementBase[] CloneSubElementsWithProces(LoadProces proces)
+        protected ParserElementBase[] CloneSubElementsForParse(ITextBuffer buffer)
         {
-            return SubElements.Select(r => ((ParserElementBase)r).CloneWithProces(proces)).ToArray();
+            return SubElements.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray();
         }
 
         public override ElementContentType GetElementContent()
@@ -36,7 +36,7 @@ namespace IntoTheCode.Read.Element
 
         protected bool LoadSet(List<TreeNode> outElements)
         {
-            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
+            TextPointer from = TextBuffer.PointerNextChar.Clone();
             List<TreeNode> elements = new List<TreeNode>();
             foreach (var item in SubElements.OfType<ParserElementBase>())
                 if (!item.Load(elements))
@@ -50,7 +50,7 @@ namespace IntoTheCode.Read.Element
 
         protected bool ExtractErrorSet()
         {
-            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
+            TextPointer from = TextBuffer.PointerNextChar.Clone();
             List<WordBase> elements = new List<WordBase>();
             foreach (var item in SubElements.OfType<ParserElementBase>())
                 if (!item.ExtractError())

@@ -256,10 +256,10 @@ settings   collapse;";
                 var hardcodeParser = GetHardCodeParser();
 
                 // Use hard coded syntax to read meta syntax.
-                LoadProces proces = new LoadProces(new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings));
-                CodeDocument metaSyntaxDoc = CodeDocument.Load(hardcodeParser, proces);
+                ITextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
+                CodeDocument metaSyntaxDoc = CodeDocument.Load(hardcodeParser, buffer);
                 if (metaSyntaxDoc == null)
-                    throw new Exception(MessageRes.DevelOnly + hardcodeParser.Name + ". " + proces.ErrorMsg);
+                    throw new Exception(MessageRes.DevelOnly + hardcodeParser.Name + ". " + buffer.Proces.ErrorMsg);
 
                 string gg = metaSyntaxDoc.ToMarkup();
 

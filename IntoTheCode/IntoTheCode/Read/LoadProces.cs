@@ -12,17 +12,17 @@ namespace IntoTheCode.Read
 
         internal LoadProces(ITextBuffer buf)
         {
-            TextBuffer = buf;
+            _textBuffer = buf;
             ErrorMsg = string.Empty;
             UnambiguousPointer = new FlatPointer();
         }
 
-        /// <summary>The text buffer to read from.</summary>
-        internal ITextBuffer TextBuffer
-        {
-            get { return _textBuffer; }
-            set { _textBuffer = value; }
-        }
+        ///// <summary>The text buffer to read from.</summary>
+        //internal ITextBuffer TextBuffer
+        //{
+        //    get { return _textBuffer; }
+        //    set { _textBuffer = value; }
+        //}
 
         /// <summary>Error message after parsing/reading input text.</summary>
         /// <exclude/>
@@ -45,7 +45,7 @@ namespace IntoTheCode.Read
             err.ErrorPoint = errorPoint;
             err.Error = error;
 
-            TextBuffer.GetLineAndColumn(out err.Line, out err.Column, errorPoint);
+            _textBuffer.GetLineAndColumn(out err.Line, out err.Column, errorPoint);
             string s = string.Format("Line {0}, colomn {1}", err.Line, err.Column);
 
             err.Message = "Syntax error (" +
@@ -60,7 +60,7 @@ namespace IntoTheCode.Read
         public void AddSyntaxErrorEof(string error)
         {
             var err = new ParserError();
-            TextBuffer.GetLineAndColumn(out err.Line, out err.Column);
+            _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
             string s = string.Format("Line {0}, colomn {1}", err.Line, err.Column);
 
             err.Message = error + " " + s;
@@ -74,7 +74,7 @@ namespace IntoTheCode.Read
         public void AddParseError(string error)
         {
             var err = new ParserError();
-            TextBuffer.GetLineAndColumn(out err.Line, out err.Column);
+            _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
             string s = string.Format("Line {0}, colomn {1}", err.Line, err.Column);
 
             err.Message = error + " " + s;
@@ -92,7 +92,7 @@ namespace IntoTheCode.Read
         public void ThisIsUnambiguous(ParserElementBase reader, CodeElement code)
         {
             // Set SafePointer to char after element
-            UnambiguousPointer = code.ValuePointer.GetTo();
+            UnambiguousPointer = code.SubString.GetTo();
             //UnambiguousWordCount = numberOfWords; 
         }
 

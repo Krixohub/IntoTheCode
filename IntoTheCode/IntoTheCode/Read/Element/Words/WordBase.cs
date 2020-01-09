@@ -13,10 +13,10 @@ namespace IntoTheCode.Read.Element.Words
         /// <param name="buf"></param>
         /// <param name="ptr"></param>
         /// <returns></returns>
-        public virtual string GetValue(ITextBuffer buf, TextSubString ptr)
+        protected internal virtual string GetValue(TextSubString ptr)
         {
             //return Parser.TextBuffer.GetSubString(ptr);
-            return ptr == null || ptr.Length() == 0 ? string.Empty : buf.GetSubString(ptr);
+            return ptr == null || ptr.Length() == 0 ? string.Empty : TextBuffer.GetSubString(ptr);
         }
 
         /// <summary>The element content type is 'OneValue' for all words.</summary>

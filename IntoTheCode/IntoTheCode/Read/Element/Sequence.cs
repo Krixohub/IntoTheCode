@@ -18,25 +18,25 @@ namespace IntoTheCode.Read.Element
         {
         }
 
-        public override ParserElementBase CloneWithProces(LoadProces proces)
+        public override ParserElementBase CloneForParse(ITextBuffer buffer)
         {
-            return new Sequence(CloneSubElementsWithProces(proces)) { Proces = proces };
+            return new Sequence(CloneSubElementsForParse(buffer)) { TextBuffer = buffer };
         }
 
         public override bool Load(List<TreeNode> outElements)
         {
-            TextPointer p = Proces.TextBuffer.PointerNextChar.Clone();
-            while (LoadSet(outElements) && Proces.TextBuffer.PointerNextChar.CompareTo(p) > 0)
-                Proces.TextBuffer.PointerNextChar.CopyTo(p);
+            TextPointer p = TextBuffer.PointerNextChar.Clone();
+            while (LoadSet(outElements) && TextBuffer.PointerNextChar.CompareTo(p) > 0)
+                TextBuffer.PointerNextChar.CopyTo(p);
 
-            return !Proces.Error;
+            return !TextBuffer.Proces.Error;
         }
 
         public override bool ExtractError()
         {
-            TextPointer p = Proces.TextBuffer.PointerNextChar.Clone();
-            while (ExtractErrorSet() && Proces.TextBuffer.PointerNextChar.CompareTo(p) > 0)
-                Proces.TextBuffer.PointerNextChar.CopyTo(p);
+            TextPointer p = TextBuffer.PointerNextChar.Clone();
+            while (ExtractErrorSet() && TextBuffer.PointerNextChar.CompareTo(p) > 0)
+                TextBuffer.PointerNextChar.CopyTo(p);
 
             return true;
         }

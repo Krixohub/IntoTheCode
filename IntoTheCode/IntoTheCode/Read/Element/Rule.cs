@@ -30,10 +30,10 @@ namespace IntoTheCode.Read.Element
 
         }
 
-        public override ParserElementBase CloneWithProces(LoadProces proces)
+        public override ParserElementBase CloneForParse(ITextBuffer buffer)
         {
-            var element = new Rule(Name, SubElements.Select(r => ((ParserElementBase)r).CloneWithProces(proces)).ToArray());// { Parser = Parser };
-            element.Proces = proces;
+            var element = new Rule(Name, SubElements.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray());// { Parser = Parser };
+            element.TextBuffer = buffer;
             element.Collapse = Collapse;
             element.Trust = Trust;
             //element._elementContent = ElementContent;
@@ -77,7 +77,7 @@ namespace IntoTheCode.Read.Element
 
         public override bool Load(List<TreeNode> outElements)
         {
-            TextSubString subStr = Proces.TextBuffer.NewSubStringFrom();
+            TextSubString subStr = TextBuffer.NewSubStringFrom();
 
             if (Collapse)
             {
@@ -95,13 +95,13 @@ namespace IntoTheCode.Read.Element
 
                     if (outSubNotes.Count == 1)
                     {
-                        element = new CodeElement(Proces.TextBuffer, this, ((CodeElement)outSubNotes[0]).ValuePointer);
-                        element.ValueReader = ((CodeElement)outSubNotes[0]).ValueReader;
+                        element = new CodeElement(this , ((CodeElement)outSubNotes[0]).SubString);
+                        element.WordParser = ((CodeElement)outSubNotes[0]).WordParser;
                     }
                     else // count = 0
                     {
-                        subStr.SetTo(Proces.TextBuffer.PointerNextChar);
-                        element = new CodeElement(Proces.TextBuffer, this, subStr);
+                        subStr.SetTo(TextBuffer.PointerNextChar);
+                        element = new CodeElement(this, subStr);
                     }
 
                     outElements.Add(element);
@@ -111,22 +111,22 @@ namespace IntoTheCode.Read.Element
                     if (!LoadSet(outSubNotes))
                         return false;
 
-                    element = new CodeElement(Proces.TextBuffer, this, subStr);
+                    element = new CodeElement(this, subStr);
                     element.Add(outSubNotes);
                     outElements.Add(element);
                 }
             }
 
             // If this is a 'division' set unambiguous
-            if (Trust && Proces.TextBuffer.PointerNextChar.CompareTo(subStr.GetFrom()) > 0) Proces.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
+            if (Trust && TextBuffer.PointerNextChar.CompareTo(subStr.GetFrom()) > 0) TextBuffer.Proces.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
             return true;
 
         }
 
         public override bool ExtractError()
         {
-            //TextSubString subStr = proces.TextBuffer.NewSubStringFrom();
-            TextPointer from = Proces.TextBuffer.PointerNextChar.Clone();
+            //TextSubString subStr = TextBuffer.NewSubStringFrom();
+            TextPointer from = TextBuffer.PointerNextChar.Clone();
             //List<TreeNode> outSubNotes = new List<TreeNode>();
             //CodeElement element;
 

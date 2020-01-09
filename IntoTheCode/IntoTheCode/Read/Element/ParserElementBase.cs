@@ -28,13 +28,13 @@ namespace IntoTheCode.Read.Element
         /// <summary>Clone this parser element, with sub elements, and set proces.</summary>
         /// <param name="proces">The load proces.</param>
         /// <returns>The new clone.</returns>
-        public abstract ParserElementBase CloneWithProces(LoadProces proces);
+        public abstract ParserElementBase CloneForParse(ITextBuffer buffer);
 
         public override string GetValue() { return _value; }
 
-        public virtual void Initialize() { }
+       // public virtual void Initialize() { }
 
-        protected internal LoadProces Proces;
+        protected internal ITextBuffer TextBuffer;
         
 
         //public byte Color
@@ -49,15 +49,15 @@ namespace IntoTheCode.Read.Element
         /// <returns>Always return false.</returns>
         protected bool SetPointerBack(TextPointer txtPtr, ParserElementBase item)
         {
-            Proces.TextBuffer.SetPointer(txtPtr);
-            if (txtPtr.CompareTo(Proces.UnambiguousPointer) < 0 && !Proces.Error)
+            TextBuffer.SetPointer(txtPtr);
+            if (txtPtr.CompareTo(TextBuffer.Proces.UnambiguousPointer) < 0 && !TextBuffer.Proces.Error)
             {
                 ExtractError();
 
-                Proces.Errors = Proces.Errors.OrderByDescending(e => e.ErrorPoint.CompareTo(txtPtr)).ToList();
-                var errorMax2 = Proces.Errors.FirstOrDefault();
+                TextBuffer.Proces.Errors = TextBuffer.Proces.Errors.OrderByDescending(e => e.ErrorPoint.CompareTo(txtPtr)).ToList();
+                var errorMax2 = TextBuffer.Proces.Errors.FirstOrDefault();
 
-                Proces.ErrorMsg = errorMax2.Message;
+                TextBuffer.Proces.ErrorMsg = errorMax2.Message;
             }
 
             return false;
@@ -70,9 +70,9 @@ namespace IntoTheCode.Read.Element
         protected bool SetPointerBackError(TextPointer txtPtr)
         {
             //if (this is WordBase)
-            //    proces.Errors.Add(new LoadError((WordBase)this, proces.TextBuffer.PointerNextChar.Clone(), 2, "Unexpected string."));
-            //if (proces.TextBuffer.PointerNextChar.CompareTo())
-            Proces.TextBuffer.SetPointer(txtPtr);
+            //    proces.Errors.Add(new LoadError((WordBase)this, TextBuffer.PointerNextChar.Clone(), 2, "Unexpected string."));
+            //if (TextBuffer.PointerNextChar.CompareTo())
+            TextBuffer.SetPointer(txtPtr);
             return false;
         }
 
@@ -117,8 +117,8 @@ namespace IntoTheCode.Read.Element
         // todo:2 consider remove this method to parser.
         internal protected void SkipWhiteSpace()
         {
-            while (!Proces.TextBuffer.IsEnd() && " \r\n\t".Contains(Proces.TextBuffer.GetChar()))
-                Proces.TextBuffer.IncPointer();
+            while (!TextBuffer.IsEnd() && " \r\n\t".Contains(TextBuffer.GetChar()))
+                TextBuffer.IncPointer();
         }
 
         internal Rule GetRule(ParserElementBase e)
