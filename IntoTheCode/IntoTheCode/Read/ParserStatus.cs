@@ -1,7 +1,11 @@
-﻿using IntoTheCode.Buffer;
+﻿using IntoTheCode.Basic.Util;
+using IntoTheCode.Buffer;
+using IntoTheCode.Message;
 using IntoTheCode.Read.Element;
 using IntoTheCode.Read.Element.Words;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace IntoTheCode.Read
 {
@@ -33,13 +37,13 @@ namespace IntoTheCode.Read
 
         public void AddSyntaxError(WordBase element, TextPointer errorPoint, int wordCount, string error)
         {
+            // todo Expression<Func<string>> resourceExpression
             var err = new ParserError();
             err.WordCount = wordCount;
             err.ErrorPoint = errorPoint;
             err.Error = error;
 
-            _textBuffer.GetLineAndColumn(out err.Line, out err.Column, errorPoint);
-            string s = string.Format("Line {0}, colomn {1}", err.Line, err.Column);
+            string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column, errorPoint);
 
             err.Message = "Syntax error (" +
                             element.GetRule(element).Name +
@@ -50,11 +54,12 @@ namespace IntoTheCode.Read
 
         }
 
-        public void AddSyntaxErrorEof(string error)
+        public void AddSyntaxErrorEof(Expression<Func<string>> resourceExpression, params object[] parm)
         {
+            string error = DotNetUtil.Res(resourceExpression, parm);
             var err = new ParserError();
-            _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
-            string s = string.Format("Line {0}, colomn {1}", err.Line, err.Column);
+            
+            string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
 
             err.Message = error + " " + s;
 
@@ -64,15 +69,13 @@ namespace IntoTheCode.Read
             Errors.Add(err);
         }
 
-        public void AddBuildError(string error, CodeElement elem = null)
+        public void AddBuildError(Expression<Func<string>> resourceExpression, CodeElement elem, params object[] parm)
         {
+            string error = DotNetUtil.Res(resourceExpression, parm);
             var err = new ParserError();
             string s = string.Empty;
             if (elem != null)
-            {
-                _textBuffer.GetLineAndColumn(out err.Line, out err.Column, elem.SubString.GetFrom());
-                s = " " + string.Format("Line {0}, colomn {1}", err.Line, err.Column);
-            }
+                s = " " + _textBuffer.GetLineAndColumn(out err.Line, out err.Column, elem.SubString.GetFrom());
 
             err.Message = error + s;
 
@@ -81,11 +84,12 @@ namespace IntoTheCode.Read
             Errors.Add(err);
         }
 
-        public void AddParseError(string error)
+        public void AddParseError(Expression<Func<string>> resourceExpression, params object[] parm)
         {
+            string error = DotNetUtil.Res(resourceExpression, parm);
             var err = new ParserError();
-            _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
-            string s = string.Format("Line {0}, colomn {1}", err.Line, err.Column);
+           
+            string s =  _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
 
             err.Message = error + " " + s;
 

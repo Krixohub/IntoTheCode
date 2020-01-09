@@ -1,4 +1,5 @@
-﻿using IntoTheCode.Read;
+﻿using IntoTheCode.Message;
+using IntoTheCode.Read;
 
 namespace IntoTheCode.Buffer
 {
@@ -74,7 +75,7 @@ namespace IntoTheCode.Buffer
         private void SetToIndexOf(TextSubString sub, string find, TextPointer start)
         { ((FlatSubString)sub).To = _buf.IndexOf(find, ((FlatPointer)start).index, System.StringComparison.Ordinal); }
 
-        public void GetLineAndColumn(out int line, out int column, TextPointer pos = null)
+        public string GetLineAndColumn(out int line, out int column, TextPointer pos = null)
         {
             if (pos == null)
                 pos = PointerNextChar.Clone();
@@ -91,7 +92,7 @@ namespace IntoTheCode.Buffer
             }
             // add 1; the line starts with column 1.
             column = index - nlPos + 1;
-            //return string.Format("Line {0}, colomn {1}", line, index - nlPos + 1); 
+            return string.Format(MessageRes.LineAndCol, line, column);
         }
 
     }

@@ -80,7 +80,15 @@ namespace IntoTheCode.Basic.Util
         {
             return (str == null ? String.Empty : str) + "\r\n";
         }
-            
+
+        public static string Res(Expression<Func<string>> resourceExpression, params object[] parm)
+        {
+            string resId, resString;
+            resId = GetMemberName(resourceExpression);
+            resString = resourceExpression.Compile().Invoke();
+
+            return resId + ": " + string.Format(resString, parm);
+        }
 
         #endregion odd functions
 

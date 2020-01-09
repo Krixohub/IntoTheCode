@@ -6,6 +6,7 @@ using IntoTheCode.Basic;
 using IntoTheCode.Read.Element;
 using IntoTheCode.Read.Element.Words;
 using IntoTheCode.Basic.Util;
+using IntoTheCode.Message;
 
 namespace IntoTheCode.Read
 {
@@ -61,7 +62,7 @@ namespace IntoTheCode.Read
                     case MetaParser.Expression_:
                         if (docNotes.Count() > 1)
                         //{
-                            status.AddBuildError(string.Format("{0}: An expression element can't be siebling with other elements", parser.Name), element);
+                            status.AddBuildError(() => MessageRes.pb02, element, parser.Name);
                         //}
                         return BuildExpression(parser, element.SubElements, status);
                     case MetaParser.Or_________:
@@ -70,8 +71,8 @@ namespace IntoTheCode.Read
                         int pos = 0;
                         while (pos + 2 < docNotes.Count() && docNotes[++pos] != element) { }
                         if (pos < 1 || pos + 2 > docNotes.Count())
-                            status.AddBuildError(string.Format("{0}: The 'or' symbol is misplaced in expression", parser.Name), element);
-                        //                        throw new Exception(string.Format("{0}: The 'or' symbol is misplaced in expression", parser.Name));
+                            status.AddBuildError(() => MessageRes.pb03, element, parser.Name);
+                        //throw new Exception(string.Format("{0}: The 'or' symbol is misplaced in expression", parser.Name));
 
                         if (pos == 1)
                             el1 = elements[0];
@@ -122,7 +123,7 @@ namespace IntoTheCode.Read
                         elements.Add(new Parentheses(BuildExpression(parser, element.SubElements, status).ToArray()));
                         break;
                     default:
-                        status.AddBuildError(string.Format("Parser factory: No read element for '{0}'", element.Name), element);
+                        status.AddBuildError(() => MessageRes.pb04, element, element.Name);
 //                        throw new ParserException(string.Format("Parser factory: No read element for '{0}'", element.Name));
                         break;
                 }
@@ -140,10 +141,9 @@ namespace IntoTheCode.Read
                     rule.ToMarkupProtected(string.Empty);
 
                 if (rules.Any(r => r != rule && r.Name.ToLower() == rule.Name.ToLower()))
-                    status.AddBuildError(string.Format("Link grammar {1}. Identifier {0} is defined twice", 
+                    status.AddBuildError(() => MessageRes.pb05, rule.DefinitionCodeElement, 
                         rule.Name, 
-                        parser.Name, 
-                        rule.DefinitionCodeElement));
+                        parser.Name);
                 //throw new ParserException(string.Format("Link syntax {1}. Identifier {0} is defined twice",
                 //        rule.Name, parser.Name));
             }
@@ -171,7 +171,7 @@ namespace IntoTheCode.Read
         {
             Rule rule = rules.FirstOrDefault(r => r.Name == link.GetValue());
             if (rule == null)
-                status.AddBuildError(string.Format("Identifier '{0}' not found in syntax", link.GetValue()), link.DefinitionCodeElement);
+                status.AddBuildError(() => MessageRes.pb06, link.DefinitionCodeElement, link.GetValue());
             //throw new ParserException(string.Format("Identifier '{0}' not found in syntax", name));
             return rule;
         }
@@ -188,10 +188,7 @@ namespace IntoTheCode.Read
                 Rule rule = parser.Rules.FirstOrDefault(r => r.Name == elementId.Value);
                 if (rule == null)
                 {
-                    status.AddBuildError(string.Format("{1} Settings: Identifier '{0}' cant be resolved", 
-                        elementId.Value, 
-                        parser.Name), 
-                        elementId);
+                    status.AddBuildError(() => MessageRes.pb07, elementId, elementId.Value, parser.Name);
                     ok = false;
                     continue;
                     //return false;
@@ -214,11 +211,7 @@ namespace IntoTheCode.Read
                             rule.Collapse = propValue != "false";
                             break;
                         default:
-                            status.AddBuildError(string.Format("{0} Settings: Identifier '{1}' Property '{2}' cant be resolved",
-                                parser.Name,
-                                elementId.Value, 
-                                propName.Value
-                                ), propName);
+                            status.AddBuildError(() => MessageRes.pb08, propName, parser.Name, elementId.Value, propName.Value);
                             ok = false;
                             break;
                      //       return false;
@@ -238,10 +231,7 @@ namespace IntoTheCode.Read
             bool ok = true;
             if (parser.Rules[0].Collapse)
             {
-                status.AddBuildError(
-                    string.Format("First rule '{0} must represent all document and have Collapse=false",
-                    parser.Rules[0].Name),
-                    parser.Rules[0].DefinitionCodeElement);
+                status.AddBuildError(() => MessageRes.pb08, parser.Rules[0].DefinitionCodeElement, parser.Rules[0].Name);
                 ok = false;
             }
 //            throw new Exception(string.Format("First rule '{0} must represent all document and have Collapse=false", parser.Rules[0].Name));
@@ -262,10 +252,9 @@ namespace IntoTheCode.Read
             }
             if (elem.ElementContent == ElementContentType.NotSet)
             {
-                status.AddBuildError(
-                    string.Format("Element content type not set, {0}, {1} , {2}",
-                    elem.GetType().Name, elem.Name, elem.Value),
-                    elem.DefinitionCodeElement);
+                status.AddBuildError(() => MessageRes.pb01,
+                    elem.DefinitionCodeElement,
+                    elem.GetType().Name, elem.Name, elem.Value);
                 ok = false;
             }
             //throw new Exception(string.Format("Element content type not set, {0}, {1} , {2}", elem.GetType().Name, elem.Name, elem.Value));

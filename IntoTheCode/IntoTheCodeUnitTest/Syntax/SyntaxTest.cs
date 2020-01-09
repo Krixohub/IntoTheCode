@@ -10,6 +10,9 @@ using IntoTheCode.Buffer;
 using IntoTheCode.Read;
 using IntoTheCode.Read.Element;
 using IntoTheCode.Read.Element.Words;
+using IntoTheCode.Message;
+using System.Linq.Expressions;
+using IntoTheCode.Basic.Util;
 
 namespace TestCodeInternal.UnitTest
 {
@@ -271,7 +274,8 @@ settings fid trust; fstr trust; fsym trust;";
             //                   "123   
             doc = parser.ParseString(buf);
             Assert.IsNull(doc, "doc er ikke null");
-            Assert.AreEqual("End of input not reached. Line 1, colomn 3", buf.Status.ErrorMsg, "EOF error");
+            AreEqualResPos("EOF error", 1, 3, buf.Status.ErrorMsg, () => MessageRes.p05);
+//            Assert.AreEqual("End of input not reached. Line 1, colomn 3", buf.Status.ErrorMsg, "EOF error");
 
             string stx = parser.GetSyntax();
 
@@ -323,6 +327,17 @@ settings fid trust; fstr trust; fsym trust;";
             doc = parser.ParseString(buf);;
             Assert.IsNull(doc, "doc er ikke null");
             Assert.AreEqual("Syntax error (failSym). Expecting symbol 'fail', found 'faiL'. Line 1, colomn 8", buf.Status.ErrorMsg, "Symbol error");
+        }
+
+        private void AreEqualResPos(string errorName, int line, int col, string actual, Expression<Func<string>> resourceExpression, params object[] parm)
+        {
+            string expected = DotNetUtil.Res(resourceExpression, parm) + " " + string.Format(MessageRes.LineAndCol, line, col);
+            Assert.AreEqual(expected, actual, errorName);
+        }
+        private void AreEqualRes(string errorName, string actual, Expression<Func<string>> resourceExpression, params object[] parm)
+        {
+            string expected = DotNetUtil.Res(resourceExpression, parm);
+            Assert.AreEqual(expected, actual, errorName);
         }
 
         /// <summary>Test different types of syntax error.</summary>

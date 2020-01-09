@@ -144,70 +144,55 @@
   <data name="base0006" xml:space="preserve">
     <value>Lambda expression is null</value>
   </data>
-  <data name="LicKeyNotValid" xml:space="preserve">
-    <value>License key is not valid</value>
-  </data>
-  <data name="LicKeyNotFound" xml:space="preserve">
-    <value>License key (file) is not found</value>
-  </data>
-  <data name="LicAllreadyActive" xml:space="preserve">
-    <value>Component is allready activated</value>
-  </data>
-  <data name="LicInfoNotFound" xml:space="preserve">
-    <value>License information not found</value>
-  </data>
   <data name="base0007" xml:space="preserve">
     <value>Deeper error</value>
-  </data>
-  <data name="LicSign" xml:space="preserve">
-    <value>License signature is not valid</value>
-  </data>
-  <data name="LicValidation" xml:space="preserve">
-    <value>License validation error</value>
-  </data>
-  <data name="RegistryRead" xml:space="preserve">
-    <value>Registry read error</value>
-  </data>
-  <data name="RegistryReadPermission" xml:space="preserve">
-    <value>Registry read permission error</value>
-  </data>
-  <data name="RegistryWrite" xml:space="preserve">
-    <value>Registry write error</value>
-  </data>
-  <data name="RegistryWriteAccess" xml:space="preserve">
-    <value>Registry write access error</value>
-  </data>
-  <data name="RegistryWritePermission" xml:space="preserve">
-    <value>Registry write permission error</value>
-  </data>
-  <data name="a" xml:space="preserve">
-    <value>Remember to run 'Custom tool' after editing resources</value>
-  </data>
-  <data name="LicTooOld" xml:space="preserve">
-    <value>License is too old for this version of component</value>
-  </data>
-  <data name="LicFileRead" xml:space="preserve">
-    <value>License file read error</value>
-  </data>
-  <data name="LicWaiting" xml:space="preserve">
-    <value>Waiting for activation</value>
-  </data>
-  <data name="LicType" xml:space="preserve">
-    <value>Unknown component type</value>
   </data>
   <data name="DevelOnly" xml:space="preserve">
     <value>Devel. only: </value>
   </data>
-  <data name="LicEdition" xml:space="preserve">
-    <value>Component edition '{0} dosn't match lic file edition '{1}'</value>
+  <data name="LineAndCol" xml:space="preserve">
+    <value>Line {0}, colomn {1}</value>
   </data>
-  <data name="LicFault" xml:space="preserve">
-    <value>License fault: </value>
+  <data name="p01" xml:space="preserve">
+    <value>First rule '{0} must represent all document and have Tag=true</value>
   </data>
-  <data name="LicTrialExpired" xml:space="preserve">
-    <value>The trial period has expired</value>
+  <data name="p02" xml:space="preserve">
+    <value>Can't read '{0}'</value>
   </data>
-  <data name="LicTrialRelease" xml:space="preserve">
-    <value>The trial edition is for debug mode only</value>
+  <data name="p03" xml:space="preserve">
+    <value>IntoTheCode developer error: {0}</value>
+  </data>
+  <data name="p04" xml:space="preserve">
+    <value>No syntax rules</value>
+  </data>
+  <data name="p05" xml:space="preserve">
+    <value>End of input not reached.</value>
+  </data>
+  <data name="pb01" xml:space="preserve">
+    <value>Element content type not set, {0}, {1} , {2}</value>
+  </data>
+  <data name="pb02" xml:space="preserve">
+    <value>{0}: An expression element can't be siebling with other elements</value>
+  </data>
+  <data name="pb03" xml:space="preserve">
+    <value>{0}: The 'or' symbol is misplaced in expression</value>
+  </data>
+  <data name="pb04" xml:space="preserve">
+    <value>Parser factory: No read element for '{0}'</value>
+  </data>
+  <data name="pb05" xml:space="preserve">
+    <value>Link grammar {1}. Identifier {0} is defined twice</value>
+  </data>
+  <data name="pb06" xml:space="preserve">
+    <value>Identifier '{0}' not found in syntax</value>
+  </data>
+  <data name="pb07" xml:space="preserve">
+    <value>{1} Settings: Identifier '{0}' cant be resolved</value>
+  </data>
+  <data name="pb08" xml:space="preserve">
+    <value>{0} Settings: Identifier '{1}' Property '{2}' cant be resolved</value>
+  </data>
+  <data name="pb09" xml:space="preserve">
+    <value>First rule '{0} must represent all document and have Collapse=false</value>
   </data>
 </root>

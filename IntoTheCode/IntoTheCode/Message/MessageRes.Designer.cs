@@ -61,15 +61,6 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remember to run &apos;Custom tool&apos; after editing resources.
-        /// </summary>
-        public static string a {
-            get {
-                return ResourceManager.GetString("a", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error. Resource is not the right type. Modifiers must be public.
         /// </summary>
         public static string base0001 {
@@ -142,128 +133,11 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Component is allready activated.
+        ///   Looks up a localized string similar to Line {0}, colomn {1}.
         /// </summary>
-        public static string LicAllreadyActive {
+        public static string LineAndCol {
             get {
-                return ResourceManager.GetString("LicAllreadyActive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Component edition &apos;{0} dosn&apos;t match lic file edition &apos;{1}&apos;.
-        /// </summary>
-        public static string LicEdition {
-            get {
-                return ResourceManager.GetString("LicEdition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to License fault: .
-        /// </summary>
-        public static string LicFault {
-            get {
-                return ResourceManager.GetString("LicFault", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to License file read error.
-        /// </summary>
-        public static string LicFileRead {
-            get {
-                return ResourceManager.GetString("LicFileRead", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to License information not found.
-        /// </summary>
-        public static string LicInfoNotFound {
-            get {
-                return ResourceManager.GetString("LicInfoNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to License key (file) is not found.
-        /// </summary>
-        public static string LicKeyNotFound {
-            get {
-                return ResourceManager.GetString("LicKeyNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to License key is not valid.
-        /// </summary>
-        public static string LicKeyNotValid {
-            get {
-                return ResourceManager.GetString("LicKeyNotValid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to License signature is not valid.
-        /// </summary>
-        public static string LicSign {
-            get {
-                return ResourceManager.GetString("LicSign", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to License is too old for this version of component.
-        /// </summary>
-        public static string LicTooOld {
-            get {
-                return ResourceManager.GetString("LicTooOld", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The trial period has expired.
-        /// </summary>
-        public static string LicTrialExpired {
-            get {
-                return ResourceManager.GetString("LicTrialExpired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The trial edition is for debug mode only.
-        /// </summary>
-        public static string LicTrialRelease {
-            get {
-                return ResourceManager.GetString("LicTrialRelease", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unknown component type.
-        /// </summary>
-        public static string LicType {
-            get {
-                return ResourceManager.GetString("LicType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to License validation error.
-        /// </summary>
-        public static string LicValidation {
-            get {
-                return ResourceManager.GetString("LicValidation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Waiting for activation.
-        /// </summary>
-        public static string LicWaiting {
-            get {
-                return ResourceManager.GetString("LicWaiting", resourceCulture);
+                return ResourceManager.GetString("LineAndCol", resourceCulture);
             }
         }
         
@@ -286,47 +160,128 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registry read error.
+        ///   Looks up a localized string similar to First rule &apos;{0} must represent all document and have Tag=true.
         /// </summary>
-        public static string RegistryRead {
+        public static string p01 {
             get {
-                return ResourceManager.GetString("RegistryRead", resourceCulture);
+                return ResourceManager.GetString("p01", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registry read permission error.
+        ///   Looks up a localized string similar to Can&apos;t read &apos;{0}&apos;.
         /// </summary>
-        public static string RegistryReadPermission {
+        public static string p02 {
             get {
-                return ResourceManager.GetString("RegistryReadPermission", resourceCulture);
+                return ResourceManager.GetString("p02", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registry write error.
+        ///   Looks up a localized string similar to IntoTheCode developer error: {0}.
         /// </summary>
-        public static string RegistryWrite {
+        public static string p03 {
             get {
-                return ResourceManager.GetString("RegistryWrite", resourceCulture);
+                return ResourceManager.GetString("p03", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registry write access error.
+        ///   Looks up a localized string similar to No syntax rules.
         /// </summary>
-        public static string RegistryWriteAccess {
+        public static string p04 {
             get {
-                return ResourceManager.GetString("RegistryWriteAccess", resourceCulture);
+                return ResourceManager.GetString("p04", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registry write permission error.
+        ///   Looks up a localized string similar to End of input not reached..
         /// </summary>
-        public static string RegistryWritePermission {
+        public static string p05 {
             get {
-                return ResourceManager.GetString("RegistryWritePermission", resourceCulture);
+                return ResourceManager.GetString("p05", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Element content type not set, {0}, {1} , {2}.
+        /// </summary>
+        public static string pb01 {
+            get {
+                return ResourceManager.GetString("pb01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: An expression element can&apos;t be siebling with other elements.
+        /// </summary>
+        public static string pb02 {
+            get {
+                return ResourceManager.GetString("pb02", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: The &apos;or&apos; symbol is misplaced in expression.
+        /// </summary>
+        public static string pb03 {
+            get {
+                return ResourceManager.GetString("pb03", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parser factory: No read element for &apos;{0}&apos;.
+        /// </summary>
+        public static string pb04 {
+            get {
+                return ResourceManager.GetString("pb04", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link grammar {1}. Identifier {0} is defined twice.
+        /// </summary>
+        public static string pb05 {
+            get {
+                return ResourceManager.GetString("pb05", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identifier &apos;{0}&apos; not found in syntax.
+        /// </summary>
+        public static string pb06 {
+            get {
+                return ResourceManager.GetString("pb06", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {1} Settings: Identifier &apos;{0}&apos; cant be resolved.
+        /// </summary>
+        public static string pb07 {
+            get {
+                return ResourceManager.GetString("pb07", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Settings: Identifier &apos;{1}&apos; Property &apos;{2}&apos; cant be resolved.
+        /// </summary>
+        public static string pb08 {
+            get {
+                return ResourceManager.GetString("pb08", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First rule &apos;{0} must represent all document and have Collapse=false.
+        /// </summary>
+        public static string pb09 {
+            get {
+                return ResourceManager.GetString("pb09", resourceCulture);
             }
         }
         

@@ -43,6 +43,6 @@ namespace IntoTheCode.Buffer
         //void SetToIndexOf(TextSubString sub, string find, TextPointer from);
         //bool IsEnd();
         bool IsEnd(int length = 1);
-        void GetLineAndColumn(out int line, out int column, TextPointer from = null);
+        string GetLineAndColumn(out int line, out int column, TextPointer from = null);
     }
 }

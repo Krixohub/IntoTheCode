@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 
 using IntoTheCode.Buffer;
-using IntoTheCode.Read;
-using IntoTheCode.Basic.Layer;
 using IntoTheCode.Message;
 using IntoTheCode.Basic;
 using IntoTheCode.Read.Element;
@@ -48,7 +46,7 @@ namespace IntoTheCode.Read
 
         internal string GetSyntax()
         {
-            if (Rules == null || Rules.Count == 0) return "No syntax rules";
+            if (Rules == null || Rules.Count == 0) return MessageRes.p04;
             SymbolFixWidth = Rules.Max(eq => eq.Name.Length);
             string syntax = Rules.Aggregate(string.Empty, (ud, r) => (ud.Length == 0 ? ud : ud + "\r\n") + r.GetSyntax());
             return syntax;
@@ -101,23 +99,22 @@ namespace IntoTheCode.Read
             }
             catch (Exception e)
             {
-                buffer.Status.AddParseError("IntoTheCode developer error: " + e.Message);
-                //buffer.Status.ErrorMsg = "IntoTheCode developer error: " + e.Message;
+                buffer.Status.AddParseError(() => MessageRes.p02, e.Message);
                 return null;
             }
 
             if (buffer.Status.Error) return null;
 
             if (!ok)
-                buffer.Status.AddParseError(string.Format("Can't read '{0}'", procesRules[0].Name));
+                buffer.Status.AddParseError(() => MessageRes.p02, procesRules[0].Name);
             else if (!buffer.IsEnd())
-                buffer.Status.AddSyntaxErrorEof("End of input not reached.");
+                buffer.Status.AddSyntaxErrorEof(() => MessageRes.p05);
             else if (elements.Count == 1 && elements[0] is CodeDocument)
                 return elements[0] as CodeDocument;
             else if (elements.Count == 1)
                 return new CodeDocument(elements[0].SubElements) { Name = elements[0].Name };
             else
-                buffer.Status.AddParseError(string.Format("First rule '{0} must represent all document and have Tag=true", procesRules[0].Name));
+                buffer.Status.AddParseError(() => MessageRes.p01, procesRules[0].Name);
 
             return null;
         }
