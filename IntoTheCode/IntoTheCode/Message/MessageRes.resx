@@ -187,12 +187,33 @@
     <value>Identifier '{0}' not found in syntax</value>
   </data>
   <data name="pb07" xml:space="preserve">
-    <value>{1} Settings: Identifier '{0}' cant be resolved</value>
+    <value>Settings: Identifier '{0}' cant be resolved</value>
   </data>
   <data name="pb08" xml:space="preserve">
-    <value>{0} Settings: Identifier '{1}' Property '{2}' cant be resolved</value>
+    <value>Settings: Identifier '{0}' Property '{1}' cant be resolved</value>
   </data>
   <data name="pb09" xml:space="preserve">
-    <value>First rule '{0} must represent all document and have Collapse=false</value>
+    <value>First rule '{0} must have Collapse=false</value>
+  </data>
+  <data name="pe01" xml:space="preserve">
+    <value>Syntax error ({0}). Expecting identifier, found EOF.</value>
+  </data>
+  <data name="pe02" xml:space="preserve">
+    <value>Syntax error ({0}). First charactor is not allowed.</value>
+  </data>
+  <data name="pe03" xml:space="preserve">
+    <value>Syntax error ({0}). Expecting string, found EOF.</value>
+  </data>
+  <data name="pe04" xml:space="preserve">
+    <value>Syntax error ({0}). Expecting string.</value>
+  </data>
+  <data name="pe05" xml:space="preserve">
+    <value>Syntax error ({0}). Expecting string ending.</value>
+  </data>
+  <data name="pe06" xml:space="preserve">
+    <value>Syntax error ({0}). Expecting symbol '{1}', found EOF.</value>
+  </data>
+  <data name="pe07" xml:space="preserve">
+    <value>Syntax error ({0}). Expecting symbol '{1}', found '{2}'</value>
   </data>
 </root>

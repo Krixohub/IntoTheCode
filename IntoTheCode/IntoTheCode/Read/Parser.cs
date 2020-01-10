@@ -99,7 +99,7 @@ namespace IntoTheCode.Read
             }
             catch (Exception e)
             {
-                buffer.Status.AddParseError(() => MessageRes.p02, e.Message);
+                buffer.Status.AddException(e, () => MessageRes.p02, e.Message);
                 return null;
             }
 

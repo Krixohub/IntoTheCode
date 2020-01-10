@@ -121,7 +121,8 @@ namespace IntoTheCode.Read.Element
             }
 
             // If this is a 'division' set unambiguous
-            if (Trust && TextBuffer.PointerNextChar.CompareTo(subStr.GetFrom()) > 0) TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
+            if (Trust && TextBuffer.PointerNextChar.CompareTo(subStr.GetFrom()) > 0 && outElements.Count > 0)
+                TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
             return true;
 
         }

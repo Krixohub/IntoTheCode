@@ -35,9 +35,18 @@ namespace IntoTheCode.Read
 
         #region add errors
 
-        public void AddSyntaxError(WordBase element, TextPointer errorPoint, int wordCount, string error)
+        /// <summary>Add an error from parserElement.</summary>
+        /// <param name="element"></param>
+        /// <param name="errorPoint"></param>
+        /// <param name="wordCount"></param>
+        /// <param name="resourceExpression"></param>
+        /// <param name="parm"></param>
+        /// <returns>Always false.</returns>
+        public bool AddSyntaxError(WordBase element, TextPointer errorPoint, int wordCount, Expression<Func<string>> resourceExpression, params object[] parm)
         {
-            // todo Expression<Func<string>> resourceExpression
+
+            string error = DotNetUtil.Res(resourceExpression, parm.Insert(element.GetRule(element).Name));
+            //            AddSyntaxError( element,  errorPoint,  wordCount,  error);
             var err = new ParserError();
             err.WordCount = wordCount;
             err.ErrorPoint = errorPoint;
@@ -45,14 +54,35 @@ namespace IntoTheCode.Read
 
             string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column, errorPoint);
 
-            err.Message = "Syntax error (" +
-                            element.GetRule(element).Name +
-                            "). " + error + " " + s;
+            err.Message = error + " " + s;
+
+            //err.Message = "Syntax error (" +
+            //                element.GetRule(element).Name +
+            //                "). " + error + " " + s;
 
             if (Errors == null) Errors = new List<ParserError>();
             Errors.Add(err);
-
+            return false;
         }
+
+        //public void AddSyntaxError(WordBase element, TextPointer errorPoint, int wordCount, string error)
+        //{
+        //    // todo Expression<Func<string>> resourceExpression
+        //    var err = new ParserError();
+        //    err.WordCount = wordCount;
+        //    err.ErrorPoint = errorPoint;
+        //    err.Error = error;
+
+        //    string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column, errorPoint);
+
+        //    err.Message = "Syntax error (" +
+        //                    element.GetRule(element).Name +
+        //                    "). " + error + " " + s;
+
+        //    if (Errors == null) Errors = new List<ParserError>();
+        //    Errors.Add(err);
+
+        //}
 
         public void AddSyntaxErrorEof(Expression<Func<string>> resourceExpression, params object[] parm)
         {
@@ -84,12 +114,26 @@ namespace IntoTheCode.Read
             Errors.Add(err);
         }
 
+        public void AddException(Exception e, Expression<Func<string>> resourceExpression, params object[] parm)
+        {
+            string error = DotNetUtil.Res(resourceExpression, parm);
+            var err = new ParserError();
+            string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
+            err.Message = error + " " + s;
+            err.Ex = e;
+
+            // todo is this ok?
+            ErrorMsg = err.Message;
+            if (Errors == null) Errors = new List<ParserError>();
+            Errors.Add(err);
+        }
+
         public void AddParseError(Expression<Func<string>> resourceExpression, params object[] parm)
         {
             string error = DotNetUtil.Res(resourceExpression, parm);
             var err = new ParserError();
-           
-            string s =  _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
+
+            string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
 
             err.Message = error + " " + s;
 

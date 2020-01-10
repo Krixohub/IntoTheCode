@@ -4,6 +4,7 @@ using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
 using IntoTheCode.Read.Element;
 using System;
+using IntoTheCode.Message;
 
 namespace IntoTheCode.Read.Element.Words
 {
@@ -67,8 +68,8 @@ namespace IntoTheCode.Read.Element.Words
                 //var element = new CodeElement(Proces.TextBuffer, this, subStr1, "Expecting string, found EOF.");
                 //errorWords.Add(element);
                 //Proces.Errors.Add(new ParserError(this, TextBuffer.PointerEnd, 2, "Expecting string, found EOF."));
-                TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, 2, "Expecting string, found EOF.");
-                return false;
+                //TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, 2, "Expecting string, found EOF.");
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, 2, () => MessageRes.pe03);
             };
 
 
@@ -77,8 +78,8 @@ namespace IntoTheCode.Read.Element.Words
                 //subStr1.SetTo(subStr1.GetFrom());
                 //errorWords.Add(new CodeElement(Proces.TextBuffer, this, subStr1, "Expecting string."));
                 //Proces.Errors.Add(new ParserError(this, from, 2, "Expecting string."));
-                TextBuffer.Status.AddSyntaxError(this, from, 2, "Expecting string.");
-                return false;
+               // TextBuffer.Status.AddSyntaxError(this, from, 2, "Expecting string.");
+                return TextBuffer.Status.AddSyntaxError(this, from, 2, () => MessageRes.pe04);
             }
 
             TextBuffer.IncPointer();
@@ -88,29 +89,26 @@ namespace IntoTheCode.Read.Element.Words
 
             if (!subStr.ToIsValid())
             {
-                //subStr.SetTo(subStr.GetFrom());
-                //errorWords.Add(new CodeElement(Proces.TextBuffer, this, subStr, "Expecting string ending."));
-                //Proces.Errors.Add(new ParserError(this, from.Clone(1), 2, "Expecting string ending."));
-                TextBuffer.Status.AddSyntaxError(this, from.Clone(1), 2, "Expecting string ending.");
+                //TextBuffer.Status.AddSyntaxError(this, from.Clone(1), 2, "Expecting string ending.");
+                TextBuffer.Status.AddSyntaxError(this, from.Clone(1), 2, () => MessageRes.pe05);
                 return SetPointerBackError(from);
             }
 
-            //outElements.Add(new CodeElement(Proces.TextBuffer, this, subStr));
             TextBuffer.SetPointerTo(subStr);
             TextBuffer.IncPointer();
 
             return true;
         }
 
-        public override List<AmbiguousDef> IsAmbiguousChar(ParserElementBase element, bool ws, int pos, string allowed, string disallowed)
-        {
-            var list = new List<AmbiguousDef>();
-            string st =    /*
-          */ "hej";
-            if (st == "hej")
-                return null;
-            return list;
-        }
+        //public override List<AmbiguousDef> IsAmbiguousChar(ParserElementBase element, bool ws, int pos, string allowed, string disallowed)
+        //{
+        //    var list = new List<AmbiguousDef>();
+        //    string st =    /*
+        //  */ "hej";
+        //    if (st == "hej")
+        //        return null;
+        //    return list;
+        //}
 
     }
 }

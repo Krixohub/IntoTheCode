@@ -87,7 +87,26 @@ namespace IntoTheCode.Basic.Util
             resId = GetMemberName(resourceExpression);
             resString = resourceExpression.Compile().Invoke();
 
+            // Insert resource code as first parameter
+            //var parmcode = new object[parm.Length + 1];
+            //parmcode[0] = resId;
+            //for (int i = 0; i < parm.Length; i++)
+            //    parmcode[i + 1] = parm[i];
             return resId + ": " + string.Format(resString, parm);
+        }
+
+        /// <summary>Insert object to array.</summary>
+        /// <param name="resourceExpression"></param>
+        /// <param name="org"></param>
+        /// <returns></returns>
+        public static object[] Insert(this object[] org, object obj)
+        {
+            // Insert resource code as first parameter
+            var res = new object[org.Length + 1];
+            res[0] = obj;
+            for (int i = 0; i < org.Length; i++)
+                res[i + 1] = org[i];
+            return res;
         }
 
         #endregion odd functions

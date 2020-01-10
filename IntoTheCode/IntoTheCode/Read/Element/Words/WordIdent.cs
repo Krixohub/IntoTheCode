@@ -3,6 +3,7 @@
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
 using System;
+using IntoTheCode.Message;
 
 namespace IntoTheCode.Read.Element.Words
 {
@@ -64,8 +65,9 @@ namespace IntoTheCode.Read.Element.Words
             {
                 //subStr.SetTo(subStr.GetFrom());
                 //proces.Errors.Add(new ParserError(this, TextBuffer.PointerEnd, 2, "Expecting identifier, found EOF."));
-                TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, 2, "Expecting identifier, found EOF.");
-                return false; // SetPointerBack(proces, from, this);
+                
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, 2, () => MessageRes.pe01); 
+                // SetPointerBack(proces, from, this);
             }
 
             // todo brug getchar()
@@ -75,8 +77,10 @@ namespace IntoTheCode.Read.Element.Words
                 //var element = new CodeElement(proces.TextBuffer, this, subStr, "First charactor is not allowed.");
                 //errorWords.Add(element);
                 //proces.Errors.Add(new ParserError(this, from, 2, "First charactor is not allowed."));
-                TextBuffer.Status.AddSyntaxError(this, from, 2, "First charactor is not allowed.");
-                return false; // SetPointerBack(proces, from, this);
+                
+                //TextBuffer.Status.AddSyntaxError(this, from, 2, "First charactor is not allowed.");
+                return TextBuffer.Status.AddSyntaxError(this, from, 2, () => MessageRes.pe02); 
+                // SetPointerBack(proces, from, this);
             }
             else
                 TextBuffer.IncPointer();

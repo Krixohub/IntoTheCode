@@ -188,7 +188,7 @@ namespace IntoTheCode.Read
                 Rule rule = parser.Rules.FirstOrDefault(r => r.Name == elementId.Value);
                 if (rule == null)
                 {
-                    status.AddBuildError(() => MessageRes.pb07, elementId, elementId.Value, parser.Name);
+                    status.AddBuildError(() => MessageRes.pb07, elementId, elementId.Value);
                     ok = false;
                     continue;
                     //return false;
@@ -211,7 +211,7 @@ namespace IntoTheCode.Read
                             rule.Collapse = propValue != "false";
                             break;
                         default:
-                            status.AddBuildError(() => MessageRes.pb08, propName, parser.Name, elementId.Value, propName.Value);
+                            status.AddBuildError(() => MessageRes.pb08, propName, elementId.Value, propName.Value);
                             ok = false;
                             break;
                      //       return false;
@@ -231,7 +231,7 @@ namespace IntoTheCode.Read
             bool ok = true;
             if (parser.Rules[0].Collapse)
             {
-                status.AddBuildError(() => MessageRes.pb08, parser.Rules[0].DefinitionCodeElement, parser.Rules[0].Name);
+                status.AddBuildError(() => MessageRes.pb09, parser.Rules[0].DefinitionCodeElement, parser.Rules[0].Name);
                 ok = false;
             }
 //            throw new Exception(string.Format("First rule '{0} must represent all document and have Collapse=false", parser.Rules[0].Name));

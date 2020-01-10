@@ -259,7 +259,7 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {1} Settings: Identifier &apos;{0}&apos; cant be resolved.
+        ///   Looks up a localized string similar to Settings: Identifier &apos;{0}&apos; cant be resolved.
         /// </summary>
         public static string pb07 {
             get {
@@ -268,7 +268,7 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} Settings: Identifier &apos;{1}&apos; Property &apos;{2}&apos; cant be resolved.
+        ///   Looks up a localized string similar to Settings: Identifier &apos;{0}&apos; Property &apos;{1}&apos; cant be resolved.
         /// </summary>
         public static string pb08 {
             get {
@@ -277,11 +277,74 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to First rule &apos;{0} must represent all document and have Collapse=false.
+        ///   Looks up a localized string similar to First rule &apos;{0} must have Collapse=false.
         /// </summary>
         public static string pb09 {
             get {
                 return ResourceManager.GetString("pb09", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting identifier, found EOF..
+        /// </summary>
+        public static string pe01 {
+            get {
+                return ResourceManager.GetString("pe01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax error ({0}). First charactor is not allowed..
+        /// </summary>
+        public static string pe02 {
+            get {
+                return ResourceManager.GetString("pe02", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting string, found EOF..
+        /// </summary>
+        public static string pe03 {
+            get {
+                return ResourceManager.GetString("pe03", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting string..
+        /// </summary>
+        public static string pe04 {
+            get {
+                return ResourceManager.GetString("pe04", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting string ending..
+        /// </summary>
+        public static string pe05 {
+            get {
+                return ResourceManager.GetString("pe05", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting symbol &apos;{1}&apos;, found EOF..
+        /// </summary>
+        public static string pe06 {
+            get {
+                return ResourceManager.GetString("pe06", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting symbol &apos;{1}&apos;, found &apos;{2}&apos;.
+        /// </summary>
+        public static string pe07 {
+            get {
+                return ResourceManager.GetString("pe07", resourceCulture);
             }
         }
         

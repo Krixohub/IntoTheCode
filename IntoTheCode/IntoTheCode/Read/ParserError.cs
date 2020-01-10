@@ -1,6 +1,7 @@
 ﻿using IntoTheCode.Buffer;
 using IntoTheCode.Read.Element;
 using IntoTheCode.Read.Element.Words;
+using System;
 
 namespace IntoTheCode.Read
 {
@@ -26,6 +27,7 @@ namespace IntoTheCode.Read
         public int WordCount; //?
         public int Line; //?
         public int Column; //?
+        public Exception Ex;
         public string Error { get; internal set; } //?
         public string Message { get; internal set; } //?
 
