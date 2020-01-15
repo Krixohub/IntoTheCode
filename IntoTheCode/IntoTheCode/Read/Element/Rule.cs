@@ -127,6 +127,28 @@ namespace IntoTheCode.Read.Element
 
         }
 
+        public override bool TryLastAgain(CodeElement last)
+        {
+            TextSubString subStr = TextBuffer.NewSubStringFrom();
+
+            if (Collapse)
+                 return TryLastSetAgain(last);
+
+            if (last.Name != Name) return false;
+
+            if (last.SubElements != null && last.SubElements.Count() >= 0)
+            {
+                // if succes finding a deeper element, return true.
+                if (TryLastSetAgain(last.SubElements.Last() as CodeElement))
+                    return true;
+            }
+
+            // this is the last read element with succes! try load this again with ExtractError().
+            int wordCount = 0;
+            TextBuffer.SetPointerBackToFrom(last.SubString);
+            return ExtractError(ref wordCount);
+        }
+
         public override bool ExtractError(ref int wordCount)
         {
             //TextSubString subStr = TextBuffer.NewSubStringFrom();

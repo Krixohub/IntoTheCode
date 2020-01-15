@@ -29,6 +29,11 @@ namespace IntoTheCode.Read.Element
             return LoadSet(outElements);
         }
 
+        public override bool TryLastAgain(CodeElement last)
+        {
+            return TryLastSetAgain(last);
+        }
+
         public override bool ExtractError(ref int wordCount)
         {
             return ExtractErrorSet(ref wordCount);

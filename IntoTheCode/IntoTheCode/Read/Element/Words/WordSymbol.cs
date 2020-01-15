@@ -59,7 +59,7 @@ namespace IntoTheCode.Read.Element.Words
             {
                 //subStr.SetTo(from);
 //                TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, 2, string.Format("Expecting symbol '{0}', found EOF.", Value));
-                TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, 2, () => MessageRes.pe06, Value);
+                TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, wordCount, () => MessageRes.pe06, Value);
                 return SetPointerBackError(subStr.GetFrom(), ref wordCount, fromWordCount);
             }
 
@@ -70,7 +70,7 @@ namespace IntoTheCode.Read.Element.Words
                 {
                     subStr.SetTo(subStr.GetFrom().Clone(Value.Length));
                     //TextBuffer.Status.AddSyntaxError(this, subStr.GetFrom(), 2, string.Format("Expecting symbol '{0}', found '{1}'.", Value, TextBuffer.GetSubString(subStr)));
-                    TextBuffer.Status.AddSyntaxError(this, subStr.GetFrom(), 2, () => MessageRes.pe07, Value, TextBuffer.GetSubString(subStr));
+                    TextBuffer.Status.AddSyntaxError(this, subStr.GetFrom(), wordCount, () => MessageRes.pe07, Value, TextBuffer.GetSubString(subStr));
                     return SetPointerBackError(from, ref wordCount, fromWordCount);
                 }
 

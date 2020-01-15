@@ -66,7 +66,7 @@ namespace IntoTheCode.Read.Element.Words
                 //subStr.SetTo(subStr.GetFrom());
                 //proces.Errors.Add(new ParserError(this, TextBuffer.PointerEnd, 2, "Expecting identifier, found EOF."));
                 
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, 2, () => MessageRes.pe01); 
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, wordCount, () => MessageRes.pe01); 
                 // SetPointerBack(proces, from, this);
             }
 
@@ -79,7 +79,7 @@ namespace IntoTheCode.Read.Element.Words
                 //proces.Errors.Add(new ParserError(this, from, 2, "First charactor is not allowed."));
                 
                 //TextBuffer.Status.AddSyntaxError(this, from, 2, "First charactor is not allowed.");
-                return TextBuffer.Status.AddSyntaxError(this, from, 2, () => MessageRes.pe02); 
+                return TextBuffer.Status.AddSyntaxError(this, from, wordCount, () => MessageRes.pe02); 
                 // SetPointerBack(proces, from, this);
             }
             else

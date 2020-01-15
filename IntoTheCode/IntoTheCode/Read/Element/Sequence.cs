@@ -2,6 +2,7 @@
 
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
+using System.Linq;
 
 namespace IntoTheCode.Read.Element
 {
@@ -30,6 +31,18 @@ namespace IntoTheCode.Read.Element
                 TextBuffer.PointerNextChar.CopyTo(p);
 
             return TextBuffer.Status.Error == null;
+        }
+
+        public override bool TryLastAgain(CodeElement last)
+        {
+            //wordCount = 0;
+            //if (!found && item.TryLastAgain(last))
+            //    found = true;
+            //if (SubNotes.SubElements == null || SubNotes.SubElements.Count() == 0)
+            //{
+            //}
+            return TryLastSetAgain(last);
+//            return true;
         }
 
         public override bool ExtractError(ref int wordCount)

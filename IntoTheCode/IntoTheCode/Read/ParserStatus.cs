@@ -81,7 +81,8 @@ namespace IntoTheCode.Read
         {
             string error = DotNetUtil.Msg(resourceExpression, parm);
             var err = new ParserError();
-            
+
+            err.ErrorPoint = _textBuffer.PointerNextChar.Clone();
             string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
 
             err.Message = error + " " + s;
@@ -95,8 +96,10 @@ namespace IntoTheCode.Read
             var err = new ParserError();
             string s = string.Empty;
             if (elem != null)
-                s = " " + _textBuffer.GetLineAndColumn(out err.Line, out err.Column, elem.SubString.GetFrom());
-
+            {
+                err.ErrorPoint = elem.SubString.GetFrom();
+                s = " " + _textBuffer.GetLineAndColumn(out err.Line, out err.Column, err.ErrorPoint);
+            }
             err.Message = error + s;
 
             AddError(err);
@@ -108,6 +111,7 @@ namespace IntoTheCode.Read
             var err = new ParserError();
             string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
             err.Message = error + " " + s;
+            err.ErrorPoint = _textBuffer.PointerNextChar.Clone();
             err.Ex = e;
 
             AddError(err);
@@ -120,6 +124,7 @@ namespace IntoTheCode.Read
 
             string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
 
+            err.ErrorPoint = _textBuffer.PointerNextChar.Clone();
             err.Message = error + " " + s;
 
             AddError(err);
@@ -127,24 +132,36 @@ namespace IntoTheCode.Read
 
         private void AddError(ParserError err)
         {
-            if (Error == null)
-                Error = err;
-            else
-            {
-                // Find highest ranking error
-                if (err.WordCount > Error.WordCount)
-                    Error = err;
-            }
-
             if (AllErrors == null) AllErrors = new List<ParserError>();
             AllErrors.Add(err);
+            Error = RankingError(err, Error);
         }
 
-        #endregion add errors
+        /// <summary>Find highest ranking error.</summary>
+        /// <param name="newErr">Not null error.</param>
+        /// <param name="oldErr">Previus ranking error.</param>
+        /// <returns>Ranking error.</returns>
+        private ParserError RankingError(ParserError newErr, ParserError oldErr)
+        {
+            // 
+            if (oldErr == null) return newErr;
 
-        #region Next 
+            if (newErr.WordCount > oldErr.WordCount) return newErr;
 
-        public void ThisIsUnambiguous(ParserElementBase reader, CodeElement code)
+            if (newErr.ErrorPoint != null)
+            {
+                if (oldErr.ErrorPoint == null) return newErr;
+                if (newErr.ErrorPoint.CompareTo(oldErr.ErrorPoint) > 0) return newErr;
+            }
+
+            return oldErr;
+        }
+
+    #endregion add errors
+
+    #region Next 
+
+    public void ThisIsUnambiguous(ParserElementBase reader, CodeElement code)
         {
             // Set SafePointer to char after element
             UnambiguousPointer = code.SubString.GetTo();

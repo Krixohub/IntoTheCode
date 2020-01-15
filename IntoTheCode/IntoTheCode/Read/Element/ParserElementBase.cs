@@ -102,6 +102,12 @@ namespace IntoTheCode.Read.Element
         /// <returns>True = succes.</returns>
         public abstract bool Load(List<TreeNode> outElements);
 
+
+        /// <summary>find errors from start, when eof isn't reached and no other error is found.</summary>
+        /// <param name="last">Not null, not empty.</param>
+        /// <returns>True if load ok. False if load error.</returns>
+        public abstract bool TryLastAgain(CodeElement last);
+
         /// <summary>
         /// Load an element while storing possible errors.
         /// </summary>

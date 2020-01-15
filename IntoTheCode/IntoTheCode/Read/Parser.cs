@@ -108,7 +108,11 @@ namespace IntoTheCode.Read
             if (!ok)
                 buffer.Status.AddParseError(() => MessageRes.p02, procesRules[0].Name);
             else if (!buffer.IsEnd())
+            {
+                if (elements != null && elements.Count() > 0)
+                    procesRules[0].TryLastSetAgain(elements.Last() as CodeElement);
                 buffer.Status.AddSyntaxErrorEof(() => MessageRes.p05);
+            }
             else if (elements.Count == 1 && elements[0] is CodeDocument)
                 return elements[0] as CodeDocument;
             else if (elements.Count == 1)

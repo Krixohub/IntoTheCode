@@ -67,7 +67,7 @@ namespace IntoTheCode.Read.Element.Words
                 //errorWords.Add(element);
                 //Proces.Errors.Add(new ParserError(this, TextBuffer.PointerEnd, 2, "Expecting string, found EOF."));
                 //TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, 2, "Expecting string, found EOF.");
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, 2, () => MessageRes.pe03);
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, wordCount, () => MessageRes.pe03);
             };
 
 
@@ -77,7 +77,7 @@ namespace IntoTheCode.Read.Element.Words
                 //errorWords.Add(new CodeElement(Proces.TextBuffer, this, subStr1, "Expecting string."));
                 //Proces.Errors.Add(new ParserError(this, from, 2, "Expecting string."));
                // TextBuffer.Status.AddSyntaxError(this, from, 2, "Expecting string.");
-                return TextBuffer.Status.AddSyntaxError(this, from, 2, () => MessageRes.pe04);
+                return TextBuffer.Status.AddSyntaxError(this, from, wordCount, () => MessageRes.pe04);
             }
 
             TextBuffer.IncPointer();
@@ -88,7 +88,7 @@ namespace IntoTheCode.Read.Element.Words
             if (!subStr.ToIsValid())
             {
                 //TextBuffer.Status.AddSyntaxError(this, from.Clone(1), 2, "Expecting string ending.");
-                TextBuffer.Status.AddSyntaxError(this, from.Clone(1), 2, () => MessageRes.pe05);
+                TextBuffer.Status.AddSyntaxError(this, from.Clone(1), wordCount, () => MessageRes.pe05);
                 return SetPointerBackError(from, ref wordCount, fromWordCount);
             }
 

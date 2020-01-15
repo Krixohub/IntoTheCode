@@ -68,6 +68,14 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
+        public override bool TryLastAgain(CodeElement last)
+        {
+            bool ok = (SubElements[0] as ParserElementBase).TryLastAgain(last);
+            ok = ok || (SubElements[1] as ParserElementBase).TryLastAgain(last);
+
+            return ok;
+        }
+
         public override bool ExtractError(ref int wordCount)
         {
             bool ok = (SubElements[0] as ParserElementBase).ExtractError(ref wordCount);

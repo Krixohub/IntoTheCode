@@ -376,51 +376,51 @@ type = 'string'; ";
         [TestMethod]
         public void Parser17SyntaxErrorBuild()
         {
-            // Set syntax
-            //string syntax = @"stx =  {cmd}; stx = type identifier ';';";
-            List<ParserError> errors;
+            string errMsg1, errMsg2;
 
             // Can't reproduce pb01 - pb04. Problems in the CodeDocument is catched when parsing (before build)
 
             // Double rule
-            errors = null;
+            errMsg1 = null;
+            errMsg2 = null;
             try { var parser = new Parser("stx = ':'; stx = identifier;"); }
-            catch (ParserException e) { errors = e.AllErrors; }
-            AreEqualResPos("Double rule, build error", 1, 1, errors[0].Message, () => MessageRes.pb05, "stx", "stx");
-            AreEqualResPos("Double rule, build error", 1, 12, errors[1].Message, () => MessageRes.pb05, "stx", "stx");
+            catch (ParserException e) { errMsg1 = e.AllErrors[0].Message; errMsg2 = e.Message; }
+            AreEqualResPos("Double rule, build error", 1, 1, errMsg1, () => MessageRes.pb05, "stx", "stx");
+            AreEqualResPos("Double rule, build error", 1, 12, errMsg2, () => MessageRes.pb05, "stx", "stx");
 
             // identifier not found
-            errors = null;
+            errMsg1 = null;
             try { var parser = new Parser("stx = hans ;"); }
-            catch (ParserException e) { errors = e.AllErrors; }
-            AreEqualResPos("identifier not found, build error", 1, 7, errors[0].Message, () => MessageRes.pb06, "hans");
+            catch (ParserException e) { errMsg1 = e.Message; }
+            AreEqualResPos("identifier not found, build error", 1, 7, errMsg1, () => MessageRes.pb06, "hans");
 
             // settings identifier not found
-            errors = null;
+            errMsg1 = null;
             try { var parser = new Parser("stx = ':'; settings hans collapse;"); }
             //                            "123456789012345678901
-            catch (ParserException e) { errors = e.AllErrors; }
-            AreEqualResPos("settings identifier not found, build error", 1, 21, errors[0].Message, () => MessageRes.pb07, "hans");
+            catch (ParserException e) { errMsg1 = e.Message; }
+            AreEqualResPos("settings identifier not found, build error", 1, 21, errMsg1, () => MessageRes.pb07, "hans");
 
             // settings prop not found
-            errors = null;
+            errMsg1 = null;
             try { var parser = new Parser("stx = ':'; settings stx flip;"); }
             //                            "1234567890123456789012345
-            catch (ParserException e) { errors = e.AllErrors; }
-            AreEqualResPos("settings prop not found, build error", 1, 25, errors[0].Message, () => MessageRes.pb08, "stx", "flip");
+            catch (ParserException e) { errMsg1 = e.Message; }
+            AreEqualResPos("settings prop not found, build error", 1, 25, errMsg1, () => MessageRes.pb08, "stx", "flip");
 
             // First rule cant have tag=false
-            errors = null;
+            errMsg1 = null;
             try { var parser = new Parser("stx = ':'; \r\n settings stx collapse; "); }
-            catch (ParserException e) { errors = e.AllErrors; }
-            AreEqualResPos("First rule cant have tag=false, build error", 1, 1, errors[0].Message, () => MessageRes.pb09, "stx");
+            catch (ParserException e) { errMsg1 = e.Message; }
+            AreEqualResPos("First rule cant have tag=false, build error", 1, 1, errMsg1, () => MessageRes.pb09, "stx");
 
-            // todo find this error
-            //// syntax error expecting string ( 'false' )
-            //errors = null;
-            //try { var parser = new Parser("stx = ':'; \r\n settings stx collapse = false; "); }
-            //catch (ParserException e) { errors = e.Errors; }
-            //AreEqualResPos(" build error", 1, 1, errors[0].Message, () => MessageRes.pb09, "stx");
+//            // todo find this error
+//            // syntax error expecting string ( 'false' )
+//            errMsg1 = null;
+//            try { var parser = new Parser("stx = ':'; \r\n settings stx collapse = false; "); }
+//            catch (ParserException e) { errMsg1 = e.Message; }
+////            AreEqualResPos("String not found error", 1, 8, buf.Status.Error.Message, () => MessageRes.pe04, "failStr");
+//            AreEqualResPos(" syntax error", 2, 26, errMsg1, () => MessageRes.pe04, "stx");
         }
 
         #region utillity functions

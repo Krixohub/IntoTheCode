@@ -92,28 +92,12 @@ setter      = identifier assignment {',' assignment} ';';
 assignment  = property ['=' value];
 property    = identifier;
 value       = string;";
-                //                string syntax = @"MetaSyntax  = {Rule} [settings];
-                //Rule        = identifier '=' expression ';';
-                //expression  = element {[or] element};
-                //element     = identifier | symbol | block;
-                //block       = sequence | optional | parentheses;
-                //sequence    = '{' expression '}';
-                //optional    = '[' expression ']';
-                //parentheses = '(' expression ')';
-                //or          = '|';
-                //symbol      = string;
-                //settings    = 'settings' {setter};
-                //setter      = identifier assignment {',' assignment} ';';
-                //assignment  = property ['=' value];
-                //property    = identifier;
-                //value       = string;";
                 return syntax;
             }
         }
-        /*
-        property    = 'collapse' | 'trust' | 'ws' | 'wsdef';
-        property    = identifier;
-         */
+
+        // property    = 'collapse' | 'trust' | 'ws' | 'wsdef';
+
         /// <summary>The shapin syntax.</summary>
         internal static string MetaSettings
         {

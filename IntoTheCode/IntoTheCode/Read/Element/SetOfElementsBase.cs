@@ -48,6 +48,27 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
+        protected internal bool TryLastSetAgain(CodeElement last)
+        {
+            bool found = false;
+            //CodeElement last = outElements as CodeElement;
+            int wordCount;
+            foreach (var item in SubElements.OfType<ParserElementBase>())
+            {
+                wordCount = 0;
+                if (!found && item.TryLastAgain(last))
+                    found = true;
+                if (found && last.SubElements == null || last.SubElements.Count() == 0)
+                {
+                    TextBuffer.SetPointerBackToFrom(last.SubString);
+                    if (!item.ExtractError(ref wordCount)) return true;
+                }
+            }
+            
+
+            return true;
+        }
+
         protected bool ExtractErrorSet(ref int wordCount)
         {
             TextPointer from = TextBuffer.PointerNextChar.Clone();

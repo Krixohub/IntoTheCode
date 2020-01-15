@@ -57,6 +57,11 @@ namespace IntoTheCode.Read.Element
             return SymbolElement.Load(outElements);
         }
 
+        public override bool TryLastAgain(CodeElement last)
+        {
+            return SymbolElement.TryLastAgain(last);
+        }
+
         public override bool ExtractError(ref int wordCount)
         {
             return SymbolElement.ExtractError(ref wordCount);

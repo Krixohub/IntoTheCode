@@ -34,6 +34,12 @@ namespace IntoTheCode.Read.Element
             return TextBuffer.Status.Error == null;
         }
 
+        public override bool TryLastAgain(CodeElement last)
+        {
+            TryLastSetAgain(last);
+            return true;
+        }
+
         public override bool ExtractError(ref int wordCount)
         {
             ExtractErrorSet(ref wordCount);
