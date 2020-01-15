@@ -32,10 +32,10 @@ namespace IntoTheCode.Read.Element
             return TextBuffer.Status.Error == null;
         }
 
-        public override bool ExtractError()
+        public override bool ExtractError(ref int wordCount)
         {
             TextPointer p = TextBuffer.PointerNextChar.Clone();
-            while (ExtractErrorSet() && TextBuffer.PointerNextChar.CompareTo(p) > 0)
+            while (ExtractErrorSet(ref wordCount) && TextBuffer.PointerNextChar.CompareTo(p) > 0)
                 TextBuffer.PointerNextChar.CopyTo(p);
 
             return true;

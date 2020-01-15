@@ -48,12 +48,12 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        protected bool ExtractErrorSet()
+        protected bool ExtractErrorSet(ref int wordCount)
         {
             TextPointer from = TextBuffer.PointerNextChar.Clone();
             List<WordBase> elements = new List<WordBase>();
             foreach (var item in SubElements.OfType<ParserElementBase>())
-                if (!item.ExtractError())
+                if (!item.ExtractError(ref wordCount))
                     return SetPointerBack(from, item);
 
             return true;

@@ -54,13 +54,11 @@ namespace IntoTheCode.Read.Element.Words
             return true;
         }
 
-        public override bool ExtractError()
+        public override bool ExtractError(ref int wordCount)
         {
-            //TextSubString subStr1 = TextBuffer.NewSubStringFrom();
-            //TextPointer from = TextBuffer.PointerNextChar.Clone();
             SkipWhiteSpace();
             TextPointer from = TextBuffer.PointerNextChar.Clone();
-            //TextSubString subStr1 = TextBuffer.NewSubStringFrom();
+            int fromWordCount = wordCount;
 
             if (TextBuffer.IsEnd(2))
             {
@@ -91,12 +89,13 @@ namespace IntoTheCode.Read.Element.Words
             {
                 //TextBuffer.Status.AddSyntaxError(this, from.Clone(1), 2, "Expecting string ending.");
                 TextBuffer.Status.AddSyntaxError(this, from.Clone(1), 2, () => MessageRes.pe05);
-                return SetPointerBackError(from);
+                return SetPointerBackError(from, ref wordCount, fromWordCount);
             }
 
             TextBuffer.SetPointerTo(subStr);
             TextBuffer.IncPointer();
 
+            wordCount++;
             return true;
         }
 

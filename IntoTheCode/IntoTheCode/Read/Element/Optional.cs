@@ -34,9 +34,9 @@ namespace IntoTheCode.Read.Element
             return TextBuffer.Status.Error == null;
         }
 
-        public override bool ExtractError()
+        public override bool ExtractError(ref int wordCount)
         {
-            ExtractErrorSet();
+            ExtractErrorSet(ref wordCount);
             return true;
         }
     }

@@ -47,10 +47,11 @@ namespace IntoTheCode.Read.Element.Words
             return true;
         }
 
-        public override bool ExtractError()
+        public override bool ExtractError(ref int wordCount)
         {
             SkipWhiteSpace();
             TextPointer from = TextBuffer.PointerNextChar.Clone();
+            int fromWordCount = wordCount;
             TextSubString subStr = TextBuffer.NewSubStringFrom();
 
             //TextPointer from = TextBuffer.PointerNextChar.Clone();
@@ -59,7 +60,7 @@ namespace IntoTheCode.Read.Element.Words
                 //subStr.SetTo(from);
 //                TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, 2, string.Format("Expecting symbol '{0}', found EOF.", Value));
                 TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, 2, () => MessageRes.pe06, Value);
-                return SetPointerBackError(subStr.GetFrom());
+                return SetPointerBackError(subStr.GetFrom(), ref wordCount, fromWordCount);
             }
 
             foreach (char ch in Value)
@@ -70,9 +71,10 @@ namespace IntoTheCode.Read.Element.Words
                     subStr.SetTo(subStr.GetFrom().Clone(Value.Length));
                     //TextBuffer.Status.AddSyntaxError(this, subStr.GetFrom(), 2, string.Format("Expecting symbol '{0}', found '{1}'.", Value, TextBuffer.GetSubString(subStr)));
                     TextBuffer.Status.AddSyntaxError(this, subStr.GetFrom(), 2, () => MessageRes.pe07, Value, TextBuffer.GetSubString(subStr));
-                    return SetPointerBackError(from);
+                    return SetPointerBackError(from, ref wordCount, fromWordCount);
                 }
 
+            wordCount++;
             return true;
         }
     }

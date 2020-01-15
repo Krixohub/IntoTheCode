@@ -57,9 +57,9 @@ namespace IntoTheCode.Read.Element
             return SymbolElement.Load(outElements);
         }
 
-        public override bool ExtractError()
+        public override bool ExtractError(ref int wordCount)
         {
-            return SymbolElement.ExtractError();
+            return SymbolElement.ExtractError(ref wordCount);
         }
     }
 }

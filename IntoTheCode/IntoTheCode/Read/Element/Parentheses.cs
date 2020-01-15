@@ -29,9 +29,9 @@ namespace IntoTheCode.Read.Element
             return LoadSet(outElements);
         }
 
-        public override bool ExtractError()
+        public override bool ExtractError(ref int wordCount)
         {
-            return ExtractErrorSet();
+            return ExtractErrorSet(ref wordCount);
         }
     }
 }

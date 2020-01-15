@@ -53,9 +53,8 @@ namespace IntoTheCode.Read.Element
             TextBuffer.SetPointer(txtPtr);
             if (txtPtr.CompareTo(TextBuffer.Status.UnambiguousPointer) < 0 && TextBuffer.Status.Error == null)
             {
-                ExtractError();
-
-                
+                int wordCount = 0; // count words from this point
+                ExtractError(ref wordCount);
             }
 
             return false;
@@ -65,11 +64,9 @@ namespace IntoTheCode.Read.Element
         /// <param name="proces">The load proces.</param>
         /// <param name="txtPtr">Pointer to set.</param>
         /// <returns>Always return false.</returns>
-        protected bool SetPointerBackError(TextPointer txtPtr)
+        protected bool SetPointerBackError(TextPointer txtPtr, ref int wordCount, int previusWordCount)
         {
-            //if (this is WordBase)
-            //    proces.Errors.Add(new LoadError((WordBase)this, TextBuffer.PointerNextChar.Clone(), 2, "Unexpected string."));
-            //if (TextBuffer.PointerNextChar.CompareTo())
+            wordCount = previusWordCount;
             TextBuffer.SetPointer(txtPtr);
             return false;
         }
@@ -110,7 +107,7 @@ namespace IntoTheCode.Read.Element
         /// </summary>
         /// <param name="proces"></param>
         /// <returns>True = succes.</returns>
-        public abstract bool ExtractError();
+        public abstract bool ExtractError(ref int wordCount);
 
         // todo:2 consider remove this method to parser.
         internal protected void SkipWhiteSpace()

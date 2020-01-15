@@ -54,7 +54,7 @@ namespace IntoTheCode.Read.Element.Words
             return true;
         }
 
-        public override bool ExtractError()
+        public override bool ExtractError(ref int wordCount)
         {
             SkipWhiteSpace();
 
@@ -90,6 +90,7 @@ namespace IntoTheCode.Read.Element.Words
             while (!TextBuffer.IsEnd() && AllowedCharsNext.Contains(TextBuffer.GetSubString(TextBuffer.PointerNextChar, 1).ToLower()))
             { TextBuffer.IncPointer(); }
 
+            wordCount++;
             return true;
         }
     }

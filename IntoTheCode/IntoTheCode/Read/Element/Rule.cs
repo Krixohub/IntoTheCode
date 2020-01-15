@@ -127,26 +127,27 @@ namespace IntoTheCode.Read.Element
 
         }
 
-        public override bool ExtractError()
+        public override bool ExtractError(ref int wordCount)
         {
             //TextSubString subStr = TextBuffer.NewSubStringFrom();
             TextPointer from = TextBuffer.PointerNextChar.Clone();
+            int fromWordCount = wordCount;
             //List<TreeNode> outSubNotes = new List<TreeNode>();
             //CodeElement element;
 
             if (Collapse)
-                return ExtractErrorSet();
+                return ExtractErrorSet(ref wordCount);
 
             if (ElementContent == ElementContentType.OneValue)
             {
-                if (!(SubElements[0] as ParserElementBase).ExtractError())
-                    return SetPointerBackError(from);
+                if (!(SubElements[0] as ParserElementBase).ExtractError(ref wordCount))
+                    return SetPointerBackError(from, ref wordCount, fromWordCount);
             }
 
             else
             {
-                if (!ExtractErrorSet())
-                    return SetPointerBackError(from);
+                if (!ExtractErrorSet(ref wordCount))
+                    return SetPointerBackError(from, ref wordCount, fromWordCount);
 
             }
 
