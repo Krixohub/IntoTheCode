@@ -31,7 +31,7 @@ namespace IntoTheCode.Read.Element
             List<TreeNode> elements = new List<TreeNode>();
             if (LoadSet(outElements))
                 outElements.AddRange(elements);
-            return !TextBuffer.Status.Error;
+            return TextBuffer.Status.Error == null;
         }
 
         public override bool ExtractError()

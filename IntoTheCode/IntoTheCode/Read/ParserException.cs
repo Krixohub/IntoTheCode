@@ -11,11 +11,11 @@ namespace IntoTheCode.Read
         internal ParserException(string msg) : base (msg)
         {
             List<ParserError> errors = null;
-            Errors = new List<ParserError>();
+            AllErrors = new List<ParserError>();
             if (errors != null)
-                Errors.AddRange(errors);
+                AllErrors.AddRange(errors);
         }
 
-        public List<ParserError> Errors { get; internal set; }
+        public List<ParserError> AllErrors { get; internal set; }
     }
 }

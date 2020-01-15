@@ -17,21 +17,20 @@ namespace IntoTheCode.Read
         internal ParserStatus(ITextBuffer buf)
         {
             _textBuffer = buf;
-            ErrorMsg = string.Empty;
             UnambiguousPointer = new FlatPointer();
         }
 
-        /// <summary>Error message after parsing/reading input text.</summary>
-        /// <exclude/>
-        public string ErrorMsg { get; internal set; }
+        ///// <summary>Error message after parsing/reading input text.</summary>
+        ///// <exclude/>
+        //public string ErrorMsg { get; internal set; }
 
         /// <summary>Error message after parsing/reading input text.</summary>
         /// <exclude/>
-        public bool Error { get { return Errors != null; } }
+        public ParserError Error { get; private set; }
 
         /// <summary>Error message after parsing/reading input text.</summary>
         /// <exclude/>
-        public List<ParserError> Errors { get; internal set; }
+        public List<ParserError> AllErrors { get; internal set; }
 
         #region add errors
 
@@ -45,7 +44,7 @@ namespace IntoTheCode.Read
         public bool AddSyntaxError(WordBase element, TextPointer errorPoint, int wordCount, Expression<Func<string>> resourceExpression, params object[] parm)
         {
 
-            string error = DotNetUtil.Res(resourceExpression, parm.Insert(element.GetRule(element).Name));
+            string error = DotNetUtil.Msg(resourceExpression, parm.Insert(element.GetRule(element).Name));
             //            AddSyntaxError( element,  errorPoint,  wordCount,  error);
             var err = new ParserError();
             err.WordCount = wordCount;
@@ -56,12 +55,7 @@ namespace IntoTheCode.Read
 
             err.Message = error + " " + s;
 
-            //err.Message = "Syntax error (" +
-            //                element.GetRule(element).Name +
-            //                "). " + error + " " + s;
-
-            if (Errors == null) Errors = new List<ParserError>();
-            Errors.Add(err);
+            AddError(err);
             return false;
         }
 
@@ -79,29 +73,25 @@ namespace IntoTheCode.Read
         //                    element.GetRule(element).Name +
         //                    "). " + error + " " + s;
 
-        //    if (Errors == null) Errors = new List<ParserError>();
-        //    Errors.Add(err);
+        //    AddError(err);
 
         //}
 
         public void AddSyntaxErrorEof(Expression<Func<string>> resourceExpression, params object[] parm)
         {
-            string error = DotNetUtil.Res(resourceExpression, parm);
+            string error = DotNetUtil.Msg(resourceExpression, parm);
             var err = new ParserError();
             
             string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
 
             err.Message = error + " " + s;
 
-            // todo is this ok?
-            ErrorMsg = err.Message;
-            if (Errors == null) Errors = new List<ParserError>();
-            Errors.Add(err);
+            AddError(err);
         }
 
         public void AddBuildError(Expression<Func<string>> resourceExpression, CodeElement elem, params object[] parm)
         {
-            string error = DotNetUtil.Res(resourceExpression, parm);
+            string error = DotNetUtil.Msg(resourceExpression, parm);
             var err = new ParserError();
             string s = string.Empty;
             if (elem != null)
@@ -109,38 +99,45 @@ namespace IntoTheCode.Read
 
             err.Message = error + s;
 
-            if (string.IsNullOrEmpty(ErrorMsg)) ErrorMsg = err.Message;
-            if (Errors == null) Errors = new List<ParserError>();
-            Errors.Add(err);
+            AddError(err);
         }
 
         public void AddException(Exception e, Expression<Func<string>> resourceExpression, params object[] parm)
         {
-            string error = DotNetUtil.Res(resourceExpression, parm);
+            string error = DotNetUtil.Msg(resourceExpression, parm);
             var err = new ParserError();
             string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
             err.Message = error + " " + s;
             err.Ex = e;
 
-            // todo is this ok?
-            ErrorMsg = err.Message;
-            if (Errors == null) Errors = new List<ParserError>();
-            Errors.Add(err);
+            AddError(err);
         }
 
         public void AddParseError(Expression<Func<string>> resourceExpression, params object[] parm)
         {
-            string error = DotNetUtil.Res(resourceExpression, parm);
+            string error = DotNetUtil.Msg(resourceExpression, parm);
             var err = new ParserError();
 
             string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
 
             err.Message = error + " " + s;
 
-            // todo is this ok?
-            ErrorMsg = err.Message;
-            if (Errors == null) Errors = new List<ParserError>();
-            Errors.Add(err);
+            AddError(err);
+        }
+
+        private void AddError(ParserError err)
+        {
+            if (Error == null)
+                Error = err;
+            else
+            {
+                // Find highest ranking error
+                if (err.WordCount > Error.WordCount)
+                    Error = err;
+            }
+
+            if (AllErrors == null) AllErrors = new List<ParserError>();
+            AllErrors.Add(err);
         }
 
         #endregion add errors

@@ -29,7 +29,7 @@ namespace IntoTheCode.Read.Element
             while (LoadSet(outElements) && TextBuffer.PointerNextChar.CompareTo(p) > 0)
                 TextBuffer.PointerNextChar.CopyTo(p);
 
-            return !TextBuffer.Status.Error;
+            return TextBuffer.Status.Error == null;
         }
 
         public override bool ExtractError()

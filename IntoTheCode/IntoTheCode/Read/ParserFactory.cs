@@ -151,7 +151,7 @@ namespace IntoTheCode.Read
             foreach (Rule rule in rules)
                 InitializeElements(rule.SubElements.OfType<ParserElementBase>(), rules, status);
 
-            return !status.Error;
+            return status.Error == null;
         }
 
         private static void InitializeElements(IEnumerable<ParserElementBase> elements, List<Rule> rules, ParserStatus status)

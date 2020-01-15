@@ -69,11 +69,11 @@ namespace IntoTheCode.Read
             ITextBuffer buffer = new FlatBuffer(syntax);
             syntaxDoc = MetaParser.Instance.ParseString(buffer);
 
-            if (buffer.Status.Error || !ParserFactory.BuildRules(this, syntaxDoc, buffer.Status))
+            if (buffer.Status.Error != null || !ParserFactory.BuildRules(this, syntaxDoc, buffer.Status))
             {
                 // only place to throw exception is CodeDocument.Load and Parser.SetSyntax (and MetaSyntax)
-                var error = new ParserException(buffer.Status.ErrorMsg);
-                error.Errors.AddRange(buffer.Status.Errors);
+                var error = new ParserException(buffer.Status.Error.Message);
+                error.AllErrors.AddRange(buffer.Status.AllErrors);
                 throw error;
             }
         }
@@ -103,7 +103,7 @@ namespace IntoTheCode.Read
                 return null;
             }
 
-            if (buffer.Status.Error) return null;
+            if (buffer.Status.Error != null) return null;
 
             if (!ok)
                 buffer.Status.AddParseError(() => MessageRes.p02, procesRules[0].Name);

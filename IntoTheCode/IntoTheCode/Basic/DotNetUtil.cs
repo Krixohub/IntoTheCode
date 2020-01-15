@@ -81,17 +81,16 @@ namespace IntoTheCode.Basic.Util
             return (str == null ? String.Empty : str) + "\r\n";
         }
 
-        public static string Res(Expression<Func<string>> resourceExpression, params object[] parm)
+        /// <summary>Format message to user. The message id is inserted in beginning.</summary>
+        /// <param name="resourceExpression">Lambda for resource property: ()=> prop.</param>
+        /// <param name="parm">Parameters to resource string.</param>
+        /// <returns>Formatted message string.</returns>
+        public static string Msg(Expression<Func<string>> resourceExpression, params object[] parm)
         {
             string resId, resString;
             resId = GetMemberName(resourceExpression);
             resString = resourceExpression.Compile().Invoke();
 
-            // Insert resource code as first parameter
-            //var parmcode = new object[parm.Length + 1];
-            //parmcode[0] = resId;
-            //for (int i = 0; i < parm.Length; i++)
-            //    parmcode[i + 1] = parm[i];
             return resId + ": " + string.Format(resString, parm);
         }
 

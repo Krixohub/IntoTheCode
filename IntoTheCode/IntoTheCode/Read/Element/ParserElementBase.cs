@@ -51,14 +51,11 @@ namespace IntoTheCode.Read.Element
         protected bool SetPointerBack(TextPointer txtPtr, ParserElementBase item)
         {
             TextBuffer.SetPointer(txtPtr);
-            if (txtPtr.CompareTo(TextBuffer.Status.UnambiguousPointer) < 0 && !TextBuffer.Status.Error)
+            if (txtPtr.CompareTo(TextBuffer.Status.UnambiguousPointer) < 0 && TextBuffer.Status.Error == null)
             {
                 ExtractError();
 
-                TextBuffer.Status.Errors = TextBuffer.Status.Errors.OrderByDescending(e => e.ErrorPoint.CompareTo(txtPtr)).ToList();
-                var errorMax2 = TextBuffer.Status.Errors.FirstOrDefault();
-
-                TextBuffer.Status.ErrorMsg = errorMax2.Message;
+                
             }
 
             return false;

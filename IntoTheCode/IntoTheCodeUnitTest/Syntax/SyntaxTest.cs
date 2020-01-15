@@ -231,7 +231,7 @@ namespace TestCodeInternal.UnitTest
             Assert.AreEqual(string.Empty, parser.DefinitionError, "DifinitionError");
             CodeDocument doc = parser.ParseString(buffer);
             Assert.IsNotNull(doc, "doc er null");
-            Assert.AreEqual(string.Empty, buffer.Status.ErrorMsg, "ReadingError");
+            Assert.IsNull(buffer.Status.Error, "ReadingError");
 
             string markup = @"<syntax>
   <o/>
@@ -267,14 +267,14 @@ settings fid trust; fstr trust; fsym trust;";
             ITextBuffer buf = new FlatBuffer("ooo");
             doc = parser.ParseString(buf);;
             Assert.IsNotNull(doc, "doc er null");
-            Assert.AreEqual(string.Empty, buf.Status.ErrorMsg, "Parse error");
+            Assert.IsNull(buf.Status.Error, "Parse error");
 
             // Error: End of text not reached.
             buf = new FlatBuffer("oop");
             //                   "123   
             doc = parser.ParseString(buf);
             Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("EOF error", 1, 3, buf.Status.ErrorMsg, () => MessageRes.p05);
+            AreEqualResPos("EOF error", 1, 3, buf.Status.Error.Message, () => MessageRes.p05);
 
             string stx = parser.GetSyntax();
 
@@ -283,59 +283,59 @@ settings fid trust; fstr trust; fsym trust;";
             //                   "1234
             doc = parser.ParseString(buf); ;
             Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("Ident EOF error", 1, 4, buf.Status.ErrorMsg, () => MessageRes.pe01, "failId");
+            AreEqualResPos("Ident EOF error", 1, 4, buf.Status.Error.Message, () => MessageRes.pe01, "failId");
 
             // Read 'identifier', not allowed first letter.
             buf = new FlatBuffer("id 2r");
             //                   "1234
             doc = parser.ParseString(buf); ;
             Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("Ident first letter error", 1, 4, buf.Status.ErrorMsg, () => MessageRes.pe02, "failId");
+            AreEqualResPos("Ident first letter error", 1, 4, buf.Status.Error.Message, () => MessageRes.pe02, "failId");
 
             // Read 'string', EOF error.
             buf = new FlatBuffer("string ");
             //                   "12345678
             doc = parser.ParseString(buf); ;
             Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("String EOF error", 1, 8, buf.Status.ErrorMsg, () => MessageRes.pe03, "failStr");
+            AreEqualResPos("String EOF error", 1, 8, buf.Status.Error.Message, () => MessageRes.pe03, "failStr");
 
             // Read 'string', Expecting string (starting ' not found).
             buf = new FlatBuffer("string fail");
             //                   "12345678
             doc = parser.ParseString(buf); ;
             Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("String not found error", 1, 8, buf.Status.ErrorMsg, () => MessageRes.pe04, "failStr");
+            AreEqualResPos("String not found error", 1, 8, buf.Status.Error.Message, () => MessageRes.pe04, "failStr");
 
             // Read 'string', ending ' not found.
             buf = new FlatBuffer("string 'fail");
             //                   "123456789
             doc = parser.ParseString(buf); ;
             Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("String ending not found error", 1, 9, buf.Status.ErrorMsg, () => MessageRes.pe05, "failStr");
+            AreEqualResPos("String ending not found error", 1, 9, buf.Status.Error.Message, () => MessageRes.pe05, "failStr");
 
             // Read 'symbol', EOF error.
             buf = new FlatBuffer("symbol fai");
             //                   "12345678901
             doc = parser.ParseString(buf);;
             Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("Symbol EOF error", 1, 11, buf.Status.ErrorMsg, () => MessageRes.pe06, "failSym", "fail");
+            AreEqualResPos("Symbol EOF error", 1, 11, buf.Status.Error.Message, () => MessageRes.pe06, "failSym", "fail");
 
             // Read 'symbol',  error.
             buf = new FlatBuffer("symbol faiL ");
             //                   "12345678
             doc = parser.ParseString(buf);;
             Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("Symbol error", 1, 8, buf.Status.ErrorMsg, () => MessageRes.pe07, "failSym", "fail", "faiL");
+            AreEqualResPos("Symbol error", 1, 8, buf.Status.Error.Message, () => MessageRes.pe07, "failSym", "fail", "faiL");
         }
 
         private void AreEqualResPos(string errorName, int line, int col, string actual, Expression<Func<string>> resourceExpression, params object[] parm)
         {
-            string expected = DotNetUtil.Res(resourceExpression, parm) + " " + string.Format(MessageRes.LineAndCol, line, col);
+            string expected = DotNetUtil.Msg(resourceExpression, parm) + " " + string.Format(MessageRes.LineAndCol, line, col);
             Assert.AreEqual(expected, actual, errorName);
         }
         private void AreEqualRes(string errorName, string actual, Expression<Func<string>> resourceExpression, params object[] parm)
         {
-            string expected = DotNetUtil.Res(resourceExpression, parm);
+            string expected = DotNetUtil.Msg(resourceExpression, parm);
             Assert.AreEqual(expected, actual, errorName);
         }
 
@@ -355,21 +355,21 @@ type = 'string'; ";
             ITextBuffer buf = new FlatBuffer("string s; string str;");
             doc = parser.ParseString(buf); ;
             Assert.IsNotNull(doc, "doc er null");
-            Assert.AreEqual(string.Empty, buf.Status.ErrorMsg, "Parse error");
+            Assert.IsNull(buf.Status.Error, "Parse error");
 
             // Error: Missing ';'.
             buf = new FlatBuffer("string s ");
             //                   "1234567890   
             doc = parser.ParseString(buf);
             Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("missing seperator, EOF error", 1, 10, buf.Status.ErrorMsg, () => MessageRes.pe06, "cmd", ";");
+            AreEqualResPos("missing seperator, EOF error", 1, 10, buf.Status.Error.Message, () => MessageRes.pe06, "cmd", ";");
 
             // Error: Missing ';'.
             buf = new FlatBuffer("string s dfgsd");
             //                   "1234567890   
             doc = parser.ParseString(buf);
             Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("missing seperator", 1, 10, buf.Status.ErrorMsg, () => MessageRes.pe07, "cmd", ";", "d");
+            AreEqualResPos("missing seperator", 1, 10, buf.Status.Error.Message, () => MessageRes.pe07, "cmd", ";", "d");
         }
 
         /// <summary>Test different types of syntax build error.</summary>
@@ -385,34 +385,34 @@ type = 'string'; ";
             // Double rule
             errors = null;
             try { var parser = new Parser("stx = ':'; stx = identifier;"); }
-            catch (ParserException e) { errors = e.Errors; }
+            catch (ParserException e) { errors = e.AllErrors; }
             AreEqualResPos("Double rule, build error", 1, 1, errors[0].Message, () => MessageRes.pb05, "stx", "stx");
             AreEqualResPos("Double rule, build error", 1, 12, errors[1].Message, () => MessageRes.pb05, "stx", "stx");
 
             // identifier not found
             errors = null;
             try { var parser = new Parser("stx = hans ;"); }
-            catch (ParserException e) { errors = e.Errors; }
+            catch (ParserException e) { errors = e.AllErrors; }
             AreEqualResPos("identifier not found, build error", 1, 7, errors[0].Message, () => MessageRes.pb06, "hans");
 
             // settings identifier not found
             errors = null;
             try { var parser = new Parser("stx = ':'; settings hans collapse;"); }
             //                            "123456789012345678901
-            catch (ParserException e) { errors = e.Errors; }
+            catch (ParserException e) { errors = e.AllErrors; }
             AreEqualResPos("settings identifier not found, build error", 1, 21, errors[0].Message, () => MessageRes.pb07, "hans");
 
             // settings prop not found
             errors = null;
             try { var parser = new Parser("stx = ':'; settings stx flip;"); }
             //                            "1234567890123456789012345
-            catch (ParserException e) { errors = e.Errors; }
+            catch (ParserException e) { errors = e.AllErrors; }
             AreEqualResPos("settings prop not found, build error", 1, 25, errors[0].Message, () => MessageRes.pb08, "stx", "flip");
 
             // First rule cant have tag=false
             errors = null;
             try { var parser = new Parser("stx = ':'; \r\n settings stx collapse; "); }
-            catch (ParserException e) { errors = e.Errors; }
+            catch (ParserException e) { errors = e.AllErrors; }
             AreEqualResPos("First rule cant have tag=false, build error", 1, 1, errors[0].Message, () => MessageRes.pb09, "stx");
 
             // todo find this error

@@ -59,7 +59,7 @@ namespace IntoTheCode.Read.Element
             TextPointer from = TextBuffer.PointerNextChar.Clone();
             List<TreeNode> subs = new List<TreeNode>();
             if (!(SubElements[0] as ParserElementBase).Load(subs) || from.CompareTo(TextBuffer.PointerNextChar) == 0)
-                if (TextBuffer.Status.Error || 
+                if (TextBuffer.Status.Error != null || 
                     (!(SubElements[1] as ParserElementBase).Load(subs) 
                     || from.CompareTo(TextBuffer.PointerNextChar) == 0))
                     return false;

@@ -257,7 +257,7 @@ settings   collapse;";
                 // Hard coded parser
                 var hardcodeParser = GetHardCodeParser(buffer.Status);
 
-                if (!buffer.Status.Error)
+                if (buffer.Status.Error == null)
                 {
                     step = 2;
                     // Use hard coded syntax to read meta syntax.
@@ -266,7 +266,7 @@ settings   collapse;";
                     string gg = metaSyntaxDoc.ToMarkup();
                     step = 3;
                 }
-                if (!buffer.Status.Error)
+                if (buffer.Status.Error == null)
                 {
                     _instance = new Parser() { Level = 2 };
                     ParserFactory.BuildRules(_instance, metaSyntaxDoc, buffer.Status);
@@ -276,14 +276,14 @@ settings   collapse;";
             {
                 // if an exception occurs under parsing MetaSyntax it is an HardSyntax error
                 var e2 = new ParserException((step <= 2 ? HardSyntax_ : MetaSyntax_) + " " + e.Message);
-                if (e is ParserException) e2.Errors = ((ParserException)e).Errors;
+                if (e is ParserException) e2.AllErrors = ((ParserException)e).AllErrors;
                 throw e2;
             }
-            if (buffer.Status.Error)
+            if (buffer.Status.Error != null)
             {
                 // if an proces-error occurs under parsing MetaSyntax it is an MetaSyntax error
-                var e2 = new ParserException((step == 1 ? HardSyntax_ : MetaSyntax_) + " " + buffer.Status.ErrorMsg);
-                e2.Errors = buffer.Status.Errors;
+                var e2 = new ParserException((step == 1 ? HardSyntax_ : MetaSyntax_) + " " + buffer.Status.Error.Message);
+                e2.AllErrors = buffer.Status.AllErrors;
                 throw e2;
             }
         }
