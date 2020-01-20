@@ -146,7 +146,7 @@ namespace IntoTheCode.Read
             // 
             if (oldErr == null) return newErr;
 
-            if (newErr.WordCount > oldErr.WordCount) return newErr;
+            //if (newErr.WordCount > oldErr.WordCount) return newErr;
 
             if (newErr.ErrorPoint != null)
             {

@@ -262,6 +262,7 @@ settings fid trust; fstr trust; fsym trust;";
             var parser = new Parser(syntax);
             //ParserStatus proces;
             CodeDocument doc;
+            string errMsg1;
 
             // What the parser CAN read
             ITextBuffer buf = new FlatBuffer("ooo");
@@ -270,62 +271,99 @@ settings fid trust; fstr trust; fsym trust;";
             Assert.IsNull(buf.Status.Error, "Parse error");
 
             // Error: End of text not reached.
-            buf = new FlatBuffer("oop");
-            //                   "123   
-            doc = parser.ParseString(buf);
-            Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("EOF error", 1, 3, buf.Status.Error.Message, () => MessageRes.p05);
+            errMsg1 = null;
+            try { doc = CodeDocument.Load(parser, "oop"); }
+            //                                    "123   
+            catch (ParserException e)
+            {
+                errMsg1 = e.Message;
+                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
+            }
+            AreEqualResPos("EOF error", 1, 3, errMsg1, () => MessageRes.p05);
 
             string stx = parser.GetSyntax();
 
             // Read 'identifier', EOF error.
-            buf = new FlatBuffer("id ");
-            //                   "1234
-            doc = parser.ParseString(buf); ;
-            Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("Ident EOF error", 1, 4, buf.Status.Error.Message, () => MessageRes.pe01, "failId");
+            errMsg1 = null;
+            try { doc = CodeDocument.Load(parser, "id "); }
+            //                                    "1234   
+            catch (ParserException e)
+            {
+                errMsg1 = e.Message;
+                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
+            }
+            AreEqualResPos("Ident EOF error", 1, 4, errMsg1, () => MessageRes.pe01, "failId");
 
             // Read 'identifier', not allowed first letter.
-            buf = new FlatBuffer("id 2r");
-            //                   "1234
-            doc = parser.ParseString(buf); ;
-            Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("Ident first letter error", 1, 4, buf.Status.Error.Message, () => MessageRes.pe02, "failId");
+            errMsg1 = null;
+            try { doc = CodeDocument.Load(parser, "id 2r"); }
+            //                                    "1234   
+            catch (ParserException e)
+            {
+                errMsg1 = e.Message;
+                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
+            }
+            AreEqualResPos("Ident first letter error", 1, 4, errMsg1, () => MessageRes.pe02, "failId");
 
             // Read 'string', EOF error.
-            buf = new FlatBuffer("string ");
-            //                   "12345678
-            doc = parser.ParseString(buf); ;
-            Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("String EOF error", 1, 8, buf.Status.Error.Message, () => MessageRes.pe03, "failStr");
+            errMsg1 = null;
+            try { doc = CodeDocument.Load(parser, "string "); }
+            //                                    "12345678  
+            catch (ParserException e)
+            {
+                errMsg1 = e.Message;
+                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
+            }
+            AreEqualResPos("String EOF error", 1, 8, errMsg1, () => MessageRes.pe03, "failStr");
+
+
+
+
+
 
             // Read 'string', Expecting string (starting ' not found).
-            buf = new FlatBuffer("string fail");
-            //                   "12345678
-            doc = parser.ParseString(buf); ;
-            Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("String not found error", 1, 8, buf.Status.Error.Message, () => MessageRes.pe04, "failStr");
+            errMsg1 = null;
+            try { doc = CodeDocument.Load(parser, "string fail"); }
+            //                                    "12345678  
+            catch (ParserException e)
+            {
+                errMsg1 = e.Message;
+                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
+            }
+            AreEqualResPos("String not found error", 1, 8, errMsg1, () => MessageRes.pe04, "failStr");
 
             // Read 'string', ending ' not found.
-            buf = new FlatBuffer("string 'fail");
-            //                   "123456789
-            doc = parser.ParseString(buf); ;
-            Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("String ending not found error", 1, 9, buf.Status.Error.Message, () => MessageRes.pe05, "failStr");
+            errMsg1 = null;
+            try { doc = CodeDocument.Load(parser, "string 'fail"); }
+            //                                    "123456789
+            catch (ParserException e)
+            {
+                errMsg1 = e.Message;
+                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
+            }
+            AreEqualResPos("String ending not found error", 1, 9, errMsg1, () => MessageRes.pe05, "failStr");
 
             // Read 'symbol', EOF error.
-            buf = new FlatBuffer("symbol fai");
-            //                   "12345678901
-            doc = parser.ParseString(buf);;
-            Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("Symbol EOF error", 1, 11, buf.Status.Error.Message, () => MessageRes.pe06, "failSym", "fail");
+            errMsg1 = null;
+            try { doc = CodeDocument.Load(parser, "symbol fai"); }
+            //                                    "12345678901
+            catch (ParserException e)
+            {
+                errMsg1 = e.Message;
+                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
+            }
+            AreEqualResPos("Symbol EOF error", 1, 11, errMsg1, () => MessageRes.pe06, "failSym", "fail");
 
             // Read 'symbol',  error.
-            buf = new FlatBuffer("symbol faiL ");
-            //                   "12345678
-            doc = parser.ParseString(buf);;
-            Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("Symbol error", 1, 8, buf.Status.Error.Message, () => MessageRes.pe07, "failSym", "fail", "faiL");
+            errMsg1 = null;
+            try { doc = CodeDocument.Load(parser, "symbol faiL"); }
+            //                                    "12345678
+            catch (ParserException e)
+            {
+                errMsg1 = e.Message;
+                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
+            }
+            AreEqualResPos("Symbol error", 1, 8, errMsg1, () => MessageRes.pe07, "failSym", "fail", "faiL");
         }
 
         private void AreEqualResPos(string errorName, int line, int col, string actual, Expression<Func<string>> resourceExpression, params object[] parm)
@@ -350,6 +388,7 @@ cmd = type identifier ';';
 type = 'string'; ";
             var parser = new Parser(syntax);
             CodeDocument doc;
+            string errMsg1;
 
             // What the parser CAN read
             ITextBuffer buf = new FlatBuffer("string s; string str;");
@@ -357,19 +396,26 @@ type = 'string'; ";
             Assert.IsNotNull(doc, "doc er null");
             Assert.IsNull(buf.Status.Error, "Parse error");
 
-            // Error: Missing ';'.
-            buf = new FlatBuffer("string s ");
-            //                   "1234567890   
-            doc = parser.ParseString(buf);
-            Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("missing seperator, EOF error", 1, 10, buf.Status.Error.Message, () => MessageRes.pe06, "cmd", ";");
+            // identifier not found
+            errMsg1 = null;
+            try { doc = CodeDocument.Load(parser, "string s "); }
+            //                                        "1234567890   
+            catch (ParserException e) {
+                errMsg1 = e.Message;
+                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
+            }
+            AreEqualResPos("missing seperator, EOF error", 1, 10, errMsg1, () => MessageRes.pe06, "cmd", ";");
 
             // Error: Missing ';'.
-            buf = new FlatBuffer("string s dfgsd");
-            //                   "1234567890   
-            doc = parser.ParseString(buf);
-            Assert.IsNull(doc, "doc er ikke null");
-            AreEqualResPos("missing seperator", 1, 10, buf.Status.Error.Message, () => MessageRes.pe07, "cmd", ";", "d");
+            errMsg1 = null;
+            try { doc = CodeDocument.Load(parser, "string s dfgsd"); }
+            //                                    "1234567890   
+            catch (ParserException e)
+            {
+                errMsg1 = e.Message;
+                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
+            }
+            AreEqualResPos("missing seperator", 1, 10, errMsg1, () => MessageRes.pe07, "cmd", ";", "d");
         }
 
         /// <summary>Test different types of syntax build error.</summary>
@@ -414,13 +460,15 @@ type = 'string'; ";
             catch (ParserException e) { errMsg1 = e.Message; }
             AreEqualResPos("First rule cant have tag=false, build error", 1, 1, errMsg1, () => MessageRes.pb09, "stx");
 
-//            // todo find this error
-//            // syntax error expecting string ( 'false' )
-//            errMsg1 = null;
-//            try { var parser = new Parser("stx = ':'; \r\n settings stx collapse = false; "); }
-//            catch (ParserException e) { errMsg1 = e.Message; }
-////            AreEqualResPos("String not found error", 1, 8, buf.Status.Error.Message, () => MessageRes.pe04, "failStr");
-//            AreEqualResPos(" syntax error", 2, 26, errMsg1, () => MessageRes.pe04, "stx");
+            // todo find this error
+            // syntax error expecting string ( 'false' )
+            errMsg1 = null;
+            try { var parser = new Parser("stx = ':'; \r\n settings stx collapse = false; "); }
+            //                             12345678901234\12345678901234567890123456
+            catch (ParserException e) { errMsg1 = e.Message;
+                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
+                    }
+            AreEqualResPos(" syntax error", 2, 26, errMsg1, () => MessageRes.pe04, "value");
         }
 
         #region utillity functions

@@ -29,14 +29,15 @@ namespace IntoTheCode.Read.Element
             return LoadSet(outElements);
         }
 
-        public override bool TryLastAgain(CodeElement last)
+        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
+        public override int TryLastAgain(CodeElement last)
         {
             return TryLastSetAgain(last);
         }
 
-        public override bool ExtractError(ref int wordCount)
+        public override bool LoadTrackError(ref int wordCount)
         {
-            return ExtractErrorSet(ref wordCount);
+            return LoadSetTrackError(ref wordCount);
         }
     }
 }

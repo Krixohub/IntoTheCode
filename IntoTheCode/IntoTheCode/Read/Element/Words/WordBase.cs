@@ -25,10 +25,6 @@ namespace IntoTheCode.Read.Element.Words
         {
             return ElementContentType.OneValue;
         }
-
-        public override bool TryLastAgain(CodeElement last)
-        {
-            return last.WordParser == this;
-        }
+        protected const int a = 0;
     }
 }

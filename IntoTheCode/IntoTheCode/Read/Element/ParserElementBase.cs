@@ -54,7 +54,7 @@ namespace IntoTheCode.Read.Element
             if (txtPtr.CompareTo(TextBuffer.Status.UnambiguousPointer) < 0 && TextBuffer.Status.Error == null)
             {
                 int wordCount = 0; // count words from this point
-                ExtractError(ref wordCount);
+                LoadTrackError(ref wordCount);
             }
 
             return false;
@@ -103,17 +103,19 @@ namespace IntoTheCode.Read.Element
         public abstract bool Load(List<TreeNode> outElements);
 
 
-        /// <summary>find errors from start, when eof isn't reached and no other error is found.</summary>
+        /// <summary>Find the Rule/ 'read element', that correspond to the
+        /// last CodeElement, and read it again with error tracking. 
+        /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
-        /// <returns>True if load ok. False if load error.</returns>
-        public abstract bool TryLastAgain(CodeElement last);
+        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
+        public abstract int TryLastAgain(CodeElement last);
 
         /// <summary>
         /// Load an element while storing possible errors.
         /// </summary>
         /// <param name="proces"></param>
         /// <returns>True = succes.</returns>
-        public abstract bool ExtractError(ref int wordCount);
+        public abstract bool LoadTrackError(ref int wordCount);
 
         // todo:2 consider remove this method to parser.
         internal protected void SkipWhiteSpace()

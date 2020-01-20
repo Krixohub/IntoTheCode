@@ -34,15 +34,19 @@ namespace IntoTheCode.Read.Element
             return TextBuffer.Status.Error == null;
         }
 
-        public override bool TryLastAgain(CodeElement last)
+        /// <summary>Find the Rule/ 'read element', that correspond to the
+        /// last CodeElement, and read it again with error tracking. 
+        /// If no error, try to read further.</summary>
+        /// <param name="last">Not null, not empty.</param>
+        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
+        public override int TryLastAgain(CodeElement last)
         {
-            TryLastSetAgain(last);
-            return true;
+            return TryLastSetAgain(last);
         }
 
-        public override bool ExtractError(ref int wordCount)
+        public override bool LoadTrackError(ref int wordCount)
         {
-            ExtractErrorSet(ref wordCount);
+            LoadSetTrackError(ref wordCount);
             return true;
         }
     }

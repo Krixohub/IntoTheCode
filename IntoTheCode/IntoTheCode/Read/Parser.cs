@@ -110,7 +110,13 @@ namespace IntoTheCode.Read
             else if (!buffer.IsEnd())
             {
                 if (elements != null && elements.Count() > 0)
-                    procesRules[0].TryLastSetAgain(elements.Last() as CodeElement);
+                {
+                    CodeElement last = elements.Last() as CodeElement;
+                    string debug = last.ToMarkupProtected(string.Empty);
+                    //if (last.Name == MetaParser.MetaSyntax_)
+                    //    last = last.SubElements.Last() as CodeElement;
+                    procesRules[0].TryLastAgain(last);
+                }
                 buffer.Status.AddSyntaxErrorEof(() => MessageRes.p05);
             }
             else if (elements.Count == 1 && elements[0] is CodeDocument)

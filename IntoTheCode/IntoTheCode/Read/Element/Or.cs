@@ -68,18 +68,20 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        public override bool TryLastAgain(CodeElement last)
+        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
+        public override int TryLastAgain(CodeElement last)
         {
-            bool ok = (SubElements[0] as ParserElementBase).TryLastAgain(last);
-            ok = ok || (SubElements[1] as ParserElementBase).TryLastAgain(last);
+            int rc = (SubElements[0] as ParserElementBase).TryLastAgain(last);
+            if (rc < 2)
+                rc = (SubElements[1] as ParserElementBase).TryLastAgain(last);
 
-            return ok;
+            return rc;
         }
 
-        public override bool ExtractError(ref int wordCount)
+        public override bool LoadTrackError(ref int wordCount)
         {
-            bool ok = (SubElements[0] as ParserElementBase).ExtractError(ref wordCount);
-            ok = ok || (SubElements[1] as ParserElementBase).ExtractError(ref wordCount);
+            bool ok = (SubElements[0] as ParserElementBase).LoadTrackError(ref wordCount);
+            ok = ok || (SubElements[1] as ParserElementBase).LoadTrackError(ref wordCount);
 
             return ok;
         }

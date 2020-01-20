@@ -57,14 +57,15 @@ namespace IntoTheCode.Read.Element
             return SymbolElement.Load(outElements);
         }
 
-        public override bool TryLastAgain(CodeElement last)
+        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
+        public override int TryLastAgain(CodeElement last)
         {
             return SymbolElement.TryLastAgain(last);
         }
 
-        public override bool ExtractError(ref int wordCount)
+        public override bool LoadTrackError(ref int wordCount)
         {
-            return SymbolElement.ExtractError(ref wordCount);
+            return SymbolElement.LoadTrackError(ref wordCount);
         }
     }
 }

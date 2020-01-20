@@ -6,6 +6,7 @@ using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
 using IntoTheCode.Read;
 using IntoTheCode.Read.Element.Words;
+using IntoTheCode.Basic.Util;
 
 namespace IntoTheCode.Read.Element
 {
@@ -48,33 +49,42 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        protected internal bool TryLastSetAgain(CodeElement last)
+        /// <summary>Find the Rule/ 'read element', that correspond to the
+        /// last CodeElement, and read it again with error tracking. 
+        /// If no error, try to read further.</summary>
+        /// <param name="last">Not null, not empty.</param>
+        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
+        protected internal int TryLastSetAgain(CodeElement last)
         {
-            bool found = false;
-            //CodeElement last = outElements as CodeElement;
+            string debug = GetSyntax().NL() + last.ToMarkupProtected(string.Empty);
+
             int wordCount;
+            int rc = 0;
             foreach (var item in SubElements.OfType<ParserElementBase>())
             {
                 wordCount = 0;
-                if (!found && item.TryLastAgain(last))
-                    found = true;
-                if (found && last.SubElements == null || last.SubElements.Count() == 0)
+                if (rc == 0)
                 {
-                    TextBuffer.SetPointerBackToFrom(last.SubString);
-                    if (!item.ExtractError(ref wordCount)) return true;
+                    rc = item.TryLastAgain(last);
+                }
+
+                // if 'Found-read ok' then track errors further.
+                else if (rc == 2)
+                {
+                    if (!item.LoadTrackError(ref wordCount))
+                        return 1;
                 }
             }
             
-
-            return true;
+            return rc;
         }
 
-        protected bool ExtractErrorSet(ref int wordCount)
+        protected bool LoadSetTrackError(ref int wordCount)
         {
             TextPointer from = TextBuffer.PointerNextChar.Clone();
             List<WordBase> elements = new List<WordBase>();
             foreach (var item in SubElements.OfType<ParserElementBase>())
-                if (!item.ExtractError(ref wordCount))
+                if (!item.LoadTrackError(ref wordCount))
                     return SetPointerBack(from, item);
 
             return true;

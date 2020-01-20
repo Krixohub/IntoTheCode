@@ -127,29 +127,42 @@ namespace IntoTheCode.Read.Element
 
         }
 
-        public override bool TryLastAgain(CodeElement last)
+        /// <summary>Find the Rule/ 'read element', that correspond to the
+        /// last CodeElement, and read it again with error tracking. 
+        /// If no error, try to read further.</summary>
+        /// <param name="last">Not null, not empty.</param>
+        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
+        public override int TryLastAgain(CodeElement last)
         {
+            string debug = GetSyntax().NL() + last.ToMarkupProtected(string.Empty);
+
             TextSubString subStr = TextBuffer.NewSubStringFrom();
 
             if (Collapse)
                  return TryLastSetAgain(last);
 
-            if (last.Name != Name) return false;
+            int rc = 0;
+            if (last.Name != Name) return 0;
 
-            if (last.SubElements != null && last.SubElements.Count() >= 0)
+            if (ElementContent == ElementContentType.OneValue)
+            {
+                rc = (SubElements[0] as ParserElementBase).TryLastAgain(last);
+            }
+            else if (last.SubElements != null && last.SubElements.Count() > 0)
             {
                 // if succes finding a deeper element, return true.
-                if (TryLastSetAgain(last.SubElements.Last() as CodeElement))
-                    return true;
+                rc = TryLastSetAgain(last.SubElements.Last() as CodeElement);
             }
+            //if (rc > 0)
+                return rc;
 
-            // this is the last read element with succes! try load this again with ExtractError().
-            int wordCount = 0;
-            TextBuffer.SetPointerBackToFrom(last.SubString);
-            return ExtractError(ref wordCount);
+            //// this is the last read element with succes! try load this again with ExtractError().
+            //int wordCount = 0;
+            //TextBuffer.SetPointerBackToFrom(last.SubString);
+            //return ExtractError(ref wordCount) ? 2 : 1;
         }
 
-        public override bool ExtractError(ref int wordCount)
+        public override bool LoadTrackError(ref int wordCount)
         {
             //TextSubString subStr = TextBuffer.NewSubStringFrom();
             TextPointer from = TextBuffer.PointerNextChar.Clone();
@@ -158,17 +171,17 @@ namespace IntoTheCode.Read.Element
             //CodeElement element;
 
             if (Collapse)
-                return ExtractErrorSet(ref wordCount);
+                return LoadSetTrackError(ref wordCount);
 
             if (ElementContent == ElementContentType.OneValue)
             {
-                if (!(SubElements[0] as ParserElementBase).ExtractError(ref wordCount))
+                if (!(SubElements[0] as ParserElementBase).LoadTrackError(ref wordCount))
                     return SetPointerBackError(from, ref wordCount, fromWordCount);
             }
 
             else
             {
-                if (!ExtractErrorSet(ref wordCount))
+                if (!LoadSetTrackError(ref wordCount))
                     return SetPointerBackError(from, ref wordCount, fromWordCount);
 
             }

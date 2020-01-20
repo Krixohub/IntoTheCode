@@ -54,7 +54,19 @@ namespace IntoTheCode.Read.Element.Words
             return true;
         }
 
-        public override bool ExtractError(ref int wordCount)
+        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
+        public override int TryLastAgain(CodeElement last)
+        {
+            if (last.WordParser == this)
+            {
+                // found!
+                TextBuffer.SetPointer(last.SubString.GetTo().Clone(a));
+                return 2;
+            }
+            return 0;
+        }
+
+        public override bool LoadTrackError(ref int wordCount)
         {
             SkipWhiteSpace();
 
