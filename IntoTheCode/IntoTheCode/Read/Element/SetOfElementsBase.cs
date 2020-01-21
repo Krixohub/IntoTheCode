@@ -24,7 +24,7 @@ namespace IntoTheCode.Read.Element
         {
         }
 
-        protected ParserElementBase[] CloneSubElementsForParse(ITextBuffer buffer)
+        protected ParserElementBase[] CloneSubElementsForParse(TextBuffer buffer)
         {
             return SubElements.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray();
         }

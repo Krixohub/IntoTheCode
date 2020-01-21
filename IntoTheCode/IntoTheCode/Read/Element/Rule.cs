@@ -28,7 +28,7 @@ namespace IntoTheCode.Read.Element
                 Trust = true;
         }
 
-        public override ParserElementBase CloneForParse(ITextBuffer buffer)
+        public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
             var element = new Rule(Name, SubElements.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray())
             {
@@ -72,7 +72,7 @@ namespace IntoTheCode.Read.Element
 
         public override bool Load(List<TreeNode> outElements)
         {
-            TextSubString subStr = TextBuffer.NewSubStringFrom();
+            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 
             if (Collapse)
             {
@@ -128,7 +128,7 @@ namespace IntoTheCode.Read.Element
         {
             string debug = GetSyntax().NL() + last.ToMarkupProtected(string.Empty);
 
-            TextSubString subStr = TextBuffer.NewSubStringFrom();
+            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 
             if (Collapse)
                  return TryLastSetAgain(last);

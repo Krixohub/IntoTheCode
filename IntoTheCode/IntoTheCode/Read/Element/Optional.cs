@@ -16,7 +16,7 @@ namespace IntoTheCode.Read.Element
             //Attributter = new ObservableCollection<Attribute>();
         }
 
-        public override ParserElementBase CloneForParse(ITextBuffer buffer)
+        public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
             var element = new Optional(SubElements.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray());// { Parser = Parser };
             element.TextBuffer = buffer;

@@ -144,7 +144,7 @@ namespace TestCodeInternal.ViewModel
             }
 
             //CodeDocument doc = CodeDocument.Load(ColorText, CustomInp);
-            ITextBuffer buffer = new FlatBuffer(CustomInp);
+            TextBuffer buffer = new FlatBuffer(CustomInp);
             CodeDocument doc = Parser.ParseString(buffer);
 
             SetCustomDoc(doc != null ? doc.ToMarkup() : string.Empty);
@@ -176,7 +176,7 @@ namespace TestCodeInternal.ViewModel
 
             // Get actual meta syntax document.
             //if (Parser.MetaParser == null) _parser = new Parser("");
-            ITextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
+            TextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
             CodeDocument metaActual = _metaparser.ParseString(buffer);
 
             actualTags = metaActual.ToMarkup();

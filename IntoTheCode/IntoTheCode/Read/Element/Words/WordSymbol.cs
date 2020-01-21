@@ -14,7 +14,7 @@ namespace IntoTheCode.Read.Element.Words
             Name = MetaParser.WordSymbol_;
         }
 
-        public override ParserElementBase CloneForParse(ITextBuffer buffer)
+        public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
             return new WordSymbol(_value) { Name = Name, TextBuffer = buffer };
         }
@@ -48,7 +48,7 @@ namespace IntoTheCode.Read.Element.Words
             {
                 // found!
                 //TextBuffer.SetPointer(last.SubString.GetTo().Clone(a));
-                TextBuffer.SetPointer(last.SubString.To + a);
+                TextBuffer.PointerNextChar = last.SubString.To + a;
                 return 2;
             }
             return 0;
@@ -59,11 +59,11 @@ namespace IntoTheCode.Read.Element.Words
             SkipWhiteSpace();
             int from = TextBuffer.PointerNextChar;
             int fromWordCount = wordCount;
-            TextSubString subStr = TextBuffer.NewSubStringFrom();
+            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 
             if (TextBuffer.IsEnd(Value.Length))
             {
-                TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, wordCount, () => MessageRes.pe06, Value);
+                TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, wordCount, () => MessageRes.pe06, Value);
                 return SetPointerBackError(subStr.From, ref wordCount, fromWordCount);
             }
 

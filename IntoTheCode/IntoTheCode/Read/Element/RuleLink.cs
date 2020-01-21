@@ -14,12 +14,12 @@ namespace IntoTheCode.Read.Element
         {
             Name = "name";
             _value = value;
-            LastRuleInvoke = FlatBuffer.NotValidPtr;
+            LastRuleInvoke = TextBuffer.NotValidPtr;
             if (value == "expression")
                 Recursive = true;
         }
 
-        public override ParserElementBase CloneForParse(ITextBuffer buffer)
+        public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
             return new RuleLink(_value) { Name = "name", TextBuffer = buffer };
         }

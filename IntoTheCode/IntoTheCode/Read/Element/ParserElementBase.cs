@@ -26,11 +26,11 @@ namespace IntoTheCode.Read.Element
         /// <summary>Clone this parser element, with sub elements, and set proces.</summary>
         /// <param name="proces">The load proces.</param>
         /// <returns>The new clone.</returns>
-        public abstract ParserElementBase CloneForParse(ITextBuffer buffer);
+        public abstract ParserElementBase CloneForParse(TextBuffer buffer);
 
         public override string GetValue() { return _value; }
 
-        protected internal ITextBuffer TextBuffer;
+        protected internal TextBuffer TextBuffer;
 
         protected internal CodeElement DefinitionCodeElement;
 
@@ -46,7 +46,7 @@ namespace IntoTheCode.Read.Element
         /// <returns>Always return false.</returns>
         protected bool SetPointerBack(int txtPtr, ParserElementBase item)
         {
-            TextBuffer.SetPointer(txtPtr);
+            TextBuffer.PointerNextChar = txtPtr;
             if (txtPtr.CompareTo(TextBuffer.Status.UnambiguousPointer) < 0 && TextBuffer.Status.Error == null)
             {
                 int wordCount = 0; // count words from this point
@@ -63,7 +63,7 @@ namespace IntoTheCode.Read.Element
         protected bool SetPointerBackError(int txtPtr, ref int wordCount, int previusWordCount)
         {
             wordCount = previusWordCount;
-            TextBuffer.SetPointer(txtPtr);
+            TextBuffer.PointerNextChar = txtPtr;
             return false;
         }
 

@@ -24,7 +24,7 @@ namespace TestCodeInternal.UnitTest
         {
             // test loading of basic syntax elements
             // load varname
-            ITextBuffer textBuffer = new FlatBuffer("  sym01  ");
+            TextBuffer textBuffer = new FlatBuffer("  sym01  ");
             //            reader.TextBuffer = new FlatBuffer("  sym01  ");
             //var buf = new FlatBuffer("  sym01  ");
             var outNo = new List<TreeNode>();
@@ -92,7 +92,7 @@ namespace TestCodeInternal.UnitTest
             string doc = string.Empty;
             outNo = new List<TreeNode>();
             Rule rule;
-            ITextBuffer textBuffer;
+            TextBuffer textBuffer;
 
             //  Read a varname
             textBuffer = new FlatBuffer("  Bname  ");
@@ -202,7 +202,7 @@ namespace TestCodeInternal.UnitTest
 
             //var metaParser = _metaparser;
             // todo MetaParser has not the settings.
-            ITextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
+            TextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
             CodeDocument docActual1 = parser.ParseString(buffer);
             buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
             CodeDocument docActual2 = MetaParser.Instance.ParseString(buffer);
@@ -225,7 +225,7 @@ namespace TestCodeInternal.UnitTest
         {
             string stx = "syntax = {o};\r\no = 'o';settings o collapse = 'false';";
             var parser = new Parser(stx);
-            ITextBuffer buffer = new FlatBuffer("ooo");
+            TextBuffer buffer = new FlatBuffer("ooo");
 
             Assert.IsNotNull(parser, "parser er null");
             Assert.AreEqual(string.Empty, parser.DefinitionError, "DifinitionError");
@@ -265,7 +265,7 @@ settings fid trust; fstr trust; fsym trust;";
             string errMsg1;
 
             // What the parser CAN read
-            ITextBuffer buf = new FlatBuffer("ooo");
+            TextBuffer buf = new FlatBuffer("ooo");
             doc = parser.ParseString(buf);;
             Assert.IsNotNull(doc, "doc er null");
             Assert.IsNull(buf.Status.Error, "Parse error");
@@ -391,7 +391,7 @@ type = 'string'; ";
             string errMsg1;
 
             // What the parser CAN read
-            ITextBuffer buf = new FlatBuffer("string s; string str;");
+            TextBuffer buf = new FlatBuffer("string s; string str;");
             doc = parser.ParseString(buf); ;
             Assert.IsNotNull(doc, "doc er null");
             Assert.IsNull(buf.Status.Error, "Parse error");
@@ -474,7 +474,7 @@ type = 'string'; ";
         #region utillity functions
 
         /// <summary>A syntax for test. Hard coded.</summary>
-        private void GetSyntaxTestElements(Parser parser, ITextBuffer buffer)
+        private void GetSyntaxTestElements(Parser parser, TextBuffer buffer)
         {
             //bool equal = false;
             //bool tag = true;

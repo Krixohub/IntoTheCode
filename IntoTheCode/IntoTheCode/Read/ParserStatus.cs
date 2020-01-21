@@ -11,12 +11,12 @@ namespace IntoTheCode.Read
     public class ParserStatus
     {
         /// <summary>Field for text buffer.</summary>
-        private ITextBuffer _textBuffer;
+        private TextBuffer _textBuffer;
 
-        internal ParserStatus(ITextBuffer buf)
+        internal ParserStatus(TextBuffer buf)
         {
             _textBuffer = buf;
-            UnambiguousPointer = FlatBuffer.NotValidPtr;
+            UnambiguousPointer = TextBuffer.NotValidPtr;
         }
 
         /// <summary>Error message after parsing/reading input text.</summary>

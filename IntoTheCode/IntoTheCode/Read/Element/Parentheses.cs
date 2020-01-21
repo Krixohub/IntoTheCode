@@ -16,7 +16,7 @@ namespace IntoTheCode.Read.Element
             //Attributter = new ObservableCollection<Attribute>();
         }
 
-        public override ParserElementBase CloneForParse(ITextBuffer buffer)
+        public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
             return new Parentheses(CloneSubElementsForParse(buffer)) { TextBuffer = buffer };
         }

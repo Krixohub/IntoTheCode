@@ -19,7 +19,7 @@ namespace IntoTheCode.Read.Element
             //    ElementContent = ElementContentType.Many;
         }
 
-        public override ParserElementBase CloneForParse(ITextBuffer buffer)
+        public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
             var element = new Or(((ParserElementBase)SubElements[0]).CloneForParse(buffer),
                 ((ParserElementBase)SubElements[1]).CloneForParse(buffer));

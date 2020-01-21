@@ -14,7 +14,7 @@ namespace IntoTheCode.Read.Element.Words
             Name = name;
         }
 
-        public override ParserElementBase CloneForParse(ITextBuffer buffer)
+        public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
             return new WordIdent(Name) { TextBuffer = buffer };
         }
@@ -32,7 +32,7 @@ namespace IntoTheCode.Read.Element.Words
 
             if (TextBuffer.IsEnd(1)) return false;
 
-            TextSubString subStr = TextBuffer.NewSubStringFrom();
+            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 
             if (!AllowedCharsFirst.Contains(TextBuffer.GetChar().ToString().ToLower()))
                 return false;
@@ -56,7 +56,7 @@ namespace IntoTheCode.Read.Element.Words
             if (last.WordParser == this)
             {
                 // found!
-                TextBuffer.SetPointer(last.SubString.To + a);
+                TextBuffer.PointerNextChar = last.SubString.To + a;
                 return 2;
             }
             return 0;
@@ -69,7 +69,7 @@ namespace IntoTheCode.Read.Element.Words
             int from = TextBuffer.PointerNextChar;
 
             if (TextBuffer.IsEnd(1))
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, wordCount, () => MessageRes.pe01); 
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, wordCount, () => MessageRes.pe01); 
 
             if (!AllowedCharsFirst.Contains(TextBuffer.GetChar().ToString().ToLower()))
                 return TextBuffer.Status.AddSyntaxError(this, from, wordCount, () => MessageRes.pe02); 

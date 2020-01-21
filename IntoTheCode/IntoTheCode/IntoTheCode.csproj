@@ -55,7 +55,7 @@
     <Compile Include="Read\Element\Words\WordIdent.cs" />
     <Compile Include="Read\Element\Words\WordString.cs" />
     <Compile Include="Buffer\FlatBuffer.cs" />
-    <Compile Include="Buffer\ITextBuffer.cs" />
+    <Compile Include="Buffer\TextBuffer.cs" />
     <Compile Include="Buffer\TextSubString.cs" />
     <Compile Include="Read\Element\ElementContentType.cs" />
     <Compile Include="Read\Element\Words\WordBase.cs" />

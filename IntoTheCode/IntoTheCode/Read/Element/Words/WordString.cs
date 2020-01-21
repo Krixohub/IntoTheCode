@@ -13,7 +13,7 @@ namespace IntoTheCode.Read.Element.Words
             Name = "string";
         }
 
-        public override ParserElementBase CloneForParse(ITextBuffer buffer)
+        public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
             return new WordString() { Name = Name, TextBuffer = buffer };
         }
@@ -34,7 +34,7 @@ namespace IntoTheCode.Read.Element.Words
                 return false;
 
             TextBuffer.IncPointer();
-            TextSubString subStr = TextBuffer.NewSubStringFrom();
+            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
             TextBuffer.IncPointer();
             TextBuffer.SetToIndexOf(subStr, "'");
 
@@ -42,7 +42,7 @@ namespace IntoTheCode.Read.Element.Words
                 return SetPointerBack(from, this);
 
             outElements.Add(new CodeElement(this, subStr));
-            TextBuffer.SetPointerTo(subStr);
+            TextBuffer.PointerNextChar = subStr.To;
             TextBuffer.IncPointer();
 
             return true;
@@ -54,8 +54,7 @@ namespace IntoTheCode.Read.Element.Words
             if (last.WordParser == this)
             {
                 // found!
-                //TextBuffer.SetPointer(last.SubString.GetTo().Clone( a + 1));
-                TextBuffer.SetPointer(last.SubString.To + a + 1);
+                TextBuffer.PointerNextChar = last.SubString.To + a + 1;
                 return 2;
             }
             return 0;
@@ -68,13 +67,13 @@ namespace IntoTheCode.Read.Element.Words
             int fromWordCount = wordCount;
 
             if (TextBuffer.IsEnd(2))
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, wordCount, () => MessageRes.pe03);
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, wordCount, () => MessageRes.pe03);
 
             if (TextBuffer.GetChar() != '\'')
                 return TextBuffer.Status.AddSyntaxError(this, from, wordCount, () => MessageRes.pe04);
 
             TextBuffer.IncPointer();
-            TextSubString subStr = TextBuffer.NewSubStringFrom();
+            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
             TextBuffer.IncPointer();
             TextBuffer.SetToIndexOf(subStr, "'");
 
@@ -84,7 +83,7 @@ namespace IntoTheCode.Read.Element.Words
                 return SetPointerBackError(from, ref wordCount, fromWordCount);
             }
 
-            TextBuffer.SetPointerTo(subStr);
+            TextBuffer.PointerNextChar = subStr.To;
             TextBuffer.IncPointer();
 
             wordCount++;

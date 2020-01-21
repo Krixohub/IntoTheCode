@@ -66,7 +66,7 @@ namespace IntoTheCode.Read
         {
             CodeDocument syntaxDoc = null;
 
-            ITextBuffer buffer = new FlatBuffer(syntax);
+            TextBuffer buffer = new FlatBuffer(syntax);
             syntaxDoc = MetaParser.Instance.ParseString(buffer);
 
             if (buffer.Status.Error != null || !ParserFactory.BuildRules(this, syntaxDoc, buffer.Status))
@@ -82,7 +82,7 @@ namespace IntoTheCode.Read
         /// <param name="buffer">The text buffer.</param>
         /// <returns>A text document, or null if error.</returns>
         /// <exclude/>
-        internal CodeDocument ParseString(ITextBuffer buffer)
+        internal CodeDocument ParseString(TextBuffer buffer)
         {
             List<Rule> procesRules = Rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
             if (!ParserFactory.InitializeSyntax(this, procesRules, buffer.Status))

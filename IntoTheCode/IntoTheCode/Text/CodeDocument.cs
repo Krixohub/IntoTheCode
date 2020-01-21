@@ -29,7 +29,7 @@ namespace IntoTheCode
         /// <returns></returns>
         public static CodeDocument Load(Parser parser, string input)
         {
-            ITextBuffer buffer = new FlatBuffer(input);
+            TextBuffer buffer = new FlatBuffer(input);
             CodeDocument doc = parser.ParseString(buffer);
             if (doc != null) return doc;
 

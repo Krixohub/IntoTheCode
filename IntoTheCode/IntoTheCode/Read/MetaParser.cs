@@ -234,7 +234,7 @@ settings   collapse;";
         {
             if (_instance != null) return;
             int step = 1;
-            ITextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
+            TextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
             CodeDocument metaSyntaxDoc = null;
             try
             {

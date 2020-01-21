@@ -20,7 +20,7 @@ namespace IntoTheCode.Read.Element
         {
         }
 
-        public override ParserElementBase CloneForParse(ITextBuffer buffer)
+        public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
             return new Sequence(CloneSubElementsForParse(buffer)) { TextBuffer = buffer };
         }
