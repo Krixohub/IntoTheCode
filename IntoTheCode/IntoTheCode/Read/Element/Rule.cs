@@ -26,8 +26,6 @@ namespace IntoTheCode.Read.Element
             if ((elements.Length > 2 && elements[elements.Length - 1] is WordSymbol) ||
                 AnyNested(elem => elem is WordSymbol && ((WordSymbol)elem).Value.Length > 2))
                 Trust = true;
-
-
         }
 
         public override ParserElementBase CloneForParse(ITextBuffer buffer)
@@ -42,12 +40,6 @@ namespace IntoTheCode.Read.Element
 
             return element;
         }
-
-        //public override void Initialize()
-        //{
-
-
-        //}
 
         public override ElementContentType GetElementContent()
         {
@@ -94,14 +86,14 @@ namespace IntoTheCode.Read.Element
                 if (ElementContent == ElementContentType.OneValue)
                 {
                     if (!(SubElements[0] as ParserElementBase).Load(outSubNotes))
-                        return false; // SetPointerBack(proces, from, SubElements[0] as ParserElementBase);
+                        return false;
 
                     if (outSubNotes.Count == 1)
                     {
                         element = new CodeElement(this, ((CodeElement)outSubNotes[0]).SubString);
                         element.WordParser = ((CodeElement)outSubNotes[0]).WordParser;
                     }
-                    else // count = 0
+                    else
                     {
                         subStr.SetTo(TextBuffer.PointerNextChar);
                         element = new CodeElement(this, subStr);
@@ -132,7 +124,7 @@ namespace IntoTheCode.Read.Element
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int TryLastAgain(CodeElement last)
+        public override int LoadFindLast(CodeElement last)
         {
             string debug = GetSyntax().NL() + last.ToMarkupProtected(string.Empty);
 
@@ -145,46 +137,29 @@ namespace IntoTheCode.Read.Element
             if (last.Name != Name) return 0;
 
             if (ElementContent == ElementContentType.OneValue)
-            {
-                rc = (SubElements[0] as ParserElementBase).TryLastAgain(last);
-            }
+                rc = (SubElements[0] as ParserElementBase).LoadFindLast(last);
             else if (last.SubElements != null && last.SubElements.Count() > 0)
-            {
                 // if succes finding a deeper element, return true.
                 rc = TryLastSetAgain(last.SubElements.Last() as CodeElement);
-            }
-            //if (rc > 0)
-                return rc;
 
-            //// this is the last read element with succes! try load this again with ExtractError().
-            //int wordCount = 0;
-            //TextBuffer.SetPointerBackToFrom(last.SubString);
-            //return ExtractError(ref wordCount) ? 2 : 1;
+            return rc;
         }
 
         public override bool LoadTrackError(ref int wordCount)
         {
-            //TextSubString subStr = TextBuffer.NewSubStringFrom();
             TextPointer from = TextBuffer.PointerNextChar.Clone();
             int fromWordCount = wordCount;
-            //List<TreeNode> outSubNotes = new List<TreeNode>();
-            //CodeElement element;
 
             if (Collapse)
                 return LoadSetTrackError(ref wordCount);
 
-            if (ElementContent == ElementContentType.OneValue)
-            {
-                if (!(SubElements[0] as ParserElementBase).LoadTrackError(ref wordCount))
-                    return SetPointerBackError(from, ref wordCount, fromWordCount);
-            }
-
-            else
-            {
-                if (!LoadSetTrackError(ref wordCount))
+            if (ElementContent == ElementContentType.OneValue && 
+                !(SubElements[0] as ParserElementBase).LoadTrackError(ref wordCount))
                     return SetPointerBackError(from, ref wordCount, fromWordCount);
 
-            }
+            if (ElementContent != ElementContentType.OneValue && 
+                !LoadSetTrackError(ref wordCount))
+                return SetPointerBackError(from, ref wordCount, fromWordCount);
 
             return true;
         }

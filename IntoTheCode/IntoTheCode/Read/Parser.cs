@@ -113,9 +113,7 @@ namespace IntoTheCode.Read
                 {
                     CodeElement last = elements.Last() as CodeElement;
                     string debug = last.ToMarkupProtected(string.Empty);
-                    //if (last.Name == MetaParser.MetaSyntax_)
-                    //    last = last.SubElements.Last() as CodeElement;
-                    procesRules[0].TryLastAgain(last);
+                    procesRules[0].LoadFindLast(last);
                 }
                 buffer.Status.AddSyntaxErrorEof(() => MessageRes.p05);
             }

@@ -12,11 +12,6 @@ namespace IntoTheCode.Read.Element.Words
         internal WordIdent(string name)
         {
             Name = name;
-            //ElementContent = ElementContentType.OneValue;
-            //Color = 1; //  Brushes.Blue;
-
-            // Only for unittest, when syntax is not linked.
-            //Reader = parser;
         }
 
         public override ParserElementBase CloneForParse(ITextBuffer buffer)
@@ -25,10 +20,11 @@ namespace IntoTheCode.Read.Element.Words
         }
 
         public override string GetSyntax() { return MetaParser.WordIdent__; }
-        //protected override string Read(int begin, ITextBuffer buffer) { return ""; }
 
         private const string AllowedCharsFirst = "abcdefghijklmnopqrstuvwxyz";
         private const string AllowedCharsNext = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+        //protected override string Read(int begin, ITextBuffer buffer) { return ""; }
 
         public override bool Load(List<TreeNode> outElements)
         {
@@ -39,7 +35,7 @@ namespace IntoTheCode.Read.Element.Words
             TextSubString subStr = TextBuffer.NewSubStringFrom();
 
             if (!AllowedCharsFirst.Contains(TextBuffer.GetChar().ToString().ToLower()))
-                return false;// SetPointerBack(proces, TextBuffer.PointerNextChar, this);
+                return false;
             else
                 TextBuffer.IncPointer();
 
@@ -55,7 +51,7 @@ namespace IntoTheCode.Read.Element.Words
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int TryLastAgain(CodeElement last)
+        public override int LoadFindLast(CodeElement last)
         {
             if (last.WordParser == this)
             {
@@ -70,35 +66,16 @@ namespace IntoTheCode.Read.Element.Words
         {
             SkipWhiteSpace();
 
-            //TextSubString subStr = TextBuffer.NewSubStringFrom();
             TextPointer from = TextBuffer.PointerNextChar.Clone();
 
             if (TextBuffer.IsEnd(1))
-            {
-                //subStr.SetTo(subStr.GetFrom());
-                //proces.Errors.Add(new ParserError(this, TextBuffer.PointerEnd, 2, "Expecting identifier, found EOF."));
-                
                 return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, wordCount, () => MessageRes.pe01); 
-                // SetPointerBack(proces, from, this);
-            }
 
-            // todo brug getchar()
             if (!AllowedCharsFirst.Contains(TextBuffer.GetChar().ToString().ToLower()))
-            {
-                //subStr.SetTo(TextBuffer.PointerNextChar);
-                //var element = new CodeElement(proces.TextBuffer, this, subStr, "First charactor is not allowed.");
-                //errorWords.Add(element);
-                //proces.Errors.Add(new ParserError(this, from, 2, "First charactor is not allowed."));
-                
-                //TextBuffer.Status.AddSyntaxError(this, from, 2, "First charactor is not allowed.");
                 return TextBuffer.Status.AddSyntaxError(this, from, wordCount, () => MessageRes.pe02); 
-                // SetPointerBack(proces, from, this);
-            }
             else
                 TextBuffer.IncPointer();
 
-
-            // todo brug getchar()
             while (!TextBuffer.IsEnd() && AllowedCharsNext.Contains(TextBuffer.GetSubString(TextBuffer.PointerNextChar, 1).ToLower()))
             { TextBuffer.IncPointer(); }
 

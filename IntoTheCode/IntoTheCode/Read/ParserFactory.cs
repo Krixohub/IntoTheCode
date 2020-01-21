@@ -18,14 +18,8 @@ namespace IntoTheCode.Read
         {
             parser.Rules = new List<Rule>();
 
-            //string debug1 = doc.ToMarkup();
-
             foreach (TreeNode ruleElement in doc.Elements(MetaParser.Rule_______))
             {
-                //string debug1 = string.Empty;
-                //if (parser.Name == null)
-                //    debug1 = "(" + parser.Name + ")".NL() + ruleElement.ToMarkupProtected("");
-
                 string debug1 = "(" + parser.Name + ")".NL() + ruleElement.ToMarkupProtected("");
 
                 CodeElement elementId = ruleElement.SubElements[0] as CodeElement;
@@ -61,18 +55,18 @@ namespace IntoTheCode.Read
                 {
                     case MetaParser.Expression_:
                         if (docNotes.Count() > 1)
-                        //{
                             status.AddBuildError(() => MessageRes.pb02, element, parser.Name);
-                        //}
+
                         return BuildExpression(parser, element.SubElements, status);
+
                     case MetaParser.Or_________:
                         ParserElementBase el1, el2;
+                        
                         // find position
                         int pos = 0;
                         while (pos + 2 < docNotes.Count() && docNotes[++pos] != element) { }
                         if (pos < 1 || pos + 2 > docNotes.Count())
                             status.AddBuildError(() => MessageRes.pb03, element, parser.Name);
-                        //throw new Exception(string.Format("{0}: The 'or' symbol is misplaced in expression", parser.Name));
 
                         if (pos == 1)
                             el1 = elements[0];
@@ -89,8 +83,6 @@ namespace IntoTheCode.Read
                         else
                             el2 = new Parentheses(elements2.ToArray());
                         return new List<ParserElementBase> { new Or(el1, el2) };
-                    //elements.Add(new Or(el1, el2));
-                    //break;
 
                     case MetaParser.WordIdent__:
                         ParserElementBase elem;
@@ -109,6 +101,7 @@ namespace IntoTheCode.Read
                         }
                         elements.Add(elem);
                         break;
+
                     case MetaParser.WordSymbol_:
                         elements.Add(new WordSymbol(element.Value));
                         break;
@@ -118,19 +111,22 @@ namespace IntoTheCode.Read
                     case MetaParser.Optional___:
                         elements.Add(new Optional(BuildExpression(parser, element.SubElements, status).ToArray()));
                         break;
-
                     case MetaParser.Parentheses:
                         elements.Add(new Parentheses(BuildExpression(parser, element.SubElements, status).ToArray()));
                         break;
                     default:
                         status.AddBuildError(() => MessageRes.pb04, element, element.Name);
-//                        throw new ParserException(string.Format("Parser factory: No read element for '{0}'", element.Name));
                         break;
                 }
             }
             return elements;
         }
 
+        /// <summary>Initialize rules and elements. Called when creating a new parser and when cloning grammar.</summary>
+        /// <param name="parser">The parser.</param>
+        /// <param name="rules">Set of rules.</param>
+        /// <param name="status">The parser status.</param>
+        /// <returns>True: no error. False: error.</returns>
         internal static bool InitializeSyntax(Parser parser, List<Rule> rules, ParserStatus status)
         {
             foreach (Rule rule in rules)
@@ -144,8 +140,6 @@ namespace IntoTheCode.Read
                     status.AddBuildError(() => MessageRes.pb05, rule.DefinitionCodeElement, 
                         rule.Name, 
                         parser.Name);
-                //throw new ParserException(string.Format("Link syntax {1}. Identifier {0} is defined twice",
-                //        rule.Name, parser.Name));
             }
 
             foreach (Rule rule in rules)
@@ -154,25 +148,31 @@ namespace IntoTheCode.Read
             return status.Error == null;
         }
 
+        /// <summary>Initialize rules and elements. Called when creating a new parser and when cloning grammar.</summary>
+        /// <param name="elements">Elements to Initialize.</param>
+        /// <param name="rules">Set of rules.</param>
+        /// <param name="status">The parser status.</param>
         private static void InitializeElements(IEnumerable<ParserElementBase> elements, List<Rule> rules, ParserStatus status)
         {
             if (elements == null || elements.Count() == 0) return;
             foreach (ParserElementBase element in elements)
-
             {
                 var ruleId = element as RuleLink;
                 if (ruleId != null && ruleId.SymbolElement == null) ruleId.SymbolElement = InitializeResolve(rules, ruleId, status);
                 InitializeElements(element.SubElements.OfType<ParserElementBase>(), rules, status);
-                // element.Initialize();
             }
         }
 
-        private static ParserElementBase InitializeResolve(List<Rule> rules, RuleLink link, ParserStatus status)
+        /// <summary>Find the rule to a RuleLink.</summary>
+        /// <param name="rules"></param>
+        /// <param name="link"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        private static Rule InitializeResolve(List<Rule> rules, RuleLink link, ParserStatus status)
         {
             Rule rule = rules.FirstOrDefault(r => r.Name == link.GetValue());
             if (rule == null)
                 status.AddBuildError(() => MessageRes.pb06, link.DefinitionCodeElement, link.GetValue());
-            //throw new ParserException(string.Format("Identifier '{0}' not found in syntax", name));
             return rule;
         }
 
@@ -191,9 +191,7 @@ namespace IntoTheCode.Read
                     status.AddBuildError(() => MessageRes.pb07, elementId, elementId.Value);
                     ok = false;
                     continue;
-                    //return false;
                 }
-                //throw new Exception(string.Format("{1} Settings: Identifier '{0}' cant be resolved", elementId.Value, parser.Name));
 
                 foreach (TreeNode assignElement in SetterElement.Elements(MetaParser.Assignment_))
                 {
@@ -201,9 +199,6 @@ namespace IntoTheCode.Read
                     string propValue = assignElement.SubElements.Count > 1 ? assignElement.SubElements[1].Value : string.Empty;
                     switch (propName.Value)
                     {
-                        //case MetaParser.Tag________:
-                        //    rule.Tag = propValue != "false";
-                        //    break;
                         case MetaParser.Trust______:
                             rule.Trust = propValue != "false";
                             break;
@@ -214,10 +209,7 @@ namespace IntoTheCode.Read
                             status.AddBuildError(() => MessageRes.pb08, propName, elementId.Value, propName.Value);
                             ok = false;
                             break;
-                     //       return false;
-                            //throw new ParserException(string.Format("Parser factory: No property for '{0}'", propName));
                     }
-
                 }
             }
             return ok;
@@ -234,9 +226,8 @@ namespace IntoTheCode.Read
                 status.AddBuildError(() => MessageRes.pb09, parser.Rules[0].DefinitionCodeElement, parser.Rules[0].Name);
                 ok = false;
             }
-//            throw new Exception(string.Format("First rule '{0} must represent all document and have Collapse=false", parser.Rules[0].Name));
 
-            //recursive check
+            // Recursive check
             foreach (Rule rule in parser.Rules)
                 ok = ValidateSyntaxElement(rule, status) && ok;
 
@@ -257,12 +248,12 @@ namespace IntoTheCode.Read
                     elem.GetType().Name, elem.Name, elem.Value);
                 ok = false;
             }
-            //throw new Exception(string.Format("Element content type not set, {0}, {1} , {2}", elem.GetType().Name, elem.Name, elem.Value));
+
             if (elem.SubElements == null) return ok;
             foreach (ParserElementBase sub in elem.SubElements)
                 ok = ValidateSyntaxElement(sub, status) && ok;
+
             return ok;
         }
-
     }
 }

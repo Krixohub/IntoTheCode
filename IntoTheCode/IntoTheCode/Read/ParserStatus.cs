@@ -1,6 +1,5 @@
 ﻿using IntoTheCode.Basic.Util;
 using IntoTheCode.Buffer;
-using IntoTheCode.Message;
 using IntoTheCode.Read.Element;
 using IntoTheCode.Read.Element.Words;
 using System;
@@ -19,10 +18,6 @@ namespace IntoTheCode.Read
             _textBuffer = buf;
             UnambiguousPointer = new FlatPointer();
         }
-
-        ///// <summary>Error message after parsing/reading input text.</summary>
-        ///// <exclude/>
-        //public string ErrorMsg { get; internal set; }
 
         /// <summary>Error message after parsing/reading input text.</summary>
         /// <exclude/>
@@ -43,7 +38,6 @@ namespace IntoTheCode.Read
         /// <returns>Always false.</returns>
         public bool AddSyntaxError(WordBase element, TextPointer errorPoint, int wordCount, Expression<Func<string>> resourceExpression, params object[] parm)
         {
-
             string error = DotNetUtil.Msg(resourceExpression, parm.Insert(element.GetRule(element).Name));
             //            AddSyntaxError( element,  errorPoint,  wordCount,  error);
             var err = new ParserError();
@@ -58,24 +52,6 @@ namespace IntoTheCode.Read
             AddError(err);
             return false;
         }
-
-        //public void AddSyntaxError(WordBase element, TextPointer errorPoint, int wordCount, string error)
-        //{
-        //    // todo Expression<Func<string>> resourceExpression
-        //    var err = new ParserError();
-        //    err.WordCount = wordCount;
-        //    err.ErrorPoint = errorPoint;
-        //    err.Error = error;
-
-        //    string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column, errorPoint);
-
-        //    err.Message = "Syntax error (" +
-        //                    element.GetRule(element).Name +
-        //                    "). " + error + " " + s;
-
-        //    AddError(err);
-
-        //}
 
         public void AddSyntaxErrorEof(Expression<Func<string>> resourceExpression, params object[] parm)
         {
@@ -143,33 +119,31 @@ namespace IntoTheCode.Read
         /// <returns>Ranking error.</returns>
         private ParserError RankingError(ParserError newErr, ParserError oldErr)
         {
-            // 
             if (oldErr == null) return newErr;
 
-            //if (newErr.WordCount > oldErr.WordCount) return newErr;
-
+            // Rank error with high point.
             if (newErr.ErrorPoint != null)
             {
                 if (oldErr.ErrorPoint == null) return newErr;
-                if (newErr.ErrorPoint.CompareTo(oldErr.ErrorPoint) > 0) return newErr;
+                int i = newErr.ErrorPoint.CompareTo(oldErr.ErrorPoint);
+                if (i < 0) return oldErr;
             }
 
-            return oldErr;
+            // Newest error ranks higher.
+            return newErr;
         }
 
-    #endregion add errors
+        #endregion add errors
 
-    #region Next 
+        #region Next 
 
-    public void ThisIsUnambiguous(ParserElementBase reader, CodeElement code)
+        public void ThisIsUnambiguous(ParserElementBase reader, CodeElement code)
         {
             // Set SafePointer to char after element
             UnambiguousPointer = code.SubString.GetTo();
-            //UnambiguousWordCount = numberOfWords; 
         }
 
         public TextPointer UnambiguousPointer;
-        //public int UnambiguousWordCount;
 
         #endregion Next 
     }

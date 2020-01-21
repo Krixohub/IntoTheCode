@@ -30,7 +30,7 @@ namespace IntoTheCode.Read.Element
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int TryLastAgain(CodeElement last)
+        public override int LoadFindLast(CodeElement last)
         {
             return TryLastSetAgain(last);
         }

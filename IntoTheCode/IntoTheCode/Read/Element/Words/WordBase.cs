@@ -15,7 +15,6 @@ namespace IntoTheCode.Read.Element.Words
         /// <returns></returns>
         protected internal virtual string GetValue(TextSubString ptr)
         {
-            //return Parser.TextBuffer.GetSubString(ptr);
             return ptr == null || ptr.Length() == 0 ? string.Empty : TextBuffer.GetSubString(ptr);
         }
 

@@ -17,7 +17,6 @@ namespace IntoTheCode.Read.Element
 
             if (value == "expression")
                 Recursive = true;
-            //    LastRuleInvoke = new List<TextPointer>();
         }
 
         public override ParserElementBase CloneForParse(ITextBuffer buffer)
@@ -40,7 +39,6 @@ namespace IntoTheCode.Read.Element
             return GetValue();
         }
 
-        //public List<TextPointer> LastRuleInvoke;
         public bool Recursive;
         public TextPointer LastRuleInvoke;
 
@@ -58,9 +56,9 @@ namespace IntoTheCode.Read.Element
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int TryLastAgain(CodeElement last)
+        public override int LoadFindLast(CodeElement last)
         {
-            return SymbolElement.TryLastAgain(last);
+            return SymbolElement.LoadFindLast(last);
         }
 
         public override bool LoadTrackError(ref int wordCount)

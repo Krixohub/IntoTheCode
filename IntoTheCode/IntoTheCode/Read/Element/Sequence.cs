@@ -25,6 +25,8 @@ namespace IntoTheCode.Read.Element
             return new Sequence(CloneSubElementsForParse(buffer)) { TextBuffer = buffer };
         }
 
+        //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
+
         public override bool Load(List<TreeNode> outElements)
         {
             TextPointer p = TextBuffer.PointerNextChar.Clone();
@@ -35,7 +37,7 @@ namespace IntoTheCode.Read.Element
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int TryLastAgain(CodeElement last)
+        public override int LoadFindLast(CodeElement last)
         {
             string debug = GetSyntax().NL() + last.ToMarkupProtected(string.Empty);
 
@@ -45,7 +47,6 @@ namespace IntoTheCode.Read.Element
             if (rc == 2)
             {
                 int wordCount = 0;
-                //TextBuffer.SetPointer(last.SubString.GetTo().Clone(1));
                 return LoadTrackError(ref wordCount) ? 2 : 1;
             }
 
@@ -62,6 +63,5 @@ namespace IntoTheCode.Read.Element
         }
 
         public override string GetSyntax() { return "{" + base.GetSyntax() + "}"; }
-        //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
     }
 }

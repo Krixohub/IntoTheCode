@@ -16,7 +16,6 @@ namespace IntoTheCode.Read.Element
         {
             if (elements.Count() == 0)
                 throw new Exception("A sequence of syntax elements must contain at least one element");
-            //            Elements = new List<SyntaxElement>();
             Add(elements);
         }
 
@@ -64,16 +63,12 @@ namespace IntoTheCode.Read.Element
             {
                 wordCount = 0;
                 if (rc == 0)
-                {
-                    rc = item.TryLastAgain(last);
-                }
+                    rc = item.LoadFindLast(last);
 
                 // if 'Found-read ok' then track errors further.
-                else if (rc == 2)
-                {
-                    if (!item.LoadTrackError(ref wordCount))
+                else if (rc == 2 &&
+                    !item.LoadTrackError(ref wordCount))
                         return 1;
-                }
             }
             
             return rc;

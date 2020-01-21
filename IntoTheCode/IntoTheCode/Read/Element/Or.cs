@@ -19,11 +19,6 @@ namespace IntoTheCode.Read.Element
             //    ElementContent = ElementContentType.Many;
         }
 
-        ///// <summary>Just for clone().</summary>
-        //internal Or()
-        //{
-        //}
-
         public override ParserElementBase CloneForParse(ITextBuffer buffer)
         {
             var element = new Or(((ParserElementBase)SubElements[0]).CloneForParse(buffer),
@@ -31,11 +26,6 @@ namespace IntoTheCode.Read.Element
             element.TextBuffer = buffer;
             return element;
         }
-
-        //public override ParserElementBase Clone()
-        //{
-        //    return new Or();
-        //}
 
         public override ElementContentType GetElementContent()
         {
@@ -55,7 +45,6 @@ namespace IntoTheCode.Read.Element
 
         public override bool Load(List<TreeNode> outElements)
         {
-            //TextSubString ptr = TextBuffer.NewSubStringFrom();
             TextPointer from = TextBuffer.PointerNextChar.Clone();
             List<TreeNode> subs = new List<TreeNode>();
             if (!(SubElements[0] as ParserElementBase).Load(subs) || from.CompareTo(TextBuffer.PointerNextChar) == 0)
@@ -69,11 +58,11 @@ namespace IntoTheCode.Read.Element
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int TryLastAgain(CodeElement last)
+        public override int LoadFindLast(CodeElement last)
         {
-            int rc = (SubElements[0] as ParserElementBase).TryLastAgain(last);
+            int rc = (SubElements[0] as ParserElementBase).LoadFindLast(last);
             if (rc < 2)
-                rc = (SubElements[1] as ParserElementBase).TryLastAgain(last);
+                rc = (SubElements[1] as ParserElementBase).LoadFindLast(last);
 
             return rc;
         }

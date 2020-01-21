@@ -22,10 +22,8 @@ namespace IntoTheCode
 
         internal TextSubString SubString { get { return _subString; } }
         internal WordBase WordParser { get; set; }
-        //internal int ValueLength { get { return ValuePointer == null ? 0 : ValuePointer.Length(); }}
 
         public override string GetValue() {
-            //ParserElement reader = ValueReader == null ? _syntaxElement : ValueReader;
             return WordParser == null ? string.Empty : WordParser.GetValue(SubString); }
 
         public string Error { get; private set; }

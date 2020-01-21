@@ -12,10 +12,6 @@ namespace IntoTheCode.Read.Element.Words
         {
             _value = value;
             Name = MetaParser.WordSymbol_;
-            //Color = 2;
-
-            // Only for unittest, when syntax is not linked.
-            //Reader = reader;
         }
 
         public override ParserElementBase CloneForParse(ITextBuffer buffer)
@@ -26,13 +22,11 @@ namespace IntoTheCode.Read.Element.Words
         protected internal override string GetValue(TextSubString ptr) { return _value; }
         
         public override string GetSyntax() { return "'" + Value + "'"; }
+        
         //protected override string Read(int begin, ITextBuffer buffer) { return ""; }
 
         public override bool Load(List<TreeNode> outElements)
         {
-
-            // todo: think: Some elements sets 'from' after white spaces
-
             SkipWhiteSpace();
             TextPointer from = TextBuffer.PointerNextChar.Clone();
             if (TextBuffer.IsEnd(Value.Length))
@@ -48,7 +42,7 @@ namespace IntoTheCode.Read.Element.Words
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int TryLastAgain(CodeElement last)
+        public override int LoadFindLast(CodeElement last)
         {
             if (last.WordParser == this)
             {
@@ -66,11 +60,8 @@ namespace IntoTheCode.Read.Element.Words
             int fromWordCount = wordCount;
             TextSubString subStr = TextBuffer.NewSubStringFrom();
 
-            //TextPointer from = TextBuffer.PointerNextChar.Clone();
             if (TextBuffer.IsEnd(Value.Length))
             {
-                //subStr.SetTo(from);
-//                TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, 2, string.Format("Expecting symbol '{0}', found EOF.", Value));
                 TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, wordCount, () => MessageRes.pe06, Value);
                 return SetPointerBackError(subStr.GetFrom(), ref wordCount, fromWordCount);
             }
@@ -81,7 +72,6 @@ namespace IntoTheCode.Read.Element.Words
                 else
                 {
                     subStr.SetTo(subStr.GetFrom().Clone(Value.Length));
-                    //TextBuffer.Status.AddSyntaxError(this, subStr.GetFrom(), 2, string.Format("Expecting symbol '{0}', found '{1}'.", Value, TextBuffer.GetSubString(subStr)));
                     TextBuffer.Status.AddSyntaxError(this, subStr.GetFrom(), wordCount, () => MessageRes.pe07, Value, TextBuffer.GetSubString(subStr));
                     return SetPointerBackError(from, ref wordCount, fromWordCount);
                 }

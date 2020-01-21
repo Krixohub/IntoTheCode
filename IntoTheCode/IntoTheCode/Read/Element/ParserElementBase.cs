@@ -8,9 +8,7 @@ using IntoTheCode.Read.Element.Words;
 
 namespace IntoTheCode.Read.Element
 {
-    /// <summary>A basic element (or symbol) of a syntax. Can read a peace of code/text.
-    /// 
-    /// </summary>
+    /// <summary>A basic element (or symbol) of a syntax. Can read a peace of code/text.</summary>
     public abstract class ParserElementBase : TreeNode
     {
         private ElementContentType _elementContent;
@@ -31,8 +29,6 @@ namespace IntoTheCode.Read.Element
         public abstract ParserElementBase CloneForParse(ITextBuffer buffer);
 
         public override string GetValue() { return _value; }
-
-       // public virtual void Initialize() { }
 
         protected internal ITextBuffer TextBuffer;
 
@@ -108,7 +104,7 @@ namespace IntoTheCode.Read.Element
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public abstract int TryLastAgain(CodeElement last);
+        public abstract int LoadFindLast(CodeElement last);
 
         /// <summary>
         /// Load an element while storing possible errors.
