@@ -14,7 +14,7 @@ namespace IntoTheCode.Read.Element
         {
             Name = "name";
             _value = value;
-            LastRuleInvoke = -1;
+            LastRuleInvoke = FlatBuffer.NotValidPtr;
             if (value == "expression")
                 Recursive = true;
         }

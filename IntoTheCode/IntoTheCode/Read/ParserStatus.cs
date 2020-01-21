@@ -16,7 +16,7 @@ namespace IntoTheCode.Read
         internal ParserStatus(ITextBuffer buf)
         {
             _textBuffer = buf;
-            UnambiguousPointer = -1;
+            UnambiguousPointer = FlatBuffer.NotValidPtr;
         }
 
         /// <summary>Error message after parsing/reading input text.</summary>

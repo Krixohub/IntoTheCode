@@ -7,6 +7,9 @@ namespace IntoTheCode.Buffer
     {
         private readonly string _buf;
 
+        //public static int NotValidPtr { get { return -1; } }
+        public const int NotValidPtr = -1;
+
         public FlatBuffer(string text)
         {
             _buf = text;
@@ -53,7 +56,7 @@ namespace IntoTheCode.Buffer
 
         public TextSubString NewSubStringFrom()
         {
-            return new TextSubString() { From = PointerNextChar };
+            return new TextSubString(PointerNextChar);
         }
 
         //// redundant function
@@ -67,9 +70,9 @@ namespace IntoTheCode.Buffer
 
         public int GetIndexAfter(string find, int start)
         {
-            int startIndex = start == -1 ? 0 : start;
+            int startIndex = start == FlatBuffer.NotValidPtr ? 0 : start;
             int pos = _buf.IndexOf(find, startIndex, System.StringComparison.Ordinal);
-            if (pos == -1) return -1;
+            if (pos == -1) return FlatBuffer.NotValidPtr;
             return pos + find.Length;
         }
 
@@ -77,9 +80,9 @@ namespace IntoTheCode.Buffer
         private void SetToIndexOf(TextSubString sub, string find, int start)
         { ((TextSubString)sub).To = _buf.IndexOf(find, start, System.StringComparison.Ordinal); }
 
-        public string GetLineAndColumn(out int line, out int column, int pos = -1)
+        public string GetLineAndColumn(out int line, out int column, int pos = NotValidPtr)
         {
-            if (pos == -1)
+            if (pos == NotValidPtr)
                 pos = PointerNextChar;
             int index = pos;
             string find = "\n";

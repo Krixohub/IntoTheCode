@@ -41,6 +41,6 @@ namespace IntoTheCode.Buffer
         //void SetToIndexOf(TextSubString sub, string find, TextPointer from);
         //bool IsEnd();
         bool IsEnd(int length = 1);
-        string GetLineAndColumn(out int line, out int column, int pos = -1);
+        string GetLineAndColumn(out int line, out int column, int pos = FlatBuffer.NotValidPtr);
     }
 }
