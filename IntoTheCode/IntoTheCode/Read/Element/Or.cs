@@ -45,7 +45,7 @@ namespace IntoTheCode.Read.Element
 
         public override bool Load(List<TreeNode> outElements)
         {
-            TextPointer from = TextBuffer.PointerNextChar.Clone();
+            int from = TextBuffer.PointerNextChar;
             List<TreeNode> subs = new List<TreeNode>();
             if (!(SubElements[0] as ParserElementBase).Load(subs) || from.CompareTo(TextBuffer.PointerNextChar) == 0)
                 if (TextBuffer.Status.Error != null || 

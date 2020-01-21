@@ -29,9 +29,10 @@ namespace IntoTheCode.Read.Element
 
         public override bool Load(List<TreeNode> outElements)
         {
-            TextPointer p = TextBuffer.PointerNextChar.Clone();
+            int p = TextBuffer.PointerNextChar;
             while (LoadSet(outElements) && TextBuffer.PointerNextChar.CompareTo(p) > 0)
-                TextBuffer.PointerNextChar.CopyTo(p);
+                p = TextBuffer.PointerNextChar;
+            //TextBuffer.PointerNextChar.CopyTo(p);
 
             return TextBuffer.Status.Error == null;
         }
@@ -55,9 +56,10 @@ namespace IntoTheCode.Read.Element
 
         public override bool LoadTrackError(ref int wordCount)
         {
-            TextPointer p = TextBuffer.PointerNextChar.Clone();
+            int p = TextBuffer.PointerNextChar;
             while (LoadSetTrackError(ref wordCount) && TextBuffer.PointerNextChar.CompareTo(p) > 0)
-                TextBuffer.PointerNextChar.CopyTo(p);
+                p = TextBuffer.PointerNextChar;
+            //TextBuffer.PointerNextChar.CopyTo(p);
 
             return true;
         }

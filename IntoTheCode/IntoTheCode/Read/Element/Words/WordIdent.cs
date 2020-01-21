@@ -42,7 +42,7 @@ namespace IntoTheCode.Read.Element.Words
             while (!TextBuffer.IsEnd() && AllowedCharsNext.Contains(TextBuffer.GetChar().ToString().ToLower()))
             { TextBuffer.IncPointer(); }
             
-            subStr.SetTo(TextBuffer.PointerNextChar);
+            subStr.To = TextBuffer.PointerNextChar;
 
             var element = new CodeElement(this, subStr);
             outElements.Add(element);
@@ -56,7 +56,7 @@ namespace IntoTheCode.Read.Element.Words
             if (last.WordParser == this)
             {
                 // found!
-                TextBuffer.SetPointer(last.SubString.GetTo().Clone(a));
+                TextBuffer.SetPointer(last.SubString.To + a);
                 return 2;
             }
             return 0;
@@ -66,7 +66,7 @@ namespace IntoTheCode.Read.Element.Words
         {
             SkipWhiteSpace();
 
-            TextPointer from = TextBuffer.PointerNextChar.Clone();
+            int from = TextBuffer.PointerNextChar;
 
             if (TextBuffer.IsEnd(1))
                 return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, wordCount, () => MessageRes.pe01); 

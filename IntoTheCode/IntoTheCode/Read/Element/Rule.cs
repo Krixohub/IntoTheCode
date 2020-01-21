@@ -95,7 +95,7 @@ namespace IntoTheCode.Read.Element
                     }
                     else
                     {
-                        subStr.SetTo(TextBuffer.PointerNextChar);
+                        subStr.To = TextBuffer.PointerNextChar;
                         element = new CodeElement(this, subStr);
                     }
 
@@ -113,7 +113,7 @@ namespace IntoTheCode.Read.Element
             }
 
             // If this is a 'division' set unambiguous
-            if (Trust && TextBuffer.PointerNextChar.CompareTo(subStr.GetFrom()) > 0 && outElements.Count > 0)
+            if (Trust && TextBuffer.PointerNextChar.CompareTo(subStr.From) > 0 && outElements.Count > 0)
                 TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
             return true;
 
@@ -147,7 +147,7 @@ namespace IntoTheCode.Read.Element
 
         public override bool LoadTrackError(ref int wordCount)
         {
-            TextPointer from = TextBuffer.PointerNextChar.Clone();
+            int from = TextBuffer.PointerNextChar;
             int fromWordCount = wordCount;
 
             if (Collapse)

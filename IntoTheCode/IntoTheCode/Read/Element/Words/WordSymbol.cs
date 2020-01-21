@@ -28,7 +28,7 @@ namespace IntoTheCode.Read.Element.Words
         public override bool Load(List<TreeNode> outElements)
         {
             SkipWhiteSpace();
-            TextPointer from = TextBuffer.PointerNextChar.Clone();
+            int from = TextBuffer.PointerNextChar;
             if (TextBuffer.IsEnd(Value.Length))
                 return false;// SetPointerBack(proces, from, this);
 
@@ -47,7 +47,8 @@ namespace IntoTheCode.Read.Element.Words
             if (last.WordParser == this)
             {
                 // found!
-                TextBuffer.SetPointer(last.SubString.GetTo().Clone(a));
+                //TextBuffer.SetPointer(last.SubString.GetTo().Clone(a));
+                TextBuffer.SetPointer(last.SubString.To + a);
                 return 2;
             }
             return 0;
@@ -56,14 +57,14 @@ namespace IntoTheCode.Read.Element.Words
         public override bool LoadTrackError(ref int wordCount)
         {
             SkipWhiteSpace();
-            TextPointer from = TextBuffer.PointerNextChar.Clone();
+            int from = TextBuffer.PointerNextChar;
             int fromWordCount = wordCount;
             TextSubString subStr = TextBuffer.NewSubStringFrom();
 
             if (TextBuffer.IsEnd(Value.Length))
             {
                 TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerEnd, wordCount, () => MessageRes.pe06, Value);
-                return SetPointerBackError(subStr.GetFrom(), ref wordCount, fromWordCount);
+                return SetPointerBackError(subStr.From, ref wordCount, fromWordCount);
             }
 
             foreach (char ch in Value)
@@ -71,8 +72,8 @@ namespace IntoTheCode.Read.Element.Words
                     TextBuffer.IncPointer();
                 else
                 {
-                    subStr.SetTo(subStr.GetFrom().Clone(Value.Length));
-                    TextBuffer.Status.AddSyntaxError(this, subStr.GetFrom(), wordCount, () => MessageRes.pe07, Value, TextBuffer.GetSubString(subStr));
+                    subStr.To = subStr.From + Value.Length;
+                    TextBuffer.Status.AddSyntaxError(this, subStr.From, wordCount, () => MessageRes.pe07, Value, TextBuffer.GetSubString(subStr));
                     return SetPointerBackError(from, ref wordCount, fromWordCount);
                 }
 

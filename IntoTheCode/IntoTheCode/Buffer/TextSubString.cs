@@ -1,14 +1,18 @@
 ﻿namespace IntoTheCode.Buffer
 {
-    public abstract class TextSubString
+    public class TextSubString
     {
-        //public abstract TextPointer GetFrom();
-        public abstract void SetTo(TextPointer ptr);
-        public abstract TextPointer GetTo();
-        public abstract TextPointer GetFrom();
-        public abstract int Length();
-        public abstract bool FromGtEqPointer(TextPointer ptr);
-        public abstract bool ToGtPointer(TextPointer ptr);
-        public abstract bool ToIsValid();
+        public const int notValidPtr = -1;
+        public int From { get; internal set; }
+        public int To { get; set; }
+
+        public int Length() { return To - From; }
+
+        public bool FromGtEqPointer(int ptr) { return From >= ptr; }
+
+        public bool ToGtPointer(int ptr) { return To > ptr; }
+
+            // todo remove this function?
+        public bool ToIsValid() { return To != notValidPtr; }
     }
 }

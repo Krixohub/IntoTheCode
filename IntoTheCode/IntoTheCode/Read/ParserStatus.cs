@@ -16,7 +16,7 @@ namespace IntoTheCode.Read
         internal ParserStatus(ITextBuffer buf)
         {
             _textBuffer = buf;
-            UnambiguousPointer = new FlatPointer();
+            UnambiguousPointer = -1;
         }
 
         /// <summary>Error message after parsing/reading input text.</summary>
@@ -36,7 +36,7 @@ namespace IntoTheCode.Read
         /// <param name="resourceExpression"></param>
         /// <param name="parm"></param>
         /// <returns>Always false.</returns>
-        public bool AddSyntaxError(WordBase element, TextPointer errorPoint, int wordCount, Expression<Func<string>> resourceExpression, params object[] parm)
+        public bool AddSyntaxError(WordBase element, int errorPoint, int wordCount, Expression<Func<string>> resourceExpression, params object[] parm)
         {
             string error = DotNetUtil.Msg(resourceExpression, parm.Insert(element.GetRule(element).Name));
             //            AddSyntaxError( element,  errorPoint,  wordCount,  error);
@@ -58,7 +58,7 @@ namespace IntoTheCode.Read
             string error = DotNetUtil.Msg(resourceExpression, parm);
             var err = new ParserError();
 
-            err.ErrorPoint = _textBuffer.PointerNextChar.Clone();
+            err.ErrorPoint = _textBuffer.PointerNextChar;
             string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
 
             err.Message = error + " " + s;
@@ -73,7 +73,7 @@ namespace IntoTheCode.Read
             string s = string.Empty;
             if (elem != null)
             {
-                err.ErrorPoint = elem.SubString.GetFrom();
+                err.ErrorPoint = elem.SubString.From;
                 s = " " + _textBuffer.GetLineAndColumn(out err.Line, out err.Column, err.ErrorPoint);
             }
             err.Message = error + s;
@@ -87,7 +87,7 @@ namespace IntoTheCode.Read
             var err = new ParserError();
             string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
             err.Message = error + " " + s;
-            err.ErrorPoint = _textBuffer.PointerNextChar.Clone();
+            err.ErrorPoint = _textBuffer.PointerNextChar;
             err.Ex = e;
 
             AddError(err);
@@ -100,7 +100,7 @@ namespace IntoTheCode.Read
 
             string s = _textBuffer.GetLineAndColumn(out err.Line, out err.Column);
 
-            err.ErrorPoint = _textBuffer.PointerNextChar.Clone();
+            err.ErrorPoint = _textBuffer.PointerNextChar;
             err.Message = error + " " + s;
 
             AddError(err);
@@ -140,10 +140,10 @@ namespace IntoTheCode.Read
         public void ThisIsUnambiguous(ParserElementBase reader, CodeElement code)
         {
             // Set SafePointer to char after element
-            UnambiguousPointer = code.SubString.GetTo();
+            UnambiguousPointer = code.SubString.To;
         }
 
-        public TextPointer UnambiguousPointer;
+        public int UnambiguousPointer;
 
         #endregion Next 
     }

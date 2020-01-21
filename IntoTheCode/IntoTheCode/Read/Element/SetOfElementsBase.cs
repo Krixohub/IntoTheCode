@@ -36,7 +36,7 @@ namespace IntoTheCode.Read.Element
 
         protected bool LoadSet(List<TreeNode> outElements)
         {
-            TextPointer from = TextBuffer.PointerNextChar.Clone();
+            int from = TextBuffer.PointerNextChar;
             List<TreeNode> elements = new List<TreeNode>();
             foreach (var item in SubElements.OfType<ParserElementBase>())
                 if (!item.Load(elements))
@@ -76,7 +76,7 @@ namespace IntoTheCode.Read.Element
 
         protected bool LoadSetTrackError(ref int wordCount)
         {
-            TextPointer from = TextBuffer.PointerNextChar.Clone();
+            int from = TextBuffer.PointerNextChar;
             List<WordBase> elements = new List<WordBase>();
             foreach (var item in SubElements.OfType<ParserElementBase>())
                 if (!item.LoadTrackError(ref wordCount))

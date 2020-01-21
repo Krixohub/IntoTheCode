@@ -34,9 +34,9 @@ namespace TestCodeInternal.UnitTest
             Assert.IsNotNull(node, "Identifier: Can't find node after reading");
             Assert.AreEqual("sym01", node.Value, "Identifier: The value is not correct");
             Assert.AreEqual("kurt", node.Name, "Identifier: The name is not correct");
-            Assert.AreEqual(2, ((FlatSubString)node.SubString).From, "Identifier: The start is not correct");
-            Assert.AreEqual(7, ((FlatSubString)node.SubString).To, "Identifier: The end is not correct");
-            Assert.AreEqual(7, ((FlatPointer)textBuffer.PointerNextChar).index, "Identifier: The buffer pointer is of after reading");
+            Assert.AreEqual(2, ((TextSubString)node.SubString).From, "Identifier: The start is not correct");
+            Assert.AreEqual(7, ((TextSubString)node.SubString).To, "Identifier: The end is not correct");
+            Assert.AreEqual(7, textBuffer.PointerNextChar, "Identifier: The buffer pointer is of after reading");
 
             // load symbol
             textBuffer = new FlatBuffer(" 'Abcde' ");
@@ -46,9 +46,9 @@ namespace TestCodeInternal.UnitTest
             Assert.IsNotNull(node, "String: Can't find node after reading");
             Assert.AreEqual("Abcde", node.Value, "String: The value is not correct");
             Assert.AreEqual("string", node.Name, "String: The name is not correct");
-            Assert.AreEqual(2, ((FlatSubString)node.SubString).From, "String: The start is not correct");
-            Assert.AreEqual(7, ((FlatSubString)node.SubString).To, "String: The end is not correct");
-            Assert.AreEqual(8, ((FlatPointer)textBuffer.PointerNextChar).index, "String: The buffer pointer is of after reading");
+            Assert.AreEqual(2, ((TextSubString)node.SubString).From, "String: The start is not correct");
+            Assert.AreEqual(7, ((TextSubString)node.SubString).To, "String: The end is not correct");
+            Assert.AreEqual(8, textBuffer.PointerNextChar, "String: The buffer pointer is of after reading");
 
 
             // load string
@@ -56,7 +56,7 @@ namespace TestCodeInternal.UnitTest
             var sym = new WordSymbol("symbol1") { TextBuffer = textBuffer };
             Assert.AreEqual(true, sym.Load(outNo), "Symbol: Can't read");
             Assert.AreEqual(2, outNo.Count, "Symbol: Load should not add any nodes");
-            Assert.AreEqual(9, ((FlatPointer)textBuffer.PointerNextChar).index, "Symbol: The buffer pointer is of after");
+            Assert.AreEqual(9, textBuffer.PointerNextChar, "Symbol: The buffer pointer is of after");
 
             // load string + string + name
             textBuffer = new FlatBuffer("  Aname     symbol1      'Fghij'      sym02  ");
@@ -74,7 +74,7 @@ namespace TestCodeInternal.UnitTest
             node = outNo[4] as CodeElement;
             Assert.IsNotNull(node, "Can't find node after reading combinded VarName");
             Assert.AreEqual("sym02", node.Value, "The combinded VarName value is not correct");
-            Assert.AreEqual(43, ((FlatPointer)textBuffer.PointerNextChar).index, "The buffer pointer is of after reading combinded values");
+            Assert.AreEqual(43, textBuffer.PointerNextChar, "The buffer pointer is of after reading combinded values");
 
         }
 

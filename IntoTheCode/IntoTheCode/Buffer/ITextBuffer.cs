@@ -8,17 +8,15 @@ namespace IntoTheCode.Buffer
 
         /// <summary>Pointing at the next char to read. When end is reached Buf.Length == pointer.</summary>
         //int pointer { get; set; }
-        TextPointer PointerNextChar { get; }
-        TextPointer PointerEnd { get; }
+        int PointerNextChar { get; }
+        int PointerEnd { get; }
         ParserStatus Status { get; }
 
         void SetPointerBackToFrom(TextSubString sub);
         void SetPointerTo(TextSubString sub);
-        void SetPointer(TextPointer txtPtr);
+        void SetPointer(int txtPtr);
 
         int Length { get; }
-
-        TextPointer NewPointer();
 
         /// <summary>Instantiates a new substring with 'from' value set to current pointer.</summary>
         /// <returns></returns>
@@ -34,15 +32,15 @@ namespace IntoTheCode.Buffer
 
         string GetSubString(int length);
         string GetSubString(TextSubString sub);
-        string GetSubString(TextPointer from, int length);
-        string GetSubString(TextPointer from, int offset, int length);
+        string GetSubString(int from, int length);
+        string GetSubString(int from, int offset, int length);
 
-        TextPointer GetIndexAfter(string find, TextPointer start);
+        int GetIndexAfter(string find, int start);
 
         void SetToIndexOf(TextSubString sub, string find);
         //void SetToIndexOf(TextSubString sub, string find, TextPointer from);
         //bool IsEnd();
         bool IsEnd(int length = 1);
-        string GetLineAndColumn(out int line, out int column, TextPointer from = null);
+        string GetLineAndColumn(out int line, out int column, int pos = -1);
     }
 }

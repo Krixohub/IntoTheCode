@@ -5,7 +5,7 @@ namespace IntoTheCode.Read
 {
     public class ParserError
     {
-        public TextPointer ErrorPoint;
+        public int ErrorPoint;
         public int WordCount; //?
         public int Line; //?
         public int Column; //?

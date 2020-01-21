@@ -44,7 +44,7 @@ namespace IntoTheCode.Read.Element
         /// <param name="proces">The load proces.</param>
         /// <param name="txtPtr">Pointer to set.</param>
         /// <returns>Always return false.</returns>
-        protected bool SetPointerBack(TextPointer txtPtr, ParserElementBase item)
+        protected bool SetPointerBack(int txtPtr, ParserElementBase item)
         {
             TextBuffer.SetPointer(txtPtr);
             if (txtPtr.CompareTo(TextBuffer.Status.UnambiguousPointer) < 0 && TextBuffer.Status.Error == null)
@@ -60,7 +60,7 @@ namespace IntoTheCode.Read.Element
         /// <param name="proces">The load proces.</param>
         /// <param name="txtPtr">Pointer to set.</param>
         /// <returns>Always return false.</returns>
-        protected bool SetPointerBackError(TextPointer txtPtr, ref int wordCount, int previusWordCount)
+        protected bool SetPointerBackError(int txtPtr, ref int wordCount, int previusWordCount)
         {
             wordCount = previusWordCount;
             TextBuffer.SetPointer(txtPtr);

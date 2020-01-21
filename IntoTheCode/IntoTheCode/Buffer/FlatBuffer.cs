@@ -10,15 +10,15 @@ namespace IntoTheCode.Buffer
         public FlatBuffer(string text)
         {
             _buf = text;
-            PointerNextChar = new FlatPointer { index = 0 };
-            PointerEnd = new FlatPointer { index = _buf.Length };
+            PointerNextChar = 0;
+            PointerEnd = _buf.Length;
             Status = new ParserStatus(this);
         }
 
 
         /// <summary>Pointing at the next char to read. When end is reached Buf.Length == pointer.</summary>
-        public TextPointer PointerNextChar { get; private set; }
-        public TextPointer PointerEnd { get; private set; }
+        public int PointerNextChar { get; private set; }
+        public int PointerEnd { get; private set; }
         public ParserStatus Status { get; private set; }
 
         //public bool IsEnd()
@@ -29,57 +29,59 @@ namespace IntoTheCode.Buffer
 
         public bool IsEnd(int length = 1)
         {
-            return ((FlatPointer)PointerNextChar).index + length > _buf.Length;
+            return PointerNextChar + length > _buf.Length;
         }
 
         public int Length { get { return _buf.Length; } }
 
-        public void SetPointer(TextPointer ptr)
+        // todo remove
+        public void SetPointer(int ptr)
         {
-            ((FlatPointer)PointerNextChar).index = ((FlatPointer)ptr).index;
+            PointerNextChar = ptr;
         }
+        // todo remove
         public void SetPointerBackToFrom(TextSubString sub)
         {
-            ((FlatPointer)PointerNextChar).index = ((FlatSubString)sub).From;
+            PointerNextChar = sub.From;
         }
-        public void SetPointerTo(TextSubString sub) { ((FlatPointer)PointerNextChar).index = ((FlatSubString)sub).To; }
+        public void SetPointerTo(TextSubString sub) { PointerNextChar = ((TextSubString)sub).To; }
 
-        public void IncPointer() { ++((FlatPointer)PointerNextChar).index; }
-        public void DecPointer() { --((FlatPointer)PointerNextChar).index; }
+        public void IncPointer() { ++PointerNextChar; }
+        public void DecPointer() { --PointerNextChar; }
 
-        public TextPointer NewPointer() { return new FlatPointer { index = 0 }; }
+        //public TextPointer NewPointer() { return new FlatPointer { index = 0 }; }
 
         public TextSubString NewSubStringFrom()
         {
-            return new FlatSubString() { From = ((FlatPointer)PointerNextChar).index };
+            return new TextSubString() { From = PointerNextChar };
         }
 
         //// redundant function
-        //void SetSubStringTo(TextSubString ss) { ((FlatSubString)ss).To = ((FlatPointer)PointerNextChar).index; }
+        //void SetSubStringTo(TextSubString ss) { ((TextSubString)ss).To = PointerNextChar; }
 
-        public char GetChar() { return _buf[((FlatPointer)PointerNextChar).index]; }
-        public string GetSubString(int length) { return _buf.Substring(((FlatPointer)PointerNextChar).index, length); }
-        public string GetSubString(TextSubString sub) { var ss = sub as FlatSubString; return _buf.Substring(ss.From, ss.To - ss.From); }
-        public string GetSubString(TextPointer from, int length) { return _buf.Substring(((FlatPointer)from).index, length); }
-        public string GetSubString(TextPointer from, int offset, int length) { return _buf.Substring(((FlatPointer)from).index + offset, length); }
+        public char GetChar() { return _buf[PointerNextChar]; }
+        public string GetSubString(int length) { return _buf.Substring(PointerNextChar, length); }
+        public string GetSubString(TextSubString sub) { var ss = sub as TextSubString; return _buf.Substring(ss.From, ss.To - ss.From); }
+        public string GetSubString(int from, int length) { return _buf.Substring(from, length); }
+        public string GetSubString(int from, int offset, int length) { return _buf.Substring(from + offset, length); }
 
-        public TextPointer GetIndexAfter(string find, TextPointer start)
+        public int GetIndexAfter(string find, int start)
         {
-            int startIndex = start == null ? 0 : ((FlatPointer)start).index;
+            int startIndex = start == -1 ? 0 : start;
             int pos = _buf.IndexOf(find, startIndex, System.StringComparison.Ordinal);
-            if (pos == -1) return null;
-            return new FlatPointer { index = pos + find.Length };
+            if (pos == -1) return -1;
+            return pos + find.Length;
         }
 
         public void SetToIndexOf(TextSubString sub, string find) { SetToIndexOf(sub, find, PointerNextChar); }
-        private void SetToIndexOf(TextSubString sub, string find, TextPointer start)
-        { ((FlatSubString)sub).To = _buf.IndexOf(find, ((FlatPointer)start).index, System.StringComparison.Ordinal); }
+        private void SetToIndexOf(TextSubString sub, string find, int start)
+        { ((TextSubString)sub).To = _buf.IndexOf(find, start, System.StringComparison.Ordinal); }
 
-        public string GetLineAndColumn(out int line, out int column, TextPointer pos = null)
+        public string GetLineAndColumn(out int line, out int column, int pos = -1)
         {
-            if (pos == null)
-                pos = PointerNextChar.Clone();
-            int index = ((FlatPointer)pos).index;
+            if (pos == -1)
+                pos = PointerNextChar;
+            int index = pos;
             string find = "\n";
             int nlPos = 0;
             line = 1;

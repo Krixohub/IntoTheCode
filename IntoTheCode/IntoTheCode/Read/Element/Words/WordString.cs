@@ -26,7 +26,7 @@ namespace IntoTheCode.Read.Element.Words
         {
             SkipWhiteSpace();
 
-            TextPointer from = TextBuffer.PointerNextChar.Clone();
+            int from = TextBuffer.PointerNextChar;
 
             if (TextBuffer.IsEnd(2)) return false;
 
@@ -54,7 +54,8 @@ namespace IntoTheCode.Read.Element.Words
             if (last.WordParser == this)
             {
                 // found!
-                TextBuffer.SetPointer(last.SubString.GetTo().Clone( a + 1));
+                //TextBuffer.SetPointer(last.SubString.GetTo().Clone( a + 1));
+                TextBuffer.SetPointer(last.SubString.To + a + 1);
                 return 2;
             }
             return 0;
@@ -63,7 +64,7 @@ namespace IntoTheCode.Read.Element.Words
         public override bool LoadTrackError(ref int wordCount)
         {
             SkipWhiteSpace();
-            TextPointer from = TextBuffer.PointerNextChar.Clone();
+            int from = TextBuffer.PointerNextChar;
             int fromWordCount = wordCount;
 
             if (TextBuffer.IsEnd(2))
@@ -79,7 +80,7 @@ namespace IntoTheCode.Read.Element.Words
 
             if (!subStr.ToIsValid())
             {
-                TextBuffer.Status.AddSyntaxError(this, from.Clone(1), wordCount, () => MessageRes.pe05);
+                TextBuffer.Status.AddSyntaxError(this, from + 1, wordCount, () => MessageRes.pe05);
                 return SetPointerBackError(from, ref wordCount, fromWordCount);
             }
 

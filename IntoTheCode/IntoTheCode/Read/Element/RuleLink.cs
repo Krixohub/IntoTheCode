@@ -14,7 +14,7 @@ namespace IntoTheCode.Read.Element
         {
             Name = "name";
             _value = value;
-
+            LastRuleInvoke = -1;
             if (value == "expression")
                 Recursive = true;
         }
@@ -40,15 +40,15 @@ namespace IntoTheCode.Read.Element
         }
 
         public bool Recursive;
-        public TextPointer LastRuleInvoke;
+        public int LastRuleInvoke;
 
         public override bool Load(List<TreeNode> outElements)
         {
             // End too many recursive calls
-            TextPointer from = TextBuffer.PointerNextChar.Clone();
+            int from = TextBuffer.PointerNextChar;
             if (Recursive)
             {
-                if (LastRuleInvoke != null && LastRuleInvoke.CompareTo(from) == 0) return false;
+                if (LastRuleInvoke == from) return false;
                 LastRuleInvoke = from;
             }
 
