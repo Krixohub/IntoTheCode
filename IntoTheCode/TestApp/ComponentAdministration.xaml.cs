@@ -12,7 +12,7 @@ namespace TestApp
     public partial class ComponentAdministration : Window
     {
 
-        //SyntaxEdit _syntaxEdit;
+        SyntaxEdit _syntaxEdit;
         SyntaxAnalyser _syntaxAnalyser;
        // CompAdmin _compAdmin;
  
@@ -23,13 +23,13 @@ namespace TestApp
 
         private void BtnSyntaxEditClick(object sender, RoutedEventArgs e)
         {
-            //if (_syntaxEdit == null)
-            //{
-            //    _syntaxEdit = new SyntaxEdit();
-            //    _syntaxEdit.Show();
-            //}
-            //else
-            //    _syntaxEdit.Activate();
+            if (_syntaxEdit == null)
+            {
+                _syntaxEdit = new SyntaxEdit();
+                _syntaxEdit.Show();
+            }
+            else
+                _syntaxEdit.Activate();
 
 
         }

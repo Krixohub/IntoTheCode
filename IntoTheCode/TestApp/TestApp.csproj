@@ -80,7 +80,11 @@
     <Compile Include="ComponentAdministration.xaml.cs">
       <DependentUpon>ComponentAdministration.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Syntax\SyntaxEdit.xaml.cs">
+      <DependentUpon>SyntaxEdit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\SyntaxAnalyzerVm.cs" />
+    <Compile Include="ViewModel\SyntaxEditVm.cs" />
     <Page Include="ComponentAdministration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -88,6 +92,10 @@
     <Page Include="ResourcesMerged.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ClientWpf\Resources\GeneralXamlStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ResourceWindowStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -105,6 +113,10 @@
       <DependentUpon>SyntaxAnalyzer.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Syntax\SyntaxEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

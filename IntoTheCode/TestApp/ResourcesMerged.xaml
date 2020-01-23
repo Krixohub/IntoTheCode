@@ -5,7 +5,7 @@
     -->
     
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/  ClientWpf;component/Resources/Converters.xaml" />
+        <!--<ResourceDictionary Source="/ClientWpf/Resources/Converters.xaml" />-->
 
         <ResourceDictionary Source="ResourceWindowStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
