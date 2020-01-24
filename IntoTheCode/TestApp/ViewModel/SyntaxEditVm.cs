@@ -6,6 +6,8 @@ using IntoTheCode;
 using IntoTheCode.Read;
 using System;
 using System.Linq;
+using System.Text;
+using Microsoft.Win32;
 
 namespace ViewModel
 {
@@ -134,7 +136,7 @@ namespace ViewModel
             {
                 _codeParser = new Parser(Grammar);
                 GrammarOk = true;
-                CodeLoad(null);
+                //CodeLoad(null);
                             }
             catch (Exception e)
             {
@@ -147,12 +149,7 @@ namespace ViewModel
         /// <param name="ci"></param>
         private void GrammarLoadFile(CommandInformation ci)
         {
-            //string path = Application.Current.StartupUri.AbsolutePath;
-            //string path1 = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            //DirectoryInfo dir = new DirectoryInfo(path1).Parent.Parent.Parent.Parent;
-            ////string filename = Path.Combine(dir.FullName, "TestFiles", "SyntaxTest.txt");
-            //string filename = Path.Combine(dir.FullName, "TestFiles", "SyntaxMeta.txt");
-            //BnfPresenter.LoadFile(filename);
+            OpenFileDialog(s => { Grammar = s; });
         }
 
         /// <summary>Parser syntax.</summary>
@@ -183,12 +180,7 @@ namespace ViewModel
         /// <param name="ci"></param>
         private void CodeLoadFile(CommandInformation ci)
         {
-            //string path = Application.Current.StartupUri.AbsolutePath;
-            //string path1 = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            //DirectoryInfo dir = new DirectoryInfo(path1).Parent.Parent.Parent.Parent;
-            ////string filename = Path.Combine(dir.FullName, "TestFiles", "SyntaxTest.txt");
-            //string filename = Path.Combine(dir.FullName, "TestFiles", "SyntaxMeta.txt");
-            //BnfPresenter.LoadFile(filename);
+            OpenFileDialog(s => { Code = s; });
         }
 
         /// <summary>Parser syntax.</summary>
@@ -214,5 +206,37 @@ namespace ViewModel
             RaisePropertyChanged(nameof(Meta)); 
         }
 
+        /// <summary>Show FileDialog to open file.</summary>
+        private void OpenFileDialog(Action<string> set) //object sender, RoutedEventArgs e)
+        {
+            //// Set filter for file extension and default file extension 
+            //dlg.DefaultExt = ".png";
+            //dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+                LoadFile(openFileDialog.FileName, set);
+        }
+
+        public void LoadFile(string fileName, Action<string> set)
+        {
+            if (File.Exists(fileName))
+            {
+                try
+                {
+                    string filetext;
+                    using (FileStream fileStream = new FileStream(fileName, FileMode.Open))
+                    using (StreamReader sr = new StreamReader(fileStream, Encoding.Default))
+                        filetext = sr.ReadToEnd();
+
+                    set(filetext);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            else
+                MessageBox.Show("The file dosn't exists");
+        }
     }
 }

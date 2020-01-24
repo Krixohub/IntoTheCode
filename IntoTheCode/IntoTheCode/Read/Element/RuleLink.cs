@@ -15,7 +15,7 @@ namespace IntoTheCode.Read.Element
             Name = "name";
             _value = value;
             LastRuleInvoke = TextBuffer.NotValidPtr;
-            if (value == "expression")
+            //if (value == "expression")
                 Recursive = true;
         }
 
