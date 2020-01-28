@@ -1,13 +1,13 @@
 ﻿using System.Windows;
 
-namespace TestApp.Syntax
+namespace TestApp.Grammar
 {
     /// <summary>
-    /// Interaction logic for SyntaxLab.xaml
+    /// Interaction logic for GrammarLab.xaml
     /// </summary>
-    public partial class SyntaxEdit : Window
+    public partial class GrammarEdit : Window
     {
-        public SyntaxEdit()
+        public GrammarEdit()
         {
             InitializeComponent();
         }

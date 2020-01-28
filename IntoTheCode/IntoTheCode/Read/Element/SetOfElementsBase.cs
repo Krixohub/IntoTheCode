@@ -15,11 +15,11 @@ namespace IntoTheCode.Read.Element
         protected SetOfElementsBase(params ParserElementBase[] elements)
         {
             if (elements.Count() == 0)
-                throw new Exception("A sequence of syntax elements must contain at least one element");
+                throw new Exception("A sequence of Grammar elements must contain at least one element");
             Add(elements);
         }
 
-        /// <summary>To create unlinked syntax.</summary>
+        /// <summary>To create unlinked Grammar.</summary>
         protected SetOfElementsBase()
         {
         }
@@ -34,12 +34,12 @@ namespace IntoTheCode.Read.Element
             return ElementContentType.Many;
         }
 
-        protected bool LoadSet(List<TreeNode> outElements)
+        protected bool LoadSet(List<TreeNode> outElements, int level)
         {
             int from = TextBuffer.PointerNextChar;
             List<TreeNode> elements = new List<TreeNode>();
             foreach (var item in SubElements.OfType<ParserElementBase>())
-                if (!item.Load(elements))
+                if (!item.Load(elements, level))
                     return SetPointerBack(from, item);
 
             foreach (var item in elements)
@@ -55,7 +55,7 @@ namespace IntoTheCode.Read.Element
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         protected internal int TryLastSetAgain(CodeElement last)
         {
-            string debug = GetSyntax().NL() + last.ToMarkupProtected(string.Empty);
+            string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
             int wordCount;
             int rc = 0;
@@ -85,10 +85,10 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        public override string GetSyntax()
+        public override string GetGrammar()
         {
-            string syntax = string.Join(" ", SubElements.OfType<ParserElementBase>().Select(s => s.GetSyntax()).ToArray());
-            return syntax;
+            string Grammar = string.Join(" ", SubElements.OfType<ParserElementBase>().Select(s => s.GetGrammar()).ToArray());
+            return Grammar;
         }
     }
 }

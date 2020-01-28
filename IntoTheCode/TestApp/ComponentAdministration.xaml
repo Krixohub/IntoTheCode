@@ -19,10 +19,10 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" /><ColumnDefinition Width="5" /><ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="1" Grid.Column="0" Content="Syntax edit" Click="BtnSyntaxEditClick"/>
-        <Label  Grid.Row="1" Grid.Column="2" Content="Edit syntax and text" />
-        <Button Grid.Row="3" Grid.Column="0" Content="Syntax analyze" Click="BtnSyntaxAnalClick"/>
-        <Label  Grid.Row="3" Grid.Column="2" Content="Open syntax analyzer" />
+        <Button Grid.Row="1" Grid.Column="0" Content="Grammar edit" Click="BtnGrammarEditClick"/>
+        <Label  Grid.Row="1" Grid.Column="2" Content="Edit Grammar and text" />
+        <Button Grid.Row="3" Grid.Column="0" Content="Grammar analyze" Click="BtnGrammarAnalClick"/>
+        <Label  Grid.Row="3" Grid.Column="2" Content="Open Grammar analyzer" />
         <Button Grid.Row="5" Grid.Column="0" Content="Comp admin" Click="BtnCompSvcClick" IsEnabled="False"/>
         <TextBlock  Grid.Row="5" Grid.Column="2" Text="Administrer component services and test" TextWrapping="Wrap" />
     </Grid>

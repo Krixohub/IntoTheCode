@@ -17,19 +17,19 @@ using IntoTheCode.Basic.Util;
 namespace TestCodeInternal.UnitTest
 {
     [TestClass]
-    public class SyntaxTest
+    public class GrammarTest
     {
         [TestMethod]
         public void Parser10Words()
         {
-            // test loading of basic syntax elements
+            // test loading of basic grammar elements
             // load varname
             TextBuffer textBuffer = new FlatBuffer("  sym01  ");
             //            reader.TextBuffer = new FlatBuffer("  sym01  ");
             //var buf = new FlatBuffer("  sym01  ");
             var outNo = new List<TreeNode>();
             var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
-            Assert.AreEqual(true, idn.Load(outNo), "Identifier: Can't read");
+            Assert.AreEqual(true, idn.Load(outNo, 0), "Identifier: Can't read");
             var node = outNo[0] as CodeElement;
             Assert.IsNotNull(node, "Identifier: Can't find node after reading");
             Assert.AreEqual("sym01", node.Value, "Identifier: The value is not correct");
@@ -41,7 +41,7 @@ namespace TestCodeInternal.UnitTest
             // load symbol
             textBuffer = new FlatBuffer(" 'Abcde' ");
             var str = new WordString() { TextBuffer = textBuffer };
-            Assert.AreEqual(true, str.Load(outNo), "String: Can't read");
+            Assert.AreEqual(true, str.Load(outNo, 0), "String: Can't read");
             node = outNo[1] as CodeElement;
             Assert.IsNotNull(node, "String: Can't find node after reading");
             Assert.AreEqual("Abcde", node.Value, "String: The value is not correct");
@@ -54,7 +54,7 @@ namespace TestCodeInternal.UnitTest
             // load string
             textBuffer = new FlatBuffer("  symbol1  ");
             var sym = new WordSymbol("symbol1") { TextBuffer = textBuffer };
-            Assert.AreEqual(true, sym.Load(outNo), "Symbol: Can't read");
+            Assert.AreEqual(true, sym.Load(outNo, 0), "Symbol: Can't read");
             Assert.AreEqual(2, outNo.Count, "Symbol: Load should not add any nodes");
             Assert.AreEqual(9, textBuffer.PointerNextChar, "Symbol: The buffer pointer is of after");
 
@@ -64,10 +64,10 @@ namespace TestCodeInternal.UnitTest
             sym.TextBuffer = textBuffer;
             str.TextBuffer = textBuffer;
             idn.TextBuffer = textBuffer;
-            Assert.AreEqual(true, idn.Load(outNo), "Can't read a combinded Identifier");
-            Assert.AreEqual(true, sym.Load(outNo), "Can't read a combinded Symbol");
-            Assert.AreEqual(true, str.Load(outNo), "Can't read a combinded String");
-            Assert.AreEqual(true, idn.Load(outNo), "Can't read a combinded Identifier");
+            Assert.AreEqual(true, idn.Load(outNo, 0), "Can't read a combinded Identifier");
+            Assert.AreEqual(true, sym.Load(outNo, 0), "Can't read a combinded Symbol");
+            Assert.AreEqual(true, str.Load(outNo, 0), "Can't read a combinded String");
+            Assert.AreEqual(true, idn.Load(outNo, 0), "Can't read a combinded Identifier");
             node = outNo[3] as CodeElement;
             Assert.IsNotNull(node, "Can't find node after reading combinded Quote");
             Assert.AreEqual("Fghij", node.Value, "The combinded Quote value is not correct");
@@ -79,14 +79,14 @@ namespace TestCodeInternal.UnitTest
         }
 
         [TestMethod]
-        public void Parser11SyntaxHardcode()
+        public void Parser11GrammarHardcode()
         {
             var parser = new Parser();
 
             // Status er kun til opsamling af fejl
             ParserStatus status = new ParserStatus(null);
             //hardcodeParser = MetaParser.GetHardCodeParser();
-            var debug = MetaParser.GetHardCodeParser(status).GetSyntax();
+            var debug = MetaParser.GetHardCodeParser(status).GetGrammar();
             var outNo = new List<TreeNode>();
             
             string doc = string.Empty;
@@ -96,39 +96,39 @@ namespace TestCodeInternal.UnitTest
 
             //  Read a varname
             textBuffer = new FlatBuffer("  Bname  ");
-            GetSyntaxTestElements(parser, textBuffer);
+            GetGrammarTestElements(parser, textBuffer);
             rule = parser.Rules.FirstOrDefault(e => e.Name == "TestIdentifier");
             //parser.TextBuffer = new FlatBuffer("  Bname  ");
-            Assert.AreEqual(true, rule.Load(outNo), "Equation TestIdentifier: cant read");
+            Assert.AreEqual(true, rule.Load(outNo, 0), "Equation TestIdentifier: cant read");
             doc = ((CodeElement)outNo[0]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<TestIdentifier>Bname</TestIdentifier>\r\n", doc, "Equation TestOption: document fail");
 
 
 
 
-            // Read a 'or syntax = varname'
+            // Read a 'or grammar = varname'
             textBuffer = new FlatBuffer("  Bcccc  ");
-            GetSyntaxTestElements(parser, textBuffer);
-            //parser.Rules = GetSyntaxTestElements(parser, proces);
-            rule = parser.Rules.FirstOrDefault(e => e.Name == "syntax");
+            GetGrammarTestElements(parser, textBuffer);
+            //parser.Rules = GetGrammarTestElements(parser, proces);
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "grammar");
             //parser.TextBuffer = new FlatBuffer("  Bcccc  ");
-            Assert.AreEqual(true, rule.Load(outNo), "Equation syntax varname: cant read");
+            Assert.AreEqual(true, rule.Load(outNo, 0), "Equation grammar varname: cant read");
             doc = ((CodeElement)outNo[1]).ToMarkupProtected(string.Empty);
-            Assert.AreEqual("<syntax>\r\n  <TestIdentifier>Bcccc</TestIdentifier>\r\n</syntax>\r\n", doc, "Equation TestOption: document fail");
+            Assert.AreEqual("<grammar>\r\n  <TestIdentifier>Bcccc</TestIdentifier>\r\n</grammar>\r\n", doc, "Equation TestOption: document fail");
 
             // Read a 'or TestString'
             textBuffer = new FlatBuffer(" 'Ccccc'  ");
-            GetSyntaxTestElements(parser, textBuffer);
-            rule = parser.Rules.FirstOrDefault(e => e.Name == "syntax");
-            Assert.AreEqual(true, rule.Load(outNo), "Equation syntax TestString: cant read");
+            GetGrammarTestElements(parser, textBuffer);
+            rule = parser.Rules.FirstOrDefault(e => e.Name == "grammar");
+            Assert.AreEqual(true, rule.Load(outNo, 0), "Equation grammar TestString: cant read");
             doc = ((CodeElement)outNo[2]).ToMarkupProtected(string.Empty);
-            Assert.AreEqual("<syntax>\r\n  <string>Ccccc</string>\r\n</syntax>\r\n", doc, "Equation TestOption: document fail");
+            Assert.AreEqual("<grammar>\r\n  <string>Ccccc</string>\r\n</grammar>\r\n", doc, "Equation TestOption: document fail");
 
             // Read a TestSeries
             textBuffer = new FlatBuffer("  TestSeries jan ole Mat  ");
-            GetSyntaxTestElements(parser, textBuffer);
+            GetGrammarTestElements(parser, textBuffer);
             rule = parser.Rules.FirstOrDefault(e => e.Name == "TestSeries");
-            Assert.AreEqual(true, rule.Load(outNo), "Equation TestSeries: cant read");
+            Assert.AreEqual(true, rule.Load(outNo, 0), "Equation TestSeries: cant read");
 
             doc = ((CodeElement)outNo[3]).ToMarkupProtected(string.Empty);
             Assert.AreEqual(@"<TestSeries>
@@ -140,23 +140,23 @@ namespace TestCodeInternal.UnitTest
 
             // Read a TestOption
             textBuffer = new FlatBuffer("  TestOption 'qwerty'  ");
-            GetSyntaxTestElements(parser, textBuffer);
+            GetGrammarTestElements(parser, textBuffer);
             rule = parser.Rules.FirstOrDefault(e => e.Name == "TestOption");
-            Assert.AreEqual(true, rule.Load(outNo), "Equation TestOption: cant read");
+            Assert.AreEqual(true, rule.Load(outNo, 0), "Equation TestOption: cant read");
             doc = ((CodeElement)outNo[4]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<TestOption>\r\n  <TestQuote2>qwerty</TestQuote2>\r\n</TestOption>\r\n", doc, "Equation TestOption: document fail");
             textBuffer = new FlatBuffer("  TestOption wer  ");
-            GetSyntaxTestElements(parser, textBuffer);
+            GetGrammarTestElements(parser, textBuffer);
             rule = parser.Rules.FirstOrDefault(e => e.Name == "TestOption");
-            Assert.AreEqual(true, rule.Load(outNo), "Equation TestOption: cant read");
+            Assert.AreEqual(true, rule.Load(outNo, 0), "Equation TestOption: cant read");
             doc = ((CodeElement)outNo[5]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<TestOption>\r\n  <TestIdentifier>wer</TestIdentifier>\r\n</TestOption>\r\n", doc, "Equation TestOption: document fail");
 
             // Read: TestLines       = 'TestLines' { VarName '=' Quote ';' };
             textBuffer = new FlatBuffer("  TestLines name = 'Oscar'; addr = 'GoRoad'; \r\n mobile = '555 55'; ");
-            GetSyntaxTestElements(parser, textBuffer);
+            GetGrammarTestElements(parser, textBuffer);
             rule = parser.Rules.FirstOrDefault(e => e.Name == "TestLines");
-            Assert.AreEqual(true, rule.Load(outNo), "Equation TestLines: cant read");
+            Assert.AreEqual(true, rule.Load(outNo, 0), "Equation TestLines: cant read");
             doc = ((CodeElement)outNo[6]).ToMarkupProtected(string.Empty);
             Assert.AreEqual(@"<TestLines>
   <localVar>name</localVar>
@@ -170,60 +170,60 @@ namespace TestCodeInternal.UnitTest
 
 
 
-            // Test hard coded syntax
+            // Test hard coded grammar
             //parser2 = new Parser();
             // Status er kun til opsamling af fejl
             var hardcodeParser = MetaParser.GetHardCodeParser(status);
-            string actual = hardcodeParser.GetSyntax();
-            string expect = GetExpectHardCodeSyntax();
+            string actual = hardcodeParser.GetGrammar();
+            string expect = GetExpectHardCodeGrammar();
             string msg = CompareTextLines(actual, expect);
-            Assert.AreEqual(string.Empty, msg, "Hardcode syntax diff error");
+            Assert.AreEqual(string.Empty, msg, "Hardcode grammar diff error");
 
         }
 
         [TestMethod]
-        public void Parser12SyntaxMeta()
+        public void Parser12GrammarMeta()
         {
-            // Build a syntax to test meta syntax
+            // Build a grammar to test meta grammar
             string actual1, actual2, expect, msg;
-            expect = MetaParser.MetaSyntax;
+            expect = MetaParser.MetaGrammar;
 
-            var parser = new Parser(MetaParser.SoftMetaSyntaxAndSettings);
-            actual1 = parser.GetSyntax();              // Test Meta syntax after after compilation in a Parser.
-            actual2 = MetaParser.Instance.GetSyntax(); // Test Meta syntax in internal Parser.
+            var parser = new Parser(MetaParser.SoftMetaGrammarAndSettings);
+            actual1 = parser.GetGrammar();              // Test Meta grammar after after compilation in a Parser.
+            actual2 = MetaParser.Instance.GetGrammar(); // Test Meta grammar in internal Parser.
             msg = CompareTextLines(actual1, expect);
-            Assert.AreEqual(string.Empty, msg, "Meta syntax diff error");
+            Assert.AreEqual(string.Empty, msg, "Meta grammar diff error");
             msg = CompareTextLines(actual2, expect);
-            Assert.AreEqual(string.Empty, msg, "Meta syntax internal diff error");
+            Assert.AreEqual(string.Empty, msg, "Meta grammar internal diff error");
 
             // Compare generated CodeDocument with 'selected nodes'
             string actualTags1, actualTags2, expectTags;
-            CodeDocument docExpect = TestMetaSyntaxDoc();
+            CodeDocument docExpect = TestMetaGrammarDoc();
 
             //var metaParser = _metaparser;
             // todo MetaParser has not the settings.
-            TextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
+            TextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaGrammarAndSettings);
             CodeDocument docActual1 = parser.ParseString(buffer);
-            buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
+            buffer = new FlatBuffer(MetaParser.SoftMetaGrammarAndSettings);
             CodeDocument docActual2 = MetaParser.Instance.ParseString(buffer);
 
             expectTags = docExpect.ToMarkup();
             actualTags1 = docActual1.ToMarkup();
             actualTags2 = docActual2.ToMarkup();
             msg = CodeDocument.CompareCode(docActual1, docExpect);
-            Assert.AreEqual(string.Empty, msg, "Meta syntax document diff error");
+            Assert.AreEqual(string.Empty, msg, "Meta grammar document diff error");
             msg = CodeDocument.CompareCode(docActual2, docExpect);
-            Assert.AreEqual(string.Empty, msg, "Meta syntax internal document diff error");
+            Assert.AreEqual(string.Empty, msg, "Meta grammar internal document diff error");
 
             // TODO SKAL RETTES
             Assert.AreEqual(docExpect.Name, docActual1.Name, "Document name diff error");
         }
 
-        /// <summary>Test that the parser can read a syntax and load code. Simple.</summary>
+        /// <summary>Test that the parser can read a grammar and load code. Simple.</summary>
         [TestMethod]
-        public void Parser13SyntaxInternal()
+        public void Parser13GrammarInternal()
         {
-            string stx = "syntax = {o};\r\no = 'o';settings o collapse = 'false';";
+            string stx = "grammar = {o};\r\no = 'o';settings o collapse = 'false';";
             var parser = new Parser(stx);
             TextBuffer buffer = new FlatBuffer("ooo");
 
@@ -233,22 +233,22 @@ namespace TestCodeInternal.UnitTest
             Assert.IsNotNull(doc, "doc er null");
             Assert.IsNull(buffer.Status.Error, "ReadingError");
 
-            string markup = @"<syntax>
+            string markup = @"<grammar>
   <o/>
   <o/>
   <o/>
-</syntax>
+</grammar>
 ";
 
             Assert.AreEqual(markup, doc.ToMarkup(), "Markup");
         }
 
-        /// <summary>Test different types of syntax error.</summary>
+        /// <summary>Test different types of grammar error.</summary>
         [TestMethod]
         public void Parser15SyntaxError()
         {
-            // Set syntax
-            string syntax = @"
+            // Set grammar
+            string grammar = @"
 stx =  symRule | seq | strRule | idRule;
 seq = {o};
 o = 'o';
@@ -259,7 +259,7 @@ fstr = 'string'; failStr = string;
 fid  = 'id';   failId = identifier;
 fsym = 'symbol'; failSym = 'fail';
 settings fid trust; fstr trust; fsym trust;";
-            var parser = new Parser(syntax);
+            var parser = new Parser(grammar);
             //ParserStatus proces;
             CodeDocument doc;
             string errMsg1;
@@ -281,7 +281,7 @@ settings fid trust; fstr trust; fsym trust;";
             }
             AreEqualResPos("EOF error", 1, 3, errMsg1, () => MessageRes.p05);
 
-            string stx = parser.GetSyntax();
+            string stx = parser.GetGrammar();
 
             // Read 'identifier', EOF error.
             errMsg1 = null;
@@ -377,16 +377,16 @@ settings fid trust; fstr trust; fsym trust;";
             Assert.AreEqual(expected, actual, errorName);
         }
 
-        /// <summary>Test different types of syntax error.</summary>
+        /// <summary>Test different types of grammar error.</summary>
         [TestMethod]
         public void Parser16SyntaxErrorSet()
         {
-            // Set syntax
-            string syntax = @"
+            // Set grammar
+            string grammar = @"
 stx =  {cmd};
 cmd = type identifier ';'; 
 type = 'string'; ";
-            var parser = new Parser(syntax);
+            var parser = new Parser(grammar);
             CodeDocument doc;
             string errMsg1;
 
@@ -418,7 +418,7 @@ type = 'string'; ";
             AreEqualResPos("missing seperator", 1, 10, errMsg1, () => MessageRes.pe07, "cmd", ";", "d");
         }
 
-        /// <summary>Test different types of syntax build error.</summary>
+        /// <summary>Test different types of grammar build error.</summary>
         [TestMethod]
         public void Parser17SyntaxErrorBuild()
         {
@@ -461,26 +461,26 @@ type = 'string'; ";
             AreEqualResPos("First rule cant have tag=false, build error", 1, 1, errMsg1, () => MessageRes.pb09, "stx");
 
             // todo find this error
-            // syntax error expecting string ( 'false' )
+            // grammar error expecting string ( 'false' )
             errMsg1 = null;
             try { var parser = new Parser("stx = ':'; \r\n settings stx collapse = false; "); }
             //                             12345678901234\12345678901234567890123456
             catch (ParserException e) { errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
                     }
-            AreEqualResPos(" syntax error", 2, 26, errMsg1, () => MessageRes.pe04, "value");
+            AreEqualResPos(" grammar error", 2, 26, errMsg1, () => MessageRes.pe04, "value");
         }
 
         #region utillity functions
 
-        /// <summary>A syntax for test. Hard coded.</summary>
-        private void GetSyntaxTestElements(Parser parser, TextBuffer buffer)
+        /// <summary>A grammar for test. Hard coded.</summary>
+        private void GetGrammarTestElements(Parser parser, TextBuffer buffer)
         {
             //bool equal = false;
             //bool tag = true;
             List<RuleLink> symbolsToResolve = new List<RuleLink>();
             List<Rule> list = new List<Rule>();
-            list.Add(new Rule("syntax",
+            list.Add(new Rule("grammar",
                     new Or( new RuleLink("TestIdentifier"),
                     new Or( new RuleLink("TestString"),
                     new RuleLink("TestSymbol")))) /*{ Tag = true }*/);
@@ -517,16 +517,16 @@ type = 'string'; ";
 
             
             parser.Rules = list.Select(r => r.CloneForParse(buffer) as Rule).ToList();
-            ParserFactory.InitializeSyntax(parser, parser.Rules, buffer.Status);
-            ParserFactory.ValidateSyntax(parser, buffer.Status);
+            ParserFactory.InitializeGrammar(parser, parser.Rules, buffer.Status);
+            ParserFactory.ValidateGrammar(parser, buffer.Status);
         }
 
-        /// <summary>A hard coded text syntax.</summary>
-        private string GetExpectHardCodeSyntax()
+        /// <summary>A hard coded text grammar.</summary>
+        private string GetExpectHardCodeGrammar()
         {
             return
          @"
-HardSyntax  = {Rule} [settings];
+HardGrammar = {Rule} [settings];
 Rule        = identifier '=' expression ';';
 expression  = element {[or] element};
 element     = identifier | symbol | block;
@@ -545,21 +545,21 @@ value       = string;";
             //property    = 'collapse' | 'milestone' | 'ws' | 'wsdef';
         }
 
-        /// <summary>To test changes to the meta syntax.</summary>
-        private static CodeDocument TestMetaSyntaxDoc()
+        /// <summary>To test changes to the meta grammar.</summary>
+        private static CodeDocument TestMetaGrammarDoc()
         {
-            CodeDocument syntax = new CodeDocument { Name = MetaParser.MetaSyntax_ };
+            CodeDocument grammar = new CodeDocument { Name = MetaParser.MetaGrammar_ };
 
-            // syntax   = {rule}
-            syntax.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("identifier", "MetaSyntax"),
+            // grammar   = {rule}
+            grammar.AddElement(new HardElement("Rule", string.Empty,
+                new HardElement("identifier", "MetaGrammar"),
                 new HardElement("sequence", string.Empty,
                     new HardElement("identifier", "Rule")),
                 new HardElement("optional", string.Empty,
                     new HardElement("identifier", MetaParser.Settings___))));
 
             // rule = identifier '=' expression ';'
-            syntax.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("identifier", "Rule"),
                 new HardElement("identifier", "identifier"),
                 new HardElement("symbol", "="),
@@ -567,7 +567,7 @@ value       = string;";
                 new HardElement("symbol", ";")));
 
             // expression = element {[or] element};
-            syntax.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("identifier", "expression"),
                 new HardElement("identifier", MetaParser.Element____),
                 new HardElement("sequence", string.Empty,
@@ -576,7 +576,7 @@ value       = string;";
                     new HardElement("identifier", MetaParser.Element____))));
 
             //// element    = identifier | symbol | block; Husk ny block
-            //syntax.AddElement(new HardElement("Rule", string.Empty,
+            //grammar.AddElement(new HardElement("Rule", string.Empty,
             //    new HardElement("identifier", MetaParser.Element____),
             //    new HardElement("identifier", "identifier"),
             //    new HardElement(MetaParser.Or_________, string.Empty),
@@ -585,7 +585,7 @@ value       = string;";
             //    new HardElement("identifier", MetaParser.Block______)));
 
             //// block      = sequence | optional | parentheses);
-            //syntax.AddElement(new HardElement("Rule", string.Empty,
+            //grammar.AddElement(new HardElement("Rule", string.Empty,
             //    new HardElement("identifier", MetaParser.Block______),
             //    new HardElement("identifier", "sequence"),
             //    new HardElement(MetaParser.Or_________, string.Empty),
@@ -593,7 +593,7 @@ value       = string;";
             //    new HardElement("or", string.Empty),
             //    new HardElement("identifier", "parentheses")));
             // element    = identifier | symbol | block; Husk ny block
-            syntax.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("identifier", MetaParser.Element____),
                 new HardElement("identifier", "identifier"),
                 new HardElement(MetaParser.Or_________, string.Empty),
@@ -606,50 +606,50 @@ value       = string;";
                 new HardElement("identifier", "parentheses")));
 
             // sequence      = '{' expression '}';
-            syntax.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("identifier", "sequence"),
                 new HardElement("symbol", "{"),
                 new HardElement("identifier", "expression"),
                 new HardElement("symbol", "}")));
 
             // optional     = '[' expression ']';
-            syntax.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("identifier", "optional"),
                 new HardElement("symbol", "["),
                 new HardElement("identifier", "expression"),
                 new HardElement("symbol", "]")));
 
             // parentheses      = '(' expression ')';
-            syntax.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("identifier", "parentheses"),
                 new HardElement("symbol", "("),
                 new HardElement("identifier", "expression"),
                 new HardElement("symbol", ")")));
 
             // or         = '|';
-            syntax.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("identifier", "or"),
                 new HardElement("symbol", "|")));
 
             //// ruleId      > identifier;
-            //syntax.AddElement(new HardElement("Rule", string.Empty,
+            //grammar.AddElement(new HardElement("Rule", string.Empty,
             //    new HardElement("identifier", "ruleId"),
             //    new HardElement("identifier", "identifier")));
 
             // symbol     = string;
-            syntax.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("identifier", "symbol"),
                 new HardElement("identifier", "string")));
 
             // settings    = 'settings' {setter};
-            syntax.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("identifier", "settings"),
                 new HardElement("symbol", "settings"),
                 new HardElement("sequence", string.Empty,
                     new HardElement("identifier", MetaParser.Setter_____))));
 
             // setter      = identifier assignment {',' assignment} ';';
-            syntax.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("identifier", "setter"),
                 new HardElement("identifier", "identifier"),
                 new HardElement("identifier", "assignment"),
@@ -659,7 +659,7 @@ value       = string;";
                 new HardElement("symbol", ";")));
 
             // assignment  = property ['=' value];
-            syntax.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("identifier", "assignment"),
                 new HardElement("identifier", MetaParser.Property___),
                 new HardElement("optional", string.Empty,
@@ -667,41 +667,41 @@ value       = string;";
                     new HardElement("identifier", MetaParser.Value______))));
 
             // property    = identifier;
-            syntax.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("identifier", "property"),
                 new HardElement("identifier", "identifier")));
 
             // value       = string;
-            syntax.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("Rule", string.Empty,
                 new HardElement("identifier", "value"),
                 new HardElement("identifier", "string")));
 
             // settings
             // expression collapse;
-            syntax.AddElement(new HardElement("setter", string.Empty,
+            grammar.AddElement(new HardElement("setter", string.Empty,
                 new HardElement("identifier", "expression"),
                 new HardElement("assignment", string.Empty,
                     new HardElement("property", "collapse"))));
 
             // element    collapse;
-            syntax.AddElement(new HardElement("setter", string.Empty,
+            grammar.AddElement(new HardElement("setter", string.Empty,
                 new HardElement("identifier", "element"),
                 new HardElement("assignment", string.Empty,
                     new HardElement("property", "collapse"))));
 
             //// block collapse;
-            //syntax.AddElement(new HardElement("setter", string.Empty,
+            //grammar.AddElement(new HardElement("setter", string.Empty,
             //    new HardElement("identifier", "block"),
             //    new HardElement("assignment", string.Empty,
             //        new HardElement("property", "collapse"))));
 
             // settings collapse;
-            syntax.AddElement(new HardElement("setter", string.Empty,
+            grammar.AddElement(new HardElement("setter", string.Empty,
                 new HardElement("identifier", "settings"),
                 new HardElement("assignment", string.Empty,
                     new HardElement("property", "collapse"))));
 
-            return syntax;
+            return grammar;
         }
 
         /// <summary>Compare two strings. Line for line and char for char.</summary>

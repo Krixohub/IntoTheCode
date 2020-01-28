@@ -21,11 +21,11 @@ namespace IntoTheCode.Read.Element.Words
 
         protected internal override string GetValue(TextSubString ptr) { return _value; }
         
-        public override string GetSyntax() { return "'" + Value + "'"; }
+        public override string GetGrammar() { return "'" + Value + "'"; }
         
         //protected override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements, int level)
         {
             SkipWhiteSpace();
             int from = TextBuffer.PointerNextChar;

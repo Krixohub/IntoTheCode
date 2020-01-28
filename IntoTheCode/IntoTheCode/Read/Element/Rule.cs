@@ -51,14 +51,15 @@ namespace IntoTheCode.Read.Element
 
         internal bool Collapse { get; set; }
         internal bool Trust { get; set; }
+        internal int Precendence { get; set; }
 
-        public override string GetSyntax()
+        public override string GetGrammar()
         {
-            string syntax = Name.PadRight(Parser != null ? Parser.SymbolFixWidth : 4) + " = ";
-            //string syntax = Identifier.Name.PadRight(Syntax.SymbolFixWidth) + (Tag ? " => " : " =  ");
-            syntax += base.GetSyntax();
-            syntax += ";";
-            return syntax;
+            string Grammar = Name.PadRight(Parser != null ? Parser.SymbolFixWidth : 4) + " = ";
+            //string Grammar = Identifier.Name.PadRight(Grammar.SymbolFixWidth) + (Tag ? " => " : " =  ");
+            Grammar += base.GetGrammar();
+            Grammar += ";";
+            return Grammar;
         }
 
         public override string GetSettings()
@@ -70,13 +71,13 @@ namespace IntoTheCode.Read.Element
 
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements, int level)
         {
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 
             if (Collapse)
             {
-                if (!LoadSet(outElements))
+                if (!LoadSet(outElements, level))
                     return false;
             }
             else
@@ -85,7 +86,7 @@ namespace IntoTheCode.Read.Element
                 CodeElement element;
                 if (ElementContent == ElementContentType.OneValue)
                 {
-                    if (!(SubElements[0] as ParserElementBase).Load(outSubNotes))
+                    if (!(SubElements[0] as ParserElementBase).Load(outSubNotes, level))
                         return false;
 
                     if (outSubNotes.Count == 1)
@@ -103,7 +104,7 @@ namespace IntoTheCode.Read.Element
                 }
                 else
                 {
-                    if (!LoadSet(outSubNotes))
+                    if (!LoadSet(outSubNotes, level))
                         return false;
 
                     element = new CodeElement(this, subStr);
@@ -126,7 +127,7 @@ namespace IntoTheCode.Read.Element
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int LoadFindLast(CodeElement last)
         {
-            string debug = GetSyntax().NL() + last.ToMarkupProtected(string.Empty);
+            string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 

@@ -2,7 +2,7 @@
 
 using System.Windows;
 
-using TestApp.Syntax;
+using TestApp.Grammar;
 
 namespace TestApp
 {
@@ -12,8 +12,8 @@ namespace TestApp
     public partial class ComponentAdministration : Window
     {
 
-        SyntaxEdit _syntaxEdit;
-        SyntaxAnalyser _syntaxAnalyser;
+        GrammarEdit _grammarEdit;
+        GrammarAnalyser _grammarAnalyser;
        // CompAdmin _compAdmin;
  
         public ComponentAdministration()
@@ -21,27 +21,27 @@ namespace TestApp
             InitializeComponent();
         }
 
-        private void BtnSyntaxEditClick(object sender, RoutedEventArgs e)
+        private void BtnGrammarEditClick(object sender, RoutedEventArgs e)
         {
-            if (_syntaxEdit == null)
+            if (_grammarEdit == null)
             {
-                _syntaxEdit = new SyntaxEdit();
-                _syntaxEdit.Show();
+                _grammarEdit = new GrammarEdit();
+                _grammarEdit.Show();
             }
             else
-                _syntaxEdit.Activate();
+                _grammarEdit.Activate();
 
 
         }
-        private void BtnSyntaxAnalClick(object sender, RoutedEventArgs e)
+        private void BtnGrammarAnalClick(object sender, RoutedEventArgs e)
         {
-            if (_syntaxAnalyser == null)
+            if (_grammarAnalyser == null)
             {
-                _syntaxAnalyser = new SyntaxAnalyser();
-                _syntaxAnalyser.Show();
+                _grammarAnalyser = new GrammarAnalyser();
+                _grammarAnalyser.Show();
             }
             else
-                _syntaxAnalyser.Activate();
+                _grammarAnalyser.Activate();
         }
 
         private void BtnCompSvcClick(object sender, RoutedEventArgs e)
@@ -57,8 +57,8 @@ namespace TestApp
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //if (_syntaxEdit != null) _syntaxEdit.Close();
-            if (_syntaxAnalyser != null) _syntaxAnalyser.Close();
+            //if (_grammarEdit != null) _grammarEdit.Close();
+            if (_grammarAnalyser != null) _grammarAnalyser.Close();
             //if (_compAdmin != null) _compAdmin.Close();
         }
     }

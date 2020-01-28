@@ -30,17 +30,17 @@ namespace IntoTheCode
 
         //public bool HasColor
         //{
-        //    get { return SyntaxElement != null && SyntaxElement.HasColor; }
+        //    get { return GrammarElement != null && GrammarElement.HasColor; }
         //}
 
         //public SolidColorBrush TextBrush
         //{
-        //    get { return SyntaxElement == null ? Brushes.Black : SyntaxElement.TextBrush; }
+        //    get { return GrammarElement == null ? Brushes.Black : GrammarElement.TextBrush; }
         //}
 
         //internal byte Color
         //{
-        //    get { return _color > 0 ? _color : _syntaxElement == null ? (byte)0 : _syntaxElement.Color; }
+        //    get { return _color > 0 ? _color : _grammarElement == null ? (byte)0 : _grammarElement.Color; }
         //    set { _color = value; }
         //}
         //private byte _color= 0;

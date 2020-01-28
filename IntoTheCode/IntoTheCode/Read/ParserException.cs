@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace IntoTheCode.Read
 {
-    /// <summary>Error when the input doesn't match the syntax.</summary>
+    /// <summary>Error when the input doesn't match the Grammar.</summary>
     public class ParserException : Exception
     {
         /// <summary>Creator.</summary>

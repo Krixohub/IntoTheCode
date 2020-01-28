@@ -8,7 +8,7 @@ using IntoTheCode.Read.Element.Words;
 
 namespace IntoTheCode.Read.Element
 {
-    /// <summary>A basic element (or symbol) of a syntax. Can read a peace of code/text.</summary>
+    /// <summary>A basic element (or symbol) of a Grammar. Can read a peace of code/text.</summary>
     public abstract class ParserElementBase : TreeNode
     {
         private ElementContentType _elementContent;
@@ -81,7 +81,7 @@ namespace IntoTheCode.Read.Element
 
         protected List<AmbiguousDef> AmbiguousList = new List<AmbiguousDef>();
 
-        public abstract string GetSyntax();
+        public abstract string GetGrammar();
 
         // todo implement GetSettings on decendants
         public virtual string GetSettings()
@@ -96,7 +96,7 @@ namespace IntoTheCode.Read.Element
         /// <param name="proces"></param>
         /// <param name="outElements">Read elements.</param>
         /// <returns>True = succes.</returns>
-        public abstract bool Load(List<TreeNode> outElements);
+        public abstract bool Load(List<TreeNode> outElements, int level);
 
 
         /// <summary>Find the Rule/ 'read element', that correspond to the

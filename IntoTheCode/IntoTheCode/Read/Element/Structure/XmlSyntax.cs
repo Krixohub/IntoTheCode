@@ -32,7 +32,7 @@
     from item in xmlDoc.Descendants("Item")
     select (string) item.Attribute("PartNumber");
  */
-    //class XmlSyntax
+    //class XmlGrammar
     //{
     //}
 }

@@ -18,11 +18,11 @@ namespace IntoTheCode.Read.Element.Words
             return new WordString() { Name = Name, TextBuffer = buffer };
         }
 
-        public override string GetSyntax() { return MetaParser.WordString_; }
+        public override string GetGrammar() { return MetaParser.WordString_; }
         
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements, int level)
         {
             SkipWhiteSpace();
 

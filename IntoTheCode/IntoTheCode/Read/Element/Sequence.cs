@@ -15,7 +15,7 @@ namespace IntoTheCode.Read.Element
             //Attributter = new ObservableCollection<Attribute>();
         }
 
-        /// <summary>To create an unlinked syntax.</summary>
+        /// <summary>To create an unlinked Grammar.</summary>
         internal Sequence()
         {
         }
@@ -27,10 +27,10 @@ namespace IntoTheCode.Read.Element
 
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements, int level)
         {
             int p = TextBuffer.PointerNextChar;
-            while (LoadSet(outElements) && TextBuffer.PointerNextChar.CompareTo(p) > 0)
+            while (LoadSet(outElements, level) && TextBuffer.PointerNextChar.CompareTo(p) > 0)
                 p = TextBuffer.PointerNextChar;
             //TextBuffer.PointerNextChar.CopyTo(p);
 
@@ -40,7 +40,7 @@ namespace IntoTheCode.Read.Element
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int LoadFindLast(CodeElement last)
         {
-            string debug = GetSyntax().NL() + last.ToMarkupProtected(string.Empty);
+            string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
             int rc = TryLastSetAgain(last);
 
@@ -64,6 +64,6 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        public override string GetSyntax() { return "{" + base.GetSyntax() + "}"; }
+        public override string GetGrammar() { return "{" + base.GetGrammar() + "}"; }
     }
 }

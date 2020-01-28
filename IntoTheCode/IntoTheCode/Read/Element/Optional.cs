@@ -23,13 +23,13 @@ namespace IntoTheCode.Read.Element
             return element;
         }
 
-        public override string GetSyntax() { return "[" + base.GetSyntax() + "]"; }
+        public override string GetGrammar() { return "[" + base.GetGrammar() + "]"; }
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements, int level)
         {
             List<TreeNode> elements = new List<TreeNode>();
-            if (LoadSet(outElements))
+            if (LoadSet(outElements, level))
                 outElements.AddRange(elements);
             return TextBuffer.Status.Error == null;
         }

@@ -15,28 +15,28 @@ using System;
 
 namespace TestCodeInternal.ViewModel
 {
-    public class SyntaxAnalyzerVm : ViewModelBase
+    public class GrammarAnalyzerVm : ViewModelBase
     {
         private Parser _parser;
         private Parser _metaparser = new Parser(string.Empty);
 
 
-        public SyntaxAnalyzerVm()
+        public GrammarAnalyzerVm()
         {
             Reset(null);
 
             #region commands
             ResetInput = new DelegateCommand(Reset);
-            SetSyntaxMoBNF = new DelegateCommand(setSyntaxHardcode);
-            SetSyntaxEMoBNF = new DelegateCommand(i => SetSyntaxInp(MetaParser.SoftMetaSyntaxAndSettings));
-            SetSyntaxCsv = new DelegateCommand(i => SetSyntaxInp(GetCSVSyntax()));
+            SetGrammarMoBNF = new DelegateCommand(setGrammarHardcode);
+            SetGrammarEMoBNF = new DelegateCommand(i => SetGrammarInp(MetaParser.SoftMetaGrammarAndSettings));
+            SetGrammarCsv = new DelegateCommand(i => SetGrammarInp(GetCSVGrammar()));
 
-            LoadSyntax = new DelegateCommand(LoadS);
-            CopySyntax = new DelegateCommand(CopyS);
+            LoadGrammar = new DelegateCommand(LoadS);
+            CopyGrammar = new DelegateCommand(CopyS);
             CompareMetaDoc = new DelegateCommand(CompareMetaDocument);
             LoadText = new DelegateCommand(LoadT);
             SetTextCsv = new DelegateCommand(i => SetCustomInp(GetCSVText()));
-            OpenSyntaxLab = new DelegateCommand(i => SyntaxLabOpen());
+            OpenGrammarLab = new DelegateCommand(i => GrammarLabOpen());
 
             #endregion commands
         }
@@ -44,16 +44,16 @@ namespace TestCodeInternal.ViewModel
         /// <summary>Code For Documentation.</summary>
         public void CodeForDocumentation()
         {
-        string syntax = "syntax";
+        string Grammar = "Grammar";
         Parser parser = null;
         try
         {
-            parser = new Parser(syntax);
+            parser = new Parser(Grammar);
         }
         catch (Exception e)
         {
             // parser is null
-            MessageBox.Show("The syntax isn't working: " + e.Message);
+            MessageBox.Show("The Grammar isn't working: " + e.Message);
         }
 
         }
@@ -61,17 +61,17 @@ namespace TestCodeInternal.ViewModel
 
         #region text properties
 
-        public string SyntaxInp { get; set; }
-        public string SyntaxDoc { get; set; }
-        public string SyntaxOut { get; set; }
+        public string GrammarInp { get; set; }
+        public string GrammarDoc { get; set; }
+        public string GrammarOut { get; set; }
         public string CustomInp { get; set; }
         public string CustomDoc { get; set; }
         public string CustomOut { get; set; }
         public Parser Parser { get { return _parser; } set { _parser = value; RaisePropertyChanged(nameof(Parser)); } }
 
-        private void SetSyntaxInp(string s) { SyntaxInp = s; RaisePropertyChanged(() => SyntaxInp); }
-        private void SetSyntaxDoc(string s) { SyntaxDoc = s; RaisePropertyChanged(() => SyntaxDoc); }
-        private void SetSyntaxOut(string s) { SyntaxOut = s; RaisePropertyChanged(() => SyntaxOut); }
+        private void SetGrammarInp(string s) { GrammarInp = s; RaisePropertyChanged(() => GrammarInp); }
+        private void SetGrammarDoc(string s) { GrammarDoc = s; RaisePropertyChanged(() => GrammarDoc); }
+        private void SetGrammarOut(string s) { GrammarOut = s; RaisePropertyChanged(() => GrammarOut); }
         private void SetCustomInp(string s) { CustomInp = s; RaisePropertyChanged(() => CustomInp); }
         private void SetCustomDoc(string s) { CustomDoc = s; RaisePropertyChanged(() => CustomDoc); }
         private void SetCustomOut(string s) { CustomOut = s; RaisePropertyChanged(() => CustomOut); }
@@ -81,33 +81,33 @@ namespace TestCodeInternal.ViewModel
         #region command properties
 
         public DelegateCommand ResetInput { get; private set; }
-        public DelegateCommand SetSyntaxMoBNF { get; private set; }
-        public DelegateCommand SetSyntaxEMoBNF { get; private set; }
-        public DelegateCommand SetSyntaxCsv { get; private set; }
-        public DelegateCommand LoadSyntax { get; private set; }
-        public DelegateCommand CopySyntax { get; private set; }
+        public DelegateCommand SetGrammarMoBNF { get; private set; }
+        public DelegateCommand SetGrammarEMoBNF { get; private set; }
+        public DelegateCommand SetGrammarCsv { get; private set; }
+        public DelegateCommand LoadGrammar { get; private set; }
+        public DelegateCommand CopyGrammar { get; private set; }
         public DelegateCommand CompareMetaDoc { get; private set; }
         public DelegateCommand LoadText { get; private set; }
         public DelegateCommand SetTextCsv { get; private set; }
-        public DelegateCommand OpenSyntaxLab { get; private set; }
+        public DelegateCommand OpenGrammarLab { get; private set; }
 
         #endregion command properties
 
 
         private void Reset(CommandInformation ci)
         {
-            SetSyntaxInp(string.Empty);
-            SetSyntaxDoc(string.Empty);
-            SetSyntaxOut(string.Empty);
+            SetGrammarInp(string.Empty);
+            SetGrammarDoc(string.Empty);
+            SetGrammarOut(string.Empty);
             SetCustomInp(string.Empty);
             SetCustomDoc(string.Empty);
             SetCustomOut(string.Empty);
         }
 
-        private void SyntaxLabOpen()
+        private void GrammarLabOpen()
         {
 
-            //SyntaxEdit win2 = new SyntaxEdit();
+            //GrammarEdit win2 = new GrammarEdit();
             //win2.Show();
             //this.Close();
         }
@@ -116,24 +116,24 @@ namespace TestCodeInternal.ViewModel
         {
             try
             {
-                SetSyntaxDoc("_metaparser.Syntax.doc.ToMarkup()");
-                SetSyntaxOut(_metaparser.GetSyntax());
+                SetGrammarDoc("_metaparser.Grammar.doc.ToMarkup()");
+                SetGrammarOut(_metaparser.GetGrammar());
 
-                Parser = new Parser(SyntaxInp);
-                SetCustomDoc("Parser.Syntax.doc != null ? Parser.Syntax.doc.ToMarkup() : string.Empty");
-                SetCustomOut(Parser.GetSyntax());
+                Parser = new Parser(GrammarInp);
+                SetCustomDoc("Parser.Grammar.doc != null ? Parser.Grammar.doc.ToMarkup() : string.Empty");
+                SetCustomOut(Parser.GetGrammar());
             }
             catch (System.Exception e)
             {
-                var msg = new Msg(e.Message, "SyntaxAnalyzer", e);
+                var msg = new Msg(e.Message, "GrammarAnalyzer", e);
                 Post.Send(msg);
-                //MessageBox.Show(e.Message, "SyntaxAnalyzer");
+                //MessageBox.Show(e.Message, "GrammarAnalyzer");
             }
         }
 
         private void CopyS(CommandInformation ci)
         {
-            SetCustomInp(SyntaxInp);
+            SetCustomInp(GrammarInp);
         }
 
         private void LoadT(CommandInformation ci)
@@ -151,7 +151,7 @@ namespace TestCodeInternal.ViewModel
             SetCustomOut(string.Empty);
         }
 
-        private void setSyntaxHardcode(CommandInformation ci)
+        private void setGrammarHardcode(CommandInformation ci)
         {
             var hardcodeParser = new Parser();
 
@@ -159,28 +159,28 @@ namespace TestCodeInternal.ViewModel
             ParserStatus status = new ParserStatus(null);
             hardcodeParser = MetaParser.GetHardCodeParser(status);
 
-            SetSyntaxInp(hardcodeParser.GetSyntax());
+            SetGrammarInp(hardcodeParser.GetGrammar());
         }
 
         private void CompareMetaDocument(CommandInformation ci)
         {
             string filePath = @"D:\Temp";
-            string actualFile = Path.Combine(filePath, "SyntaxDocFromMeta.txt");
-            string expectFile = Path.Combine(filePath, "SyntaxDocReference.txt");
+            string actualFile = Path.Combine(filePath, "GrammarDocFromMeta.txt");
+            string expectFile = Path.Combine(filePath, "GrammarDocReference.txt");
             string actualTags, expectTags, msg;
 
-            // Get expected syntax document.
-            //CodeDocument metaRef = MetaParserTest.TestMetaSyntaxDoc();
-            CodeDocument metaRef = CodeDocument.Load(MetaParser.Instance, MetaParser.SoftMetaSyntaxAndSettings);
+            // Get expected Grammar document.
+            //CodeDocument metaRef = MetaParserTest.TestMetaGrammarDoc();
+            CodeDocument metaRef = CodeDocument.Load(MetaParser.Instance, MetaParser.SoftMetaGrammarAndSettings);
             expectTags = metaRef.ToMarkup();
 
-            // Get actual meta syntax document.
+            // Get actual meta Grammar document.
             //if (Parser.MetaParser == null) _parser = new Parser("");
-            TextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
+            TextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaGrammarAndSettings);
             CodeDocument metaActual = _metaparser.ParseString(buffer);
 
             actualTags = metaActual.ToMarkup();
-//            actualTags = _metaparser.Syntax.doc.ToMarkup();
+//            actualTags = _metaparser.Grammar.doc.ToMarkup();
 
 
             // Write compare result to output.
@@ -205,9 +205,9 @@ sub rt,d4,""hg""
 sub er,d5,""hj""";
         }
 
-        private string GetCSVSyntax()
+        private string GetCSVGrammar()
         {
-            return @"syntax     = headerline {valueline};
+            return @"Grammar     = headerline {valueline};
 headerline = headerA ',' headerA ',' headerA;
 valueline  = 'main' valueA ',' valueB ',' valueC {subLine};
 subLine    = 'sub' value0 ',' value1 ',' value2;

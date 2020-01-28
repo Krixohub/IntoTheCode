@@ -9,7 +9,7 @@ namespace IntoTheCode.Read
         public HardElement(string name, string value, params HardElement[] elements)
         {
             Name = name;
-            //SyntaxElement = element;
+            //GrammarElement = element;
             _value = value;
             if (elements != null)
                 foreach (var element in elements)

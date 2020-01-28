@@ -19,14 +19,14 @@ namespace IntoTheCode.Read.Element.Words
             return new WordIdent(Name) { TextBuffer = buffer };
         }
 
-        public override string GetSyntax() { return MetaParser.WordIdent__; }
+        public override string GetGrammar() { return MetaParser.WordIdent__; }
 
         private const string AllowedCharsFirst = "abcdefghijklmnopqrstuvwxyz";
         private const string AllowedCharsNext = "abcdefghijklmnopqrstuvwxyz0123456789";
 
         //protected override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements, int level)
         {
             SkipWhiteSpace();
 

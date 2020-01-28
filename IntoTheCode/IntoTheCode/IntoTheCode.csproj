@@ -49,6 +49,7 @@
       <DependentUpon>MessageRes.resx</DependentUpon>
     </Compile>
     <Compile Include="Basic\TreeNode.cs" />
+    <Compile Include="Read\Element\Structure\Expression.cs" />
     <Compile Include="Read\ParserError.cs" />
     <Compile Include="Read\ParserStatus.cs" />
     <Compile Include="Read\ParserFactory.cs" />

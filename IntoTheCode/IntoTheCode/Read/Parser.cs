@@ -9,21 +9,21 @@ using System.Linq;
 
 namespace IntoTheCode.Read
 {
-    /// <summary>Read text according to syntax definition.
+    /// <summary>Read text according to Grammar definition.
     /// The parser holds the parser elements to read a code.
-    /// Parser = a program that reads code, acording to a syntax.
-    /// ParserElement = an element of a program that reads code elements, acording to a syntax element.</summary>
+    /// Parser = a program that reads code, acording to a Grammar.
+    /// ParserElement = an element of a program that reads code elements, acording to a Grammar element.</summary>
     public partial class Parser
     {
         internal int SymbolFixWidth;
 
 
         /// <summary>Create <see cref="Parser"/> parser.</summary>
-        /// <param name="syntax">Create parser for proces syntax definition. If empty a meta syntax is created.</param>
-        public Parser(string syntax)
+        /// <param name="Grammar">Create parser for proces Grammar definition. If empty a meta Grammar is created.</param>
+        public Parser(string Grammar)
         {
             DefinitionError = string.Empty;
-            SetSyntax(string.IsNullOrWhiteSpace(syntax) ? MetaParser.SoftMetaSyntaxAndSettings : syntax);
+            SetGrammar(string.IsNullOrWhiteSpace(Grammar) ? MetaParser.SoftMetaGrammarAndSettings : Grammar);
         }
 
         /// <summary>Create <see cref="Parser"/>. Only for MetaParser and test.</summary>
@@ -34,44 +34,44 @@ namespace IntoTheCode.Read
 
         #region properties
 
-        /// <summary>Syntax to read input.</summary>
-        //internal Syntax Syntax;
+        /// <summary>Grammar to read input.</summary>
+        //internal Grammar Grammar;
 
         /// <summary>parser.Level == 1 : HardParser; parser.Level == 2: MetaParser; parser.Level == 3: SoftParser </summary>
         internal int Level = 3;
-        public virtual string Name { get { return Rules == null || Rules.Count == 0 ? MetaParser.Syntax : Rules[0].Name; } }
+        public virtual string Name { get { return Rules == null || Rules.Count == 0 ? MetaParser.Grammar : Rules[0].Name; } }
 
         /// <summary>Property for parser elements.</summary>
         internal List<Rule> Rules { get; set; }
 
-        internal string GetSyntax()
+        internal string GetGrammar()
         {
             if (Rules == null || Rules.Count == 0) return MessageRes.p04;
             SymbolFixWidth = Rules.Max(eq => eq.Name.Length);
-            string syntax = Rules.Aggregate(string.Empty, (ud, r) => (ud.Length == 0 ? ud : ud + "\r\n") + r.GetSyntax());
-            return syntax;
+            string Grammar = Rules.Aggregate(string.Empty, (ud, r) => (ud.Length == 0 ? ud : ud + "\r\n") + r.GetGrammar());
+            return Grammar;
         }
 
-        /// <summary>Error message after parsing syntax definition.</summary>
+        /// <summary>Error message after parsing Grammar definition.</summary>
         /// <exclude/>
         internal string DefinitionError { get; set; }
 
         #endregion properties
 
-        /// <summary>Read a syntax definition from text. </summary>
-        /// <param name="syntax">Syntax text.</param>
-        /// <returns>Syntax is Ok.</returns>
+        /// <summary>Read a Grammar definition from text. </summary>
+        /// <param name="Grammar">Grammar text.</param>
+        /// <returns>Grammar is Ok.</returns>
         /// <exclude/>
-        private void SetSyntax(string syntax)
+        private void SetGrammar(string Grammar)
         {
-            CodeDocument syntaxDoc = null;
+            CodeDocument grammarDoc = null;
 
-            TextBuffer buffer = new FlatBuffer(syntax);
-            syntaxDoc = MetaParser.Instance.ParseString(buffer);
+            TextBuffer buffer = new FlatBuffer(Grammar);
+            grammarDoc = MetaParser.Instance.ParseString(buffer);
 
-            if (buffer.Status.Error != null || !ParserFactory.BuildRules(this, syntaxDoc, buffer.Status))
+            if (buffer.Status.Error != null || !ParserFactory.BuildRules(this, grammarDoc, buffer.Status))
             {
-                // only place to throw exception is CodeDocument.Load and Parser.SetSyntax (and MetaSyntax)
+                // only place to throw exception is CodeDocument.Load and Parser.SetGrammar (and MetaGrammar)
                 var error = new ParserException(buffer.Status.Error.Message);
                 error.AllErrors.AddRange(buffer.Status.AllErrors);
                 throw error;
@@ -85,14 +85,14 @@ namespace IntoTheCode.Read
         internal CodeDocument ParseString(TextBuffer buffer)
         {
             List<Rule> procesRules = Rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
-            if (!ParserFactory.InitializeSyntax(this, procesRules, buffer.Status))
+            if (!ParserFactory.InitializeGrammar(this, procesRules, buffer.Status))
                 return null;
             var elements = new List<TreeNode>();
             bool ok;
 
             try
             {
-                ok = procesRules[0].Load(elements);
+                ok = procesRules[0].Load(elements, 0);
 
                 // skip remaining white spaces
                 procesRules[0].SkipWhiteSpace();
@@ -127,6 +127,6 @@ namespace IntoTheCode.Read
             return null;
         }
 
-        //#endregion Build syntax elements from dokument
+        //#endregion Build Grammar elements from dokument
     }
 }

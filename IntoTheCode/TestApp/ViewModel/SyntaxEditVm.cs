@@ -11,7 +11,7 @@ using Microsoft.Win32;
 
 namespace ViewModel
 {
-    public class SyntaxEditVm : ViewModelBase
+    public class GrammarEditVm : ViewModelBase
     {
         private string _codeTemp = string.Empty;
         private bool _meta = false;
@@ -20,7 +20,7 @@ namespace ViewModel
         private Parser _metaParser;
         private Parser _codeParser;
 
-        public SyntaxEditVm()
+        public GrammarEditVm()
         {
             //BnfPresenter = new TextParserPresenter();
             //TextPresenter = new TextParserPresenter();
@@ -114,10 +114,11 @@ namespace ViewModel
             get { return _meta ; }
             set { SetMeta(value); }
         }
+        public bool NonMeta { get { return !_meta; } }
 
         #region command properties
 
-        
+
         public DelegateCommand GrammarLoadCom { get; private set; }
         public DelegateCommand GrammarLoadFileCom { get; private set; }
         public DelegateCommand CodeLoadCom { get; private set; }
@@ -127,11 +128,34 @@ namespace ViewModel
 
         #endregion properties
 
-        /// <summary>Parser syntax.</summary>
+        /// <summary>Parser grammar.</summary>
         /// <param name="ci"></param>
         private void GrammarLoad(CommandInformation ci)
         {
-            if (Meta) return;
+            if (Meta)
+            {
+                try
+                {
+                    CodeDocument doc = CodeDocument.Load(_metaParser, Grammar);
+                    _codeParser = new Parser(Grammar);
+                    GrammarOk = true;
+                    Code = _codeParser.GetGrammar();
+                    Tree = doc.ToMarkup();
+                }
+                catch (ParserException e)
+                {
+
+                    GrammarOk = false;
+                    Tree = e.Message + "\r\n\r\n" + string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
+                }
+                catch (Exception e)
+                {
+
+                    GrammarOk = false;
+                    Tree = e.Message + "\r\n\r\n" + e.StackTrace;
+                }
+            return;
+        }
             try
             {
                 _codeParser = new Parser(Grammar);
@@ -145,14 +169,14 @@ namespace ViewModel
             }
         }
 
-        /// <summary>Load the syntax file. "../TestFiles/SyntaxMeta.txt".</summary>
+        /// <summary>Load the grammar file. "../TestFiles/GrammarMeta.txt".</summary>
         /// <param name="ci"></param>
         private void GrammarLoadFile(CommandInformation ci)
         {
             OpenFileDialog(s => { Grammar = s; });
         }
 
-        /// <summary>Parser syntax.</summary>
+        /// <summary>Parser grammar.</summary>
         /// <param name="ci"></param>
         private void CodeLoad(CommandInformation ci)
         {
@@ -176,34 +200,37 @@ namespace ViewModel
             }
         }
 
-        /// <summary>Load the syntax file. "../TestFiles/SyntaxMeta.txt".</summary>
+        /// <summary>Load the grammar file. "../TestFiles/GrammarMeta.txt".</summary>
         /// <param name="ci"></param>
         private void CodeLoadFile(CommandInformation ci)
         {
             OpenFileDialog(s => { Code = s; });
         }
 
-        /// <summary>Parser syntax.</summary>
+        /// <summary>Parser grammar.</summary>
         /// <param name="ci"></param>
         private void SetMeta(bool value)
         {
             if (value == _meta) return;
             _meta = value;
+            Tree = string.Empty;
+
             if (_meta)
             {
-                _codeParser = _metaParser;
+               //_codeParser = _metaParser;
                 _codeTemp = Code;
-                Code = Grammar;
-                CodeLoad(null);
+                //Code = ;
+                GrammarLoad(null);
             }
             else
             {
-                Grammar = Code;
+                //Grammar = Code;
                 Code = _codeTemp;
-                GrammarLoad(null);
+                CodeLoad(null);
             }
             RaisePropertyChanged(nameof(MetaLabel));
-            RaisePropertyChanged(nameof(Meta)); 
+            RaisePropertyChanged(nameof(Meta));
+            RaisePropertyChanged(nameof(NonMeta));
         }
 
         /// <summary>Show FileDialog to open file.</summary>

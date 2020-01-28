@@ -163,7 +163,7 @@
     <value>IntoTheCode developer error: {0}</value>
   </data>
   <data name="p04" xml:space="preserve">
-    <value>No syntax rules</value>
+    <value>No Grammar rules</value>
   </data>
   <data name="p05" xml:space="preserve">
     <value>End of input not reached.</value>
@@ -184,7 +184,7 @@
     <value>Link grammar {1}. Identifier {0} is defined twice</value>
   </data>
   <data name="pb06" xml:space="preserve">
-    <value>Identifier '{0}' not found in syntax</value>
+    <value>Identifier '{0}' not found in Grammar</value>
   </data>
   <data name="pb07" xml:space="preserve">
     <value>Settings: Identifier '{0}' cant be resolved</value>
@@ -196,24 +196,24 @@
     <value>First rule '{0} must have Collapse=false</value>
   </data>
   <data name="pe01" xml:space="preserve">
-    <value>Syntax error ({0}). Expecting identifier, found EOF.</value>
+    <value>Grammar error ({0}). Expecting identifier, found EOF.</value>
   </data>
   <data name="pe02" xml:space="preserve">
-    <value>Syntax error ({0}). First charactor is not allowed.</value>
+    <value>Grammar error ({0}). First charactor is not allowed.</value>
   </data>
   <data name="pe03" xml:space="preserve">
-    <value>Syntax error ({0}). Expecting string, found EOF.</value>
+    <value>Grammar error ({0}). Expecting string, found EOF.</value>
   </data>
   <data name="pe04" xml:space="preserve">
-    <value>Syntax error ({0}). Expecting string.</value>
+    <value>Grammar error ({0}). Expecting string.</value>
   </data>
   <data name="pe05" xml:space="preserve">
-    <value>Syntax error ({0}). Expecting string ending.</value>
+    <value>Grammar error ({0}). Expecting string ending.</value>
   </data>
   <data name="pe06" xml:space="preserve">
-    <value>Syntax error ({0}). Expecting symbol '{1}', found EOF.</value>
+    <value>Grammar error ({0}). Expecting symbol '{1}', found EOF.</value>
   </data>
   <data name="pe07" xml:space="preserve">
-    <value>Syntax error ({0}). Expecting symbol '{1}', found '{2}'</value>
+    <value>Grammar error ({0}). Expecting symbol '{1}', found '{2}'</value>
   </data>
 </root>

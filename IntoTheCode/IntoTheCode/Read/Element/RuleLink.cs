@@ -5,7 +5,7 @@ using IntoTheCode.Buffer;
 namespace IntoTheCode.Read.Element
 {
     /// <summary>
-    /// Base class for syntax symbols.
+    /// Base class for Grammar symbols.
     /// </summary>
     internal class RuleLink : ParserElementBase
     {
@@ -14,7 +14,7 @@ namespace IntoTheCode.Read.Element
         {
             Name = "name";
             _value = value;
-            LastRuleInvoke = TextBuffer.NotValidPtr;
+            LastInvokePos = TextBuffer.NotValidPtr;
             //if (value == "expression")
                 Recursive = true;
         }
@@ -34,25 +34,27 @@ namespace IntoTheCode.Read.Element
                 ElementContentType.NotSet;
         }
 
-        public override string GetSyntax()
+        public override string GetGrammar()
         {
             return GetValue();
         }
 
         public bool Recursive;
-        public int LastRuleInvoke;
+        public int LastInvokePos;
+        public int LastInvokeLevel;
 
-        public override bool Load(List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements, int level)
         {
             // End too many recursive calls
-            int from = TextBuffer.PointerNextChar;
             if (Recursive)
             {
-                if (LastRuleInvoke == from) return false;
-                LastRuleInvoke = from;
+                if (LastInvokePos == TextBuffer.PointerNextChar &&
+                    level > LastInvokeLevel) return false;
+                LastInvokePos = TextBuffer.PointerNextChar;
+                LastInvokeLevel = level;
             }
 
-            return SymbolElement.Load(outElements);
+            return SymbolElement.Load(outElements, level + 1);
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>

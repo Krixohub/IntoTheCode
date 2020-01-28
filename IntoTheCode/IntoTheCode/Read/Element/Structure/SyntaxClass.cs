@@ -1,6 +1,6 @@
 ﻿namespace IntoTheCode.Read.Element.Structure
 {
-    //internal abstract class SyntaxClass : ElementBase
+    //internal abstract class GrammarClass : ElementBase
     //{
     //    //public string Seperator
     //    //{

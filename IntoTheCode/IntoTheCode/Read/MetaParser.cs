@@ -9,16 +9,16 @@ using IntoTheCode.Read.Element.Words;
 
 namespace IntoTheCode.Read
 {
-    /// <summary>The meta-syntax for proces syntax definitions.
-    /// The Instance property is a singleton parser of syntaxes.</summary>
-    internal class MetaParser //: Syntax
+    /// <summary>The meta-grammar for proces grammar definitions.
+    /// The Instance property is a singleton parser of grammares.</summary>
+    internal class MetaParser //: Grammar
     {
-        // Make static meta parser and syntax thread safe.
+        // Make static meta parser and grammar thread safe.
         private static object _syncMetaParser = new object();
 
         private static Parser _instance;
 
-        /// <summary>A linked syntax for MoBNF.</summary>
+        /// <summary>A linked grammar for MoBNF.</summary>
         internal MetaParser()
         {
         }
@@ -36,9 +36,9 @@ namespace IntoTheCode.Read
         #region element const names
 
         /// <summary>Tokens.</summary>
-        internal const string Syntax = "Syntax";           // Grammer
-        internal const string MetaSyntax_ = "MetaSyntax";  // Grammer
-        internal const string HardSyntax_ = "HardSyntax";  // Grammer
+        internal const string Grammar      = "Grammar";      // Grammer
+        internal const string MetaGrammar_ = "MetaGrammar";  // Grammer
+        internal const string HardGrammar_ = "HardGrammar";  // Grammer
         internal const string Rule_______ = "Rule";        // Equation , Statement, Action, Definition, Assignment,
         //internal const string RuleId_____ = "ruleId";      // ruleId, Word, Symbol(bnf), Term, literal,
         internal const string Expression_ = "expression";  // 
@@ -70,15 +70,15 @@ namespace IntoTheCode.Read
 
         #endregion element const names
 
-        /// <summary>The meta syntax for proces other syntaxes.</summary>
-        internal static string SoftMetaSyntaxAndSettings { get { return MetaSyntax + MetaSettings; } }
+        /// <summary>The meta grammar for proces other grammares.</summary>
+        internal static string SoftMetaGrammarAndSettings { get { return MetaGrammar + MetaSettings; } }
 
-        /// <summary>The meta syntax for proces other syntaxes.</summary>
-        internal static string MetaSyntax
+        /// <summary>The meta grammar for proces other grammares.</summary>
+        internal static string MetaGrammar
         {
             get
             {
-                string syntax = @"MetaSyntax  = {Rule} [settings];
+                string grammar = @"MetaGrammar = {Rule} [settings];
 Rule        = identifier '=' expression ';';
 expression  = element {[or] element};
 element     = identifier | symbol | sequence | optional | parentheses;
@@ -92,30 +92,30 @@ setter      = identifier assignment {',' assignment} ';';
 assignment  = property ['=' value];
 property    = identifier;
 value       = string;";
-                return syntax;
+                return grammar;
             }
         }
 
         // property    = 'collapse' | 'trust' | 'ws' | 'wsdef';
 
-        /// <summary>The shapin syntax.</summary>
+        /// <summary>The shapin grammar.</summary>
         internal static string MetaSettings
         {
             get
             {
-                string syntax = @"
+                string grammar = @"
 settings
 expression collapse;
 element    collapse;
 settings   collapse;";
                 //    return "";
-                //                string syntax = @"
+                //                string grammar = @"
                 //settings
                 //expression collapse;
                 //element    collapse;
                 //block      collapse;
                 //settings   collapse;";
-                return syntax;
+                return grammar;
             }
         }
 
@@ -124,8 +124,8 @@ settings   collapse;";
             List<Rule> list = new List<Rule>();
 
             // Build Mo Backus Naur Form in code.
-            // syntax   = {rule} [settings];
-            list.Add(new Rule(HardSyntax_,
+            // grammar   = {rule} [settings];
+            list.Add(new Rule(HardGrammar_,
                 new Sequence(new RuleLink(Rule_______)),
                 new Optional(new RuleLink(Settings___))));
 
@@ -220,22 +220,22 @@ settings   collapse;";
             list.Add(new Rule(Value______,
                 new WordString()));
 
-            Parser parser = new Parser() { Level = 1 }; // { Name = HardSyntax_ };
+            Parser parser = new Parser() { Level = 1 }; // { Name = HardGrammar_ };
             parser.Rules = list;
             //foreach (var eq in list) eq.Parser = parser;
-            ParserFactory.InitializeSyntax(parser, parser.Rules, status);
+            ParserFactory.InitializeGrammar(parser, parser.Rules, status);
 
             return parser;
         }
 
-        /// <summary>Create the parser to read syntax definition</summary>
+        /// <summary>Create the parser to read grammar definition</summary>
         /// <exclude/>
         private static void CreateMetaParser()
         {
             if (_instance != null) return;
             int step = 1;
-            TextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaSyntaxAndSettings);
-            CodeDocument metaSyntaxDoc = null;
+            TextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaGrammarAndSettings);
+            CodeDocument metaGrammarDoc = null;
             try
             {
                 // Hard coded parser
@@ -244,29 +244,29 @@ settings   collapse;";
                 if (buffer.Status.Error == null)
                 {
                     step = 2;
-                    // Use hard coded syntax to read meta syntax.
-                    metaSyntaxDoc = hardcodeParser.ParseString(buffer);
+                    // Use hard coded grammar to read meta grammar.
+                    metaGrammarDoc = hardcodeParser.ParseString(buffer);
 
-                    string gg = metaSyntaxDoc.ToMarkup();
+                    string gg = metaGrammarDoc.ToMarkup();
                     step = 3;
                 }
                 if (buffer.Status.Error == null)
                 {
                     _instance = new Parser() { Level = 2 };
-                    ParserFactory.BuildRules(_instance, metaSyntaxDoc, buffer.Status);
+                    ParserFactory.BuildRules(_instance, metaGrammarDoc, buffer.Status);
                 }
             }
             catch (Exception e)
             {
-                // if an exception occurs under parsing MetaSyntax it is an HardSyntax error
-                var e2 = new ParserException((step <= 2 ? HardSyntax_ : MetaSyntax_) + " " + e.Message);
+                // if an exception occurs under parsing MetaGrammar it is an HardGrammar error
+                var e2 = new ParserException((step <= 2 ? HardGrammar_ : MetaGrammar_) + " " + e.Message);
                 if (e is ParserException) e2.AllErrors = ((ParserException)e).AllErrors;
                 throw e2;
             }
             if (buffer.Status.Error != null)
             {
-                // if an proces-error occurs under parsing MetaSyntax it is an MetaSyntax error
-                var e2 = new ParserException((step == 1 ? HardSyntax_ : MetaSyntax_) + " " + buffer.Status.Error.Message);
+                // if an proces-error occurs under parsing MetaGrammar it is an MetaGrammar error
+                var e2 = new ParserException((step == 1 ? HardGrammar_ : MetaGrammar_) + " " + buffer.Status.Error.Message);
                 e2.AllErrors = buffer.Status.AllErrors;
                 throw e2;
             }

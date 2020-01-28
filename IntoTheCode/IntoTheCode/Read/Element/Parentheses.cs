@@ -21,12 +21,12 @@ namespace IntoTheCode.Read.Element
             return new Parentheses(CloneSubElementsForParse(buffer)) { TextBuffer = buffer };
         }
 
-        public override string GetSyntax() { return "(" + base.GetSyntax() + ")"; }
+        public override string GetGrammar() { return "(" + base.GetGrammar() + ")"; }
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<TreeNode> outElements)
+        public override bool Load(List<TreeNode> outElements, int level)
         {
-            return LoadSet(outElements);
+            return LoadSet(outElements, level);
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>

@@ -1,4 +1,4 @@
-﻿<Window x:Class="TestApp.Syntax.SyntaxEdit"
+﻿<Window x:Class="TestApp.Grammar.GrammarEdit"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,14 +6,14 @@
         xmlns:conv="clr-namespace:MoehlData.ClientWpf.Resources;assembly=MoehlData.ClientWpf"
         xmlns:viewModel="clr-namespace:ViewModel"
         mc:Ignorable="d"
-        Title="SyntaxLab" Height="400" Width="700">
+        Title="GrammarLab" Height="400" Width="700">
     <!--
     -->
     <Window.Resources>
         <conv:BoolToColorConverter x:Key="BoolColor"  TrueColor="Green" FalseColor="Silver"/>
     </Window.Resources>
     <Window.DataContext>
-        <viewModel:SyntaxEditVm/>
+        <viewModel:GrammarEditVm/>
     </Window.DataContext>
     <Grid >
         <Grid.RowDefinitions>
@@ -34,15 +34,18 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <DockPanel Grid.Column="0" >
-                <Label Content="Syntax Editor" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+                <Label Content="Grammar Editor" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
                     <Button Content="Load" Command="{Binding Path=GrammarLoadCom}" />
                             <!--Background="{Binding Path=GrammarOk, Converter={StaticResource BoolColor}}"-->
                     <CheckBox IsChecked="{Binding Path=GrammarOk}" Margin="2" IsEnabled="False"/>
                     <Button Content="Open" Command="{Binding Path=GrammarLoadFileCom}"/>
                     <TextBox Text="14" x:Name="tbFontSize1" Style="{StaticResource ToolBarText}"/>
+                    <CheckBox IsChecked="{Binding Path=Meta}" Margin="2" FlowDirection="RightToLeft">
+                        <TextBlock FlowDirection="LeftToRight" Text="Meta:" />
+                    </CheckBox>
                 </StackPanel>
-                <!--<editor:TextParserControl x:Name="SyntaxEditor" ColorText="{Binding Path=BnfPresenter.SyntaxText}" 
+                <!--<editor:TextParserControl x:Name="GrammarEditor" ColorText="{Binding Path=BnfPresenter.GrammarText}" 
                                      FontSize="{Binding ElementName=tbFontSize2, Path=Text}"/>-->
                 <!--<local2:ColorEditorRtb x:Name="ceSample" Parser="{Binding Path=Parser}"/>-->
                 <TextBox Text="{Binding Path=Grammar, Mode=TwoWay}"
@@ -52,24 +55,23 @@
             <DockPanel Grid.Column="2" >
                 <Label Content="Code editor" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                    <Button Content="Load" Command="{Binding Path=CodeLoadCom}" />
+                    <Button Content="Load" Command="{Binding Path=CodeLoadCom}"
+                         IsEnabled="{Binding Path=NonMeta}" />
                     <CheckBox IsChecked="{Binding Path=CodeOk}" Margin="2" IsEnabled="False"/>
                     <!--<Label Content="Meta:"/>-->
-                    <CheckBox IsChecked="{Binding Path=Meta}" Margin="2" FlowDirection="RightToLeft">
-                        <TextBlock FlowDirection="LeftToRight" Text="Meta:" />
-                    </CheckBox>
-                    <Button Content="Open" Command="{Binding Path=CodeLoadFileCom}"/>
+                    <Button Content="Open" Command="{Binding Path=CodeLoadFileCom}" IsEnabled="{Binding Path=NonMeta}"/>
                     <TextBox Text="12" x:Name="tbFontSize2" Style="{StaticResource ToolBarText}"/>
                     <!--<Button Content="Size" Click="ButtonBase_OnClick"/>-->
                 </StackPanel>
                 <TextBox DockPanel.Dock="Top" Text="{Binding Path=Code, Mode=TwoWay}"
+                         IsReadOnly="{Binding Path=Meta}"
                          Style="{StaticResource ResourceKey=EditorTextBox}"
                          FontSize="{Binding ElementName=tbFontSize2, Path=Text, Mode=TwoWay}"/>
-                <!--<editor:ColorTextBox x:Name="TextEditor" ColorText="{Binding Path=TextPresenter.SyntaxText}" 
+                <!--<editor:ColorTextBox x:Name="TextEditor" ColorText="{Binding Path=TextPresenter.GrammarText}" 
                                      FontSize="{Binding ElementName=tbFontSize, Path=Text, Mode=TwoWay}"/>-->
             </DockPanel>
             <DockPanel Grid.Column="4" >
-                <Label Content="Syntax tree" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+                <Label Content="Grammar tree" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
                     <TextBox Text="12" x:Name="tbFontSize3" Style="{StaticResource ToolBarText}"/>
                     <!--<Button Content="Collapse" Command="{Binding Path=CompareMetaDoc}"/>
@@ -79,7 +81,7 @@
                          Style="{StaticResource ResourceKey=EditorTextBox}"
                          FontSize="{Binding ElementName=tbFontSize3, Path=Text, Mode=TwoWay}"/>
                 <!--<ScrollViewer><TextBox Style="{StaticResource ResourceKey=EditorTextBox}" /></ScrollViewer>-->
-                <!--<editor:ColorTextBox x:Name="TextEditor2" ColorText="{Binding Path=BnfPresenter.SyntaxText}" 
+                <!--<editor:ColorTextBox x:Name="TextEditor2" ColorText="{Binding Path=BnfPresenter.GrammarText}" 
                                      FontSize="{Binding ElementName=tbFontSize, Path=Text, Mode=TwoWay}"/>-->
             </DockPanel>
             <GridSplitter Grid.Column="1" Style="{StaticResource SplitV}" />

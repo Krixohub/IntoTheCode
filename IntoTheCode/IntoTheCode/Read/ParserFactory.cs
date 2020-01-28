@@ -10,7 +10,7 @@ using IntoTheCode.Message;
 
 namespace IntoTheCode.Read
 {
-    /// <summary>Build syntax elements from dokument</summary>
+    /// <summary>Build Grammar elements from dokument</summary>
     internal class ParserFactory
     {
         ///
@@ -27,12 +27,12 @@ namespace IntoTheCode.Read
                 List<ParserElementBase> elements = BuildExpression(parser, docSubNotes, status);
                 Rule rule = AddRule(parser, elementId, elements.ToArray());
 
-                string debug2 = debug1 + rule.GetSyntax();
+                string debug2 = debug1 + rule.GetGrammar();
             }
 
-            return InitializeSyntax(parser, parser.Rules, status) &&
-                    ApplySettingsFromSyntax(parser, doc, status) &&
-                    ValidateSyntax(parser, status);
+            return InitializeGrammar(parser, parser.Rules, status) &&
+                    ApplySettingsFromGrammar(parser, doc, status) &&
+                    ValidateGrammar(parser, status);
         }
 
         private static Rule AddRule(Parser parser, CodeElement defElement, params ParserElementBase[] elements)
@@ -127,13 +127,13 @@ namespace IntoTheCode.Read
         /// <param name="rules">Set of rules.</param>
         /// <param name="status">The parser status.</param>
         /// <returns>True: no error. False: error.</returns>
-        internal static bool InitializeSyntax(Parser parser, List<Rule> rules, ParserStatus status)
+        internal static bool InitializeGrammar(Parser parser, List<Rule> rules, ParserStatus status)
         {
             foreach (Rule rule in rules)
             {
                 rule.Parser = parser;
 
-                string debug1 = "" + parser.Level + ": " + rule.GetSyntax().NL() +
+                string debug1 = "" + parser.Level + ": " + rule.GetGrammar().NL() +
                     rule.ToMarkupProtected(string.Empty);
 
                 if (rules.Any(r => r != rule && r.Name.ToLower() == rule.Name.ToLower()))
@@ -176,9 +176,9 @@ namespace IntoTheCode.Read
             return rule;
         }
 
-        /// <summary>Apply settings to a linked syntax.</summary>
+        /// <summary>Apply settings to a linked Grammar.</summary>
         /// <returns></returns>
-        private static bool ApplySettingsFromSyntax(Parser parser, CodeDocument doc, ParserStatus status)
+        private static bool ApplySettingsFromGrammar(Parser parser, CodeDocument doc, ParserStatus status)
         {
             bool ok = true;
             foreach (TreeNode SetterElement in doc.Elements(MetaParser.Setter_____))
@@ -215,9 +215,9 @@ namespace IntoTheCode.Read
             return ok;
         }
 
-        /// <summary>Apply settings to a linked syntax.</summary>
+        /// <summary>Apply settings to a linked Grammar.</summary>
         /// <returns></returns>
-        internal static bool ValidateSyntax(Parser parser, ParserStatus status)
+        internal static bool ValidateGrammar(Parser parser, ParserStatus status)
         {
             // Check first rule must represent all document. Tag = true
             bool ok = true;
@@ -229,12 +229,12 @@ namespace IntoTheCode.Read
 
             // Recursive check
             foreach (Rule rule in parser.Rules)
-                ok = ValidateSyntaxElement(rule, status) && ok;
+                ok = ValidateGrammarElement(rule, status) && ok;
 
             return ok;
         }
 
-        private static bool ValidateSyntaxElement(ParserElementBase elem, ParserStatus status)
+        private static bool ValidateGrammarElement(ParserElementBase elem, ParserStatus status)
         {
             bool ok = true;
             if (elem == null)
@@ -251,7 +251,7 @@ namespace IntoTheCode.Read
 
             if (elem.SubElements == null) return ok;
             foreach (ParserElementBase sub in elem.SubElements)
-                ok = ValidateSyntaxElement(sub, status) && ok;
+                ok = ValidateGrammarElement(sub, status) && ok;
 
             return ok;
         }

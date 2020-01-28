@@ -33,7 +33,7 @@ namespace IntoTheCode
             CodeDocument doc = parser.ParseString(buffer);
             if (doc != null) return doc;
 
-            // only place to throw exception is CodeDocument.Load and Parser.SetSyntax (and MetaSyntax)
+            // only place to throw exception is CodeDocument.Load and Parser.SetGrammar (and MetaGrammar)
             var error = new ParserException(buffer.Status.Error.Message);
             error.AllErrors.AddRange(buffer.Status.AllErrors);
             throw error;

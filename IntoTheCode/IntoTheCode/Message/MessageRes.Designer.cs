@@ -187,7 +187,7 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No syntax rules.
+        ///   Looks up a localized string similar to No Grammar rules.
         /// </summary>
         public static string p04 {
             get {
@@ -250,7 +250,7 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Identifier &apos;{0}&apos; not found in syntax.
+        ///   Looks up a localized string similar to Identifier &apos;{0}&apos; not found in Grammar.
         /// </summary>
         public static string pb06 {
             get {
@@ -286,7 +286,7 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax error ({0}). Expecting identifier, found EOF..
+        ///   Looks up a localized string similar to Grammar error ({0}). Expecting identifier, found EOF..
         /// </summary>
         public static string pe01 {
             get {
@@ -295,7 +295,7 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax error ({0}). First charactor is not allowed..
+        ///   Looks up a localized string similar to Grammar error ({0}). First charactor is not allowed..
         /// </summary>
         public static string pe02 {
             get {
@@ -304,7 +304,7 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax error ({0}). Expecting string, found EOF..
+        ///   Looks up a localized string similar to Grammar error ({0}). Expecting string, found EOF..
         /// </summary>
         public static string pe03 {
             get {
@@ -313,7 +313,7 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax error ({0}). Expecting string..
+        ///   Looks up a localized string similar to Grammar error ({0}). Expecting string..
         /// </summary>
         public static string pe04 {
             get {
@@ -322,7 +322,7 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax error ({0}). Expecting string ending..
+        ///   Looks up a localized string similar to Grammar error ({0}). Expecting string ending..
         /// </summary>
         public static string pe05 {
             get {
@@ -331,7 +331,7 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax error ({0}). Expecting symbol &apos;{1}&apos;, found EOF..
+        ///   Looks up a localized string similar to Grammar error ({0}). Expecting symbol &apos;{1}&apos;, found EOF..
         /// </summary>
         public static string pe06 {
             get {
@@ -340,7 +340,7 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax error ({0}). Expecting symbol &apos;{1}&apos;, found &apos;{2}&apos;.
+        ///   Looks up a localized string similar to Grammar error ({0}). Expecting symbol &apos;{1}&apos;, found &apos;{2}&apos;.
         /// </summary>
         public static string pe07 {
             get {

@@ -4,15 +4,15 @@ using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
 using System;
 
-namespace IntoTheCode.Read.Element
+namespace IntoTheCode.Read.Element.Struckture
 {
-    internal class Or : ParserElementBase
+    internal class Expression : ParserElementBase
     {
-        /// <summary>Creator for <see cref="Or"/>.</summary>
-        internal Or(ParserElementBase element1, ParserElementBase element2) 
+        /// <summary>Creator for <see cref="Expression"/>.</summary>
+        internal Expression(params ParserElementBase[] elements) 
         {
-            AddElement(element1);
-            AddElement(element2);
+            //AddElement(element1);
+            //AddElement(element2);
             //if (Element1.ElementContent == ElementContentType.OneValue && Element2.ElementContent == ElementContentType.OneValue)
             //    ElementContent = ElementContentType.OneValue;
             //else
