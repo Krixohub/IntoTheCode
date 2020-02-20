@@ -41,7 +41,6 @@ namespace IntoTheCode.Read.Element
         //}
 
         /// <summary>If the element cant read; use this to reset (set pointer back):</summary>
-        /// <param name="proces">The load proces.</param>
         /// <param name="txtPtr">Pointer to set.</param>
         /// <returns>Always return false.</returns>
         protected bool SetPointerBack(int txtPtr, ParserElementBase item)
@@ -57,7 +56,6 @@ namespace IntoTheCode.Read.Element
         }
 
         /// <summary>If the element cant read; use this to reset pointer, after an error has occured.</summary>
-        /// <param name="proces">The load proces.</param>
         /// <param name="txtPtr">Pointer to set.</param>
         /// <returns>Always return false.</returns>
         protected bool SetPointerBackError(int txtPtr, ref int wordCount, int previusWordCount)

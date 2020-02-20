@@ -6,7 +6,7 @@
         xmlns:conv="clr-namespace:MoehlData.ClientWpf.Resources;assembly=MoehlData.ClientWpf"
         xmlns:viewModel="clr-namespace:ViewModel"
         mc:Ignorable="d"
-        Title="GrammarLab" Height="400" Width="700">
+        Title="Grammar Lab" Height="400" Width="700">
     <!--
     -->
     <Window.Resources>

@@ -14,6 +14,9 @@ namespace IntoTheCode.Read.Element.Words
             Name = MetaParser.WordSymbol_;
         }
 
+        public int Precedence { get; internal set; }
+        public bool RightAssociative { get; internal set; }
+
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
             return new WordSymbol(_value) { Name = Name, TextBuffer = buffer };

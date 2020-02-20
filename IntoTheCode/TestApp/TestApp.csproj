@@ -80,11 +80,11 @@
     <Compile Include="ComponentAdministration.xaml.cs">
       <DependentUpon>ComponentAdministration.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Syntax\SyntaxEdit.xaml.cs">
-      <DependentUpon>SyntaxEdit.xaml</DependentUpon>
+    <Compile Include="Grammar\GrammarEdit.xaml.cs">
+      <DependentUpon>GrammarEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\SyntaxAnalyzerVm.cs" />
-    <Compile Include="ViewModel\SyntaxEditVm.cs" />
+    <Compile Include="ViewModel\GrammarEditVm.cs" />
     <Page Include="ComponentAdministration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -101,7 +101,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Syntax\SyntaxAnalyzer.xaml">
+    <Page Include="Grammar\SyntaxAnalyzer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -109,11 +109,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Syntax\SyntaxAnalyzer.xaml.cs">
+    <Compile Include="Grammar\SyntaxAnalyzer.xaml.cs">
       <DependentUpon>SyntaxAnalyzer.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Syntax\SyntaxEdit.xaml">
+    <Page Include="Grammar\GrammarEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
