@@ -83,7 +83,7 @@ namespace IntoTheCode.Read.Element.Struckture
         }
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<TreeNode> outElements, int level)
+        public override bool Load(List<CodeElement> outElements, int level)
         {
             int from = TextBuffer.PointerNextChar;
 
@@ -93,7 +93,7 @@ namespace IntoTheCode.Read.Element.Struckture
                 return SetPointerBack(from, this);
 
             // Read following operations as alternately binary operators and values.
-            List<TreeNode> followingOperations = new List<TreeNode>();
+            var followingOperations = new List<CodeElement>();
             from = TextBuffer.PointerNextChar;
             while (LoadBinaryOperator(followingOperations, level) && LoadValue(followingOperations, level))
                 from = TextBuffer.PointerNextChar;
@@ -107,7 +107,10 @@ namespace IntoTheCode.Read.Element.Struckture
 
             // Order elements in a tree according to precedence and association rules.
             // set first value under first (binary) operator
-            TreeNode rootOperator = followingOperations[0];
+            CodeElement rootOperator = followingOperations[0];
+            CodeElement dummyParent = new CodeElement(this, null);
+            dummyParent.AddElement(rootOperator);
+
             rootOperator.AddElement(outElements[0]);
             rootOperator.AddElement(followingOperations[1]);
             outElements[0] = followingOperations[0];
@@ -115,57 +118,64 @@ namespace IntoTheCode.Read.Element.Struckture
             int nextValueIndex = 3;
             while (nextValueIndex < followingOperations.Count)
             {
-                AddOperationToTree(ref rootOperator, followingOperations[nextValueIndex - 1], followingOperations[nextValueIndex]);
+                //AddOperationToTree(ref rootOperator, followingOperations[nextValueIndex - 1], followingOperations[nextValueIndex]);
+                CodeElement rightOpCode = followingOperations[nextValueIndex - 1];
+                WordBinaryOperator rightOpSymbol = rightOpCode.WordParser as WordBinaryOperator;
+                AddOperationToTree(rootOperator, rightOpCode, rightOpSymbol, followingOperations[nextValueIndex]);
                 nextValueIndex += 2;
             }
 
-            outElements[0] = rootOperator;
             return true;
         }
 
-        private void AddOperationToTree(ref TreeNode operationTree, TreeNode newoperator, TreeNode value)
+        private void AddOperationToTree(CodeElement leftExprCode, CodeElement rightOpCode, WordBinaryOperator rightOpSymbol, CodeElement rightExprCode)
         {
-            // todo check for operators belonging to expression
-            WordSymbol leftOperator = ((CodeElement)operationTree).WordParser as WordSymbol;
-            WordSymbol rightOperator = ((CodeElement)newoperator).WordParser as WordSymbol;
-            if (leftOperator.Precedence < rightOperator.Precedence ||
-                (leftOperator.Precedence == rightOperator.Precedence &&
-                rightOperator.RightAssociative))
+            // is the insertpoint a value
+            if (!IsBinaryOperator(leftExprCode))
             {
-                // insert new operator to the right
-                if (IsOperator(leftOperator.SubElements[1]))
-                {
-                    TreeNode rightNode = leftOperator.SubElements[1];
-                    AddOperationToTree(ref rightNode, newoperator, value);
-                    leftOperator.SubElements[1] = rightNode;
-                }
-                else
-                {
-                    newoperator.AddElement(operationTree.SubElements[1]);
-                    newoperator.AddElement(value);
-                    operationTree.SubElements[1] = newoperator;
-                }
+                // insert 
+                TreeNode parent = leftExprCode.Parent;
+                rightOpCode.AddElement(leftExprCode);
+                rightOpCode.AddElement(rightExprCode);
+                parent.ReplaceSubElement(leftExprCode, rightOpCode);
+                return;
             }
+
+            // todo check for operators belonging to expression
+            WordBinaryOperator leftOperator = ((CodeElement)leftExprCode).WordParser as WordBinaryOperator;
+
+            // if the insertPoint has higther precedence
+            if (leftOperator.Precedence > rightOpSymbol.Precedence)
+            {
+                // insert 
+                TreeNode parent = leftExprCode.Parent;
+                rightOpCode.AddElement(leftExprCode);
+                rightOpCode.AddElement(rightExprCode);
+                parent.ReplaceSubElement(leftExprCode, rightOpCode);
+                return;
+            }
+
+            // if the insertPoint has lower precedence
+            if (leftOperator.Precedence < rightOpSymbol.Precedence)
+                AddOperationToTree(leftExprCode.SubElements[1] as CodeElement, rightOpCode, rightOpSymbol, rightExprCode);
+
+            // if the insertPoint has same precedence and operator is rigth associative
+            else if (rightOpSymbol.RightAssociative)
+                AddOperationToTree(leftExprCode.SubElements[1] as CodeElement, rightOpCode, rightOpSymbol, rightExprCode);
+
+            // if the insertPoint has same precedence and operator is left associative
             else
             {
-                // insert new operator to the left
-                if (IsOperator(leftOperator.SubElements[0]))
-                {
-                    // todo check next level
-                    //TreeNode leftNode = leftOperator.SubElements[0];
-                    //AddOperationToTree(ref leftNode, newoperator, value);
-                    //leftOperator.SubElements[1] = leftNode;
-                }
-                else
-                {
-                    newoperator.AddElement(operationTree);
-                    newoperator.AddElement(value);
-                    operationTree = newoperator;
-                }
+                // insert 
+                TreeNode parent = leftExprCode.Parent;
+                rightOpCode.AddElement(leftExprCode);
+                rightOpCode.AddElement(rightExprCode);
+                parent.ReplaceSubElement(leftExprCode, rightOpCode);
+                return;
             }
         }
 
-        private bool IsOperator(TreeNode treeNode)
+        private bool IsBinaryOperator(CodeElement treeNode)
         {
             throw new NotImplementedException();
         }
@@ -174,7 +184,7 @@ namespace IntoTheCode.Read.Element.Struckture
         /// <param name="outElements">The value is added to this list.</param>
         /// <param name="level">Level of rule links.</param>
         /// <returns>True if succes.</returns>
-        private bool LoadValue(List<TreeNode> outElements, int level)
+        private bool LoadValue(List<CodeElement> outElements, int level)
         {
             // Read a value 
             foreach (var item in _values)
@@ -187,7 +197,7 @@ namespace IntoTheCode.Read.Element.Struckture
         /// <param name="outElements">The value is added to this list.</param>
         /// <param name="level">Level of rule links.</param>
         /// <returns>True if succes.</returns>
-        private bool LoadBinaryOperator(List<TreeNode> outElements, int level)
+        private bool LoadBinaryOperator(List<CodeElement> outElements, int level)
         {
             // Read a value 
             foreach (var item in _binaryOperators)

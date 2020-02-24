@@ -84,6 +84,17 @@ namespace IntoTheCode.Basic
             return SubElements.Any(pred);
         }
 
+
+        public void ReplaceSubElement(TreeNode oldNode, TreeNode replacement)
+        {
+            for (int i = 0; i < SubElements.Count; i++)
+                if (SubElements[i] == oldNode)
+                {
+                    SubElements[i] = replacement;
+                    return;
+                }
+        }
+
         internal protected string ToMarkupProtected(string indent)
         {
             if (SubElements.Count == 0 && string.IsNullOrEmpty(Value))

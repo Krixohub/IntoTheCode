@@ -26,9 +26,9 @@ namespace IntoTheCode.Read.Element
         public override string GetGrammar() { return "[" + base.GetGrammar() + "]"; }
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<TreeNode> outElements, int level)
+        public override bool Load(List<CodeElement> outElements, int level)
         {
-            List<TreeNode> elements = new List<TreeNode>();
+            var elements = new List<CodeElement>();
             if (LoadSet(outElements, level))
                 outElements.AddRange(elements);
             return TextBuffer.Status.Error == null;

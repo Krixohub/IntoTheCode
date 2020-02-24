@@ -4,18 +4,19 @@ using System.Linq;
 using IntoTheCode.Buffer;
 using IntoTheCode.Read;
 using IntoTheCode.Basic;
+using IntoTheCode.Read.Element;
 
 namespace IntoTheCode
 {
     /// <summary>Represents a text or code document.</summary>
-    /// <remarks>Inherids <see cref="TreeNode"/></remarks>
-    public class CodeDocument : TreeNode
+    /// <remarks>Inherids <see cref="CodeElement"/></remarks>
+    public class CodeDocument : CodeElement
     {
-        internal CodeDocument()
-        {
-        }
+        //internal CodeDocument()
+        //{
+        //}
 
-        internal CodeDocument(IEnumerable<TreeNode> elements)
+        internal CodeDocument(IEnumerable<TreeNode> elements, ParserElementBase element) : base (element, null)
         {
             foreach (var item in elements)
                 AddElement(item);

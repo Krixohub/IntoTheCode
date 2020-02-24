@@ -50,6 +50,7 @@
     </Compile>
     <Compile Include="Basic\TreeNode.cs" />
     <Compile Include="Read\Element\Structure\Expression.cs" />
+    <Compile Include="Read\Element\Structure\WordBinaryOperator.cs" />
     <Compile Include="Read\ParserError.cs" />
     <Compile Include="Read\ParserStatus.cs" />
     <Compile Include="Read\ParserFactory.cs" />
@@ -88,6 +89,7 @@
   <ItemGroup>
     <Folder Include="Basic\Message\" />
     <Folder Include="obj\Debug\TempPE\" />
+    <Folder Include="Read\Element\RuleSpecial\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Message\MessageRes.resx">

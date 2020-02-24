@@ -43,10 +43,10 @@ namespace IntoTheCode.Read.Element
         }
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<TreeNode> outElements, int level)
+        public override bool Load(List<CodeElement> outElements, int level)
         {
             int from = TextBuffer.PointerNextChar;
-            List<TreeNode> subs = new List<TreeNode>();
+            var subs = new List<CodeElement>();
             if (!(SubElements[0] as ParserElementBase).Load(subs, level) || from.CompareTo(TextBuffer.PointerNextChar) == 0)
                 if (TextBuffer.Status.Error != null || 
                     (!(SubElements[1] as ParserElementBase).Load(subs, level) 

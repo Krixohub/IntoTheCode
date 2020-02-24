@@ -206,8 +206,13 @@ namespace IntoTheCode.Read
                             rule.Collapse = propValue != "false";
                             break;
                         default:
-                            status.AddBuildError(() => MessageRes.pb08, propName, elementId.Value, propName.Value);
                             ok = false;
+                            foreach (ParserElementBase item in rule.SubElements)
+                                ok = ok | item.SetProperty(propName.Value, propValue);
+
+                            // todo alter message to reflect above.
+                            if (!ok)
+                                status.AddBuildError(() => MessageRes.pb08, propName, elementId.Value, propName.Value);
                             break;
                     }
                 }

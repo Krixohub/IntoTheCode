@@ -28,6 +28,15 @@ namespace IntoTheCode.Read.Element
         /// <returns>The new clone.</returns>
         public abstract ParserElementBase CloneForParse(TextBuffer buffer);
 
+        /// <summary>Override this to set a property from grammar.</summary>
+        /// <param name="property">Property name.</param>
+        /// <param name="value">Value string.</param>
+        /// <returns>True: property set. False: not set.</returns>
+        public virtual bool SetProperty(string property, string value)
+        {
+            return false;
+        }
+
         public override string GetValue() { return _value; }
 
         protected internal TextBuffer TextBuffer;
@@ -94,7 +103,7 @@ namespace IntoTheCode.Read.Element
         /// <param name="proces"></param>
         /// <param name="outElements">Read elements.</param>
         /// <returns>True = succes.</returns>
-        public abstract bool Load(List<TreeNode> outElements, int level);
+        public abstract bool Load(List<CodeElement> outElements, int level);
 
 
         /// <summary>Find the Rule/ 'read element', that correspond to the

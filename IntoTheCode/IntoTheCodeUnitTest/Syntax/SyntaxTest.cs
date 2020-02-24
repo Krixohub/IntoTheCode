@@ -27,7 +27,7 @@ namespace TestCodeInternal.UnitTest
             TextBuffer textBuffer = new FlatBuffer("  sym01  ");
             //            reader.TextBuffer = new FlatBuffer("  sym01  ");
             //var buf = new FlatBuffer("  sym01  ");
-            var outNo = new List<TreeNode>();
+            var outNo = new List<CodeElement>();
             var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
             Assert.AreEqual(true, idn.Load(outNo, 0), "Identifier: Can't read");
             var node = outNo[0] as CodeElement;
@@ -87,10 +87,10 @@ namespace TestCodeInternal.UnitTest
             ParserStatus status = new ParserStatus(null);
             //hardcodeParser = MetaParser.GetHardCodeParser();
             var debug = MetaParser.GetHardCodeParser(status).GetGrammar();
-            var outNo = new List<TreeNode>();
+            var outNo = new List<CodeElement>();
             
             string doc = string.Empty;
-            outNo = new List<TreeNode>();
+
             Rule rule;
             TextBuffer textBuffer;
 
@@ -548,7 +548,7 @@ value       = string;";
         /// <summary>To test changes to the meta grammar.</summary>
         private static CodeDocument TestMetaGrammarDoc()
         {
-            CodeDocument grammar = new CodeDocument { Name = MetaParser.MetaGrammar_ };
+            CodeDocument grammar = new CodeDocument(new List<CodeElement>(), null) { Name = MetaParser.MetaGrammar_ };
 
             // grammar   = {rule}
             grammar.AddElement(new HardElement("Rule", string.Empty,

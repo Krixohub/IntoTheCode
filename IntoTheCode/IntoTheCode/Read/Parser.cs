@@ -87,7 +87,7 @@ namespace IntoTheCode.Read
             List<Rule> procesRules = Rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
             if (!ParserFactory.InitializeGrammar(this, procesRules, buffer.Status))
                 return null;
-            var elements = new List<TreeNode>();
+            var elements = new List<CodeElement>();
             bool ok;
 
             try
@@ -111,7 +111,7 @@ namespace IntoTheCode.Read
             {
                 if (elements != null && elements.Count() > 0)
                 {
-                    CodeElement last = elements.Last() as CodeElement;
+                    CodeElement last = elements.Last();
                     string debug = last.ToMarkupProtected(string.Empty);
                     procesRules[0].LoadFindLast(last);
                 }
@@ -120,7 +120,8 @@ namespace IntoTheCode.Read
             else if (elements.Count == 1 && elements[0] is CodeDocument)
                 return elements[0] as CodeDocument;
             else if (elements.Count == 1)
-                return new CodeDocument(elements[0].SubElements) { Name = elements[0].Name };
+                // todo get the document name from procesRules[0]
+                return new CodeDocument(elements[0].SubElements, procesRules[0]) { Name = elements[0].Name };
             else
                 buffer.Status.AddParseError(() => MessageRes.p01, procesRules[0].Name);
 

@@ -22,7 +22,7 @@ namespace IntoTheCode.Read.Element.Words
         
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<TreeNode> outElements, int level)
+        public override bool Load(List<CodeElement> outElements, int level)
         {
             SkipWhiteSpace();
 

@@ -71,7 +71,7 @@ namespace IntoTheCode.Read.Element
 
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<TreeNode> outElements, int level)
+        public override bool Load(List<CodeElement> outElements, int level)
         {
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 
@@ -82,7 +82,7 @@ namespace IntoTheCode.Read.Element
             }
             else
             {
-                List<TreeNode> outSubNotes = new List<TreeNode>();
+                var outSubNotes = new List<CodeElement>();
                 CodeElement element;
                 if (ElementContent == ElementContentType.OneValue)
                 {

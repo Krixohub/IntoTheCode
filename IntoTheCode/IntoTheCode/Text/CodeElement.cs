@@ -14,7 +14,8 @@ namespace IntoTheCode
 
         internal CodeElement(ParserElementBase element, TextSubString pointer, string error = null)
         {
-            Name = element.Name;
+            if (element != null)
+                Name = element.Name;
             _subString = pointer;
             WordParser = element as WordBase;
             Error = error;
@@ -27,22 +28,5 @@ namespace IntoTheCode
             return WordParser == null ? string.Empty : WordParser.GetValue(SubString); }
 
         public string Error { get; private set; }
-
-        //public bool HasColor
-        //{
-        //    get { return GrammarElement != null && GrammarElement.HasColor; }
-        //}
-
-        //public SolidColorBrush TextBrush
-        //{
-        //    get { return GrammarElement == null ? Brushes.Black : GrammarElement.TextBrush; }
-        //}
-
-        //internal byte Color
-        //{
-        //    get { return _color > 0 ? _color : _grammarElement == null ? (byte)0 : _grammarElement.Color; }
-        //    set { _color = value; }
-        //}
-        //private byte _color= 0;
     }
 }

@@ -34,10 +34,10 @@ namespace IntoTheCode.Read.Element
             return ElementContentType.Many;
         }
 
-        protected bool LoadSet(List<TreeNode> outElements, int level)
+        protected bool LoadSet(List<CodeElement> outElements, int level)
         {
             int from = TextBuffer.PointerNextChar;
-            List<TreeNode> elements = new List<TreeNode>();
+            List<CodeElement> elements = new List<CodeElement>();
             foreach (var item in SubElements.OfType<ParserElementBase>())
                 if (!item.Load(elements, level))
                     return SetPointerBack(from, item);
