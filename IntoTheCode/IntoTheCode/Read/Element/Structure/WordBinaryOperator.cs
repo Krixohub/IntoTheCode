@@ -7,8 +7,9 @@ namespace IntoTheCode.Read.Element.Struckture
     internal class WordBinaryOperator : WordSymbol
     {
         /// <summary>Creator for <see cref="Or"/>.</summary>
-        internal WordBinaryOperator(string symbol) : base(symbol)
+        internal WordBinaryOperator(string symbol, string name) : base(symbol)
         {
+            Name = name;
         }
 
         public int Precedence { get; internal set; }
@@ -16,7 +17,7 @@ namespace IntoTheCode.Read.Element.Struckture
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
-            return new WordBinaryOperator(_value) { Name = Name, TextBuffer = buffer };
+            return new WordBinaryOperator(_value, Name) { TextBuffer = buffer };
         }
 
         //public override ElementContentType GetElementContent()
@@ -46,24 +47,6 @@ namespace IntoTheCode.Read.Element.Struckture
 
             return false;
         }
-
-        //public override string GetGrammar() {
-        //    return "expres | expres";
-        //}
-
-        //public override bool Load(List<CodeElement> outElements, int level)
-        //{
-        //    int from = TextBuffer.PointerNextChar;
-        //    var subs = new List<CodeElement>();
-        //    if (!(SubElements[0] as ParserElementBase).Load(subs, level) || from.CompareTo(TextBuffer.PointerNextChar) == 0)
-        //        if (TextBuffer.Status.Error != null || 
-        //            (!(SubElements[1] as ParserElementBase).Load(subs, level) 
-        //            || from.CompareTo(TextBuffer.PointerNextChar) == 0))
-        //            return false;
-            
-        //    outElements.AddRange(subs);
-        //    return true;
-        //}
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int LoadFindLast(CodeElement last)

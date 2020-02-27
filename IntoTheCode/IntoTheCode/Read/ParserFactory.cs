@@ -145,6 +145,17 @@ namespace IntoTheCode.Read
             foreach (Rule rule in rules)
                 InitializeElements(rule.SubElements.OfType<ParserElementBase>(), rules, status);
 
+            // todo: Initialize expressions here
+            foreach (Rule rule in rules)
+            {
+                Or or = rule.SubElements[0] as Or;
+                WordSymbol symbol = null;
+                Rule ruleOp = null;
+                if (or != null && 
+                    Expression.IsBinaryAlternative(rule, or.SubElements[0] as ParserElementBase, out symbol, out ruleOp))
+                    rule.ReplaceSubElement(0, new Expression(rule, or));
+            }
+
             return status.Error == null;
         }
 
@@ -158,7 +169,7 @@ namespace IntoTheCode.Read
             foreach (ParserElementBase element in elements)
             {
                 var ruleId = element as RuleLink;
-                if (ruleId != null && ruleId.SymbolElement == null) ruleId.SymbolElement = InitializeResolve(rules, ruleId, status);
+                if (ruleId != null && ruleId.RuleElement == null) ruleId.RuleElement = InitializeResolve(rules, ruleId, status);
                 InitializeElements(element.SubElements.OfType<ParserElementBase>(), rules, status);
             }
         }

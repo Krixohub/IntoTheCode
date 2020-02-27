@@ -49,7 +49,7 @@
       <DependentUpon>MessageRes.resx</DependentUpon>
     </Compile>
     <Compile Include="Basic\TreeNode.cs" />
-    <Compile Include="Read\Element\Structure\Expression.cs" />
+    <Compile Include="Read\Element\Expression.cs" />
     <Compile Include="Read\Element\Structure\WordBinaryOperator.cs" />
     <Compile Include="Read\ParserError.cs" />
     <Compile Include="Read\ParserStatus.cs" />

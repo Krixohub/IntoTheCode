@@ -85,14 +85,19 @@ namespace IntoTheCode.Basic
         }
 
 
+        public void ReplaceSubElement(int index, TreeNode replacement)
+        {
+            if (index >= SubElements.Count)
+                return;
+            SubElements[index] = replacement;
+            replacement.Parent = this;
+        }
+
         public void ReplaceSubElement(TreeNode oldNode, TreeNode replacement)
         {
             for (int i = 0; i < SubElements.Count; i++)
                 if (SubElements[i] == oldNode)
-                {
-                    SubElements[i] = replacement;
-                    return;
-                }
+                    ReplaceSubElement(i, replacement);
         }
 
         internal protected string ToMarkupProtected(string indent)

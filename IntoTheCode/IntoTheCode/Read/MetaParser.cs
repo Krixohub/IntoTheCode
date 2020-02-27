@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 
 using IntoTheCode.Read.Element;
-using IntoTheCode.Message;
 using System;
-using IntoTheCode.Read;
 using IntoTheCode.Buffer;
 using IntoTheCode.Read.Element.Words;
 
 namespace IntoTheCode.Read
 {
     /// <summary>The meta-grammar for proces grammar definitions.
-    /// The Instance property is a singleton parser of grammares.</summary>
+    /// The Instance property is a singleton parser of grammares.
+    /// This class contains a hard coded parser and a string MetaGrammer, 
+    /// to build rules of the meta parser.</summary>
     internal class MetaParser //: Grammar
     {
         // Make static meta parser and grammar thread safe.
@@ -145,18 +145,18 @@ settings   collapse;";
                     new RuleLink(Element____)))
             { Collapse = true });
 
-            // element    = identifier | symbol | block; Husk ny block
+            // element    = identifier | symbol | block;
             list.Add(new Rule(Element____,
                 new Or(new WordIdent(WordIdent__),
-                new Or(new RuleLink(WordSymbol_),
-                new RuleLink(Block______))))
+                    new Or(new RuleLink(WordSymbol_),
+                        new RuleLink(Block______))))
             { Collapse = true });
 
             // block      = sequence | optional | parentheses;
             list.Add(new Rule(Block______,
                 new Or(new RuleLink(Sequence___),
-                new Or(new RuleLink(Optional___),
-                new RuleLink(Parentheses))))
+                    new Or(new RuleLink(Optional___),
+                        new RuleLink(Parentheses))))
             { Collapse = true });
 
             // sequence     = '{' expression '}';

@@ -47,12 +47,15 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Read\Element\ExpressionTest.cs" />
     <Compile Include="Syntax\LinqToXml.cs" />
     <Compile Include="Syntax\DivTest.cs" />
     <Compile Include="Syntax\SyntaxTest.cs" />

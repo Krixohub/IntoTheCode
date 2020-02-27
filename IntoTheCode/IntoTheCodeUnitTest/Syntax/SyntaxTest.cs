@@ -215,7 +215,6 @@ namespace TestCodeInternal.UnitTest
             msg = CodeDocument.CompareCode(docActual2, docExpect);
             Assert.AreEqual(string.Empty, msg, "Meta grammar internal document diff error");
 
-            // TODO SKAL RETTES
             Assert.AreEqual(docExpect.Name, docActual1.Name, "Document name diff error");
         }
 

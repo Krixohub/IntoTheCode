@@ -5,18 +5,24 @@ using IntoTheCode.Basic;
 using System;
 using System.Linq;
 using IntoTheCode;
+using IntoTheCode.Read.Element;
 using IntoTheCode.Read.Element.Words;
+using IntoTheCode.Read.Element.Struckture;
 
-namespace IntoTheCode.Read.Element.Struckture
+namespace IntoTheCode.Read.Element
 {
     /// <summary>Expressions read strings like this 'a + b * - c * ( 2 + d )'. (Infix notation)
     /// The expression rule must look like this "expr = mul | sum | value".
+    /// It is a list of alternatives. The first alternative must be a binary operator.
+    /// At least one alternative must be something else; not recursive.
     /// The binary operator rules must have this form: "sum = expr '+' expr". Where '+' is the operator.
+    /// A binary operator can also be inline: "expr = expr '*' expr | value;".
     /// The value rule is the last: "value = [sign] ( int | var | par )"
     /// The unary operator rules must have this form: "sign = '-'". Where '-' is the operator.
     /// Variables can be simple: "var = identifier"
     /// Variables can be complex eg: "var = varRule; varRule = [incrementOp] objectIdent {'.' propIdent}"
     /// Other forms (like parentheses: "par = '(' expr ')'" ).
+    /// 
     /// 
     /// Precedence:
     /// The 'Other forms' has highest precedence.
@@ -33,55 +39,150 @@ namespace IntoTheCode.Read.Element.Struckture
     /// The 'expression' node is eliminated. The list of values and operators are ordered in 
     /// a tree of nodes with values as leafs and operators with subnotes. The order follows precedence rules
     /// and association rules.
+    /// 
+    /// The expression class is not just repressenting a node in the syntax tree. It represents a part of the tree.
+    /// Thus normal recursiveness is not followed in this part of the tree for some functions.
     /// </summary>
-    internal class Expression : ParserElementBase
+    internal class Expression : Or
     {
-        //private List<ParserElementBase> _otherForms = new List<ParserElementBase>();
+        internal List<ParserElementBase> _otherForms = new List<ParserElementBase>();
         //private List<ParserElementBase> _unaryOperators = new List<ParserElementBase>();
-        private List<ParserElementBase> _binaryOperators = new List<ParserElementBase>();
+        internal List<WordBinaryOperator> _binaryOperators = new List<WordBinaryOperator>();
         //private List<ParserElementBase> _variables = new List<ParserElementBase>();
-        private List<ParserElementBase> _values = new List<ParserElementBase>();
+        //private List<ParserElementBase> _values = new List<ParserElementBase>();
 
         /// <summary>Creator for <see cref="Expression"/>.</summary>
-        internal Expression(params ParserElementBase[] elements) 
+        internal Expression(Rule ExprRule, Or or) : base ((ParserElementBase)or.SubElements[0], (ParserElementBase)or.SubElements[1]) 
         {
-            // todo fra OR
+            // The elements in the base class are only used for getting the grammar and cloning.
 
-            // find The alternatives of the expression and add to subElements.
-            //AddElement(element1);
+            // the elements are split into alternatives.
+            // Each alternative is put in the _binaryOperators list or the _otherForms list.
 
-            //AddElement(element2);
-            //if (Element1.ElementContent == ElementContentType.OneValue && Element2.ElementContent == ElementContentType.OneValue)
-            //    ElementContent = ElementContentType.OneValue;
-            //else
-            //    ElementContent = ElementContentType.Many;
+            // A binary operator is reconized by the form "Expression Symbol Expression" 
+            // where the symbol i the operator. The form can be inline or have its ovn rule.
+            // The operator precedence is given by the order of operators. If two operators 
+            // have the same precedence, there must be rules and the "Precedence" property 
+            // of the rules set to the same.
+            AddAlternatives(ExprRule, or);
         }
 
-        public override ParserElementBase CloneForParse(TextBuffer buffer)
+        private void AddAlternatives(Rule ExprRule, ParserElementBase alternative)
         {
-            // todo fra OR
-            var element = new Or(((ParserElementBase)SubElements[0]).CloneForParse(buffer),
-                ((ParserElementBase)SubElements[1]).CloneForParse(buffer));
-            element.TextBuffer = buffer;
-            return element;
-        }
+            // is it more alternatives?
+            var or = alternative as Or;
+            if (or != null)
+            {
+                AddAlternatives(ExprRule, or.SubElements[0] as ParserElementBase);
+                AddAlternatives(ExprRule, or.SubElements[1] as ParserElementBase);
+                return;
+            }
 
-        public override ElementContentType GetElementContent()
+            // is it a binary operator? (depends opun how Or is implemented)
+            RuleLink expre1 = null;
+            WordSymbol symbol = null;
+            RuleLink expre2 = null;
+            Rule rule = null;
+
+            
+            if (IsBinaryAlternative(ExprRule, alternative, out symbol, out rule))
+            {
+                _binaryOperators.Add(new WordBinaryOperator(symbol.Value, rule != null ? rule.Name : symbol.Value));
+                //return;
+            }
+
+
+                //// find symbol for 'rule' binary operators
+                //ParserElementBase binaryOperation = null;
+                //if (alternative is RuleLink)
+                //{
+                //    rule = ((RuleLink)alternative).RuleElement;
+                //    binaryOperation = rule;
+                //}
+
+                //// find symbol for inline binary operators
+                //if (alternative is Parentheses)
+                //    binaryOperation = alternative;
+
+                //// Is it a binary operation ?
+                //if (binaryOperation != null &&binaryOperation.SubElements.Count == 3)
+                //{
+                //    expre1 = binaryOperation.SubElements[0] as RuleLink;
+                //    symbol = binaryOperation.SubElements[1] as WordSymbol;
+                //    expre2 = binaryOperation.SubElements[2] as RuleLink;
+
+                //    // add binary operator
+                //    if (expre1 != null && expre1.RuleElement == ExprRule &&
+                //        symbol != null &&
+                //        expre2 != null && expre2.RuleElement == ExprRule)
+                //    {
+                //        _binaryOperators.Add(new WordBinaryOperator(symbol.Value, rule != null ? rule.Name : symbol.Value));
+                //        return;
+                //    }
+                //}
+
+                // Other forms
+                else 
+                _otherForms.Add(alternative);
+        }
+        internal static bool IsBinaryAlternative(Rule ExprRule, ParserElementBase alternative, out WordSymbol symbol, out Rule rule)
         {
-            // todo fra OR
-            return
-                //Element1.ElementContent == ElementContentType.OneValue &&
-                //Element2.ElementContent == ElementContentType.OneValue ?
-                //ElementContentType.OneValue :
-                ElementContentType.Many;
+            // is it a binary operator
+            // find symbol for 'rule' binary operators
+            ParserElementBase binaryOperation = null;
+            if (alternative is RuleLink)
+            {
+                rule = ((RuleLink)alternative).RuleElement;
+                binaryOperation = rule;
+            }
+            else
+                rule = null;
+
+            // find symbol for inline binary operators
+            if (alternative is Parentheses)
+                binaryOperation = alternative;
+
+            // Is it a binary operation ?
+            if (binaryOperation != null && binaryOperation.SubElements.Count == 3)
+            {
+                var expre1 = binaryOperation.SubElements[0] as RuleLink;
+                symbol = binaryOperation.SubElements[1] as WordSymbol;
+                var expre2 = binaryOperation.SubElements[2] as RuleLink;
+
+                // add binary operator
+                if (expre1 != null && expre1.RuleElement == ExprRule &&
+                    symbol != null &&
+                    expre2 != null && expre2.RuleElement == ExprRule)
+                    return true;
+            }
+
+            symbol = null;
+            return false;
         }
 
-        public override string GetGrammar() {
-            // todo fra OR
-            return (SubElements[0] as ParserElementBase).GetGrammar() + " | " +
-                (SubElements[1] as ParserElementBase).GetGrammar();
-        }
-        //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
+        //public override ParserElementBase CloneForParse(TextBuffer buffer)
+        //{
+        //    var element = new Or(((ParserElementBase)SubElements[0]).CloneForParse(buffer),
+        //        ((ParserElementBase)SubElements[1]).CloneForParse(buffer));
+        //    element.TextBuffer = buffer;
+        //    return element;
+        //}
+
+        //public override ElementContentType GetElementContent()
+        //{
+        //    // todo fra OR
+        //    return
+        //        //Element1.ElementContent == ElementContentType.OneValue &&
+        //        //Element2.ElementContent == ElementContentType.OneValue ?
+        //        //ElementContentType.OneValue :
+        //        ElementContentType.Many;
+        //}
+
+        //public override string GetGrammar() {
+        //    // todo fra OR
+        //    return (SubElements[0] as ParserElementBase).GetGrammar() + " | " +
+        //        (SubElements[1] as ParserElementBase).GetGrammar();
+        //}
 
         public override bool Load(List<CodeElement> outElements, int level)
         {
@@ -187,7 +288,7 @@ namespace IntoTheCode.Read.Element.Struckture
         private bool LoadValue(List<CodeElement> outElements, int level)
         {
             // Read a value 
-            foreach (var item in _values)
+            foreach (var item in _otherForms)
                 if (item.Load(outElements, level + 1))
                     return true;
             return false;

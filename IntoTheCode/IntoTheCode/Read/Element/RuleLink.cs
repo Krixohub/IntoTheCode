@@ -25,12 +25,12 @@ namespace IntoTheCode.Read.Element
         }
 
         /// <summary>The Reader has the current pointer of reading, and the context.</summary>
-        internal ParserElementBase SymbolElement;
+        internal Rule RuleElement;
 
         public override ElementContentType GetElementContent()
         {
-            return SymbolElement != null ?
-                SymbolElement.ElementContent :
+            return RuleElement != null ?
+                RuleElement.ElementContent :
                 ElementContentType.NotSet;
         }
 
@@ -54,18 +54,18 @@ namespace IntoTheCode.Read.Element
                 LastInvokeLevel = level;
             }
 
-            return SymbolElement.Load(outElements, level + 1);
+            return RuleElement.Load(outElements, level + 1);
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int LoadFindLast(CodeElement last)
         {
-            return SymbolElement.LoadFindLast(last);
+            return RuleElement.LoadFindLast(last);
         }
 
         public override bool LoadTrackError(ref int wordCount)
         {
-            return SymbolElement.LoadTrackError(ref wordCount);
+            return RuleElement.LoadTrackError(ref wordCount);
         }
     }
 }
