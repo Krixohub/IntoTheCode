@@ -1,15 +1,17 @@
 ﻿
 using IntoTheCode.Buffer;
 using IntoTheCode.Read.Element.Words;
+using System.Collections.Generic;
 
 namespace IntoTheCode.Read.Element.Struckture
 {
     internal class WordBinaryOperator : WordSymbol
     {
         /// <summary>Creator for <see cref="Or"/>.</summary>
-        internal WordBinaryOperator(string symbol, string name) : base(symbol)
+        internal WordBinaryOperator(string symbol, string name, TextBuffer buffer) : base(symbol)
         {
             Name = name;
+            TextBuffer = buffer;
         }
 
         public int Precedence { get; internal set; }
@@ -17,8 +19,14 @@ namespace IntoTheCode.Read.Element.Struckture
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
-            return new WordBinaryOperator(_value, Name) { TextBuffer = buffer };
+            return new WordBinaryOperator(_value, Name, buffer);
         }
+
+        protected internal override string GetValue(TextSubString ptr) { return string.Empty; }
+        //public override string GetValue()
+        //{
+        //    return base.GetValue();
+        //}
 
         //public override ElementContentType GetElementContent()
         //{
@@ -48,22 +56,23 @@ namespace IntoTheCode.Read.Element.Struckture
             return false;
         }
 
-        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int LoadFindLast(CodeElement last)
+        public override bool Load(List<CodeElement> outElements, int level)
         {
-            int rc = (SubElements[0] as ParserElementBase).LoadFindLast(last);
-            if (rc < 2)
-                rc = (SubElements[1] as ParserElementBase).LoadFindLast(last);
+            //SkipWhiteSpace();
 
-            return rc;
-        }
+            //TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 
-        public override bool LoadTrackError(ref int wordCount)
-        {
-            bool ok = (SubElements[0] as ParserElementBase).LoadTrackError(ref wordCount);
-            ok = ok || (SubElements[1] as ParserElementBase).LoadTrackError(ref wordCount);
+            if (!base.Load(outElements, level))
+                return false;
 
-            return ok;
+            //subStr.To = TextBuffer.PointerNextChar;
+
+            //int from = TextBuffer.PointerNextChar;
+
+            var element = new CodeElement(this, null);
+            outElements.Add(element);
+
+            return true;
         }
     }
 }

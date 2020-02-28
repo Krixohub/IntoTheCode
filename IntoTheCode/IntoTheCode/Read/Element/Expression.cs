@@ -52,7 +52,8 @@ namespace IntoTheCode.Read.Element
         //private List<ParserElementBase> _values = new List<ParserElementBase>();
 
         /// <summary>Creator for <see cref="Expression"/>.</summary>
-        internal Expression(Rule ExprRule, Or or) : base ((ParserElementBase)or.SubElements[0], (ParserElementBase)or.SubElements[1]) 
+        internal Expression(Rule ExprRule, Or or) : 
+            base ((ParserElementBase)or.SubElements[0], (ParserElementBase)or.SubElements[1]) 
         {
             // The elements in the base class are only used for getting the grammar and cloning.
 
@@ -64,6 +65,7 @@ namespace IntoTheCode.Read.Element
             // The operator precedence is given by the order of operators. If two operators 
             // have the same precedence, there must be rules and the "Precedence" property 
             // of the rules set to the same.
+            TextBuffer = or.TextBuffer;
             AddAlternatives(ExprRule, or);
         }
 
@@ -79,52 +81,16 @@ namespace IntoTheCode.Read.Element
             }
 
             // is it a binary operator? (depends opun how Or is implemented)
-            RuleLink expre1 = null;
             WordSymbol symbol = null;
-            RuleLink expre2 = null;
             Rule rule = null;
-
-            
             if (IsBinaryAlternative(ExprRule, alternative, out symbol, out rule))
-            {
-                _binaryOperators.Add(new WordBinaryOperator(symbol.Value, rule != null ? rule.Name : symbol.Value));
-                //return;
-            }
-
-
-                //// find symbol for 'rule' binary operators
-                //ParserElementBase binaryOperation = null;
-                //if (alternative is RuleLink)
-                //{
-                //    rule = ((RuleLink)alternative).RuleElement;
-                //    binaryOperation = rule;
-                //}
-
-                //// find symbol for inline binary operators
-                //if (alternative is Parentheses)
-                //    binaryOperation = alternative;
-
-                //// Is it a binary operation ?
-                //if (binaryOperation != null &&binaryOperation.SubElements.Count == 3)
-                //{
-                //    expre1 = binaryOperation.SubElements[0] as RuleLink;
-                //    symbol = binaryOperation.SubElements[1] as WordSymbol;
-                //    expre2 = binaryOperation.SubElements[2] as RuleLink;
-
-                //    // add binary operator
-                //    if (expre1 != null && expre1.RuleElement == ExprRule &&
-                //        symbol != null &&
-                //        expre2 != null && expre2.RuleElement == ExprRule)
-                //    {
-                //        _binaryOperators.Add(new WordBinaryOperator(symbol.Value, rule != null ? rule.Name : symbol.Value));
-                //        return;
-                //    }
-                //}
-
-                // Other forms
-                else 
+                _binaryOperators.Add(new WordBinaryOperator(symbol.Value, rule != null ? rule.Name : symbol.Value, TextBuffer));
+            
+            // Other forms
+            else 
                 _otherForms.Add(alternative);
         }
+
         internal static bool IsBinaryAlternative(Rule ExprRule, ParserElementBase alternative, out WordSymbol symbol, out Rule rule)
         {
             // is it a binary operator
@@ -159,31 +125,7 @@ namespace IntoTheCode.Read.Element
             symbol = null;
             return false;
         }
-
-        //public override ParserElementBase CloneForParse(TextBuffer buffer)
-        //{
-        //    var element = new Or(((ParserElementBase)SubElements[0]).CloneForParse(buffer),
-        //        ((ParserElementBase)SubElements[1]).CloneForParse(buffer));
-        //    element.TextBuffer = buffer;
-        //    return element;
-        //}
-
-        //public override ElementContentType GetElementContent()
-        //{
-        //    // todo fra OR
-        //    return
-        //        //Element1.ElementContent == ElementContentType.OneValue &&
-        //        //Element2.ElementContent == ElementContentType.OneValue ?
-        //        //ElementContentType.OneValue :
-        //        ElementContentType.Many;
-        //}
-
-        //public override string GetGrammar() {
-        //    // todo fra OR
-        //    return (SubElements[0] as ParserElementBase).GetGrammar() + " | " +
-        //        (SubElements[1] as ParserElementBase).GetGrammar();
-        //}
-
+        
         public override bool Load(List<CodeElement> outElements, int level)
         {
             int from = TextBuffer.PointerNextChar;
@@ -194,45 +136,40 @@ namespace IntoTheCode.Read.Element
                 return SetPointerBack(from, this);
 
             // Read following operations as alternately binary operators and values.
-            var followingOperations = new List<CodeElement>();
+            var operations = new List<CodeElement>();
             from = TextBuffer.PointerNextChar;
-            while (LoadBinaryOperator(followingOperations, level) && LoadValue(followingOperations, level))
+            while (LoadBinaryOperator(operations, level) && LoadValue(operations, level))
                 from = TextBuffer.PointerNextChar;
 
             // Set pointer back
             TextBuffer.PointerNextChar = from;
 
             // If only one value the return that.
-            if (followingOperations.Count == 0)
+            if (operations.Count == 0)
                 return true;
 
             // Order elements in a tree according to precedence and association rules.
-            // set first value under first (binary) operator
-            CodeElement rootOperator = followingOperations[0];
-            CodeElement dummyParent = new CodeElement(this, null);
-            dummyParent.AddElement(rootOperator);
+            // set first value under a dummy parent
+            CodeElement parent = new CodeElement(this, null);
+            parent.AddElement(outElements[0]);
 
-            rootOperator.AddElement(outElements[0]);
-            rootOperator.AddElement(followingOperations[1]);
-            outElements[0] = followingOperations[0];
+            int nextValueIndex = 0;
+            while (nextValueIndex < operations.Count - 1)
+                AddOperationToTree(parent.SubElements[0], operations[nextValueIndex++], operations[nextValueIndex++]);
 
-            int nextValueIndex = 3;
-            while (nextValueIndex < followingOperations.Count)
-            {
-                //AddOperationToTree(ref rootOperator, followingOperations[nextValueIndex - 1], followingOperations[nextValueIndex]);
-                CodeElement rightOpCode = followingOperations[nextValueIndex - 1];
-                WordBinaryOperator rightOpSymbol = rightOpCode.WordParser as WordBinaryOperator;
-                AddOperationToTree(rootOperator, rightOpCode, rightOpSymbol, followingOperations[nextValueIndex]);
-                nextValueIndex += 2;
-            }
-
+            outElements[0] = parent.SubElements[0] as CodeElement;
             return true;
         }
 
-        private void AddOperationToTree(CodeElement leftExprCode, CodeElement rightOpCode, WordBinaryOperator rightOpSymbol, CodeElement rightExprCode)
+        private void AddOperationToTree(TreeNode leftExprCode, CodeElement rightOpCode, CodeElement rightExprCode)
         {
+            // todo check for operators belonging to expression
+            WordBinaryOperator leftOperator = ((CodeElement)leftExprCode).WordParser as WordBinaryOperator;
+            WordBinaryOperator rightOpSymbol = rightOpCode.WordParser as WordBinaryOperator;
+
             // is the insertpoint a value
-            if (!IsBinaryOperator(leftExprCode))
+            //            if (!IsBinaryOperator(leftExprCode))
+            if (leftOperator == null)
             {
                 // insert 
                 TreeNode parent = leftExprCode.Parent;
@@ -241,9 +178,6 @@ namespace IntoTheCode.Read.Element
                 parent.ReplaceSubElement(leftExprCode, rightOpCode);
                 return;
             }
-
-            // todo check for operators belonging to expression
-            WordBinaryOperator leftOperator = ((CodeElement)leftExprCode).WordParser as WordBinaryOperator;
 
             // if the insertPoint has higther precedence
             if (leftOperator.Precedence > rightOpSymbol.Precedence)
@@ -258,11 +192,11 @@ namespace IntoTheCode.Read.Element
 
             // if the insertPoint has lower precedence
             if (leftOperator.Precedence < rightOpSymbol.Precedence)
-                AddOperationToTree(leftExprCode.SubElements[1] as CodeElement, rightOpCode, rightOpSymbol, rightExprCode);
+                AddOperationToTree(leftExprCode.SubElements[1] as CodeElement, rightOpCode, rightExprCode);
 
             // if the insertPoint has same precedence and operator is rigth associative
             else if (rightOpSymbol.RightAssociative)
-                AddOperationToTree(leftExprCode.SubElements[1] as CodeElement, rightOpCode, rightOpSymbol, rightExprCode);
+                AddOperationToTree(leftExprCode.SubElements[1] as CodeElement, rightOpCode, rightExprCode);
 
             // if the insertPoint has same precedence and operator is left associative
             else
@@ -274,11 +208,6 @@ namespace IntoTheCode.Read.Element
                 parent.ReplaceSubElement(leftExprCode, rightOpCode);
                 return;
             }
-        }
-
-        private bool IsBinaryOperator(CodeElement treeNode)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>Load a value. Inclusive const, variables and unary operators.</summary>

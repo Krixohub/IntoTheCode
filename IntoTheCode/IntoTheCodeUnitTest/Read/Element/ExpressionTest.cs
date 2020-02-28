@@ -5,6 +5,7 @@ using IntoTheCode.Read.Element.Words;
 using IntoTheCode.Read;
 using IntoTheCode;
 using IntoTheCode.Buffer;
+using System.Collections.Generic;
 
 namespace IntoTheCodeUnitTest.Read.Element
 {
@@ -56,17 +57,41 @@ namespace IntoTheCodeUnitTest.Read.Element
         public void ExpressionGrammar()
         {
             // Set grammar
-            string grammar = @"exp =  exp '*' exp | identifier;";
+            string grammar = @"exp =  exp '*' exp | exp '+' exp | identifier;";
             var parser = new Parser(grammar);
             //ParserStatus proces;
             CodeDocument doc;
-            string errMsg1;
+            string errMsg;
 
-            // What the parser CAN read
+            // Simple expression
             TextBuffer buf = new FlatBuffer("a * b");
-            doc = parser.ParseString(buf); ;
-            Assert.IsNotNull(doc, "doc er null " + buf.Status.Error.Message);
-            Assert.IsNull(buf.Status.Error, "Parse error");
+            doc = parser.ParseString(buf);
+            errMsg = buf.Status.Error?.Message;
+            Assert.IsNotNull(doc, "doc er null " + errMsg??"");
+
+            CodeDocument expectDoc = new CodeDocument(new List<CodeElement>(), null) { Name = "exp" };
+            expectDoc.AddElement(new HardElement("*", "",
+                new HardElement("identifier", "a"),
+                new HardElement("identifier", "b")));
+            string expect = expectDoc.ToMarkup();
+            string actual = doc.ToMarkup();
+            Assert.AreEqual(string.Empty, CodeDocument.CompareCode(doc, expectDoc), "Expression AST Simple");
+
+            // double expression
+            buf = new FlatBuffer("a * b + c");
+            doc = parser.ParseString(buf);
+            errMsg = buf.Status.Error?.Message;
+            Assert.IsNotNull(doc, "doc er null " + errMsg ?? "");
+
+            expectDoc = new CodeDocument(new List<CodeElement>(), null) { Name = "exp" };
+            expectDoc.AddElement(new HardElement("+", "",
+                new HardElement("*", "",
+                    new HardElement("identifier", "a"),
+                    new HardElement("identifier", "b")),
+                new HardElement("identifier", "c")));
+            expect = expectDoc.ToMarkup();
+            actual = doc.ToMarkup();
+            Assert.AreEqual(string.Empty, CodeDocument.CompareCode(doc, expectDoc), "Expression AST double operation");
 
         }
     }

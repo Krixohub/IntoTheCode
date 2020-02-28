@@ -21,7 +21,7 @@ namespace IntoTheCode.Read.Element.Words
 
         protected internal override string GetValue(TextSubString ptr) { return _value; }
         
-        public override string GetGrammar() { return "'" + Value + "'"; }
+        public override string GetGrammar() { return "'" + _value + "'"; }
         
         //protected override string Read(int begin, ITextBuffer buffer) { return ""; }
 
@@ -29,10 +29,10 @@ namespace IntoTheCode.Read.Element.Words
         {
             SkipWhiteSpace();
             int from = TextBuffer.PointerNextChar;
-            if (TextBuffer.IsEnd(Value.Length))
+            if (TextBuffer.IsEnd(_value.Length))
                 return false;// SetPointerBack(proces, from, this);
 
-            foreach (char ch in Value)
+            foreach (char ch in _value)
                 if ((TextBuffer.GetChar() == ch))
                     TextBuffer.IncPointer();
                 else
