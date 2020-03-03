@@ -14,15 +14,53 @@ namespace IntoTheCode.Read.Element.Words
             Name = MetaParser.WordSymbol_;
         }
 
+        /// <summary>Only if this symbol is transformed to an binary operator.</summary>
+        public int Precedence { get; internal set; }
+
+        /// <summary>Only if this symbol is transformed to an binary operator.</summary>
+        public bool RightAssociative { get; internal set; }
+
+        /// <summary>Override this to set a property from grammar.</summary>
+        /// <param name="property">CodeElement with property name.</param>
+        /// <param name="value">Value string.</param>
+        /// <param name="status">If error add to this.</param>
+        /// <returns>True: property set. False: not set.</returns>
+        public override bool SetProperty(CodeElement property, string value, ParserStatus status)
+        {
+            if (property.Value == nameof(Precedence))
+            {
+                int val;
+                if (int.TryParse(value, out val) && (val > 0))
+                {
+                    Precedence = val;
+                    return true;
+                }
+                else
+                    status.AddBuildError(() => MessageRes.pb10, property);
+            }
+            if (property.Value == nameof(RightAssociative))
+            {
+                RightAssociative = value != "false";
+                return true;
+            }
+
+            return false;
+        }
+
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
-            return new WordSymbol(_value) { Name = Name, TextBuffer = buffer };
+            return new WordSymbol(_value) {
+                Name = Name,
+                TextBuffer = buffer,
+                Precedence = this.Precedence,
+                RightAssociative = this.RightAssociative
+            };
         }
 
         protected internal override string GetValue(TextSubString ptr) { return _value; }
         
         public override string GetGrammar() { return "'" + _value + "'"; }
-        
+
         //protected override string Read(int begin, ITextBuffer buffer) { return ""; }
 
         public override bool Load(List<CodeElement> outElements, int level)

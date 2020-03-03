@@ -286,6 +286,15 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value of property &apos;{0}&apos; must be a positive integer.
+        /// </summary>
+        public static string pb10 {
+            get {
+                return ResourceManager.GetString("pb10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Grammar error ({0}). Expecting identifier, found EOF..
         /// </summary>
         public static string pe01 {

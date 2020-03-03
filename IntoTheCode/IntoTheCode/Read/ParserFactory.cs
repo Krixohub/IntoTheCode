@@ -30,8 +30,8 @@ namespace IntoTheCode.Read
                 string debug2 = debug1 + rule.GetGrammar();
             }
 
-            return InitializeGrammar(parser, parser.Rules, status) &&
-                    ApplySettingsFromGrammar(parser, doc, status) &&
+            return ApplySettingsFromGrammar(parser, doc, status) &&
+                    InitializeGrammar(parser, parser.Rules, status) &&
                     ValidateGrammar(parser, status);
         }
 
@@ -145,7 +145,7 @@ namespace IntoTheCode.Read
             foreach (Rule rule in rules)
                 InitializeElements(rule.SubElements.OfType<ParserElementBase>(), rules, status);
 
-            // todo: Initialize expressions here
+            // Transformation of syntax: Initialize expressions here
             foreach (Rule rule in rules)
             {
                 Or or = rule.SubElements[0] as Or;
@@ -217,9 +217,8 @@ namespace IntoTheCode.Read
                             rule.Collapse = propValue != "false";
                             break;
                         default:
-                            ok = false;
-                            foreach (ParserElementBase item in rule.SubElements)
-                                ok = ok | item.SetProperty(propName.Value, propValue);
+                            // set the property on rule or sub elements.
+                            ok = rule.SetProperty(propName, propValue, status);
 
                             // todo alter message to reflect above.
                             if (!ok)

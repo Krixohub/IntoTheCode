@@ -29,12 +29,17 @@ namespace IntoTheCode.Read.Element
         public abstract ParserElementBase CloneForParse(TextBuffer buffer);
 
         /// <summary>Override this to set a property from grammar.</summary>
-        /// <param name="property">Property name.</param>
+        /// <param name="property">CodeElement with property name.</param>
         /// <param name="value">Value string.</param>
+        /// <param name="status">If error add to this.</param>
         /// <returns>True: property set. False: not set.</returns>
-        public virtual bool SetProperty(string property, string value)
+        public virtual bool SetProperty(CodeElement property, string value, ParserStatus status)
         {
-            return false;
+            bool ok = false;
+            foreach (ParserElementBase item in SubElements)
+                ok = ok | item.SetProperty(property, value, status);
+
+            return ok;
         }
 
         public override string GetValue() { return _value; }

@@ -67,6 +67,7 @@ namespace IntoTheCode.Read.Element
             // of the rules set to the same.
             TextBuffer = or.TextBuffer;
             AddAlternatives(ExprRule, or);
+            SetPrecedence();
         }
 
         private void AddAlternatives(Rule ExprRule, ParserElementBase alternative)
@@ -84,11 +85,67 @@ namespace IntoTheCode.Read.Element
             WordSymbol symbol = null;
             Rule rule = null;
             if (IsBinaryAlternative(ExprRule, alternative, out symbol, out rule))
-                _binaryOperators.Add(new WordBinaryOperator(symbol.Value, rule != null ? rule.Name : symbol.Value, TextBuffer));
+                _binaryOperators.Add(new WordBinaryOperator(symbol, rule != null ? rule.Name : symbol.Value, TextBuffer));
             
             // Other forms
             else 
                 _otherForms.Add(alternative);
+        }
+
+        /// <summary>
+        /// Set precedence for binary operators.
+        /// Operators with precendence set are ordered by this.
+        /// Operators without precedence are ordered according to the position in syntax.
+        /// </summary>
+        internal void SetPrecedence()
+        {
+            // list of Operators with precendence set 
+            List<WordBinaryOperator> preSet = _binaryOperators.
+                Where(o => o.Precedence > 0).
+                OrderByDescending(o => o.Precedence).ToList();
+
+            int preSetIndex = 0;
+            int preSetPre = preSet.Count > 0 ? preSet[0].Precedence + 1 : 0;
+            int loopIndex = 0;
+            int newPrecedence = _binaryOperators.Count;
+            while (loopIndex < _binaryOperators.Count)
+            {
+                if (_binaryOperators[loopIndex].Precedence == 0)
+                    _binaryOperators[loopIndex].Precedence = newPrecedence;
+                else
+                {
+                    bool allreadySet = false;
+                    for (int i = 0; i < preSetIndex; i++)
+                        allreadySet = allreadySet || _binaryOperators[loopIndex] == preSet[i];
+
+                    if (allreadySet)
+                    {
+                        loopIndex++;
+                        continue;
+                    }
+                    else
+                    {
+                        int loopPre = _binaryOperators[loopIndex].Precedence;
+                        int preSetNext = preSet[preSetIndex].Precedence;
+                        while (preSetIndex < preSet.Count)
+                        {
+                            preSetPre = preSetNext;
+                            if (preSetPre < loopPre) break;
+                            preSet[preSetIndex].Precedence = newPrecedence;
+                            preSetIndex++;
+                            preSetNext = preSet.Count > preSetIndex ? preSet[preSetIndex].Precedence : 0;
+                            if (preSetIndex < preSet.Count &&
+                                preSetPre > preSetNext &&
+                                preSetNext >= loopPre)
+                                newPrecedence--;
+
+                        }
+                    }
+                }
+
+                newPrecedence--;
+                loopIndex++;
+            }
         }
 
         internal static bool IsBinaryAlternative(Rule ExprRule, ParserElementBase alternative, out WordSymbol symbol, out Rule rule)

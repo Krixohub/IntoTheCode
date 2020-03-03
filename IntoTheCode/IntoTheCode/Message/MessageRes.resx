@@ -216,4 +216,7 @@
   <data name="pe07" xml:space="preserve">
     <value>Grammar error ({0}). Expecting symbol '{1}', found '{2}'</value>
   </data>
+  <data name="pb10" xml:space="preserve">
+    <value>The value of property '{0}' must be a positive integer</value>
+  </data>
 </root>
