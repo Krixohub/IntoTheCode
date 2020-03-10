@@ -35,10 +35,14 @@ namespace IntoTheCode.Read.Element.Struckture
 
         public override bool Load(List<CodeElement> outElements, int level)
         {
+            SkipWhiteSpace();
+            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
+
             if (!base.Load(outElements, level))
                 return false;
 
-            var element = new CodeElement(this, null);
+            subStr.To = TextBuffer.PointerNextChar;
+            var element = new CodeElement(this, subStr);
             outElements.Add(element);
 
             return true;

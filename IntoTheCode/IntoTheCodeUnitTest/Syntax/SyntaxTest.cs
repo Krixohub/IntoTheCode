@@ -13,6 +13,7 @@ using IntoTheCode.Read.Element.Words;
 using IntoTheCode.Message;
 using System.Linq.Expressions;
 using IntoTheCode.Basic.Util;
+using IntoTheCodeUnitTest.Read;
 
 namespace TestCodeInternal.UnitTest
 {
@@ -176,7 +177,7 @@ namespace TestCodeInternal.UnitTest
             var hardcodeParser = MetaParser.GetHardCodeParser(status);
             string actual = hardcodeParser.GetGrammar();
             string expect = GetExpectHardCodeGrammar();
-            string msg = CompareTextLines(actual, expect);
+            string msg = Util.CompareTextLines(actual, expect);
             Assert.AreEqual(string.Empty, msg, "Hardcode grammar diff error");
 
         }
@@ -191,9 +192,9 @@ namespace TestCodeInternal.UnitTest
             var parser = new Parser(MetaParser.SoftMetaGrammarAndSettings);
             actual1 = parser.GetGrammar();              // Test Meta grammar after after compilation in a Parser.
             actual2 = MetaParser.Instance.GetGrammar(); // Test Meta grammar in internal Parser.
-            msg = CompareTextLines(actual1, expect);
+            msg = Util.CompareTextLines(actual1, expect);
             Assert.AreEqual(string.Empty, msg, "Meta grammar diff error");
-            msg = CompareTextLines(actual2, expect);
+            msg = Util.CompareTextLines(actual2, expect);
             Assert.AreEqual(string.Empty, msg, "Meta grammar internal diff error");
 
             // Compare generated CodeDocument with 'selected nodes'
@@ -278,7 +279,7 @@ settings fid trust; fstr trust; fsym trust;";
                 errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
             }
-            AreEqualResPos("EOF error", 1, 3, errMsg1, () => MessageRes.p05);
+            Util.ParseErrorResPos("EOF error", 1, 3, errMsg1, () => MessageRes.p05);
 
             string stx = parser.GetGrammar();
 
@@ -291,7 +292,7 @@ settings fid trust; fstr trust; fsym trust;";
                 errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
             }
-            AreEqualResPos("Ident EOF error", 1, 4, errMsg1, () => MessageRes.pe01, "failId");
+            Util.ParseErrorResPos("Ident EOF error", 1, 4, errMsg1, () => MessageRes.pe01, "failId");
 
             // Read 'identifier', not allowed first letter.
             errMsg1 = null;
@@ -302,7 +303,7 @@ settings fid trust; fstr trust; fsym trust;";
                 errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
             }
-            AreEqualResPos("Ident first letter error", 1, 4, errMsg1, () => MessageRes.pe02, "failId");
+            Util.ParseErrorResPos("Ident first letter error", 1, 4, errMsg1, () => MessageRes.pe02, "failId");
 
             // Read 'string', EOF error.
             errMsg1 = null;
@@ -313,7 +314,7 @@ settings fid trust; fstr trust; fsym trust;";
                 errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
             }
-            AreEqualResPos("String EOF error", 1, 8, errMsg1, () => MessageRes.pe03, "failStr");
+            Util.ParseErrorResPos("String EOF error", 1, 8, errMsg1, () => MessageRes.pe03, "failStr");
 
 
 
@@ -329,7 +330,7 @@ settings fid trust; fstr trust; fsym trust;";
                 errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
             }
-            AreEqualResPos("String not found error", 1, 8, errMsg1, () => MessageRes.pe04, "failStr");
+            Util.ParseErrorResPos("String not found error", 1, 8, errMsg1, () => MessageRes.pe04, "failStr");
 
             // Read 'string', ending ' not found.
             errMsg1 = null;
@@ -340,7 +341,7 @@ settings fid trust; fstr trust; fsym trust;";
                 errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
             }
-            AreEqualResPos("String ending not found error", 1, 9, errMsg1, () => MessageRes.pe05, "failStr");
+            Util.ParseErrorResPos("String ending not found error", 1, 9, errMsg1, () => MessageRes.pe05, "failStr");
 
             // Read 'symbol', EOF error.
             errMsg1 = null;
@@ -351,7 +352,7 @@ settings fid trust; fstr trust; fsym trust;";
                 errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
             }
-            AreEqualResPos("Symbol EOF error", 1, 11, errMsg1, () => MessageRes.pe06, "failSym", "fail");
+            Util.ParseErrorResPos("Symbol EOF error", 1, 11, errMsg1, () => MessageRes.pe06, "failSym", "fail");
 
             // Read 'symbol',  error.
             errMsg1 = null;
@@ -362,14 +363,9 @@ settings fid trust; fstr trust; fsym trust;";
                 errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
             }
-            AreEqualResPos("Symbol error", 1, 8, errMsg1, () => MessageRes.pe07, "failSym", "fail", "faiL");
+            Util.ParseErrorResPos("Symbol error", 1, 8, errMsg1, () => MessageRes.pe07, "failSym", "fail", "faiL");
         }
 
-        private void AreEqualResPos(string errorName, int line, int col, string actual, Expression<Func<string>> resourceExpression, params object[] parm)
-        {
-            string expected = DotNetUtil.Msg(resourceExpression, parm) + " " + string.Format(MessageRes.LineAndCol, line, col);
-            Assert.AreEqual(expected, actual, errorName);
-        }
         private void AreEqualRes(string errorName, string actual, Expression<Func<string>> resourceExpression, params object[] parm)
         {
             string expected = DotNetUtil.Msg(resourceExpression, parm);
@@ -403,7 +399,7 @@ type = 'string'; ";
                 errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
             }
-            AreEqualResPos("missing seperator, EOF error", 1, 10, errMsg1, () => MessageRes.pe06, "cmd", ";");
+            Util.ParseErrorResPos("missing seperator, EOF error", 1, 10, errMsg1, () => MessageRes.pe06, "cmd", ";");
 
             // Error: Missing ';'.
             errMsg1 = null;
@@ -414,7 +410,7 @@ type = 'string'; ";
                 errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
             }
-            AreEqualResPos("missing seperator", 1, 10, errMsg1, () => MessageRes.pe07, "cmd", ";", "d");
+            Util.ParseErrorResPos("missing seperator", 1, 10, errMsg1, () => MessageRes.pe07, "cmd", ";", "d");
         }
 
         /// <summary>Test different types of grammar build error.</summary>
@@ -430,34 +426,34 @@ type = 'string'; ";
             errMsg2 = null;
             try { var parser = new Parser("stx = ':'; stx = identifier;"); }
             catch (ParserException e) { errMsg1 = e.AllErrors[0].Message; errMsg2 = e.Message; }
-            AreEqualResPos("Double rule, build error", 1, 1, errMsg1, () => MessageRes.pb05, "stx", "stx");
-            AreEqualResPos("Double rule, build error", 1, 12, errMsg2, () => MessageRes.pb05, "stx", "stx");
+            Util.ParseErrorResPos("Double rule, build error", 1, 1, errMsg1, () => MessageRes.pb05, "stx", "stx");
+            Util.ParseErrorResPos("Double rule, build error", 1, 12, errMsg2, () => MessageRes.pb05, "stx", "stx");
 
             // identifier not found
             errMsg1 = null;
             try { var parser = new Parser("stx = hans ;"); }
             catch (ParserException e) { errMsg1 = e.Message; }
-            AreEqualResPos("identifier not found, build error", 1, 7, errMsg1, () => MessageRes.pb06, "hans");
+            Util.ParseErrorResPos("identifier not found, build error", 1, 7, errMsg1, () => MessageRes.pb06, "hans");
 
             // settings identifier not found
             errMsg1 = null;
             try { var parser = new Parser("stx = ':'; settings hans collapse;"); }
             //                            "123456789012345678901
             catch (ParserException e) { errMsg1 = e.Message; }
-            AreEqualResPos("settings identifier not found, build error", 1, 21, errMsg1, () => MessageRes.pb07, "hans");
+            Util.ParseErrorResPos("settings identifier not found, build error", 1, 21, errMsg1, () => MessageRes.pb07, "hans");
 
             // settings prop not found
             errMsg1 = null;
             try { var parser = new Parser("stx = ':'; settings stx flip;"); }
             //                            "1234567890123456789012345
             catch (ParserException e) { errMsg1 = e.Message; }
-            AreEqualResPos("settings prop not found, build error", 1, 25, errMsg1, () => MessageRes.pb08, "stx", "flip");
+            Util.ParseErrorResPos("settings prop not found, build error", 1, 25, errMsg1, () => MessageRes.pb08, "stx", "flip");
 
             // First rule cant have tag=false
             errMsg1 = null;
             try { var parser = new Parser("stx = ':'; \r\n settings stx collapse; "); }
             catch (ParserException e) { errMsg1 = e.Message; }
-            AreEqualResPos("First rule cant have tag=false, build error", 1, 1, errMsg1, () => MessageRes.pb09, "stx");
+            Util.ParseErrorResPos("First rule cant have tag=false, build error", 1, 1, errMsg1, () => MessageRes.pb09, "stx");
 
             // todo find this error
             // grammar error expecting string ( 'false' )
@@ -467,7 +463,7 @@ type = 'string'; ";
             catch (ParserException e) { errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
                     }
-            AreEqualResPos(" grammar error", 2, 26, errMsg1, () => MessageRes.pe04, "value");
+            Util.ParseErrorResPos(" grammar error", 2, 26, errMsg1, () => MessageRes.pe04, "value");
         }
 
         #region utillity functions
@@ -701,30 +697,6 @@ value       = string;";
                     new HardElement("property", "collapse"))));
 
             return grammar;
-        }
-
-        /// <summary>Compare two strings. Line for line and char for char.</summary>
-        /// <returns>Empty string if equal. Message with line and char number if different.</returns>
-        private string CompareTextLines(string actual, string expect)
-        {
-            string[] sep = { "\r\n" };
-            string[] actualList = actual.Split(sep, StringSplitOptions.RemoveEmptyEntries);
-            string[] expectList = expect.Split(sep, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 0; i < actualList.Length; i++)
-            {
-                if (i == expectList.Length)
-                    return string.Format("Actual text has {0} lines, expected text only {1} lines", actualList.Length, expectList.Length);
-                for (int j = 0; j < actualList[i].Length; j++)
-                {
-                    if (expectList[i].Length <= j) return string.Format("Actual line {0} is shorter than expected", i + 1);
-                    if (actualList[i][j] != expectList[i][j])
-                        return string.Format("Difference in line {0}, at positien {1}: actual '{2}', expect '{3}'", i + 1, j + 1, actualList[i][j], expectList[i][j]);
-                }
-                if (expectList[i].Length > actualList[i].Length) return string.Format("Actual line {0} is longer than expected", i + 1);
-            }
-            if (actualList.Length < expectList.Length)
-                return string.Format("Actual text has only {0} lines, expected text {1} lines", actualList.Length, expectList.Length);
-            return string.Empty;
         }
 
         #endregion utillity functions

@@ -132,7 +132,7 @@ namespace IntoTheCode.Read.Element
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 
             if (Collapse)
-                 return TryLastSetAgain(last);
+                 return LoadSetFindLast(last);
 
             int rc = 0;
             if (last.Name != Name) return 0;
@@ -141,7 +141,7 @@ namespace IntoTheCode.Read.Element
                 rc = (SubElements[0] as ParserElementBase).LoadFindLast(last);
             else if (last.SubElements != null && last.SubElements.Count() > 0)
                 // if succes finding a deeper element, return true.
-                rc = TryLastSetAgain(last.SubElements.Last() as CodeElement);
+                rc = LoadSetFindLast(last.SubElements.Last() as CodeElement);
 
             return rc;
         }

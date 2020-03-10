@@ -41,7 +41,7 @@ namespace IntoTheCode.Read.Element
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int LoadFindLast(CodeElement last)
         {
-            return TryLastSetAgain(last);
+            return LoadSetFindLast(last);
         }
 
         public override bool LoadTrackError(ref int wordCount)

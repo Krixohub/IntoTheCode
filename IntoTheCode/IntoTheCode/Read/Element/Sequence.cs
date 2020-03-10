@@ -42,7 +42,7 @@ namespace IntoTheCode.Read.Element
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
-            int rc = TryLastSetAgain(last);
+            int rc = LoadSetFindLast(last);
 
             // If read ok, try to read further.
             if (rc == 2)

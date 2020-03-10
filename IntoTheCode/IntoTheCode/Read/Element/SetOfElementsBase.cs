@@ -53,7 +53,7 @@ namespace IntoTheCode.Read.Element
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        protected internal int TryLastSetAgain(CodeElement last)
+        protected internal int LoadSetFindLast(CodeElement last)
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 

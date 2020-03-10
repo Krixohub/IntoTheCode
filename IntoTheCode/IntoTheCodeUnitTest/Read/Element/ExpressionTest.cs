@@ -7,6 +7,8 @@ using IntoTheCode;
 using IntoTheCode.Buffer;
 using System.Collections.Generic;
 using IntoTheCode.Read.Element.Struckture;
+using IntoTheCodeUnitTest.Read;
+using IntoTheCode.Message;
 
 namespace IntoTheCodeUnitTest.Read.Element
 {
@@ -135,7 +137,7 @@ namespace IntoTheCodeUnitTest.Read.Element
   </*>
 </exp>
 ";
-            ExpressionGrammarParse("expr 1 Simple", grammar, code, expect);
+            Util.ExpressionGrammarParse("expr 1 Simple", grammar, code, expect);
 
             // --------------------------------- double expression ---------------------------------
             code = "a * b + c";
@@ -149,7 +151,7 @@ namespace IntoTheCodeUnitTest.Read.Element
   </+>
 </exp>
 ";
-            ExpressionGrammarParse("expr 2 double", grammar, code, expect);
+            Util.ExpressionGrammarParse("expr 2 double", grammar, code, expect);
 
             // --------------------------------- double expression swap ---------------------------------
             code = "a + b * c";
@@ -163,7 +165,7 @@ namespace IntoTheCodeUnitTest.Read.Element
   </+>
 </exp>
 ";
-            ExpressionGrammarParse("expr 3 double", grammar, code, expect);
+            Util.ExpressionGrammarParse("expr 3 swap", grammar, code, expect);
 
             // --------------------------------- 5 operator ---------------------------------
             // Set grammar
@@ -199,20 +201,78 @@ sub Precedence = '1';
   </gt>
 </exp>
 ";
-            ExpressionGrammarParse("expr 4 5 operator", grammar, code, expect);
+            Util.ExpressionGrammarParse("expr 4 5 operator", grammar, code, expect);
 
+            // --------------------------------- nested expression ----------------------------
+            // Set grammar
+            grammar = @"aaa = exp;exp = mul | sum | div | sub | gt | '(' exp ')' | identifier;
+mul = exp '*' exp;
+sum = exp '+' exp;
+div = exp '/' exp;
+sub = exp '-' exp;
+gt  = exp '>' exp;
+settings
+mul Precedence = '2';
+div Precedence = '2';
+sum Precedence = '1';
+sub Precedence = '1';
+exp collapse;
+";
+
+            code = "a + b * ( c - d)  > e / f ";
+            expect = @"<aaa>
+  <gt>
+    <sum>
+      <identifier>a</identifier>
+      <mul>
+        <identifier>b</identifier>
+        <sub>
+          <identifier>c</identifier>
+          <identifier>d</identifier>
+        </sub>
+      </mul>
+    </sum>
+    <div>
+      <identifier>e</identifier>
+      <identifier>f</identifier>
+    </div>
+  </gt>
+</aaa>
+";
+            Util.ExpressionGrammarParse("expr 5 nested", grammar, code, expect);
         }
 
-        private void ExpressionGrammarParse(string test, string grammar, string code, string expect)
+
+        [TestMethod]
+        public void ExpressionError()
         {
+
+            // --------------------------------- Simple expression ---------------------------------
+
+            // --------------------------------- 5 operator ---------------------------------
+            // Set grammar
+            string grammar = @"exp = mul | sum | div | sub | gt | '(' exp ')' | identifier;
+mul = exp '*' exp;
+sum = exp '+' exp;
+div = exp '/' exp;
+sub = exp '-' exp;
+gt  = exp '>' exp;
+settings
+mul Precedence = '2';
+div Precedence = '2';
+sum Precedence = '1';
+sub Precedence = '1';
+";
+           
+            string code = "a + b * c - d  > e /  + f";
+            //            "12345678901234567890
             var parser = new Parser(grammar);
             var buf = new FlatBuffer(code);
             CodeDocument doc = parser.ParseString(buf);
             string errMsg = buf.Status.Error?.Message;
-            Assert.IsNotNull(doc, test + " doc er null " + errMsg ?? "");
-            string actual = doc.ToMarkup();
+            Util.ParseErrorResPos("EOF error", 1, 7, errMsg, () => MessageRes.p05);
 
-            Assert.AreEqual(expect, actual, test + " AST");
         }
+        
     }
 }

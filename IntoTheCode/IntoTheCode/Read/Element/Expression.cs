@@ -196,7 +196,10 @@ namespace IntoTheCode.Read.Element
             var operations = new List<CodeElement>();
             from = TextBuffer.PointerNextChar;
             while (LoadBinaryOperator(operations, level) && LoadValue(operations, level))
+            {
+                TextBuffer.Status.ThisIsUnambiguous(this, operations[operations.Count - 1]);
                 from = TextBuffer.PointerNextChar;
+            }
 
             // Set pointer back
             TextBuffer.PointerNextChar = from;
