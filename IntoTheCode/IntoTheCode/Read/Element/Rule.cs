@@ -129,7 +129,7 @@ namespace IntoTheCode.Read.Element
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
-            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
+            //TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 
             if (Collapse)
                  return LoadSetFindLast(last);
@@ -138,7 +138,17 @@ namespace IntoTheCode.Read.Element
             if (last.Name != Name) return 0;
 
             if (ElementContent == ElementContentType.OneValue)
-                rc = (SubElements[0] as ParserElementBase).LoadFindLast(last);
+            {
+                var item = SubElements[0] as ParserElementBase;
+                rc = item.LoadFindLast(last);
+
+                //// if 'Found-read ok' then track errors further.
+                //int wordCount = 0;
+                //if (rc == 2 &&
+                //    !item.LoadTrackError(ref wordCount))
+                //    return 1;
+
+            }
             else if (last.SubElements != null && last.SubElements.Count() > 0)
                 // if succes finding a deeper element, return true.
                 rc = LoadSetFindLast(last.SubElements.Last() as CodeElement);

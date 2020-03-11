@@ -270,7 +270,7 @@ sub Precedence = '1';
             var buf = new FlatBuffer(code);
             CodeDocument doc = parser.ParseString(buf);
             string errMsg = buf.Status.Error?.Message;
-            Util.ParseErrorResPos("EOF error", 1, 7, errMsg, () => MessageRes.p05);
+//            Util.ParseErrorResPos("EOF error", 1, 7, errMsg, () => MessageRes.p05);
 
         }
         

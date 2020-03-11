@@ -102,7 +102,8 @@ namespace IntoTheCode.Read.Element
         /// <summary>Find the Rule/ 'read element', that correspond to the
         /// last CodeElement, and read it again with error tracking.
         /// These recursive functions are initialy called from the parser, when
-        /// the parsing is failed. The unfinished part of the CodeDocument is used 
+        /// the parsing is failed without any identified errors. 
+        /// The unfinished part of the CodeDocument is used 
         /// to pin whitch element was the last to succeed AND reestablish a
         /// belonging chain of recursive calls. 
         /// From that point errors is tracked with the LoadTrackError function.
