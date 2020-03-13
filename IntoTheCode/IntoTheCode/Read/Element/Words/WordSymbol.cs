@@ -74,35 +74,22 @@ namespace IntoTheCode.Read.Element.Words
                 if ((TextBuffer.GetChar() == ch))
                     TextBuffer.IncPointer();
                 else
-                    return SetPointerBack(from, this);
+                    //return SetPointerBack(from, this);
+                    return SetPointerBack(from);
 
             return true;
         }
 
-        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int LoadFindLast(CodeElement last)
-        {
-            if (last.WordParser == this)
-            {
-                // found!
-                //TextBuffer.SetPointer(last.SubString.GetTo().Clone(a));
-                TextBuffer.PointerNextChar = last.SubString.To + a;
-                return 2;
-            }
-            return 0;
-        }
-
-        public override bool LoadTrackError(ref int wordCount)
+        public override bool ResolveErrorsForward()
         {
             SkipWhiteSpace();
             int from = TextBuffer.PointerNextChar;
-            int fromWordCount = wordCount;
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 
             if (TextBuffer.IsEnd(Value.Length))
             {
-                TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, wordCount, () => MessageRes.pe06, Value);
-                return SetPointerBackError(subStr.From, ref wordCount, fromWordCount);
+                TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe06, Value);
+                return SetPointerBack(subStr.From);
             }
 
             foreach (char ch in Value)
@@ -111,12 +98,23 @@ namespace IntoTheCode.Read.Element.Words
                 else
                 {
                     subStr.To = subStr.From + Value.Length;
-                    TextBuffer.Status.AddSyntaxError(this, subStr.From, wordCount, () => MessageRes.pe07, Value, TextBuffer.GetSubString(subStr));
-                    return SetPointerBackError(from, ref wordCount, fromWordCount);
+                    TextBuffer.Status.AddSyntaxError(this, subStr.From, 0, () => MessageRes.pe07, Value, TextBuffer.GetSubString(subStr));
+                    return SetPointerBack(subStr.From);
                 }
 
-            wordCount++;
             return true;
+        }
+
+        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
+        public override int ResolveErrorsLast(CodeElement last)
+        {
+            if (last.WordParser == this)
+            {
+                // found!
+                TextBuffer.PointerNextChar = last.SubString.To + a;
+                return 2;
+            }
+            return 0;
         }
     }
 }

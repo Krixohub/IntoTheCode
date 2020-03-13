@@ -30,14 +30,14 @@ namespace IntoTheCode.Read.Element
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int LoadFindLast(CodeElement last)
+        public override int ResolveErrorsLast(CodeElement last)
         {
-            return LoadSetFindLast(last);
+            return ResolveSetErrorsLast(last);
         }
 
-        public override bool LoadTrackError(ref int wordCount)
+        public override bool ResolveErrorsForward()
         {
-            return LoadSetTrackError(ref wordCount);
+            return ResolveSetErrorsForward();
         }
     }
 }

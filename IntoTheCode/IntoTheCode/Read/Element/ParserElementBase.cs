@@ -48,34 +48,19 @@ namespace IntoTheCode.Read.Element
 
         protected internal CodeElement DefinitionCodeElement;
 
-        //public byte Color
-        //{
-        //    get;
-        //    protected set;
-        //}
-
         /// <summary>If the element cant read; use this to reset (set pointer back):</summary>
         /// <param name="txtPtr">Pointer to set.</param>
         /// <returns>Always return false.</returns>
-        protected bool SetPointerBack(int txtPtr, ParserElementBase item)
+        public bool SetPointerBack(int txtPtr)
         {
             TextBuffer.PointerNextChar = txtPtr;
-            if (txtPtr.CompareTo(TextBuffer.Status.UnambiguousPointer) < 0 && TextBuffer.Status.Error == null)
+
+            // todo: Is the error fatal?
+            if (txtPtr < TextBuffer.Status.UnambiguousPointer && TextBuffer.Status.Error == null)
             {
-                int wordCount = 0; // count words from this point
-                LoadTrackError(ref wordCount);
+                ResolveErrorsForward();
             }
 
-            return false;
-        }
-
-        /// <summary>If the element cant read; use this to reset pointer, after an error has occured.</summary>
-        /// <param name="txtPtr">Pointer to set.</param>
-        /// <returns>Always return false.</returns>
-        protected bool SetPointerBackError(int txtPtr, ref int wordCount, int previusWordCount)
-        {
-            wordCount = previusWordCount;
-            TextBuffer.PointerNextChar = txtPtr;
             return false;
         }
 
@@ -92,16 +77,19 @@ namespace IntoTheCode.Read.Element
         /// <summary>
         /// Load/read an element from the buffer, and increase the buffer pointer if element is ok.
         /// Insert output in 'outElements'.
+        /// If loading fails the buffer pointer must be set back to previus point.
+        /// The Buffer.Status.UnambiguousPointer is a point of no return.
+        /// If the buffer pointer is set back before 'UnambiguousPointer'. Errors must be resolved.
         /// </summary>
         /// <param name="proces"></param>
         /// <param name="outElements">Read elements.</param>
         /// <returns>True = succes.</returns>
         public abstract bool Load(List<CodeElement> outElements, int level);
 
-
         /// <summary>Find the Rule/ 'read element', that correspond to the
         /// last CodeElement, and read it again with error tracking.
-        /// These recursive functions are initialy called from the parser, when
+        /// These recursive functions are initialy called from the parser
+        /// (or a SetOfElements), when
         /// the parsing is failed without any identified errors. 
         /// The unfinished part of the CodeDocument is used 
         /// to pin whitch element was the last to succeed AND reestablish a
@@ -110,14 +98,12 @@ namespace IntoTheCode.Read.Element
         /// </summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public abstract int LoadFindLast(CodeElement last);
+        public abstract int ResolveErrorsLast(CodeElement last);
 
-        /// <summary>
-        /// Load an element while storing possible errors.
+        /// <summary>Find errors in following syntax.
         /// </summary>
-        /// <param name="proces"></param>
-        /// <returns>True = succes.</returns>
-        public abstract bool LoadTrackError(ref int wordCount);
+        /// <returns>True = no error.</returns>
+        public abstract bool ResolveErrorsForward();
 
         // todo:2 consider remove this method to parser.
         internal protected void SkipWhiteSpace()

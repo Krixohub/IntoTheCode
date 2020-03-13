@@ -190,7 +190,9 @@ namespace IntoTheCode.Read.Element
             // Read a value first
             if (!LoadValue(outElements, level))
                 // if the expression does'nt start with a value; the intire expression fails.
-                return SetPointerBack(from, this);
+                //return SetPointerBack(from, this);
+                // todo: a value can be complex with an unambigous point.
+                return SetPointerBack(from);
 
             // Read following operations as alternately binary operators and values.
             var operations = new List<CodeElement>();
@@ -297,23 +299,14 @@ namespace IntoTheCode.Read.Element
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int LoadFindLast(CodeElement last)
+        public override int ResolveErrorsLast(CodeElement last)
         {
             // todo fra OR
-            int rc = (SubElements[0] as ParserElementBase).LoadFindLast(last);
+            int rc = (SubElements[0] as ParserElementBase).ResolveErrorsLast(last);
             if (rc < 2)
-                rc = (SubElements[1] as ParserElementBase).LoadFindLast(last);
+                rc = (SubElements[1] as ParserElementBase).ResolveErrorsLast(last);
 
             return rc;
-        }
-
-        public override bool LoadTrackError(ref int wordCount)
-        {
-            // todo fra OR
-            bool ok = (SubElements[0] as ParserElementBase).LoadTrackError(ref wordCount);
-            ok = ok || (SubElements[1] as ParserElementBase).LoadTrackError(ref wordCount);
-
-            return ok;
         }
     }
 }

@@ -51,7 +51,7 @@ namespace IntoTheCode.Read.Element.Words
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int LoadFindLast(CodeElement last)
+        public override int ResolveErrorsLast(CodeElement last)
         {
             if (last.WordParser == this)
             {
@@ -62,24 +62,23 @@ namespace IntoTheCode.Read.Element.Words
             return 0;
         }
 
-        public override bool LoadTrackError(ref int wordCount)
+        public override bool ResolveErrorsForward()
         {
             SkipWhiteSpace();
 
             int from = TextBuffer.PointerNextChar;
 
             if (TextBuffer.IsEnd(1))
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, wordCount, () => MessageRes.pe01); 
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe01);
 
             if (!AllowedCharsFirst.Contains(TextBuffer.GetChar().ToString().ToLower()))
-                return TextBuffer.Status.AddSyntaxError(this, from, wordCount, () => MessageRes.pe02); 
+                return TextBuffer.Status.AddSyntaxError(this, from, 0, () => MessageRes.pe02);
             else
                 TextBuffer.IncPointer();
 
             while (!TextBuffer.IsEnd() && AllowedCharsNext.Contains(TextBuffer.GetSubString(TextBuffer.PointerNextChar, 1).ToLower()))
             { TextBuffer.IncPointer(); }
 
-            wordCount++;
             return true;
         }
     }

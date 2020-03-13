@@ -39,7 +39,8 @@ namespace IntoTheCode.Read.Element.Words
             TextBuffer.SetToIndexOf(subStr, "'");
 
             if (!subStr.ToIsValid())
-                return SetPointerBack(from, this);
+                //return SetPointerBack(from, this);
+                return SetPointerBack(from);
 
             outElements.Add(new CodeElement(this, subStr));
             TextBuffer.PointerNextChar = subStr.To;
@@ -48,8 +49,38 @@ namespace IntoTheCode.Read.Element.Words
             return true;
         }
 
+        public override bool ResolveErrorsForward()
+        {
+            SkipWhiteSpace();
+            int from = TextBuffer.PointerNextChar;
+            //int fromWordCount = wordCount;
+
+            if (TextBuffer.IsEnd(2))
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe03);
+
+            if (TextBuffer.GetChar() != '\'')
+                return TextBuffer.Status.AddSyntaxError(this, from, 0, () => MessageRes.pe04);
+
+            TextBuffer.IncPointer();
+            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
+            TextBuffer.IncPointer();
+            TextBuffer.SetToIndexOf(subStr, "'");
+
+            if (!subStr.ToIsValid())
+            {
+                TextBuffer.Status.AddSyntaxError(this, from + 1, 0, () => MessageRes.pe05);
+                return SetPointerBack(from);
+            }
+
+            TextBuffer.PointerNextChar = subStr.To;
+            TextBuffer.IncPointer();
+
+            //wordCount++;
+            return true;
+        }
+
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int LoadFindLast(CodeElement last)
+        public override int ResolveErrorsLast(CodeElement last)
         {
             if (last.WordParser == this)
             {
@@ -60,34 +91,6 @@ namespace IntoTheCode.Read.Element.Words
             return 0;
         }
 
-        public override bool LoadTrackError(ref int wordCount)
-        {
-            SkipWhiteSpace();
-            int from = TextBuffer.PointerNextChar;
-            int fromWordCount = wordCount;
-
-            if (TextBuffer.IsEnd(2))
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, wordCount, () => MessageRes.pe03);
-
-            if (TextBuffer.GetChar() != '\'')
-                return TextBuffer.Status.AddSyntaxError(this, from, wordCount, () => MessageRes.pe04);
-
-            TextBuffer.IncPointer();
-            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
-            TextBuffer.IncPointer();
-            TextBuffer.SetToIndexOf(subStr, "'");
-
-            if (!subStr.ToIsValid())
-            {
-                TextBuffer.Status.AddSyntaxError(this, from + 1, wordCount, () => MessageRes.pe05);
-                return SetPointerBackError(from, ref wordCount, fromWordCount);
-            }
-
-            TextBuffer.PointerNextChar = subStr.To;
-            TextBuffer.IncPointer();
-
-            wordCount++;
-            return true;
-        }
+        
     }
 }

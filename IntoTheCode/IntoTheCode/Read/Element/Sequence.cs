@@ -30,7 +30,7 @@ namespace IntoTheCode.Read.Element
         public override bool Load(List<CodeElement> outElements, int level)
         {
             int p = TextBuffer.PointerNextChar;
-            while (LoadSet(outElements, level) && TextBuffer.PointerNextChar.CompareTo(p) > 0)
+            while (LoadSet(outElements, level) && TextBuffer.PointerNextChar > p)
                 p = TextBuffer.PointerNextChar;
             //TextBuffer.PointerNextChar.CopyTo(p);
 
@@ -38,31 +38,28 @@ namespace IntoTheCode.Read.Element
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int LoadFindLast(CodeElement last)
+        public override int ResolveErrorsLast(CodeElement last)
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
-            int rc = LoadSetFindLast(last);
+            int rc = ResolveSetErrorsLast(last);
 
             // If read ok, try to read further.
             if (rc == 2)
-            {
-                int wordCount = 0;
-                return LoadTrackError(ref wordCount) ? 2 : 1;
-            }
+                return ResolveErrorsForward() ? 2 : 1;
 
             return rc;
         }
 
-        public override bool LoadTrackError(ref int wordCount)
+        public override bool ResolveErrorsForward()
         {
             int p = TextBuffer.PointerNextChar;
-            while (LoadSetTrackError(ref wordCount) && TextBuffer.PointerNextChar.CompareTo(p) > 0)
+            while (ResolveSetErrorsForward() && TextBuffer.PointerNextChar > p)
                 p = TextBuffer.PointerNextChar;
-            //TextBuffer.PointerNextChar.CopyTo(p);
 
             return true;
         }
+
 
         public override string GetGrammar() { return "{" + base.GetGrammar() + "}"; }
     }

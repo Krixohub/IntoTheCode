@@ -113,7 +113,7 @@ namespace IntoTheCode.Read
                 {
                     CodeElement last = elements.Last();
                     string debug = last.ToMarkupProtected(string.Empty);
-                    procesRules[0].LoadFindLast(last);
+                    procesRules[0].ResolveErrorsLast(last);
                 }
                 buffer.Status.AddSyntaxErrorEof(() => MessageRes.p05);
             }

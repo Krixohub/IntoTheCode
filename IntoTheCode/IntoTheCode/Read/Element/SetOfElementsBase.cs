@@ -40,7 +40,7 @@ namespace IntoTheCode.Read.Element
             List<CodeElement> elements = new List<CodeElement>();
             foreach (var item in SubElements.OfType<ParserElementBase>())
                 if (!item.Load(elements, level))
-                    return SetPointerBack(from, item);
+                    return SetPointerBackSet(from, item, outElements);
 
             foreach (var item in elements)
                 outElements.Add(item);
@@ -48,12 +48,39 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
+        private bool SetPointerBackSet(int from, ParserElementBase failItem, List<CodeElement> outElements)
+        {
+            int ptrFail = TextBuffer.PointerNextChar;
+
+            // todo: Is the error fatal?
+            if (from < TextBuffer.Status.UnambiguousPointer && TextBuffer.Status.Error == null)
+            {
+                int failIndex = SubElements.IndexOf(failItem);
+
+                CodeElement last = outElements.LastOrDefault();
+                if (last != null)
+                    for (int i = failIndex - 1; i > -1; i--)
+                        if (((ParserElementBase)SubElements[i]).ResolveErrorsLast(last) != 0)
+                            break;
+
+                TextBuffer.PointerNextChar = ptrFail;
+
+                for (int i = failIndex; i < SubElements.Count; i++)
+                    if (!((ParserElementBase)SubElements[i]).ResolveErrorsForward())
+                        break;
+            }
+
+            TextBuffer.PointerNextChar = from;
+            return false;
+        }
+
+
         /// <summary>Find the Rule/ 'read element', that correspond to the
         /// last CodeElement, and read it again with error tracking. 
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        protected internal int LoadSetFindLast(CodeElement last)
+        protected internal int ResolveSetErrorsLast(CodeElement last)
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
@@ -63,25 +90,26 @@ namespace IntoTheCode.Read.Element
             {
                 wordCount = 0;
                 if (rc == 0)
-                    rc = item.LoadFindLast(last);
+                    rc = item.ResolveErrorsLast(last);
 
                 // if 'Found-read ok' then track errors further.
                 else if (rc == 2 &&
-                    !item.LoadTrackError(ref wordCount))
-                        return 1;
+                    !item.ResolveErrorsForward())
+                    //!item.LoadTrackError(ref wordCount))
+                    return 1;
             }
-            
+
             return rc;
         }
 
-        protected bool LoadSetTrackError(ref int wordCount)
+        public bool ResolveSetErrorsForward()
         {
             int from = TextBuffer.PointerNextChar;
-            List<WordBase> elements = new List<WordBase>();
-            foreach (var item in SubElements.OfType<ParserElementBase>())
-                if (!item.LoadTrackError(ref wordCount))
-                    return SetPointerBack(from, item);
 
+            foreach (var item in SubElements.OfType<ParserElementBase>())
+                if (!item.ResolveErrorsForward())
+                    //return SetPointerBack(from, item);
+                    return SetPointerBack(from);
             return true;
         }
 

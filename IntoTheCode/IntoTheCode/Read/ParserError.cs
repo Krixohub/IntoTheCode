@@ -5,6 +5,10 @@ namespace IntoTheCode.Read
 {
     public class ParserError
     {
+        public ParserError()
+        {
+            ErrorPoint = -1;
+        }
         public int ErrorPoint;
         public int WordCount; //?
         public int Line; //?

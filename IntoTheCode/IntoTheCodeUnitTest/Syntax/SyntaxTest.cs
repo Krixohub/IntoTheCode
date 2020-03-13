@@ -462,7 +462,7 @@ type = 'string'; ";
             //                             12345678901234\12345678901234567890123456
             catch (ParserException e) { errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
-                    }
+            }
             Util.ParseErrorResPos(" grammar error", 2, 26, errMsg1, () => MessageRes.pe04, "value");
         }
 

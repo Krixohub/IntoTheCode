@@ -114,7 +114,7 @@ namespace IntoTheCode.Read.Element
             }
 
             // If this is a 'division' set unambiguous
-            if (Trust && TextBuffer.PointerNextChar.CompareTo(subStr.From) > 0 && outElements.Count > 0)
+            if (Trust && TextBuffer.PointerNextChar > subStr.From && outElements.Count > 0)
                 TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
             return true;
 
@@ -125,52 +125,39 @@ namespace IntoTheCode.Read.Element
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int LoadFindLast(CodeElement last)
+        public override int ResolveErrorsLast(CodeElement last)
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
-            //TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
-
             if (Collapse)
-                 return LoadSetFindLast(last);
+                 return ResolveSetErrorsLast(last);
 
             int rc = 0;
             if (last.Name != Name) return 0;
 
             if (ElementContent == ElementContentType.OneValue)
-            {
-                var item = SubElements[0] as ParserElementBase;
-                rc = item.LoadFindLast(last);
-
-                //// if 'Found-read ok' then track errors further.
-                //int wordCount = 0;
-                //if (rc == 2 &&
-                //    !item.LoadTrackError(ref wordCount))
-                //    return 1;
-
-            }
+                rc = ((ParserElementBase)SubElements[0]).ResolveErrorsLast(last);
             else if (last.SubElements != null && last.SubElements.Count() > 0)
                 // if succes finding a deeper element, return true.
-                rc = LoadSetFindLast(last.SubElements.Last() as CodeElement);
+                rc = ResolveSetErrorsLast(last.SubElements.Last() as CodeElement);
 
             return rc;
         }
 
-        public override bool LoadTrackError(ref int wordCount)
+        public override bool ResolveErrorsForward()
         {
             int from = TextBuffer.PointerNextChar;
-            int fromWordCount = wordCount;
 
             if (Collapse)
-                return LoadSetTrackError(ref wordCount);
+                return ResolveSetErrorsForward();
 
-            if (ElementContent == ElementContentType.OneValue && 
-                !(SubElements[0] as ParserElementBase).LoadTrackError(ref wordCount))
-                    return SetPointerBackError(from, ref wordCount, fromWordCount);
+            if (ElementContent == ElementContentType.OneValue &&
+                !(SubElements[0] as ParserElementBase).ResolveErrorsForward())
+                return SetPointerBack(from);
 
-            if (ElementContent != ElementContentType.OneValue && 
-                !LoadSetTrackError(ref wordCount))
-                return SetPointerBackError(from, ref wordCount, fromWordCount);
+            else if (ElementContent != ElementContentType.OneValue &&
+                !ResolveSetErrorsForward())
+                return SetPointerBack(from);
 
             return true;
         }

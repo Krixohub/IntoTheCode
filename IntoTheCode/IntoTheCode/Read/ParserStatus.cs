@@ -41,7 +41,7 @@ namespace IntoTheCode.Read
             string error = DotNetUtil.Msg(resourceExpression, parm.Insert(element.GetRule(element).Name));
             //            AddSyntaxError( element,  errorPoint,  wordCount,  error);
             var err = new ParserError();
-            err.WordCount = wordCount;
+            err.WordCount = 0;
             err.ErrorPoint = errorPoint;
             err.Error = error;
 
@@ -122,11 +122,10 @@ namespace IntoTheCode.Read
             if (oldErr == null) return newErr;
 
             // Rank error with high point.
-            if (newErr.ErrorPoint != null)
+            if (newErr.ErrorPoint != -1)
             {
-                if (oldErr.ErrorPoint == null) return newErr;
-                int i = newErr.ErrorPoint.CompareTo(oldErr.ErrorPoint);
-                if (i < 0) return oldErr;
+                if (oldErr.ErrorPoint == -1) return newErr;
+                if (newErr.ErrorPoint < oldErr.ErrorPoint) return oldErr;
             }
 
             // Newest error ranks higher.

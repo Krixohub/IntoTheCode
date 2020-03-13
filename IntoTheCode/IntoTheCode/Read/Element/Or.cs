@@ -47,32 +47,32 @@ namespace IntoTheCode.Read.Element
         {
             int from = TextBuffer.PointerNextChar;
             var subs = new List<CodeElement>();
-            if (!(SubElements[0] as ParserElementBase).Load(subs, level) || from.CompareTo(TextBuffer.PointerNextChar) == 0)
+            if (!(SubElements[0] as ParserElementBase).Load(subs, level) || from == TextBuffer.PointerNextChar)
                 if (TextBuffer.Status.Error != null || 
                     (!(SubElements[1] as ParserElementBase).Load(subs, level) 
-                    || from.CompareTo(TextBuffer.PointerNextChar) == 0))
+                    || from == TextBuffer.PointerNextChar))
                     return false;
             
             outElements.AddRange(subs);
             return true;
         }
 
-        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int LoadFindLast(CodeElement last)
+        public override bool ResolveErrorsForward()
         {
-            int rc = (SubElements[0] as ParserElementBase).LoadFindLast(last);
-            if (rc < 2)
-                rc = (SubElements[1] as ParserElementBase).LoadFindLast(last);
-
-            return rc;
-        }
-
-        public override bool LoadTrackError(ref int wordCount)
-        {
-            bool ok = (SubElements[0] as ParserElementBase).LoadTrackError(ref wordCount);
-            ok = ok || (SubElements[1] as ParserElementBase).LoadTrackError(ref wordCount);
+            bool ok = (SubElements[0] as ParserElementBase).ResolveErrorsForward();
+            ok = ok || (SubElements[1] as ParserElementBase).ResolveErrorsForward();
 
             return ok;
+        }
+
+        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
+        public override int ResolveErrorsLast(CodeElement last)
+        {
+            int rc = (SubElements[0] as ParserElementBase).ResolveErrorsLast(last);
+            if (rc < 2)
+                rc = (SubElements[1] as ParserElementBase).ResolveErrorsLast(last);
+
+            return rc;
         }
     }
 }

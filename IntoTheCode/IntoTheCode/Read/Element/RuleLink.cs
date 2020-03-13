@@ -57,15 +57,15 @@ namespace IntoTheCode.Read.Element
             return RuleElement.Load(outElements, level + 1);
         }
 
-        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int LoadFindLast(CodeElement last)
+        public override bool ResolveErrorsForward()
         {
-            return RuleElement.LoadFindLast(last);
+            return RuleElement.ResolveErrorsForward();
         }
 
-        public override bool LoadTrackError(ref int wordCount)
+        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
+        public override int ResolveErrorsLast(CodeElement last)
         {
-            return RuleElement.LoadTrackError(ref wordCount);
+            return RuleElement.ResolveErrorsLast(last);
         }
     }
 }
