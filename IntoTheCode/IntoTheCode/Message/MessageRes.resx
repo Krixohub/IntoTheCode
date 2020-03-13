@@ -219,4 +219,7 @@
   <data name="pb10" xml:space="preserve">
     <value>The value of property '{0}' must be a positive integer</value>
   </data>
+  <data name="pe08" xml:space="preserve">
+    <value>Syntax error ({0}). Expecting value for expression.</value>
+  </data>
 </root>

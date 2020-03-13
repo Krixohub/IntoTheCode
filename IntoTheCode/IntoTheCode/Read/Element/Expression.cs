@@ -8,6 +8,7 @@ using IntoTheCode;
 using IntoTheCode.Read.Element;
 using IntoTheCode.Read.Element.Words;
 using IntoTheCode.Read.Element.Struckture;
+using IntoTheCode.Message;
 
 namespace IntoTheCode.Read.Element
 {
@@ -188,16 +189,17 @@ namespace IntoTheCode.Read.Element
             int from = TextBuffer.PointerNextChar;
 
             // Read a value first
-            if (!LoadValue(outElements, level))
+            if (!LoadValue(outElements, level, true))
                 // if the expression does'nt start with a value; the intire expression fails.
-                //return SetPointerBack(from, this);
                 // todo: a value can be complex with an unambigous point.
                 return SetPointerBack(from);
+
+            TextBuffer.Status.ThisIsUnambiguous(this, outElements[outElements.Count - 1]);
 
             // Read following operations as alternately binary operators and values.
             var operations = new List<CodeElement>();
             from = TextBuffer.PointerNextChar;
-            while (LoadBinaryOperator(operations, level) && LoadValue(operations, level))
+            while (LoadBinaryOperator(operations, level) && LoadValue(operations, level, false))
             {
                 TextBuffer.Status.ThisIsUnambiguous(this, operations[operations.Count - 1]);
                 from = TextBuffer.PointerNextChar;
@@ -273,15 +275,31 @@ namespace IntoTheCode.Read.Element
         }
 
         /// <summary>Load a value. Inclusive const, variables and unary operators.</summary>
-        /// <param name="outElements">The value is added to this list.</param>
+        /// <param name="operations">The value is added to this list.</param>
         /// <param name="level">Level of rule links.</param>
         /// <returns>True if succes.</returns>
-        private bool LoadValue(List<CodeElement> outElements, int level)
+        private bool LoadValue(List<CodeElement> operations, int level, bool first)
         {
+            if (!first)
+            {
+                TextBuffer.Status.ThisIsUnambiguous(this, operations[operations.Count - 1]);
+
+            }
+
             // Read a value 
             foreach (var item in _otherForms)
-                if (item.Load(outElements, level + 1))
+                if (item.Load(operations, level + 1))
                     return true;
+
+            if (!first)
+            //if (from < TextBuffer.Status.UnambiguousPointer && TextBuffer.Status.Error == null)
+            {
+                // Read a value 
+                foreach (var item in _otherForms)
+                    item.ResolveErrorsForward();
+
+                TextBuffer.Status.AddParseError(() => MessageRes.pe08, GetRule(this).Name);
+            }
             return false;
         }
 
@@ -297,6 +315,18 @@ namespace IntoTheCode.Read.Element
                     return true;
             return false;
         }
+
+        public bool ResolveErrorsValue()
+        {
+            int from = TextBuffer.PointerNextChar;
+
+            foreach (var item in SubElements.OfType<ParserElementBase>())
+                if (!item.ResolveErrorsForward())
+                    //return SetPointerBack(from, item);
+                    return SetPointerBack(from);
+            return true;
+        }
+
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int ResolveErrorsLast(CodeElement last)

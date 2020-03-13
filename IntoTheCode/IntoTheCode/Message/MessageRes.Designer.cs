@@ -358,6 +358,15 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting value for expression..
+        /// </summary>
+        public static string pe08 {
+            get {
+                return ResourceManager.GetString("pe08", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Something terrible with {0} has happened.
         /// </summary>
         public static string SomeError {
