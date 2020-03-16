@@ -53,8 +53,8 @@ namespace IntoTheCode.Read.Element
         //private List<ParserElementBase> _values = new List<ParserElementBase>();
 
         /// <summary>Creator for <see cref="Expression"/>.</summary>
-        internal Expression(Rule ExprRule, Or or) : 
-            base ((ParserElementBase)or.SubElements[0], (ParserElementBase)or.SubElements[1]) 
+        internal Expression(Rule ExprRule, Or or) :
+            base((ParserElementBase)or.SubElements[0], (ParserElementBase)or.SubElements[1])
         {
             // The elements in the base class are only used for getting the grammar and cloning.
 
@@ -87,9 +87,9 @@ namespace IntoTheCode.Read.Element
             Rule rule = null;
             if (IsBinaryAlternative(ExprRule, alternative, out symbol, out rule))
                 _binaryOperators.Add(new WordBinaryOperator(symbol, rule != null ? rule.Name : symbol.Value, TextBuffer));
-            
+
             // Other forms
-            else 
+            else
                 _otherForms.Add(alternative);
         }
 
@@ -183,7 +183,7 @@ namespace IntoTheCode.Read.Element
             symbol = null;
             return false;
         }
-        
+
         public override bool Load(List<CodeElement> outElements, int level)
         {
             int from = TextBuffer.PointerNextChar;
@@ -281,10 +281,7 @@ namespace IntoTheCode.Read.Element
         private bool LoadValue(List<CodeElement> operations, int level, bool first)
         {
             if (!first)
-            {
                 TextBuffer.Status.ThisIsUnambiguous(this, operations[operations.Count - 1]);
-
-            }
 
             // Read a value 
             foreach (var item in _otherForms)
@@ -292,14 +289,16 @@ namespace IntoTheCode.Read.Element
                     return true;
 
             if (!first)
-            //if (from < TextBuffer.Status.UnambiguousPointer && TextBuffer.Status.Error == null)
             {
+                // Expects a value
+                TextBuffer.Status.AddParseError(() => MessageRes.pe08, GetRule(this).Name);
+
                 // Read a value 
                 foreach (var item in _otherForms)
                     item.ResolveErrorsForward();
 
-                TextBuffer.Status.AddParseError(() => MessageRes.pe08, GetRule(this).Name);
             }
+
             return false;
         }
 
@@ -316,27 +315,44 @@ namespace IntoTheCode.Read.Element
             return false;
         }
 
-        public bool ResolveErrorsValue()
-        {
-            int from = TextBuffer.PointerNextChar;
-
-            foreach (var item in SubElements.OfType<ParserElementBase>())
-                if (!item.ResolveErrorsForward())
-                    //return SetPointerBack(from, item);
-                    return SetPointerBack(from);
-            return true;
-        }
-
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int ResolveErrorsLast(CodeElement last)
         {
-            // todo fra OR
-            int rc = (SubElements[0] as ParserElementBase).ResolveErrorsLast(last);
-            if (rc < 2)
-                rc = (SubElements[1] as ParserElementBase).ResolveErrorsLast(last);
+
+            last = ResolveErrorsLastFind(last);
+            // The 'last' element will always be a value. 
+            // Search for the value reader.
+
+            //string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
+
+            int rc = 0;
+            foreach (var item in _otherForms)
+            {
+                if (rc == 0)
+                    rc = item.ResolveErrorsLast(last);
+                else if (rc == 2 &&
+                    !item.ResolveErrorsForward())
+                    return 1;
+            }
+
+            // 
+            if (rc == 2)
+                TextBuffer.Status.AddParseError(() => MessageRes.pe09, GetRule(this).Name);
+
 
             return rc;
+        }
+
+        private CodeElement ResolveErrorsLastFind(CodeElement last)
+        {
+            // if the element is a operator get the right value to find the last
+            bool isOp = _binaryOperators.Any(op => last.WordParser == op);
+
+            if (isOp)
+                return ResolveErrorsLastFind(last.SubElements[1] as CodeElement);
+            else
+                return last;
         }
     }
 }

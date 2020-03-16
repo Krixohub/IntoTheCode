@@ -263,16 +263,25 @@ div Precedence = '2';
 sum Precedence = '1';
 sub Precedence = '1';
 ";
-           
+
             string code = "a + b * c - d  > e /  + f";
-            //            "12345678901234567890
+            //            "12345678901234567890123
             var parser = new Parser(grammar);
             var buf = new FlatBuffer(code);
             CodeDocument doc = parser.ParseString(buf);
             string errMsg = buf.Status.Error?.Message;
-//            Util.ParseErrorResPos("EOF error", 1, 7, errMsg, () => MessageRes.p05);
+            Util.ParseErrorResPos("EOF error", 1, 23, errMsg, () => MessageRes.pe08, "exp");
+            //pe08: Syntax error (exp). Expecting value for expression. Line 1, colomn 23
+
+            code = "a + b * c - d  > e &  + f";
+            //     "12345678901234567890123
+            buf = new FlatBuffer(code);
+            doc = parser.ParseString(buf);
+            errMsg = buf.Status.Error?.Message;
+            Util.ParseErrorResPos("EOF error", 1, 19, errMsg, () => MessageRes.pe09, "exp");
+            //p05: End of input not reached. Line 1, colomn 20
 
         }
-        
+
     }
 }

@@ -19,7 +19,7 @@ namespace IntoTheCode.Message {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MessageRes {
@@ -363,6 +363,15 @@ namespace IntoTheCode.Message {
         public static string pe08 {
             get {
                 return ResourceManager.GetString("pe08", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting operator for expression..
+        /// </summary>
+        public static string pe09 {
+            get {
+                return ResourceManager.GetString("pe09", resourceCulture);
             }
         }
         

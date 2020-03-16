@@ -76,7 +76,7 @@ namespace IntoTheCode.Read.Element
 
 
         /// <summary>Find the Rule/ 'read element', that correspond to the
-        /// last CodeElement, and read it again with error tracking. 
+        /// last CodeElement, and read it again with error resolving. 
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
@@ -84,11 +84,9 @@ namespace IntoTheCode.Read.Element
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
-            int wordCount;
             int rc = 0;
             foreach (var item in SubElements.OfType<ParserElementBase>())
             {
-                wordCount = 0;
                 if (rc == 0)
                     rc = item.ResolveErrorsLast(last);
 

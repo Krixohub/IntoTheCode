@@ -87,7 +87,7 @@ namespace IntoTheCode.Read.Element
         public abstract bool Load(List<CodeElement> outElements, int level);
 
         /// <summary>Find the Rule/ 'read element', that correspond to the
-        /// last CodeElement, and read it again with error tracking.
+        /// last CodeElement, and read it again with error resolving.
         /// These recursive functions are initialy called from the parser
         /// (or a SetOfElements), when
         /// the parsing is failed without any identified errors. 

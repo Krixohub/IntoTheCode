@@ -125,7 +125,7 @@ namespace IntoTheCode.Read
             if (newErr.ErrorPoint != -1)
             {
                 if (oldErr.ErrorPoint == -1) return newErr;
-                if (newErr.ErrorPoint < oldErr.ErrorPoint) return oldErr;
+                if (newErr.ErrorPoint <= oldErr.ErrorPoint) return oldErr;
             }
 
             // Newest error ranks higher.

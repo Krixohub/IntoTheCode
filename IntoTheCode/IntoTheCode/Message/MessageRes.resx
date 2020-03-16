@@ -222,4 +222,7 @@
   <data name="pe08" xml:space="preserve">
     <value>Syntax error ({0}). Expecting value for expression.</value>
   </data>
+  <data name="pe09" xml:space="preserve">
+    <value>Syntax error ({0}). Expecting operator for expression.</value>
+  </data>
 </root>
