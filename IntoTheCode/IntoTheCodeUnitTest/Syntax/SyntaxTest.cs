@@ -25,7 +25,8 @@ namespace TestCodeInternal.UnitTest
         {
             // test loading of basic grammar elements
             // load varname
-            TextBuffer textBuffer = new FlatBuffer("  sym01  ");
+            TextBuffer textBuffer = Util.NewBufferWs("  sym01  ");
+
             //            reader.TextBuffer = new FlatBuffer("  sym01  ");
             //var buf = new FlatBuffer("  sym01  ");
             var outNo = new List<CodeElement>();
@@ -37,10 +38,10 @@ namespace TestCodeInternal.UnitTest
             Assert.AreEqual("kurt", node.Name, "Identifier: The name is not correct");
             Assert.AreEqual(2, ((TextSubString)node.SubString).From, "Identifier: The start is not correct");
             Assert.AreEqual(7, ((TextSubString)node.SubString).To, "Identifier: The end is not correct");
-            Assert.AreEqual(7, textBuffer.PointerNextChar, "Identifier: The buffer pointer is of after reading");
+            Assert.AreEqual(9, textBuffer.PointerNextChar, "Identifier: The buffer pointer is of after reading");
 
             // load symbol
-            textBuffer = new FlatBuffer(" 'Abcde' ");
+            textBuffer = Util.NewBufferWs(" 'Abcde' ");
             var str = new WordString() { TextBuffer = textBuffer };
             Assert.AreEqual(true, str.Load(outNo, 0), "String: Can't read");
             node = outNo[1] as CodeElement;
@@ -49,18 +50,18 @@ namespace TestCodeInternal.UnitTest
             Assert.AreEqual("string", node.Name, "String: The name is not correct");
             Assert.AreEqual(2, ((TextSubString)node.SubString).From, "String: The start is not correct");
             Assert.AreEqual(7, ((TextSubString)node.SubString).To, "String: The end is not correct");
-            Assert.AreEqual(8, textBuffer.PointerNextChar, "String: The buffer pointer is of after reading");
+            Assert.AreEqual(9, textBuffer.PointerNextChar, "String: The buffer pointer is of after reading");
 
 
             // load string
-            textBuffer = new FlatBuffer("  symbol1  ");
+            textBuffer = Util.NewBufferWs("  symbol1  ");
             var sym = new WordSymbol("symbol1") { TextBuffer = textBuffer };
             Assert.AreEqual(true, sym.Load(outNo, 0), "Symbol: Can't read");
             Assert.AreEqual(2, outNo.Count, "Symbol: Load should not add any nodes");
-            Assert.AreEqual(9, textBuffer.PointerNextChar, "Symbol: The buffer pointer is of after");
+            Assert.AreEqual(11, textBuffer.PointerNextChar, "Symbol: The buffer pointer is of after");
 
             // load string + string + name
-            textBuffer = new FlatBuffer("  Aname     symbol1      'Fghij'      sym02  ");
+            textBuffer = Util.NewBufferWs("  Aname     symbol1      'Fghij'      sym02  ");
             idn.TextBuffer = textBuffer;
             sym.TextBuffer = textBuffer;
             str.TextBuffer = textBuffer;
@@ -75,7 +76,7 @@ namespace TestCodeInternal.UnitTest
             node = outNo[4] as CodeElement;
             Assert.IsNotNull(node, "Can't find node after reading combinded VarName");
             Assert.AreEqual("sym02", node.Value, "The combinded VarName value is not correct");
-            Assert.AreEqual(43, textBuffer.PointerNextChar, "The buffer pointer is of after reading combinded values");
+            Assert.AreEqual(45, textBuffer.PointerNextChar, "The buffer pointer is of after reading combinded values");
 
         }
 
@@ -96,7 +97,7 @@ namespace TestCodeInternal.UnitTest
             TextBuffer textBuffer;
 
             //  Read a varname
-            textBuffer = new FlatBuffer("  Bname  ");
+            textBuffer = Util.NewBufferWs("  Bname  ");
             GetGrammarTestElements(parser, textBuffer);
             rule = parser.Rules.FirstOrDefault(e => e.Name == "TestIdentifier");
             //parser.TextBuffer = new FlatBuffer("  Bname  ");
@@ -108,7 +109,7 @@ namespace TestCodeInternal.UnitTest
 
 
             // Read a 'or grammar = varname'
-            textBuffer = new FlatBuffer("  Bcccc  ");
+            textBuffer = Util.NewBufferWs("  Bcccc  ");
             GetGrammarTestElements(parser, textBuffer);
             //parser.Rules = GetGrammarTestElements(parser, proces);
             rule = parser.Rules.FirstOrDefault(e => e.Name == "grammar");
@@ -118,7 +119,7 @@ namespace TestCodeInternal.UnitTest
             Assert.AreEqual("<grammar>\r\n  <TestIdentifier>Bcccc</TestIdentifier>\r\n</grammar>\r\n", doc, "Equation TestOption: document fail");
 
             // Read a 'or TestString'
-            textBuffer = new FlatBuffer(" 'Ccccc'  ");
+            textBuffer = Util.NewBufferWs(" 'Ccccc'  ");
             GetGrammarTestElements(parser, textBuffer);
             rule = parser.Rules.FirstOrDefault(e => e.Name == "grammar");
             Assert.AreEqual(true, rule.Load(outNo, 0), "Equation grammar TestString: cant read");
@@ -126,7 +127,7 @@ namespace TestCodeInternal.UnitTest
             Assert.AreEqual("<grammar>\r\n  <string>Ccccc</string>\r\n</grammar>\r\n", doc, "Equation TestOption: document fail");
 
             // Read a TestSeries
-            textBuffer = new FlatBuffer("  TestSeries jan ole Mat  ");
+            textBuffer = Util.NewBufferWs("  TestSeries jan ole Mat  ");
             GetGrammarTestElements(parser, textBuffer);
             rule = parser.Rules.FirstOrDefault(e => e.Name == "TestSeries");
             Assert.AreEqual(true, rule.Load(outNo, 0), "Equation TestSeries: cant read");
@@ -140,13 +141,13 @@ namespace TestCodeInternal.UnitTest
 ", doc, "Equation TestOption: document fail");
 
             // Read a TestOption
-            textBuffer = new FlatBuffer("  TestOption 'qwerty'  ");
+            textBuffer = Util.NewBufferWs("  TestOption 'qwerty'  ");
             GetGrammarTestElements(parser, textBuffer);
             rule = parser.Rules.FirstOrDefault(e => e.Name == "TestOption");
             Assert.AreEqual(true, rule.Load(outNo, 0), "Equation TestOption: cant read");
             doc = ((CodeElement)outNo[4]).ToMarkupProtected(string.Empty);
             Assert.AreEqual("<TestOption>\r\n  <TestQuote2>qwerty</TestQuote2>\r\n</TestOption>\r\n", doc, "Equation TestOption: document fail");
-            textBuffer = new FlatBuffer("  TestOption wer  ");
+            textBuffer = Util.NewBufferWs("  TestOption wer  ");
             GetGrammarTestElements(parser, textBuffer);
             rule = parser.Rules.FirstOrDefault(e => e.Name == "TestOption");
             Assert.AreEqual(true, rule.Load(outNo, 0), "Equation TestOption: cant read");
@@ -154,7 +155,7 @@ namespace TestCodeInternal.UnitTest
             Assert.AreEqual("<TestOption>\r\n  <TestIdentifier>wer</TestIdentifier>\r\n</TestOption>\r\n", doc, "Equation TestOption: document fail");
 
             // Read: TestLines       = 'TestLines' { VarName '=' Quote ';' };
-            textBuffer = new FlatBuffer("  TestLines name = 'Oscar'; addr = 'GoRoad'; \r\n mobile = '555 55'; ");
+            textBuffer = Util.NewBufferWs("  TestLines name = 'Oscar'; addr = 'GoRoad'; \r\n mobile = '555 55'; ");
             GetGrammarTestElements(parser, textBuffer);
             rule = parser.Rules.FirstOrDefault(e => e.Name == "TestLines");
             Assert.AreEqual(true, rule.Load(outNo, 0), "Equation TestLines: cant read");

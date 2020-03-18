@@ -1,4 +1,5 @@
 ﻿using IntoTheCode.Read;
+using System;
 
 namespace IntoTheCode.Buffer
 {
@@ -16,6 +17,15 @@ namespace IntoTheCode.Buffer
         public int PointerNextChar { get; set; }
 
         public ParserStatus Status { get; protected set; }
+
+        /// <summary>Function for skipping white spaces and reading comments.</summary>
+        public Action<TextBuffer> FindNextWordAction { get; set; }
+
+        /// <summary>Function for skipping white spaces and reading comments.</summary>
+        public void FindNextWord() { FindNextWordAction(this); }
+
+        /// <summary>Code element for adding comments.</summary>
+        public CodeElement CodeForComment { get; set; }
 
         public bool IsEnd(int length = 1) { return PointerNextChar + length > Length; }
 

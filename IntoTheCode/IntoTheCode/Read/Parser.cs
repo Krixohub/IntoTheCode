@@ -84,6 +84,7 @@ namespace IntoTheCode.Read
         /// <exclude/>
         internal CodeDocument ParseString(TextBuffer buffer)
         {
+            buffer.FindNextWordAction = FindNextWord;
             List<Rule> procesRules = Rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
             if (!ParserFactory.InitializeGrammar(this, procesRules, buffer.Status))
                 return null;
@@ -92,10 +93,10 @@ namespace IntoTheCode.Read
 
             try
             {
+                // skip preceding white spaces
+                FindNextWord(procesRules[0].TextBuffer);
+                
                 ok = procesRules[0].Load(elements, 0);
-
-                // skip remaining white spaces
-                procesRules[0].SkipWhiteSpace();
             }
             catch (Exception e)
             {
@@ -126,6 +127,15 @@ namespace IntoTheCode.Read
                 buffer.Status.AddParseError(() => MessageRes.p01, procesRules[0].Name);
 
             return null;
+        }
+
+        private void FindNextWord(TextBuffer textBuffer)
+        {
+            // Skip whitespaces.
+            while (!textBuffer.IsEnd() && " \r\n\t".Contains(textBuffer.GetChar()))
+                textBuffer.IncPointer();
+
+            // todo: Read comments
         }
 
         //#endregion Build Grammar elements from dokument

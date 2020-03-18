@@ -105,13 +105,6 @@ namespace IntoTheCode.Read.Element
         /// <returns>True = no error.</returns>
         public abstract bool ResolveErrorsForward();
 
-        // todo:2 consider remove this method to parser.
-        internal protected void SkipWhiteSpace()
-        {
-            while (!TextBuffer.IsEnd() && " \r\n\t".Contains(TextBuffer.GetChar()))
-                TextBuffer.IncPointer();
-        }
-
         internal Rule GetRule(ParserElementBase e)
         {
             if (e is Rule) return (Rule)e;

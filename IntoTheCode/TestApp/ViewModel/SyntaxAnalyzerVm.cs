@@ -1,14 +1,9 @@
 ﻿using System.Diagnostics;
 using System.IO;
-
-using IntoTheCode.Basic.Layer;
-using IntoTheCode.Basic.Util;
-using IntoTheCode.Basic;
 using IntoTheCode;
 using IntoTheCode.Buffer;
 using IntoTheCode.Read;
 using System.Windows;
-using IntoTheCode.Read;
 using MoehlData.Basic.Layer;
 using MoehlData.Basic.Message;
 using System;

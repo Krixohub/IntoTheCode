@@ -24,8 +24,6 @@ namespace IntoTheCode.Read.Element.Words
 
         public override bool Load(List<CodeElement> outElements, int level)
         {
-            SkipWhiteSpace();
-
             int from = TextBuffer.PointerNextChar;
 
             if (TextBuffer.IsEnd(2)) return false;
@@ -45,13 +43,14 @@ namespace IntoTheCode.Read.Element.Words
             outElements.Add(new CodeElement(this, subStr));
             TextBuffer.PointerNextChar = subStr.To;
             TextBuffer.IncPointer();
-
+            
+            TextBuffer.FindNextWord();
             return true;
         }
 
         public override bool ResolveErrorsForward()
         {
-            SkipWhiteSpace();
+            //SkipWhiteSpace();
             int from = TextBuffer.PointerNextChar;
             //int fromWordCount = wordCount;
 
@@ -74,6 +73,7 @@ namespace IntoTheCode.Read.Element.Words
 
             TextBuffer.PointerNextChar = subStr.To;
             TextBuffer.IncPointer();
+            TextBuffer.FindNextWord();
 
             //wordCount++;
             return true;

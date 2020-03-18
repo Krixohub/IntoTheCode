@@ -28,7 +28,7 @@ namespace IntoTheCode.Read.Element.Words
 
         public override bool Load(List<CodeElement> outElements, int level)
         {
-            SkipWhiteSpace();
+            //SkipWhiteSpace();
 
             if (TextBuffer.IsEnd(1)) return false;
 
@@ -47,6 +47,7 @@ namespace IntoTheCode.Read.Element.Words
             var element = new CodeElement(this, subStr);
             outElements.Add(element);
 
+            TextBuffer.FindNextWord();
             return true;
         }
 
@@ -64,8 +65,6 @@ namespace IntoTheCode.Read.Element.Words
 
         public override bool ResolveErrorsForward()
         {
-            SkipWhiteSpace();
-
             int from = TextBuffer.PointerNextChar;
 
             if (TextBuffer.IsEnd(1))
@@ -79,6 +78,7 @@ namespace IntoTheCode.Read.Element.Words
             while (!TextBuffer.IsEnd() && AllowedCharsNext.Contains(TextBuffer.GetSubString(TextBuffer.PointerNextChar, 1).ToLower()))
             { TextBuffer.IncPointer(); }
 
+            TextBuffer.FindNextWord();
             return true;
         }
     }

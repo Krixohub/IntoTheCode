@@ -65,7 +65,7 @@ namespace IntoTheCode.Read.Element.Words
 
         public override bool Load(List<CodeElement> outElements, int level)
         {
-            SkipWhiteSpace();
+            //SkipWhiteSpace();
             int from = TextBuffer.PointerNextChar;
             if (TextBuffer.IsEnd(_value.Length))
                 return false;// SetPointerBack(proces, from, this);
@@ -77,12 +77,12 @@ namespace IntoTheCode.Read.Element.Words
                     //return SetPointerBack(from, this);
                     return SetPointerBack(from);
 
+            TextBuffer.FindNextWord();
             return true;
         }
 
         public override bool ResolveErrorsForward()
         {
-            SkipWhiteSpace();
             int from = TextBuffer.PointerNextChar;
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 
@@ -102,6 +102,7 @@ namespace IntoTheCode.Read.Element.Words
                     return SetPointerBack(subStr.From);
                 }
 
+            TextBuffer.FindNextWord();
             return true;
         }
 

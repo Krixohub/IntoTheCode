@@ -16,26 +16,10 @@ namespace IntoTheCode.Read.Element.Struckture
             RightAssociative = symbol.RightAssociative;
         }
 
-        //public override ParserElementBase CloneForParse(TextBuffer buffer)
-        //{
-        //    return new WordBinaryOperator(_value, Name, buffer);
-        //}
-
         protected internal override string GetValue(TextSubString ptr) { return string.Empty; }
-        //public override string GetValue()
-        //{
-        //    return base.GetValue();
-        //}
-
-        //public override ElementContentType GetElementContent()
-        //{
-        //    // always two elements
-        //    return ElementContentType.Many; 
-        //}
 
         public override bool Load(List<CodeElement> outElements, int level)
         {
-            SkipWhiteSpace();
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 
             if (!base.Load(outElements, level))

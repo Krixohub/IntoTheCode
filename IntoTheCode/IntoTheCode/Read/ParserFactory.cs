@@ -252,10 +252,10 @@ namespace IntoTheCode.Read
         private static bool ValidateGrammarElement(ParserElementBase elem, ParserStatus status)
         {
             bool ok = true;
-            if (elem == null)
-            {
-                int i = 3;
-            }
+            //if (elem == null)
+            //{
+            //    int i = 3;
+            //}
             if (elem.ElementContent == ElementContentType.NotSet)
             {
                 status.AddBuildError(() => MessageRes.pb01,

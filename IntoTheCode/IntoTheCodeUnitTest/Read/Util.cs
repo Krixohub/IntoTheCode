@@ -5,6 +5,7 @@ using IntoTheCode.Message;
 using IntoTheCode.Read;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace IntoTheCodeUnitTest.Read
@@ -54,6 +55,25 @@ namespace IntoTheCodeUnitTest.Read
             return string.Empty;
         }
 
+        /// <summary>Create new buffer with a function to skip whitespaces.</summary>
+        /// <param name="code">Contains of buffer.</param>
+        /// <returns>A TextBuffer.</returns>
+        public static TextBuffer NewBufferWs(string code)
+        {
+            Action<TextBuffer> findNextWord = buf =>
+            {
+                // Skip whitespaces.
+                while (!buf.IsEnd() && " \r\n\t".Contains(buf.GetChar()))
+                    buf.IncPointer();
 
+                // todo: Read comments
+            };
+
+
+            TextBuffer textBuffer = new FlatBuffer(code);
+            textBuffer.FindNextWordAction = findNextWord;
+            textBuffer.FindNextWord();
+            return textBuffer;
+        }
     }
 }
