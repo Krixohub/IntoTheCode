@@ -71,8 +71,8 @@ namespace IntoTheCodeUnitTest.Read
 
 
             TextBuffer textBuffer = new FlatBuffer(code);
-            textBuffer.FindNextWordAction = findNextWord;
-            textBuffer.FindNextWord();
+            //textBuffer.FindNextWordAction = findNextWord;
+            textBuffer.ReaderWhitespace.Load(null, 0);
             return textBuffer;
         }
     }

@@ -175,7 +175,7 @@ namespace TestCodeInternal.UnitTest
             // Test hard coded grammar
             //parser2 = new Parser();
             // Status er kun til opsamling af fejl
-            var hardcodeParser = MetaParser.GetHardCodeParser(status);
+            Parser hardcodeParser = MetaParser.GetHardCodeParser(status);
             string actual = hardcodeParser.GetGrammar();
             string expect = GetExpectHardCodeGrammar();
             string msg = Util.CompareTextLines(actual, expect);
@@ -224,7 +224,7 @@ namespace TestCodeInternal.UnitTest
         [TestMethod]
         public void Parser13GrammarInternal()
         {
-            string stx = "grammar = {o};\r\no = 'o';settings o collapse = 'false';";
+            string stx = "grammar = {o};// remark\r\n// remark2\r\n o = 'o';settings o collapse = 'false';";
             var parser = new Parser(stx);
             TextBuffer buffer = new FlatBuffer("ooo");
 

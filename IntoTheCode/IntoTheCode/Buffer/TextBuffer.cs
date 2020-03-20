@@ -1,5 +1,8 @@
 ﻿using IntoTheCode.Read;
+using IntoTheCode.Read.Element.Words;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace IntoTheCode.Buffer
 {
@@ -11,6 +14,7 @@ namespace IntoTheCode.Buffer
         {
             PointerNextChar = 0;
             Status = new ParserStatus(this);
+            //Comments = new List<CodeElement>();
         }
 
         /// <summary>Pointing at the next char to read. When end is reached Length == PointerNextChar.</summary>
@@ -19,13 +23,25 @@ namespace IntoTheCode.Buffer
         public ParserStatus Status { get; protected set; }
 
         /// <summary>Function for skipping white spaces and reading comments.</summary>
-        public Action<TextBuffer> FindNextWordAction { get; set; }
+        //public Action<TextBuffer> FindNextWordAction { get; set; }
 
         /// <summary>Function for skipping white spaces and reading comments.</summary>
-        public void FindNextWord() { FindNextWordAction(this); }
+        public void FindNextWord(List<CodeElement> outElements, int level)
+        {
+            // todo comments can be inserted multiple times
+            do
+            {
+                // Skip whitespaces.
+                ReaderWhitespace.Load(outElements, level);
+
+                // todo: Read comments
+            } while (ReaderComment.Load(outElements, level));
+        }
 
         /// <summary>Code element for adding comments.</summary>
-        public CodeElement CodeForComment { get; set; }
+        //public List<CodeElement> Comments { get; set; }
+        internal WordWhitespace ReaderWhitespace { get; set; }
+        internal WordComment ReaderComment { get; set; }
 
         public bool IsEnd(int length = 1) { return PointerNextChar + length > Length; }
 

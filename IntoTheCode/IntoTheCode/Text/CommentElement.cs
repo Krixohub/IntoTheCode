@@ -8,22 +8,23 @@ using IntoTheCode.Read.Element.Words;
 namespace IntoTheCode
 {
     /// <summary>The Elements that build up a CodeDokument.</summary>
-    public class CodeElement : TreeNode
+    public class CommentElement : TreeNode
     {
         private readonly TextSubString _subString;
 
-        internal CodeElement(ParserElementBase element, TextSubString pointer)
+        internal CommentElement(string comment, TextSubString pointer, bool multiline = false)
         {
-            if (element != null)
-                Name = element.Name;
-            _subString = pointer;
-            WordParser = element as WordBase;
+            //Name = "Comment";
+            //_subString = pointer;
+            //WordParser = element as WordBase;
         }
 
         internal TextSubString SubString { get { return _subString; } }
         internal WordBase WordParser { get; set; }
 
-        public override string GetValue() {
-            return WordParser == null ? string.Empty : WordParser.GetValue(SubString); }
+        public override string GetValue()
+        {
+            return WordParser == null ? string.Empty : WordParser.GetValue(SubString);
+        }
     }
 }

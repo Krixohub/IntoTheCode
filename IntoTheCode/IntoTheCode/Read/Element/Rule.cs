@@ -113,9 +113,16 @@ namespace IntoTheCode.Read.Element
                 }
             }
 
-            // If this is a 'division' set unambiguous
+            // If this is a 'division' set unambiguous and insert comments
             if (Trust && TextBuffer.PointerNextChar > subStr.From && outElements.Count > 0)
+            {
                 TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
+
+                //// insert comments
+                //foreach (CodeElement elem in TextBuffer.Comments) elem.Name = "Comment";
+                //outElements.AddRange(TextBuffer.Comments);
+                //TextBuffer.Comments.Clear();
+            }
             return true;
 
         }

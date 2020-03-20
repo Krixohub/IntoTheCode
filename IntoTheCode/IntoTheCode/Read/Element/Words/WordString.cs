@@ -41,10 +41,10 @@ namespace IntoTheCode.Read.Element.Words
                 return SetPointerBack(from);
 
             outElements.Add(new CodeElement(this, subStr));
-            TextBuffer.PointerNextChar = subStr.To;
-            TextBuffer.IncPointer();
+            TextBuffer.PointerNextChar = subStr.To + 1;
+            //TextBuffer.IncPointer();
             
-            TextBuffer.FindNextWord();
+            TextBuffer.FindNextWord(outElements, level);
             return true;
         }
 
@@ -73,7 +73,7 @@ namespace IntoTheCode.Read.Element.Words
 
             TextBuffer.PointerNextChar = subStr.To;
             TextBuffer.IncPointer();
-            TextBuffer.FindNextWord();
+            TextBuffer.FindNextWord(null, 0);
 
             //wordCount++;
             return true;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using IntoTheCode.Buffer;
 using IntoTheCode.Message;
-using IntoTheCode.Basic;
 using IntoTheCode.Read.Element;
 using System.Linq;
 
@@ -84,7 +83,6 @@ namespace IntoTheCode.Read
         /// <exclude/>
         internal CodeDocument ParseString(TextBuffer buffer)
         {
-            buffer.FindNextWordAction = FindNextWord;
             List<Rule> procesRules = Rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
             if (!ParserFactory.InitializeGrammar(this, procesRules, buffer.Status))
                 return null;
@@ -93,8 +91,8 @@ namespace IntoTheCode.Read
 
             try
             {
-                // skip preceding white spaces
-                FindNextWord(procesRules[0].TextBuffer);
+                // skip preceding white spaces and comments
+                buffer.FindNextWord(elements, 0);
                 
                 ok = procesRules[0].Load(elements, 0);
             }
@@ -128,16 +126,5 @@ namespace IntoTheCode.Read
 
             return null;
         }
-
-        private void FindNextWord(TextBuffer textBuffer)
-        {
-            // Skip whitespaces.
-            while (!textBuffer.IsEnd() && " \r\n\t".Contains(textBuffer.GetChar()))
-                textBuffer.IncPointer();
-
-            // todo: Read comments
-        }
-
-        //#endregion Build Grammar elements from dokument
     }
 }

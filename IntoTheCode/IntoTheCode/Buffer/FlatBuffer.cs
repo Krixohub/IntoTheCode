@@ -1,5 +1,6 @@
 ﻿using IntoTheCode.Message;
 using IntoTheCode.Read;
+using IntoTheCode.Read.Element.Words;
 
 namespace IntoTheCode.Buffer
 {
@@ -10,6 +11,8 @@ namespace IntoTheCode.Buffer
         public FlatBuffer(string text) : base()
         {
             _buf = text;
+            ReaderComment = new WordComment() { TextBuffer = this };
+            ReaderWhitespace = new WordWhitespace() { TextBuffer = this};
         }
 
         public override int Length { get { return _buf.Length; } }

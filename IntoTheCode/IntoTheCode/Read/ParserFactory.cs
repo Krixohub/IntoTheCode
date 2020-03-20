@@ -114,6 +114,8 @@ namespace IntoTheCode.Read
                     case MetaParser.Parentheses:
                         elements.Add(new Parentheses(BuildExpression(parser, element.SubElements, status).ToArray()));
                         break;
+                    case MetaParser.Comment____:
+                        break;
                     default:
                         status.AddBuildError(() => MessageRes.pb04, element, element.Name);
                         break;
