@@ -226,7 +226,7 @@ namespace TestCodeInternal.UnitTest
         {
             string stx = "grammar = {o};// remark\r\n// remark2\r\n o = 'o';settings o collapse = 'false';";
             var parser = new Parser(stx);
-            TextBuffer buffer = new FlatBuffer("ooo");
+            TextBuffer buffer = new FlatBuffer("ooo// remark \r\n o");
 
             Assert.IsNotNull(parser, "parser er null");
             Assert.AreEqual(string.Empty, parser.DefinitionError, "DifinitionError");
@@ -238,10 +238,13 @@ namespace TestCodeInternal.UnitTest
   <o/>
   <o/>
   <o/>
+  <!-- remark --!>
+  <o/>
 </grammar>
 ";
+            string actual = doc.ToMarkup();
 
-            Assert.AreEqual(markup, doc.ToMarkup(), "Markup");
+            Assert.AreEqual(markup, actual, "Markup");
         }
 
         /// <summary>Test different types of grammar error.</summary>

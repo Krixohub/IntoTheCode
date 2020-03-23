@@ -26,23 +26,16 @@ namespace IntoTheCode.Read.Element.Words
             // Read comments on form '// rest of line cr nl'
             const string nl = "\r\n";
 
-            if (TextBuffer.IsEnd(2) || '/' != TextBuffer.GetChar()) return false;
+            if (TextBuffer.IsEnd(2) || '/' != TextBuffer.GetChar() || '/' != TextBuffer.GetChar(1)) return false;
 
-            TextBuffer.IncPointer();
-            if ('/' != TextBuffer.GetChar())
-            {
-                TextBuffer.PointerNextChar--;
-                return false;
-            }
-            TextBuffer.IncPointer();
-            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
+            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar + 2);
 
             // add comment
             TextBuffer.SetToIndexOf(subStr, nl);
             if (subStr.To < 0) subStr.To = TextBuffer.Length;
 
             if (outElements != null)
-                outElements.Add(new CodeElement(this, subStr));
+                outElements.Add(new CommentElement(this, subStr));
 
             if (subStr.To != TextBuffer.Length)
                 TextBuffer.PointerNextChar = subStr.To + 2;

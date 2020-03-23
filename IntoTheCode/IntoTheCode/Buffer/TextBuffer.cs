@@ -45,12 +45,13 @@ namespace IntoTheCode.Buffer
 
         public bool IsEnd(int length = 1) { return PointerNextChar + length > Length; }
 
-        public void IncPointer() { ++PointerNextChar; }
+        public void IncPointer(int length = 1) { PointerNextChar += length; }
 
         #region abstract functions
 
         public abstract int Length { get; }
         public abstract char GetChar();
+        public abstract char GetChar(int pos);
 
         public abstract string GetSubString(int length);
         public abstract string GetSubString(TextSubString sub);

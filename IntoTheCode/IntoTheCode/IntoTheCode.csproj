@@ -51,6 +51,7 @@
     <Compile Include="Basic\TreeNode.cs" />
     <Compile Include="Read\Element\Expression.cs" />
     <Compile Include="Read\Element\Structure\WordBinaryOperator.cs" />
+    <Compile Include="Read\Element\Words\WordInt.cs" />
     <Compile Include="Read\Element\Words\WordWhitespace.cs" />
     <Compile Include="Read\Element\Words\WordComment.cs" />
     <Compile Include="Read\ParserError.cs" />

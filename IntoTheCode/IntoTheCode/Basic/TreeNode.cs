@@ -100,7 +100,7 @@ namespace IntoTheCode.Basic
                     ReplaceSubElement(i, replacement);
         }
 
-        internal protected string ToMarkupProtected(string indent)
+        internal protected virtual string ToMarkupProtected(string indent)
         {
             if (SubElements.Count == 0 && string.IsNullOrEmpty(Value))
                 return indent + "<" + Name + "/>\r\n";
@@ -110,8 +110,6 @@ namespace IntoTheCode.Basic
             s = SubElements.Aggregate(s, (current, item) => current + item.ToMarkupProtected(indent + "  "));
             s += indent + "</" + Name + ">\r\n";
             return s;
-
-            //return "hej";
         }
     }
 }

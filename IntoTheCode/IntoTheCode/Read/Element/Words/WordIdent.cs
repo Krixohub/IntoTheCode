@@ -44,8 +44,7 @@ namespace IntoTheCode.Read.Element.Words
             
             subStr.To = TextBuffer.PointerNextChar;
 
-            var element = new CodeElement(this, subStr);
-            outElements.Add(element);
+            outElements.Add(new CodeElement(this, subStr));
 
             TextBuffer.FindNextWord(outElements, level);
             return true;

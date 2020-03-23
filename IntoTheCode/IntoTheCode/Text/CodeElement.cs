@@ -10,17 +10,15 @@ namespace IntoTheCode
     /// <summary>The Elements that build up a CodeDokument.</summary>
     public class CodeElement : TreeNode
     {
-        private readonly TextSubString _subString;
-
         internal CodeElement(ParserElementBase element, TextSubString pointer)
         {
             if (element != null)
                 Name = element.Name;
-            _subString = pointer;
+            SubString = pointer;
             WordParser = element as WordBase;
         }
 
-        internal TextSubString SubString { get { return _subString; } }
+        internal TextSubString SubString { get; private set; }
         internal WordBase WordParser { get; set; }
 
         public override string GetValue() {

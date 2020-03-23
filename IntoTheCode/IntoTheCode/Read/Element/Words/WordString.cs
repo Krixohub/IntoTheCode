@@ -19,63 +19,40 @@ namespace IntoTheCode.Read.Element.Words
         }
 
         public override string GetGrammar() { return MetaParser.WordString_; }
-        
+
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
         public override bool Load(List<CodeElement> outElements, int level)
         {
-            int from = TextBuffer.PointerNextChar;
+            if (TextBuffer.IsEnd(2) || TextBuffer.GetChar() != '\'') return false;
 
-            if (TextBuffer.IsEnd(2)) return false;
-
-            if (TextBuffer.GetChar() != '\'')
-                return false;
-
-            TextBuffer.IncPointer();
-            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
-            TextBuffer.IncPointer();
-            TextBuffer.SetToIndexOf(subStr, "'");
-
-            if (!subStr.ToIsValid())
-                //return SetPointerBack(from, this);
-                return SetPointerBack(from);
-
-            outElements.Add(new CodeElement(this, subStr));
-            TextBuffer.PointerNextChar = subStr.To + 1;
-            //TextBuffer.IncPointer();
+            int to = TextBuffer.GetIndexAfter("'", TextBuffer.PointerNextChar + 1);
+            if (to <= TextBuffer.PointerNextChar) return false;
             
+            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar + 1) { To = to - 1 };
+            outElements.Add(new CodeElement(this, subStr));
+
+            TextBuffer.PointerNextChar = to;
             TextBuffer.FindNextWord(outElements, level);
             return true;
         }
 
         public override bool ResolveErrorsForward()
         {
-            //SkipWhiteSpace();
-            int from = TextBuffer.PointerNextChar;
-            //int fromWordCount = wordCount;
-
             if (TextBuffer.IsEnd(2))
                 return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe03);
 
             if (TextBuffer.GetChar() != '\'')
-                return TextBuffer.Status.AddSyntaxError(this, from, 0, () => MessageRes.pe04);
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar, 0, () => MessageRes.pe04);
 
-            TextBuffer.IncPointer();
-            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
-            TextBuffer.IncPointer();
-            TextBuffer.SetToIndexOf(subStr, "'");
 
-            if (!subStr.ToIsValid())
-            {
-                TextBuffer.Status.AddSyntaxError(this, from + 1, 0, () => MessageRes.pe05);
-                return SetPointerBack(from);
-            }
+            int to = TextBuffer.GetIndexAfter("'", TextBuffer.PointerNextChar + 1);
+            if (to <= TextBuffer.PointerNextChar) 
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar + 1, 0, () => MessageRes.pe05);
 
-            TextBuffer.PointerNextChar = subStr.To;
-            TextBuffer.IncPointer();
+            TextBuffer.PointerNextChar = to;
             TextBuffer.FindNextWord(null, 0);
 
-            //wordCount++;
             return true;
         }
 
@@ -91,6 +68,6 @@ namespace IntoTheCode.Read.Element.Words
             return 0;
         }
 
-        
+
     }
 }

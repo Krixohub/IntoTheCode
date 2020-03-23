@@ -89,10 +89,11 @@ namespace IntoTheCode.Read.Element
                     if (!(SubElements[0] as ParserElementBase).Load(outSubNotes, level))
                         return false;
 
-                    if (outSubNotes.Count == 1)
+                    CodeElement theOne = outSubNotes.FirstOrDefault(n => n.GetType() != typeof(CommentElement));
+                    if (theOne != null)
                     {
-                        element = new CodeElement(this, ((CodeElement)outSubNotes[0]).SubString);
-                        element.WordParser = ((CodeElement)outSubNotes[0]).WordParser;
+                        theOne.Name = Name;
+                        element = theOne;
                     }
                     else
                     {
@@ -101,6 +102,7 @@ namespace IntoTheCode.Read.Element
                     }
 
                     outElements.Add(element);
+                    outElements.AddRange(outSubNotes.OfType<CommentElement>());
                 }
                 else
                 {

@@ -225,4 +225,10 @@
   <data name="pe09" xml:space="preserve">
     <value>Syntax error ({0}). Expecting operator for expression.</value>
   </data>
+  <data name="pe10" xml:space="preserve">
+    <value>Syntax error ({0}). Expecting {1}, found {2}.</value>
+  </data>
+  <data name="pe11" xml:space="preserve">
+    <value>Can't parse '{0}' to integer (too long).</value>
+  </data>
 </root>

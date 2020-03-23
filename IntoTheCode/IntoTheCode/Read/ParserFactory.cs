@@ -91,6 +91,9 @@ namespace IntoTheCode.Read
                             case MetaParser.WordString_:
                                 elem = new WordString();
                                 break;
+                            case MetaParser.WordInt____:
+                                elem = new WordInt();
+                                break;
                             case MetaParser.WordIdent__:
                                 elem = new WordIdent(element.Value);
                                 break;

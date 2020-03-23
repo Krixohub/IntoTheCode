@@ -17,6 +17,7 @@ namespace IntoTheCode.Buffer
 
         public override int Length { get { return _buf.Length; } }
         public override char GetChar() { return _buf[PointerNextChar]; }
+        public override char GetChar(int pos) { return _buf[PointerNextChar + pos]; }
 
         public override string GetSubString(int length) { return _buf.Substring(PointerNextChar, length); }
         public override string GetSubString(TextSubString sub) { return _buf.Substring(sub.From, sub.To - sub.From); }

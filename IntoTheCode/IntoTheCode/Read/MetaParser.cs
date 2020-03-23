@@ -50,6 +50,7 @@ namespace IntoTheCode.Read
         internal const string Or_________ = "or";          // 
         internal const string WordIdent__ = "identifier";  // id, name, word, ident, didentifier(ebnf)
         internal const string WordString_ = "string";      // string, Token, symbol, name
+        internal const string WordInt____ = "int";         // string, Token, symbol, name
         internal const string WordSymbol_ = "symbol";      // wordsymbol, symbol
         //internal const string Operator___ = "operator";    // 
         //internal const string Equal______ = "equal";       // 

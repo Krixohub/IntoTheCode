@@ -376,6 +376,24 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting {1}, found {2}..
+        /// </summary>
+        public static string pe10 {
+            get {
+                return ResourceManager.GetString("pe10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t parse &apos;{0}&apos; to integer (too long)..
+        /// </summary>
+        public static string pe11 {
+            get {
+                return ResourceManager.GetString("pe11", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Something terrible with {0} has happened.
         /// </summary>
         public static string SomeError {
