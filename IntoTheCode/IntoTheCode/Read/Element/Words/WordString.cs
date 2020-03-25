@@ -43,7 +43,7 @@ namespace IntoTheCode.Read.Element.Words
                 return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe03);
 
             if (TextBuffer.GetChar() != '\'')
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar, 0, () => MessageRes.pe04);
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar, 0, () => MessageRes.pe10, "\'", TextBuffer.GetChar());
 
 
             int to = TextBuffer.GetIndexAfter("'", TextBuffer.PointerNextChar + 1);

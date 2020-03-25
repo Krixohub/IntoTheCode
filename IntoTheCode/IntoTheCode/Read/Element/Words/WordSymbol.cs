@@ -88,7 +88,7 @@ namespace IntoTheCode.Read.Element.Words
 
             if (TextBuffer.IsEnd(Value.Length))
             {
-                TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe06, Value);
+                TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe10, MetaParser.WordSymbol_ +  " " + GetGrammar(), "EOF");
                 return SetPointerBack(subStr.From);
             }
 

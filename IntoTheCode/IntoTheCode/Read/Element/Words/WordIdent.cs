@@ -70,7 +70,7 @@ namespace IntoTheCode.Read.Element.Words
                 return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe01);
 
             if (!AllowedCharsFirst.Contains(TextBuffer.GetChar().ToString().ToLower()))
-                return TextBuffer.Status.AddSyntaxError(this, from, 0, () => MessageRes.pe02);
+                return TextBuffer.Status.AddSyntaxError(this, from, 0, () => MessageRes.pe10, GetGrammar(), TextBuffer.GetChar());
             else
                 TextBuffer.IncPointer();
 

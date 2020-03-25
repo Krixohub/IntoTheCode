@@ -3,8 +3,11 @@ using IntoTheCode.Basic.Util;
 using IntoTheCode.Buffer;
 using IntoTheCode.Message;
 using IntoTheCode.Read;
+using IntoTheCode.Read.Element;
+using IntoTheCode.Read.Element.Words;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -14,8 +17,13 @@ namespace IntoTheCodeUnitTest.Read
     {
         public static void ParseErrorResPos(string errorName, int line, int col, string actual, Expression<Func<string>> resourceExpression, params object[] parm)
         {
-            string expected = DotNetUtil.Msg(resourceExpression, parm) + " " + string.Format(MessageRes.LineAndCol, line, col);
+            string expected = BuildMsg(line, col, resourceExpression, parm);
             Assert.AreEqual(expected, actual, errorName);
+        }
+
+        public static string BuildMsg(int line, int col, Expression<Func<string>> resourceExpression, params object[] parm)
+        {
+            return DotNetUtil.Msg(resourceExpression, parm) + " " + string.Format(MessageRes.LineAndCol, line, col);
         }
 
         public static void ExpressionGrammarParse(string test, string grammar, string code, string expect)
@@ -75,5 +83,52 @@ namespace IntoTheCodeUnitTest.Read
             textBuffer.ReaderWhitespace.Load(null, 0);
             return textBuffer;
         }
+
+        public static CodeElement WordLoad(string buf, WordBase word, string value, string name, int from, int to, int end)
+        {
+            string n = string.Empty;
+            TextBuffer textBuffer = Util.NewBufferWs(buf);
+            word.TextBuffer = textBuffer;
+
+            var outNo = new List<CodeElement>();
+            //var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
+            Assert.AreEqual(true, word.Load(outNo, 0), n + "Identifier: Can't read");
+
+            CodeElement node = null;
+            if (outNo.Count > 0 || to > 0)
+            {
+                node = outNo[0] as CodeElement;
+                Assert.IsNotNull(node, n + "Identifier: Can't find node after reading");
+                Assert.AreEqual(value, node.Value, n + "Identifier: The value is not correct");
+                Assert.AreEqual(name, node.Name, n + "Identifier: The name is not correct");
+                Assert.AreEqual(from, ((TextSubString)node.SubString).From, n + "Identifier: The start is not correct");
+                Assert.AreEqual(to, ((TextSubString)node.SubString).To, n + "Identifier: The end is not correct");
+            }
+            Assert.AreEqual(end, textBuffer.PointerNextChar, n + "Identifier: The buffer pointer is of after reading");
+
+            return node;
+        }
+
+        public static void WordLoadError(string buf, WordBase word, string testName, string expected)
+        {
+            TextBuffer textBuffer = Util.NewBufferWs(buf);
+            word.TextBuffer = textBuffer;
+            Rule rule = new Rule("testRule", word);
+
+            //rule.add
+            var outNo = new List<CodeElement>();
+            //var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
+            Assert.AreEqual(false, word.Load(outNo, 0), "No read error");
+            Assert.AreEqual(false, word.ResolveErrorsForward(), "No read error");
+            Assert.IsNotNull(textBuffer.Status.Error, testName + " No error object");
+
+            string actual = textBuffer.Status.Error.Message;
+            string s = string.Join("\r\n", textBuffer.Status.AllErrors.Select(err => err.Message).ToArray());
+            
+            //ParseErrorResPos(testName, line, col, errMsg1, resourceExpression, parm);
+            //string expected = 
+            Assert.AreEqual(expected, actual, testName);
+        }
+
     }
 }

@@ -10,10 +10,10 @@ using IntoTheCode.Read.Element.Struckture;
 using IntoTheCodeUnitTest.Read;
 using IntoTheCode.Message;
 
-namespace IntoTheCodeUnitTest.Read.Element
+namespace Read.Element
 {
     [TestClass]
-    public class Read_Element_ExpressionTest
+    public class ExpressionTest
     {
         [TestMethod]
         public void ExpressionCreate()

@@ -210,9 +210,6 @@
   <data name="pe05" xml:space="preserve">
     <value>Grammar error ({0}). Expecting string ending.</value>
   </data>
-  <data name="pe06" xml:space="preserve">
-    <value>Grammar error ({0}). Expecting symbol '{1}', found EOF.</value>
-  </data>
   <data name="pe07" xml:space="preserve">
     <value>Grammar error ({0}). Expecting symbol '{1}', found '{2}'</value>
   </data>

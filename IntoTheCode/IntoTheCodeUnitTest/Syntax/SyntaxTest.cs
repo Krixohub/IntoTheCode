@@ -20,65 +20,6 @@ namespace TestCodeInternal.UnitTest
     [TestClass]
     public class GrammarTest
     {
-        [TestMethod]
-        public void Parser10Words()
-        {
-            // test loading of basic grammar elements
-            // load varname
-            TextBuffer textBuffer = Util.NewBufferWs("  sym01  ");
-
-            //            reader.TextBuffer = new FlatBuffer("  sym01  ");
-            //var buf = new FlatBuffer("  sym01  ");
-            var outNo = new List<CodeElement>();
-            var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
-            Assert.AreEqual(true, idn.Load(outNo, 0), "Identifier: Can't read");
-            var node = outNo[0] as CodeElement;
-            Assert.IsNotNull(node, "Identifier: Can't find node after reading");
-            Assert.AreEqual("sym01", node.Value, "Identifier: The value is not correct");
-            Assert.AreEqual("kurt", node.Name, "Identifier: The name is not correct");
-            Assert.AreEqual(2, ((TextSubString)node.SubString).From, "Identifier: The start is not correct");
-            Assert.AreEqual(7, ((TextSubString)node.SubString).To, "Identifier: The end is not correct");
-            Assert.AreEqual(9, textBuffer.PointerNextChar, "Identifier: The buffer pointer is of after reading");
-
-            // load symbol
-            textBuffer = Util.NewBufferWs(" 'Abcde' ");
-            var str = new WordString() { TextBuffer = textBuffer };
-            Assert.AreEqual(true, str.Load(outNo, 0), "String: Can't read");
-            node = outNo[1] as CodeElement;
-            Assert.IsNotNull(node, "String: Can't find node after reading");
-            Assert.AreEqual("Abcde", node.Value, "String: The value is not correct");
-            Assert.AreEqual("string", node.Name, "String: The name is not correct");
-            Assert.AreEqual(2, ((TextSubString)node.SubString).From, "String: The start is not correct");
-            Assert.AreEqual(7, ((TextSubString)node.SubString).To, "String: The end is not correct");
-            Assert.AreEqual(9, textBuffer.PointerNextChar, "String: The buffer pointer is of after reading");
-
-
-            // load string
-            textBuffer = Util.NewBufferWs("  symbol1  ");
-            var sym = new WordSymbol("symbol1") { TextBuffer = textBuffer };
-            Assert.AreEqual(true, sym.Load(outNo, 0), "Symbol: Can't read");
-            Assert.AreEqual(2, outNo.Count, "Symbol: Load should not add any nodes");
-            Assert.AreEqual(11, textBuffer.PointerNextChar, "Symbol: The buffer pointer is of after");
-
-            // load string + string + name
-            textBuffer = Util.NewBufferWs("  Aname     symbol1      'Fghij'      sym02  ");
-            idn.TextBuffer = textBuffer;
-            sym.TextBuffer = textBuffer;
-            str.TextBuffer = textBuffer;
-            idn.TextBuffer = textBuffer;
-            Assert.AreEqual(true, idn.Load(outNo, 0), "Can't read a combinded Identifier");
-            Assert.AreEqual(true, sym.Load(outNo, 0), "Can't read a combinded Symbol");
-            Assert.AreEqual(true, str.Load(outNo, 0), "Can't read a combinded String");
-            Assert.AreEqual(true, idn.Load(outNo, 0), "Can't read a combinded Identifier");
-            node = outNo[3] as CodeElement;
-            Assert.IsNotNull(node, "Can't find node after reading combinded Quote");
-            Assert.AreEqual("Fghij", node.Value, "The combinded Quote value is not correct");
-            node = outNo[4] as CodeElement;
-            Assert.IsNotNull(node, "Can't find node after reading combinded VarName");
-            Assert.AreEqual("sym02", node.Value, "The combinded VarName value is not correct");
-            Assert.AreEqual(45, textBuffer.PointerNextChar, "The buffer pointer is of after reading combinded values");
-
-        }
 
         [TestMethod]
         public void Parser11GrammarHardcode()
@@ -285,89 +226,11 @@ settings fid trust; fstr trust; fsym trust;";
             }
             Util.ParseErrorResPos("EOF error", 1, 3, errMsg1, () => MessageRes.p05);
 
+            
+            
+            
             string stx = parser.GetGrammar();
-
-            // Read 'identifier', EOF error.
-            errMsg1 = null;
-            try { doc = CodeDocument.Load(parser, "id "); }
-            //                                    "1234   
-            catch (ParserException e)
-            {
-                errMsg1 = e.Message;
-                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
-            }
-            Util.ParseErrorResPos("Ident EOF error", 1, 4, errMsg1, () => MessageRes.pe01, "failId");
-
-            // Read 'identifier', not allowed first letter.
-            errMsg1 = null;
-            try { doc = CodeDocument.Load(parser, "id 2r"); }
-            //                                    "1234   
-            catch (ParserException e)
-            {
-                errMsg1 = e.Message;
-                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
-            }
-            Util.ParseErrorResPos("Ident first letter error", 1, 4, errMsg1, () => MessageRes.pe02, "failId");
-
-            // Read 'string', EOF error.
-            errMsg1 = null;
-            try { doc = CodeDocument.Load(parser, "string "); }
-            //                                    "12345678  
-            catch (ParserException e)
-            {
-                errMsg1 = e.Message;
-                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
-            }
-            Util.ParseErrorResPos("String EOF error", 1, 8, errMsg1, () => MessageRes.pe03, "failStr");
-
-
-
-
-
-
-            // Read 'string', Expecting string (starting ' not found).
-            errMsg1 = null;
-            try { doc = CodeDocument.Load(parser, "string fail"); }
-            //                                    "12345678  
-            catch (ParserException e)
-            {
-                errMsg1 = e.Message;
-                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
-            }
-            Util.ParseErrorResPos("String not found error", 1, 8, errMsg1, () => MessageRes.pe04, "failStr");
-
-            // Read 'string', ending ' not found.
-            errMsg1 = null;
-            try { doc = CodeDocument.Load(parser, "string 'fail"); }
-            //                                    "123456789
-            catch (ParserException e)
-            {
-                errMsg1 = e.Message;
-                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
-            }
-            Util.ParseErrorResPos("String ending not found error", 1, 9, errMsg1, () => MessageRes.pe05, "failStr");
-
-            // Read 'symbol', EOF error.
-            errMsg1 = null;
-            try { doc = CodeDocument.Load(parser, "symbol fai"); }
-            //                                    "12345678901
-            catch (ParserException e)
-            {
-                errMsg1 = e.Message;
-                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
-            }
-            Util.ParseErrorResPos("Symbol EOF error", 1, 11, errMsg1, () => MessageRes.pe06, "failSym", "fail");
-
-            // Read 'symbol',  error.
-            errMsg1 = null;
-            try { doc = CodeDocument.Load(parser, "symbol faiL"); }
-            //                                    "12345678
-            catch (ParserException e)
-            {
-                errMsg1 = e.Message;
-                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
-            }
-            Util.ParseErrorResPos("Symbol error", 1, 8, errMsg1, () => MessageRes.pe07, "failSym", "fail", "faiL");
+        
         }
 
         private void AreEqualRes(string errorName, string actual, Expression<Func<string>> resourceExpression, params object[] parm)
@@ -403,7 +266,7 @@ type = 'string'; ";
                 errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
             }
-            Util.ParseErrorResPos("missing seperator, EOF error", 1, 10, errMsg1, () => MessageRes.pe06, "cmd", ";");
+            Util.ParseErrorResPos("missing seperator, EOF error", 1, 10, errMsg1, () => MessageRes.pe10, "cmd", "symbol ';'", "EOF");
 
             // Error: Missing ';'.
             errMsg1 = null;
@@ -467,7 +330,7 @@ type = 'string'; ";
             catch (ParserException e) { errMsg1 = e.Message;
                 string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
             }
-            Util.ParseErrorResPos(" grammar error", 2, 26, errMsg1, () => MessageRes.pe04, "value");
+            Util.ParseErrorResPos(" grammar error", 2, 26, errMsg1, () => MessageRes.pe10, "value", "'", "f");
         }
 
         #region utillity functions

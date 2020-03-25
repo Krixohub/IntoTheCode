@@ -340,15 +340,6 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Grammar error ({0}). Expecting symbol &apos;{1}&apos;, found EOF..
-        /// </summary>
-        public static string pe06 {
-            get {
-                return ResourceManager.GetString("pe06", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Grammar error ({0}). Expecting symbol &apos;{1}&apos;, found &apos;{2}&apos;.
         /// </summary>
         public static string pe07 {
