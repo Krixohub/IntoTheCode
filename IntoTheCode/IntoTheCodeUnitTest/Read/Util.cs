@@ -84,6 +84,75 @@ namespace IntoTheCodeUnitTest.Read
             return textBuffer;
         }
 
+        /// <summary>Test the simple hard coded grammar.</summary>
+        /// <param name="buf">String to parse.</param>
+        /// <param name="expected">Expected markup from rule output.</param>
+        /// <param name="rulename">Name of rule to test.</param>
+        public static void MetaHard(string buf, string expected, string rulename)
+        {
+            var parser = new Parser();
+            var outElements = new List<CodeElement>();
+
+            TextBuffer textBuffer = Util.NewBufferWs(buf);
+            SetHardCodedTestRules(parser, textBuffer);
+            Rule rule = parser.Rules.FirstOrDefault(e => e.Name == rulename);
+            Assert.AreEqual(true, rule.Load(outElements, 0), string.Format("rule '{0}': cant read", rulename));
+            string actual = ((CodeElement)outElements[0]).ToMarkupProtected(string.Empty);
+            Assert.AreEqual(expected, actual, "Equation TestOption: document fail");
+        }
+
+        #region utillity functions
+
+        /// <summary>A grammar for test. Hard coded.</summary>
+        private static void SetHardCodedTestRules(Parser parser, TextBuffer buffer)
+        {
+            //bool equal = false;
+            //bool tag = true;
+            List<RuleLink> symbolsToResolve = new List<RuleLink>();
+            List<Rule> list = new List<Rule>();
+            list.Add(new Rule("grammar",
+                    new Or(new RuleLink("TestIdentifier"),
+                    new Or(new RuleLink("TestString"),
+                    new RuleLink("TestSymbol")))) /*{ Tag = true }*/);
+            // TestIdentifier     = varName;
+            list.Add(new Rule("TestIdentifier",
+                new WordIdent("VarName")) /*{ Tag = true }*/);
+            // TestSymbol       = 'Abcde';
+            list.Add(new Rule("TestSymbol",
+                new WordSymbol("Abcde"))
+            { Collapse = true });
+
+            // TestString       = Quote;
+            list.Add(new Rule("TestString",
+                new WordString())
+            { Collapse = true });
+
+            // TestSeries       = 'TestSeries' { VarName };
+            list.Add(new Rule("TestSeries",
+                new WordSymbol("TestSeries"),
+                new Sequence(new WordIdent("finn"))));
+            // TestOption       = 'TestOption' [TestIdentifier] [TestString];
+            list.Add(new Rule("TestOption",
+                new WordSymbol("TestOption"),
+                new Optional(new RuleLink("TestIdentifier")),
+                new Optional(new RuleLink("TestQuote2")))
+            /*{ Tag = true }*/);
+            // TestQuote2      = Quote;
+            list.Add(new Rule("TestQuote2",
+                new WordString()));
+            // TestLines       = 'TestLines' { VarName '=' Quote ';' };
+            list.Add(new Rule("TestLines",
+                new WordSymbol("TestLines"),
+                new Sequence(new WordIdent("localVar"), new WordSymbol("="), new WordString(), new WordSymbol(";"))));
+
+
+            parser.Rules = list.Select(r => r.CloneForParse(buffer) as Rule).ToList();
+            ParserFactory.InitializeGrammar(parser, parser.Rules, buffer.Status);
+            ParserFactory.ValidateGrammar(parser, buffer.Status);
+        }
+
+        #endregion utillity functions
+
         public static CodeElement WordLoad(string buf, WordBase word, string value, string name, int from, int to, int end)
         {
             string n = string.Empty;
