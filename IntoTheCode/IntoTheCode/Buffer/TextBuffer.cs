@@ -1,4 +1,5 @@
 ﻿using IntoTheCode.Read;
+using IntoTheCode.Read.Element;
 using IntoTheCode.Read.Element.Words;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ namespace IntoTheCode.Buffer
     public abstract class TextBuffer
     {
         public const int NotValidPtr = -1;
+
+        private Dictionary<RuleLink, LoopLevel> _recursiveCalls = new Dictionary<RuleLink, LoopLevel>();
 
         public TextBuffer()
         {
@@ -21,6 +24,20 @@ namespace IntoTheCode.Buffer
         public int PointerNextChar { get; set; }
 
         public ParserStatus Status { get; protected set; }
+
+        /// <summary>Each RuleLink has a level of recursive calls to stop infite loops.</summary>
+        /// <param name="link">The RuleLink.</param>
+        /// <returns>Loop level.</returns>
+        internal LoopLevel GetLoopLevel(RuleLink link)
+        {
+            LoopLevel level;
+            if (!_recursiveCalls.TryGetValue(link, out level))
+            {
+                level = new LoopLevel() { LastInvokePos = NotValidPtr };
+                _recursiveCalls.Add(link, level);
+            }
+            return level;
+        }
 
         /// <summary>Function for skipping white spaces and reading comments.</summary>
         //public Action<TextBuffer> FindNextWordAction { get; set; }

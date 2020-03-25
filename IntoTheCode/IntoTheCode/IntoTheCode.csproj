@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Basic\DotNetUtil.cs" />
     <Compile Include="Basic\NotifyChanges.cs" />
+    <Compile Include="Buffer\LoopLevel.cs" />
     <Compile Include="Message\MessageRes.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

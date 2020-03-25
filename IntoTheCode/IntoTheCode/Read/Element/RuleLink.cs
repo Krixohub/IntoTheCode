@@ -14,7 +14,6 @@ namespace IntoTheCode.Read.Element
         {
             Name = "name";
             _value = value;
-            LastInvokePos = TextBuffer.NotValidPtr;
             //if (value == "expression")
                 Recursive = true;
         }
@@ -40,18 +39,17 @@ namespace IntoTheCode.Read.Element
         }
 
         public bool Recursive;
-        public int LastInvokePos;
-        public int LastInvokeLevel;
 
         public override bool Load(List<CodeElement> outElements, int level)
         {
             // End too many recursive calls
             if (Recursive)
             {
-                if (LastInvokePos == TextBuffer.PointerNextChar &&
-                    level > LastInvokeLevel) return false;
-                LastInvokePos = TextBuffer.PointerNextChar;
-                LastInvokeLevel = level;
+                LoopLevel loop = TextBuffer.GetLoopLevel(this);
+                if (loop.LastInvokePos == TextBuffer.PointerNextChar &&
+                    level > loop.LastInvokeLevel) return false;
+                loop.LastInvokePos = TextBuffer.PointerNextChar;
+                loop.LastInvokeLevel = level;
             }
 
             return RuleElement.Load(outElements, level + 1);
