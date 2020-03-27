@@ -36,11 +36,23 @@ namespace IntoTheCode.Read.Element
                 //ElementContentType.OneValue :
                 ElementContentType.Many;
         }
+        //public override ElementContentType SetElementContent(ParserElementBase origin)
+        //{
+        //    //// todo fejl ved Rule.Tag = true
+        //    //return
+        //    //    //Element1.ElementContent == ElementContentType.OneValue &&
+        //    //    //Element2.ElementContent == ElementContentType.OneValue ?
+        //    //    //ElementContentType.OneValue :
+        //    //    ElementContentType.Many;
+        //        _elementContent = ElementContentType.Many;
+        //    return _elementContent;
+        //}
 
         public override string GetGrammar() {
             return (SubElements[0] as ParserElementBase).GetGrammar() + " | " +
                 (SubElements[1] as ParserElementBase).GetGrammar();
         }
+
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
         public override bool Load(List<CodeElement> outElements, int level)
@@ -73,6 +85,12 @@ namespace IntoTheCode.Read.Element
                 rc = (SubElements[1] as ParserElementBase).ResolveErrorsLast(last);
 
             return rc;
+        }
+
+        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, List<RuleLink> loop, ParserStatus status)
+        {
+            return ((ParserElementBase)SubElements[0]).InitializeLoop(rules, path, loop, status) |
+                    ((ParserElementBase)SubElements[1]).InitializeLoop(rules, path, loop, status);
         }
     }
 }

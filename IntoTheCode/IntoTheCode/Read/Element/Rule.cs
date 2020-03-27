@@ -5,10 +5,11 @@ using IntoTheCode.Buffer;
 using IntoTheCode.Basic.Util;
 using IntoTheCode.Read.Element.Words;
 using System.Linq;
+using IntoTheCode.Message;
 
 namespace IntoTheCode.Read.Element
 {
-    internal class Rule : SetOfElementsBase
+    public class Rule : SetOfElementsBase
     {
         internal Parser Parser { get; set; }
 
@@ -48,6 +49,15 @@ namespace IntoTheCode.Read.Element
                 ElementContentType.Many;
         }
 
+        //public override ElementContentType SetElementContent(ParserElementBase origin)
+        //{
+        //    if (_elementContent == ElementContentType.NotSet && origin != this)
+        //    {
+        //        if (SubElements.Count > 1) _elementContent = ElementContentType.Many;
+        //        else _elementContent = (SubElements[0] as ParserElementBase).SetElementContent(null);
+        //    }
+        //    return _elementContent;
+        //}
 
         internal bool Collapse { get; set; }
         internal bool Trust { get; set; }
@@ -169,6 +179,28 @@ namespace IntoTheCode.Read.Element
                 return SetPointerBack(from);
 
             return true;
+        }
+
+        public bool LoopHasEnd;
+
+
+        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, List<RuleLink> loop, ParserStatus status)
+        {
+            //bool ok = true;
+            if (!rules.Contains(this)) rules.Add(this);
+            path.Add(this);
+
+            LoopHasEnd = LoopHasEnd | base.InitializeLoop(rules, path, loop, status);
+
+            LoopHasEnd = LoopHasEnd | base.InitializeLoop(rules, path, loop, status);
+
+            //// run all the RuleLinks again
+            //foreach (RuleLink item in loop)
+            //    item.InitializeLoop(rules, path, loop, status);
+
+            path.Remove(this);
+
+            return LoopHasEnd;
         }
     }
 }

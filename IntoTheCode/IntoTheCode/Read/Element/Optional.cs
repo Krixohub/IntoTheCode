@@ -49,5 +49,11 @@ namespace IntoTheCode.Read.Element
             ResolveSetErrorsForward();
             return true;
         }
+
+        //public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, List<RuleLink> loop, ParserStatus status)
+        //{
+
+        //    return base.InitializeLoop(rules, path, loop, status);
+        //}
     }
 }

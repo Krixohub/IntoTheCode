@@ -23,6 +23,18 @@ namespace IntoTheCode.Read.Element
         }
         public abstract ElementContentType GetElementContent();
 
+        //protected ElementContentType _elementContent;
+        //public ElementContentType ElementContent
+        //{
+        //    get
+        //    {
+        //        if (_elementContent == ElementContentType.NotSet)
+        //            SetElementContent(null);
+        //        return _elementContent;
+        //    }
+        //}
+        //public abstract ElementContentType SetElementContent(ParserElementBase origin);
+
         /// <summary>Clone this parser element, with sub elements, and set proces.</summary>
         /// <param name="proces">The load proces.</param>
         /// <returns>The new clone.</returns>
@@ -104,6 +116,15 @@ namespace IntoTheCode.Read.Element
         /// </summary>
         /// <returns>True = no error.</returns>
         public abstract bool ResolveErrorsForward();
+
+        /// <summary>Find which RuleLinks are recursive.
+        /// Called by the ParserFactory after Initializing grammar.
+        /// Each path though the grammar must be followed, and have an ending.</summary>
+        /// <param name="elem">The element to analyse.</param>
+        /// <param name="path">The path to the element; only rules and RuleLinks.</param>
+        /// <param name="status"></param>
+        /// <returns>True: one path has an ending.</returns>
+        public abstract bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, List<RuleLink> loop, ParserStatus status);
 
         internal Rule GetRule(ParserElementBase e)
         {

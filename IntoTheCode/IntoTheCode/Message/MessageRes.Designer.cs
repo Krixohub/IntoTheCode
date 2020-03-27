@@ -277,7 +277,7 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to First rule &apos;{0} must have Collapse=false.
+        ///   Looks up a localized string similar to First rule &apos;{0}&apos; must have Collapse=false.
         /// </summary>
         public static string pb09 {
             get {
@@ -291,6 +291,15 @@ namespace IntoTheCode.Message {
         public static string pb10 {
             get {
                 return ResourceManager.GetString("pb10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The rule &apos;{0}&apos; must have a non recursive path..
+        /// </summary>
+        public static string pb11 {
+            get {
+                return ResourceManager.GetString("pb11", resourceCulture);
             }
         }
         

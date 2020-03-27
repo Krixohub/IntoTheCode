@@ -161,6 +161,16 @@ namespace IntoTheCode.Read
                     rule.ReplaceSubElement(0, new Expression(rule, or));
             }
 
+            if (status.Error == null)
+            {
+                // Loop check and set RuleLink.Recursive
+                var effectiveRules = new List<Rule>();
+                parser.Rules[0].InitializeLoop(effectiveRules, new List<ParserElementBase>(), new List<RuleLink>(), status);
+
+                foreach (Rule rule in effectiveRules)
+                    if (!rule.LoopHasEnd)
+                        status.AddBuildError(() => MessageRes.pb11, rule.DefinitionCodeElement, rule.Name);
+            }
             return status.Error == null;
         }
 
@@ -250,6 +260,9 @@ namespace IntoTheCode.Read
             // Recursive check
             foreach (Rule rule in parser.Rules)
                 ok = ValidateGrammarElement(rule, status) && ok;
+
+            //// Loop check
+            //ok = ok && parser.Rules[0].InitializeLoop(new List<Rule>(), new List<Rule>(), new List<ParserElementBase>(), status);
 
             return ok;
         }

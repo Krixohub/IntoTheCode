@@ -7,7 +7,7 @@ namespace IntoTheCode.Read.Element
     /// <summary>
     /// Base class for Grammar symbols.
     /// </summary>
-    internal class RuleLink : ParserElementBase
+    public class RuleLink : ParserElementBase
     {
         /// <summary>Creator for <see cref="RuleLink"/>.</summary>
         internal RuleLink(string value)
@@ -26,12 +26,25 @@ namespace IntoTheCode.Read.Element
         /// <summary>The Reader has the current pointer of reading, and the context.</summary>
         internal Rule RuleElement;
 
+        private bool _elementContentLoop = false;
         public override ElementContentType GetElementContent()
         {
-            return RuleElement != null ?
-                RuleElement.ElementContent :
-                ElementContentType.NotSet;
+            if (_elementContentLoop || RuleElement == null) return ElementContentType.NotSet;
+            _elementContentLoop = true;
+            ElementContentType rc = RuleElement.ElementContent;
+            _elementContentLoop = false;
+            return rc;
         }
+        //public override ElementContentType SetElementContent(ParserElementBase origin)
+        //{
+        //    if (_elementContent == ElementContentType.NotSet && RuleElement != null)
+        //        _elementContent = RuleElement.SetElementContent(origin);
+        //    return _elementContent;
+
+        //    //return RuleElement != null ?
+        //    //    RuleElement.ElementContent :
+        //    //    ElementContentType.NotSet;
+        //}
 
         public override string GetGrammar()
         {
@@ -64,6 +77,38 @@ namespace IntoTheCode.Read.Element
         public override int ResolveErrorsLast(CodeElement last)
         {
             return RuleElement.ResolveErrorsLast(last);
+        }
+
+        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, List<RuleLink> loop, ParserStatus status)
+        {
+            bool ok = false;
+            path.Add(this);
+            int ruleNo = path.IndexOf(RuleElement);
+            if (ruleNo > -1)
+            {
+                // The link is recursive
+                for (int i = ruleNo; i < path.Count; i++)
+                {
+                    if (path[i] is RuleLink) ((RuleLink)path[i]).Recursive = true;
+
+                    if (path[i] is Rule) ok = ok || ((Rule)path[i]).LoopHasEnd;
+                }
+                // If there is an end to the loop; all rules in the loop has an end
+                if (ok)
+                    for (int i = ruleNo; i < path.Count; i++)
+                        if (path[i] is Rule) ((Rule)path[i]).LoopHasEnd = true;
+
+            }
+            else
+                ok = RuleElement.InitializeLoop(rules, path, loop, status);
+
+            //if (!ok)
+            //    loop.Add(this);
+            //else
+            //    loop.Remove(this);
+
+            path.Remove(this);
+            return ok;
         }
     }
 }

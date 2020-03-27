@@ -193,7 +193,7 @@
     <value>Settings: Identifier '{0}' Property '{1}' cant be resolved</value>
   </data>
   <data name="pb09" xml:space="preserve">
-    <value>First rule '{0} must have Collapse=false</value>
+    <value>First rule '{0}' must have Collapse=false</value>
   </data>
   <data name="pe01" xml:space="preserve">
     <value>Grammar error ({0}). Expecting identifier, found EOF.</value>
@@ -227,5 +227,8 @@
   </data>
   <data name="pe11" xml:space="preserve">
     <value>Can't parse '{0}' to integer (too long).</value>
+  </data>
+  <data name="pb11" xml:space="preserve">
+    <value>The rule '{0}' must have a non recursive path.</value>
   </data>
 </root>

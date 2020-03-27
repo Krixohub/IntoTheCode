@@ -178,6 +178,17 @@ namespace IntoTheCodeUnitTest.Read
             return node;
         }
 
+        public static void ParserBuildError(string buf, params string[] expected)
+        {
+            try { var parser = new Parser(buf); }
+            catch (ParserException e) 
+            {
+                for (int i = 0; i < e.AllErrors.Count; i++)
+                    if (i < expected.Length)
+                        Assert.AreEqual(expected[i], e.AllErrors[i].Message, "Build error " + i);
+            }
+        }
+
         public static void WordLoadError(string buf, WordBase word, string testName, string expected)
         {
             TextBuffer textBuffer = Util.NewBufferWs(buf);

@@ -21,6 +21,22 @@ namespace Read
     public class ParserFactoryTest
     {
 
+        /// <summary>Test different types of grammar build error.</summary>
+        [TestMethod]
+        public void BuildError()
+        {
+
+            //// pb05: Link grammar stx. Identifier stx is defined twice Line 1, colomn 1
+            //Util.ParserBuildError("stx = ':'; stx = identifier;",
+            //    Util.BuildMsg(1, 1, () => MessageRes.pb05, "stx", "stx"),
+            //    Util.BuildMsg(1, 12, () => MessageRes.pb05, "stx", "stx"));
+
+
+            // pb11: The rule 'stx' must have a non recursive path. Line 1, colomn 1
+            Util.ParserBuildError("stx = sty; sty = stx;",
+                Util.BuildMsg(1, 1, () => MessageRes.pb11, "stx"));
+
+        }
 
         /// <summary>Test different types of grammar build error.</summary>
         [TestMethod]

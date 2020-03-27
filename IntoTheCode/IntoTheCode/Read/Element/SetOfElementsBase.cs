@@ -10,7 +10,7 @@ using IntoTheCode.Basic.Util;
 
 namespace IntoTheCode.Read.Element
 {
-    internal abstract class SetOfElementsBase : ParserElementBase
+    public abstract class SetOfElementsBase : ParserElementBase
     {
         protected SetOfElementsBase(params ParserElementBase[] elements)
         {
@@ -33,6 +33,12 @@ namespace IntoTheCode.Read.Element
         {
             return ElementContentType.Many;
         }
+
+        //public override ElementContentType SetElementContent(ParserElementBase origin)
+        //{
+        //    _elementContent = ElementContentType.Many;
+        //    return _elementContent;
+        //}
 
         protected bool LoadSet(List<CodeElement> outElements, int level)
         {
@@ -109,6 +115,14 @@ namespace IntoTheCode.Read.Element
                     //return SetPointerBack(from, item);
                     return SetPointerBack(from);
             return true;
+        }
+
+        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, List<RuleLink> loop, ParserStatus status)
+        {
+            bool ok = true;
+            foreach (ParserElementBase item in this.SubElements.OfType<ParserElementBase>())
+                ok = ok && item.InitializeLoop(rules, path, loop, status);
+            return ok;
         }
 
         public override string GetGrammar()
