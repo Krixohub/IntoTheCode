@@ -180,13 +180,21 @@ namespace IntoTheCodeUnitTest.Read
 
         public static void ParserBuildError(string buf, params string[] expected)
         {
-            try { var parser = new Parser(buf); }
+            Parser parser = null;
+            try { parser = new Parser(buf); }
             catch (ParserException e) 
             {
+                Assert.IsTrue(e.AllErrors.Count >= expected.Length, "Build missing error 1");
+                e.AllErrors.Sort(ParserError.Compare);
                 for (int i = 0; i < e.AllErrors.Count; i++)
                     if (i < expected.Length)
                         Assert.AreEqual(expected[i], e.AllErrors[i].Message, "Build error " + i);
             }
+
+            if (expected.Length == 0)
+                Assert.IsNotNull(parser, "Build expects no error");
+            else
+                Assert.IsNull(parser, "Build missing error 2");
         }
 
         public static void WordLoadError(string buf, WordBase word, string testName, string expected)

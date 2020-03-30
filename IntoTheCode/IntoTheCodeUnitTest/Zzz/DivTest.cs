@@ -5,13 +5,13 @@ using System.Xml.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace TestCodeInternal.UnitTest
+namespace Zzz
 {
     [TestClass]
-    public class LinqToXml
+    public class DivTest
     {
         [TestMethod]
-        public void LinqToXml_Linq()
+        public void LinqToXml()
         {
             string xmlStr = @"
 <root>

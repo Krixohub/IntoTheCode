@@ -79,7 +79,7 @@ namespace IntoTheCode.Read.Element
             return RuleElement.ResolveErrorsLast(last);
         }
 
-        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, List<RuleLink> loop, ParserStatus status)
+        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         {
             bool ok = false;
             path.Add(this);
@@ -90,22 +90,11 @@ namespace IntoTheCode.Read.Element
                 for (int i = ruleNo; i < path.Count; i++)
                 {
                     if (path[i] is RuleLink) ((RuleLink)path[i]).Recursive = true;
-
                     if (path[i] is Rule) ok = ok || ((Rule)path[i]).LoopHasEnd;
                 }
-                // If there is an end to the loop; all rules in the loop has an end
-                if (ok)
-                    for (int i = ruleNo; i < path.Count; i++)
-                        if (path[i] is Rule) ((Rule)path[i]).LoopHasEnd = true;
-
             }
             else
-                ok = RuleElement.InitializeLoop(rules, path, loop, status);
-
-            //if (!ok)
-            //    loop.Add(this);
-            //else
-            //    loop.Remove(this);
+                ok = RuleElement.InitializeLoop(rules, path, status);
 
             path.Remove(this);
             return ok;

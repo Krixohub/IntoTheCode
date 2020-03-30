@@ -121,15 +121,7 @@ namespace IntoTheCode.Read
         {
             if (oldErr == null) return newErr;
 
-            // Rank error with high point.
-            if (newErr.ErrorPoint != -1)
-            {
-                if (oldErr.ErrorPoint == -1) return newErr;
-                if (newErr.ErrorPoint <= oldErr.ErrorPoint) return oldErr;
-            }
-
-            // Newest error ranks higher.
-            return newErr;
+            return ParserError.Compare(newErr, oldErr) < 0 ? newErr : oldErr;
         }
 
         #endregion add errors

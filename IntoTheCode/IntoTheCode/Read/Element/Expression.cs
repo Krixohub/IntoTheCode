@@ -355,9 +355,9 @@ namespace IntoTheCode.Read.Element
                 return last;
         }
 
-        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, List<RuleLink> loop, ParserStatus status)
+        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         {
-            return _otherForms.Aggregate(false, (ok, item) => ok | item.InitializeLoop(rules, path, loop, status));
+            return _otherForms.Aggregate(false, (ok, item) => ok | item.InitializeLoop(rules, path, status));
         }
     }
 }

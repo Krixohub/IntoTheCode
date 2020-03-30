@@ -50,10 +50,10 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        //public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, List<RuleLink> loop, ParserStatus status)
+        //public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         //{
 
-        //    return base.InitializeLoop(rules, path, loop, status);
+        //    return base.InitializeLoop(rules, path, status);
         //}
     }
 }

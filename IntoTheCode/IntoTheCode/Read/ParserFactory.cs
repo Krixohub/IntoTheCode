@@ -165,7 +165,7 @@ namespace IntoTheCode.Read
             {
                 // Loop check and set RuleLink.Recursive
                 var effectiveRules = new List<Rule>();
-                parser.Rules[0].InitializeLoop(effectiveRules, new List<ParserElementBase>(), new List<RuleLink>(), status);
+                parser.Rules[0].InitializeLoop(effectiveRules, new List<ParserElementBase>(), status);
 
                 foreach (Rule rule in effectiveRules)
                     if (!rule.LoopHasEnd)

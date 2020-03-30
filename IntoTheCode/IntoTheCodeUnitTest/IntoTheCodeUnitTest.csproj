@@ -54,6 +54,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Buffer\BufferTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Read\Element\ExpressionTest.cs" />
     <Compile Include="Read\MetaParserTest.cs" />
@@ -64,9 +65,8 @@
     <Compile Include="Read\Element\Words\WordIntTest.cs" />
     <Compile Include="Read\ParserFactoryTest.cs" />
     <Compile Include="Read\Util.cs" />
-    <Compile Include="Syntax\LinqToXml.cs" />
-    <Compile Include="Syntax\DivTest.cs" />
-    <Compile Include="Syntax\SyntaxTest.cs" />
+    <Compile Include="Zzz\DivTest.cs" />
+    <Compile Include="Read\ParserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IntoTheCode\IntoTheCode.csproj">

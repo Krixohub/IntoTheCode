@@ -16,5 +16,11 @@ namespace IntoTheCode.Read
         public Exception Ex;
         public string Error { get; internal set; } //?
         public string Message { get; internal set; } //?
+
+
+        internal static int Compare(ParserError x, ParserError y)
+        {
+            return y.ErrorPoint - x.ErrorPoint;
+        }
     }
 }

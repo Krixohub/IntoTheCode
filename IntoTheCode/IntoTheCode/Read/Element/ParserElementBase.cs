@@ -124,7 +124,7 @@ namespace IntoTheCode.Read.Element
         /// <param name="path">The path to the element; only rules and RuleLinks.</param>
         /// <param name="status"></param>
         /// <returns>True: one path has an ending.</returns>
-        public abstract bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, List<RuleLink> loop, ParserStatus status);
+        public abstract bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status);
 
         internal Rule GetRule(ParserElementBase e)
         {

@@ -15,14 +15,14 @@ using System.Linq.Expressions;
 using IntoTheCode.Basic.Util;
 using IntoTheCodeUnitTest.Read;
 
-namespace TestCodeInternal.UnitTest
+namespace Read
 {
     [TestClass]
-    public class GrammarTest
+    public class ParserTest
     {
         /// <summary>Test that the parser can read a grammar and load code. Simple.</summary>
         [TestMethod]
-        public void Parser13GrammarInternal()
+        public void Parser13ParseString()
         {
             string stx = "grammar = {o};// remark\r\n// remark2\r\n o = 'o';settings o collapse = 'false';";
             var parser = new Parser(stx);
@@ -49,7 +49,7 @@ namespace TestCodeInternal.UnitTest
 
         /// <summary>Test different types of grammar error.</summary>
         [TestMethod]
-        public void Parser15SyntaxError()
+        public void Parser15ParseString_SyntaxError()
         {
             // Set grammar
             string grammar = @"
@@ -100,7 +100,7 @@ settings fid trust; fstr trust; fsym trust;";
 
         /// <summary>Test different types of grammar error.</summary>
         [TestMethod]
-        public void Parser16SyntaxErrorSet()
+        public void Parser16ParseString_SyntaxErrorSet()
         {
             // Set grammar
             string grammar = @"

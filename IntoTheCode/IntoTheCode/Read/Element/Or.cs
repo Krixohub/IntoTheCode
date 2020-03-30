@@ -87,10 +87,10 @@ namespace IntoTheCode.Read.Element
             return rc;
         }
 
-        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, List<RuleLink> loop, ParserStatus status)
+        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         {
-            return ((ParserElementBase)SubElements[0]).InitializeLoop(rules, path, loop, status) |
-                    ((ParserElementBase)SubElements[1]).InitializeLoop(rules, path, loop, status);
+            return ((ParserElementBase)SubElements[0]).InitializeLoop(rules, path, status) |
+                    ((ParserElementBase)SubElements[1]).InitializeLoop(rules, path, status);
         }
     }
 }

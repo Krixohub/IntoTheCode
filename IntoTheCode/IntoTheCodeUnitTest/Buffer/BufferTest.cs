@@ -2,13 +2,13 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IntoTheCode.Buffer;
 
-namespace TestCodeInternal.UnitTest
+namespace Buffer
 {
     [TestClass]
-    public class DivTest
+    public class BufferTest
     {
         [TestMethod]
-        public void Parser01Buffer()
+        public void Parser01GetLineAndColumn()
         {
             string str = @"Firstline
 SecondlineX

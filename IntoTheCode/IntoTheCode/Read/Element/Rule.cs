@@ -184,19 +184,13 @@ namespace IntoTheCode.Read.Element
         public bool LoopHasEnd;
 
 
-        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, List<RuleLink> loop, ParserStatus status)
+        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         {
             //bool ok = true;
             if (!rules.Contains(this)) rules.Add(this);
             path.Add(this);
 
-            LoopHasEnd = LoopHasEnd | base.InitializeLoop(rules, path, loop, status);
-
-            LoopHasEnd = LoopHasEnd | base.InitializeLoop(rules, path, loop, status);
-
-            //// run all the RuleLinks again
-            //foreach (RuleLink item in loop)
-            //    item.InitializeLoop(rules, path, loop, status);
+            LoopHasEnd = LoopHasEnd | base.InitializeLoop(rules, path, status);
 
             path.Remove(this);
 

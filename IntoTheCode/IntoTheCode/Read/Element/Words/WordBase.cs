@@ -34,7 +34,7 @@ namespace IntoTheCode.Read.Element.Words
         //}
         protected const int a = 0;
 
-        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, List<RuleLink> loop, ParserStatus status)
+        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         {
             // If a word contains recursiveness, this must be overriden
             return true;

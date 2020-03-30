@@ -117,11 +117,11 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, List<RuleLink> loop, ParserStatus status)
+        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         {
             bool ok = true;
             foreach (ParserElementBase item in this.SubElements.OfType<ParserElementBase>())
-                ok = ok && item.InitializeLoop(rules, path, loop, status);
+                ok = ok && item.InitializeLoop(rules, path, status);
             return ok;
         }
 
