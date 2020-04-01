@@ -15,7 +15,7 @@ namespace IntoTheCode.Read.Element
             Name = "name";
             _value = value;
             //if (value == "expression")
-                Recursive = true;
+                //Recursive = true;
         }
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)

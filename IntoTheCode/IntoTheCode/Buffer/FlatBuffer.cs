@@ -10,6 +10,12 @@ namespace IntoTheCode.Buffer
 
         public FlatBuffer(string text) : base()
         {
+            if (text == null)
+            {
+                Status.AddFlatError(() => MessageRes.p06);
+                return;
+            }
+
             _buf = text;
             ReaderComment = new WordComment() { TextBuffer = this };
             ReaderWhitespace = new WordWhitespace() { TextBuffer = this};

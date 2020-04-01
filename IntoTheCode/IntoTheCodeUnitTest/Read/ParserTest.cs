@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
+﻿
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using IntoTheCode;
-using IntoTheCode.Basic;
-using IntoTheCode.Buffer;
-using IntoTheCode.Read;
-using IntoTheCode.Read.Element;
-using IntoTheCode.Read.Element.Words;
 using IntoTheCode.Message;
-using System.Linq.Expressions;
-using IntoTheCode.Basic.Util;
 using IntoTheCodeUnitTest.Read;
 
 namespace Read
@@ -22,19 +10,15 @@ namespace Read
     {
         /// <summary>Test that the parser can read a grammar and load code. Simple.</summary>
         [TestMethod]
-        public void Parser13ParseString()
+        public void ITC13ParseString()
         {
-            string stx = "grammar = {o};// remark\r\n// remark2\r\n o = 'o';settings o collapse = 'false';";
-            var parser = new Parser(stx);
-            TextBuffer buffer = new FlatBuffer("ooo// remark \r\n o");
+            string grammar;
+            string code;
+            string markup;
 
-            Assert.IsNotNull(parser, "parser er null");
-            Assert.AreEqual(string.Empty, parser.DefinitionError, "DifinitionError");
-            CodeDocument doc = parser.ParseString(buffer);
-            Assert.IsNotNull(doc, "doc er null");
-            Assert.IsNull(buffer.Status.Error, "ReadingError");
-
-            string markup = @"<grammar>
+            grammar = "grammar = {o};// remark\r\n// remark2\r\n o = 'o';settings o collapse = 'false';";
+            code = "ooo// remark \r\n o";
+            markup = @"<grammar>
   <o/>
   <o/>
   <o/>
@@ -42,17 +26,36 @@ namespace Read
   <o/>
 </grammar>
 ";
-            string actual = doc.ToMarkup();
 
-            Assert.AreEqual(markup, actual, "Markup");
+            Util.ParserLoad("Markup", grammar, code, markup);
+
+            grammar = "sntx = [identifier];";
+            markup = "<sntx/>";
+            // code = "";
+            Util.ParserLoad("Empty", grammar, "", markup);
+
+            grammar = "sntx = identifier;";
+            // code = "";  // p02: Can't read 'sntx' Line 1, colomn 1
+            Util.ParserLoad("Empty", grammar, "", "",
+                Util.BuildMsg(1, 1, () => MessageRes.p02, "sntx"));
+
+            // code = null;  // p06: The input is null.
+            Util.ParserLoad("Null", grammar, null, "",
+                Util.BuildMsg(0, 0, () => MessageRes.p06));
+
+
         }
 
         /// <summary>Test different types of grammar error.</summary>
         [TestMethod]
-        public void Parser15ParseString_SyntaxError()
+        public void ITC15ParseString_SyntaxError()
         {
+            string grammar;
+            string code;
+            string markup;
+
             // Set grammar
-            string grammar = @"
+            grammar = @"
 stx =  symRule | seq | strRule | idRule;
 seq = {o};
 o = 'o';
@@ -63,80 +66,44 @@ fstr = 'string'; failStr = string;
 fid  = 'id';   failId = identifier;
 fsym = 'symbol'; failSym = 'fail';
 settings fid trust; fstr trust; fsym trust;";
-            var parser = new Parser(grammar);
-            //ParserStatus proces;
-            CodeDocument doc;
-            string errMsg1;
 
             // What the parser CAN read
-            TextBuffer buf = new FlatBuffer("ooo");
-            doc = parser.ParseString(buf);;
-            Assert.IsNotNull(doc, "doc er null");
-            Assert.IsNull(buf.Status.Error, "Parse error");
+            code = "ooo";
+            markup = "<stx>\r\n  <seq>\r\n    <o/>\r\n    <o/>\r\n    <o/>\r\n  </seq>\r\n</stx>\r\n";
+            Util.ParserLoad("CAN read", grammar, code, markup);
 
-            // Error: End of text not reached.
-            errMsg1 = null;
-            try { doc = CodeDocument.Load(parser, "oop"); }
-            //                                    "123   
-            catch (ParserException e)
-            {
-                errMsg1 = e.Message;
-                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
-            }
-            Util.ParseErrorResPos("EOF error", 1, 3, errMsg1, () => MessageRes.p05);
+            // p05: End of input not reached. Line 1, colomn 3
+            Util.ParserLoad("no EOF", grammar, "oop", null,
+                Util.BuildMsg(1, 3, () => MessageRes.p05));
 
-            
-            
-            
-            string stx = parser.GetGrammar();
-        
-        }
-
-        private void AreEqualRes(string errorName, string actual, Expression<Func<string>> resourceExpression, params object[] parm)
-        {
-            string expected = DotNetUtil.Msg(resourceExpression, parm);
-            Assert.AreEqual(expected, actual, errorName);
         }
 
         /// <summary>Test different types of grammar error.</summary>
         [TestMethod]
-        public void Parser16ParseString_SyntaxErrorSet()
+        public void ITC16ParseString_SyntaxErrorSet()
         {
-            // Set grammar
-            string grammar = @"
+            string grammar;
+            string code;
+            string markup = string.Empty;
+
+            grammar = @"
 stx =  {cmd};
 cmd = type identifier ';'; 
 type = 'string'; ";
-            var parser = new Parser(grammar);
-            CodeDocument doc;
-            string errMsg1;
 
             // What the parser CAN read
-            TextBuffer buf = new FlatBuffer("string s; string str;");
-            doc = parser.ParseString(buf); ;
-            Assert.IsNotNull(doc, "doc er null");
-            Assert.IsNull(buf.Status.Error, "Parse error");
+            code = "string s; string str;";
+            Util.ParserLoad("CAN read", grammar, code, markup);
 
-            // identifier not found
-            errMsg1 = null;
-            try { doc = CodeDocument.Load(parser, "string s "); }
-            //                                        "1234567890   
-            catch (ParserException e) {
-                errMsg1 = e.Message;
-                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
-            }
-            Util.ParseErrorResPos("missing seperator, EOF error", 1, 10, errMsg1, () => MessageRes.pe10, "cmd", "symbol ';'", "EOF");
+            // pe10: Syntax error (cmd). Expecting symbol ';', found EOF. Line 1, colomn 10
+            code = "string s ";
+            Util.ParserLoad("missing seperator, EOF error", grammar, code, markup,
+                Util.BuildMsg(1, 10, () => MessageRes.pe10, "cmd", "symbol ';'", "EOF"));
 
-            // Error: Missing ';'.
-            errMsg1 = null;
-            try { doc = CodeDocument.Load(parser, "string s dfgsd"); }
-            //                                    "1234567890   
-            catch (ParserException e)
-            {
-                errMsg1 = e.Message;
-                string s = string.Join("\r\n", e.AllErrors.Select(err => err.Message).ToArray());
-            }
-            Util.ParseErrorResPos("missing seperator", 1, 10, errMsg1, () => MessageRes.pe07, "cmd", ";", "d");
+            // pe07: Grammar error (cmd). Expecting symbol ';', found 'd' Line 1, colomn 10
+            code = "string s dfgsd";
+            Util.ParserLoad("missing seperator", grammar, code, markup,
+                Util.BuildMsg(1, 10, () => MessageRes.pe07, "cmd", ";", "d"));
         }
 
     }

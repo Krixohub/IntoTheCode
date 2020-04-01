@@ -1,11 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IntoTheCode.Read.Element;
 using IntoTheCode.Read.Element.Words;
 using IntoTheCode.Read;
-using IntoTheCode;
-using IntoTheCode.Buffer;
-using System.Collections.Generic;
 using IntoTheCode.Read.Element.Struckture;
 using IntoTheCodeUnitTest.Read;
 using IntoTheCode.Message;
@@ -16,7 +12,7 @@ namespace Read.Element
     public class ExpressionTest
     {
         [TestMethod]
-        public void ExpressionCreate()
+        public void ITC15ExpressionCreate()
         {
             string exprName = "expr";
             string plusName = "plus";
@@ -58,7 +54,7 @@ namespace Read.Element
         }
 
         [TestMethod]
-        public void ExpressionSetPrecedence()
+        public void ITC15ExpressionSetPrecedence()
         {
             string exprName = "expr";
             string plusName = "plus";
@@ -124,24 +120,28 @@ namespace Read.Element
         [TestMethod]
         public void ExpressionGrammar()
         {
+            string grammar;
+            string code;
+            string markup;
+
             // Set grammar
-            string grammar = @"exp =  exp '*' exp | exp '+' exp | identifier;";
-            
+
 
             // --------------------------------- Simple expression ---------------------------------
-            string code = "a * b";
-            string expect = @"<exp>
+            grammar = @"exp =  exp '*' exp | exp '+' exp | identifier;";
+            code = "a * b";
+            markup = @"<exp>
   <*>
     <identifier>a</identifier>
     <identifier>b</identifier>
   </*>
 </exp>
 ";
-            Util.ExpressionGrammarParse("expr 1 Simple", grammar, code, expect);
+            Util.ParserLoad("expr 1 Simple", grammar, code, markup);
 
             // --------------------------------- double expression ---------------------------------
             code = "a * b + c";
-            expect = @"<exp>
+            markup = @"<exp>
   <+>
     <*>
       <identifier>a</identifier>
@@ -151,11 +151,11 @@ namespace Read.Element
   </+>
 </exp>
 ";
-            Util.ExpressionGrammarParse("expr 2 double", grammar, code, expect);
+            Util.ParserLoad("expr 2 double", grammar, code, markup);
 
             // --------------------------------- double expression swap ---------------------------------
             code = "a + b * c";
-            expect = @"<exp>
+            markup = @"<exp>
   <+>
     <identifier>a</identifier>
     <*>
@@ -165,7 +165,7 @@ namespace Read.Element
   </+>
 </exp>
 ";
-            Util.ExpressionGrammarParse("expr 3 swap", grammar, code, expect);
+            Util.ParserLoad("expr 3 swap", grammar, code, markup);
 
             // --------------------------------- 5 operator ---------------------------------
             // Set grammar
@@ -182,7 +182,7 @@ sum Precedence = '1';
 sub Precedence = '1';
 ";
             code = "a + b * c - d  > e / f";
-            expect = @"<exp>
+            markup = @"<exp>
   <gt>
     <sub>
       <sum>
@@ -201,7 +201,7 @@ sub Precedence = '1';
   </gt>
 </exp>
 ";
-            Util.ExpressionGrammarParse("expr 4 5 operator", grammar, code, expect);
+            Util.ParserLoad("expr 4 5 operator", grammar, code, markup);
 
             // --------------------------------- nested expression ----------------------------
             // Set grammar
@@ -220,7 +220,7 @@ exp collapse;
 ";
 
             code = "a + b * ( c - d)  > e / f ";
-            expect = @"<aaa>
+            markup = @"<aaa>
   <gt>
     <sum>
       <identifier>a</identifier>
@@ -239,19 +239,22 @@ exp collapse;
   </gt>
 </aaa>
 ";
-            Util.ExpressionGrammarParse("expr 5 nested", grammar, code, expect);
+            Util.ParserLoad("expr 5 nested", grammar, code, markup);
         }
 
 
         [TestMethod]
         public void ExpressionError()
         {
+            string grammar;
+            string code;
+            string markup = string.Empty;
 
             // --------------------------------- Simple expression ---------------------------------
 
             // --------------------------------- 5 operator ---------------------------------
             // Set grammar
-            string grammar = @"exp = mul | sum | div | sub | gt | '(' exp ')' | identifier;
+            grammar = @"exp = mul | sum | div | sub | gt | '(' exp ')' | identifier;
 mul = exp '*' exp;
 sum = exp '+' exp;
 div = exp '/' exp;
@@ -263,23 +266,18 @@ div Precedence = '2';
 sum Precedence = '1';
 sub Precedence = '1';
 ";
+            //string expected;
 
-            string code = "a + b * c - d  > e /  + f";
-            //            "12345678901234567890123
-            var parser = new Parser(grammar);
-            var buf = new FlatBuffer(code);
-            CodeDocument doc = parser.ParseString(buf);
-            string errMsg = buf.Status.Error?.Message;
-            Util.ParseErrorResPos("EOF error", 1, 23, errMsg, () => MessageRes.pe08, "exp");
+            code = "a + b * c - d  > e /  + f";
             //pe08: Syntax error (exp). Expecting value for expression. Line 1, colomn 23
+            Util.ParserLoad("EOF error", grammar, code, markup,
+                Util.BuildMsg(1, 23, () => MessageRes.pe08, "exp"));
+
 
             code = "a + b * c - d  > e &  + f";
-            //     "12345678901234567890123
-            buf = new FlatBuffer(code);
-            doc = parser.ParseString(buf);
-            errMsg = buf.Status.Error?.Message;
-            Util.ParseErrorResPos("EOF error", 1, 19, errMsg, () => MessageRes.pe09, "exp");
             //p05: End of input not reached. Line 1, colomn 20
+            Util.ParserLoad("EOF error", grammar, code, markup,
+                Util.BuildMsg(1, 19, () => MessageRes.pe09, "exp"));
 
         }
 

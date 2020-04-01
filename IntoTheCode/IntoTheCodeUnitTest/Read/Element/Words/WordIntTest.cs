@@ -10,7 +10,7 @@ namespace Read.Element.Words
     public class WordIntTest
     {
         [TestMethod]
-        public void Load()
+        public void ITC10Load()
         {
             var idn = new WordInt();
             Util.WordLoad("  1235  ", idn, "1235", "int", 2, 6, 8);
@@ -24,7 +24,7 @@ namespace Read.Element.Words
         }
 
         [TestMethod]
-        public void LoadError()
+        public void ITC10LoadError()
         {
             var word = new WordInt();
 

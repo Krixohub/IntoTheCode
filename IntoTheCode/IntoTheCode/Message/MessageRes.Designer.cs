@@ -205,6 +205,15 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The input is null..
+        /// </summary>
+        public static string p06 {
+            get {
+                return ResourceManager.GetString("p06", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Element content type not set, {0}, {1} , {2}.
         /// </summary>
         public static string pb01 {

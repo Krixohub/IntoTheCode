@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
 
 #pragma warning disable 1591 // no warning for missing comments
 
@@ -55,7 +57,7 @@ namespace IntoTheCode.Basic
         //public string Value { get; protected set; }
         public string Value { get { return GetValue(); } }
         public abstract string GetValue();// { return _value; }
-        protected string _value;
+        protected string _value = string.Empty;
 
         /// <summary>Find sub elements with a given name.</summary>
         /// <param name="name">The name.</param>
@@ -100,15 +102,28 @@ namespace IntoTheCode.Basic
                     ReplaceSubElement(i, replacement);
         }
 
-        internal protected virtual string ToMarkupProtected(string indent)
+        internal protected virtual string ToMarkupProtected(string indent, bool xmlEncode = false)
         {
-            if (SubElements.Count == 0 && string.IsNullOrEmpty(Value))
-                return indent + "<" + Name + "/>\r\n";
+            string name, value;
+            if(xmlEncode)
+            {
+                XElement elem = new XElement("e", Value);
+                name = XmlConvert.EncodeName(Name);
+                value = string.IsNullOrEmpty(Value) ? Value : elem.LastNode.ToString();
+            }
+            else
+            {
+                name = Name;
+                value = Value;
+            }
+             
+            if (SubElements.Count == 0 && string.IsNullOrEmpty(value))
+                return indent + "<" + name + "/>\r\n";
             if (SubElements.Count == 0)
-                return indent + "<" + Name + ">" + Value + "</" + Name + ">\r\n";
-            string s = indent + "<" + Name + ">" + Value + "\r\n";
-            s = SubElements.Aggregate(s, (current, item) => current + item.ToMarkupProtected(indent + "  "));
-            s += indent + "</" + Name + ">\r\n";
+                return indent + "<" + name + ">" + value + "</" + name + ">\r\n";
+            string s = indent + "<" + name + ">" + value + "\r\n";
+            s = SubElements.Aggregate(s, (current, item) => current + item.ToMarkupProtected(indent + "  ", xmlEncode));
+            s += indent + "</" + name + ">\r\n";
             return s;
         }
     }

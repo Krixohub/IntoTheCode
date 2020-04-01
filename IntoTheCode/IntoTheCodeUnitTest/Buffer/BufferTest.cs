@@ -8,7 +8,7 @@ namespace Buffer
     public class BufferTest
     {
         [TestMethod]
-        public void Parser01GetLineAndColumn()
+        public void ITC01GetLineAndColumn()
         {
             string str = @"Firstline
 SecondlineX

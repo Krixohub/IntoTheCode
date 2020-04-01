@@ -8,7 +8,7 @@ namespace Read.Element.Words
     public class WordIdentTest
     {
         [TestMethod]
-        public void Load()
+        public void ITC10Load()
         {
             var idn = new WordIdent("kurt");
             Util.WordLoad("  sym01  ", idn, "sym01", "kurt", 2, 7, 9);
@@ -17,7 +17,7 @@ namespace Read.Element.Words
 
 
         [TestMethod]
-        public void LoadError()
+        public void ITC10LoadError()
         {
             string testName = "Ident";
             var word = new WordIdent("kurt");

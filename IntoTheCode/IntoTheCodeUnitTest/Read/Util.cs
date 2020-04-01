@@ -15,53 +15,128 @@ namespace IntoTheCodeUnitTest.Read
 {
     class Util
     {
-        public static void ParseErrorResPos(string errorName, int line, int col, string actual, Expression<Func<string>> resourceExpression, params object[] parm)
+        //public static void ParseErrorResPos(string errorName, int line, int col, string actual, Expression<Func<string>> resourceExpression, params object[] parm)
+        //{
+        //    string expected = BuildMsg(line, col, resourceExpression, parm);
+        //    Assert.AreEqual(expected, actual, errorName);
+        //}
+
+        /// <summary>Test the simple hard coded grammar.</summary>
+        /// <param name="code">String to parse.</param>
+        /// <param name="expected">Expected markup from rule output.</param>
+        /// <param name="rulename">Name of rule to test.</param>
+        public static void MetaHard(string code, string expected, string rulename)
         {
-            string expected = BuildMsg(line, col, resourceExpression, parm);
-            Assert.AreEqual(expected, actual, errorName);
+            var parser = new Parser();
+            var outElements = new List<CodeElement>();
+
+            TextBuffer textBuffer = Util.NewBufferWs(code);
+            SetHardCodedTestRules(parser, textBuffer);
+            Rule rule = parser.Rules.FirstOrDefault(e => e.Name == rulename);
+            Assert.AreEqual(true, rule.Load(outElements, 0), string.Format("rule '{0}': cant read", rulename));
+            string actual = ((CodeElement)outElements[0]).ToMarkupProtected(string.Empty);
+            Assert.AreEqual(expected, actual, "Equation TestOption: document fail");
         }
 
-        public static string BuildMsg(int line, int col, Expression<Func<string>> resourceExpression, params object[] parm)
+        public static CodeElement WordLoad(string buf, WordBase word, string value, string name, int from, int to, int end)
         {
-            return DotNetUtil.Msg(resourceExpression, parm) + " " + string.Format(MessageRes.LineAndCol, line, col);
+            string n = string.Empty;
+            TextBuffer textBuffer = Util.NewBufferWs(buf);
+            word.TextBuffer = textBuffer;
+
+            var outNo = new List<CodeElement>();
+            //var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
+            Assert.AreEqual(true, word.Load(outNo, 0), n + "Identifier: Can't read");
+
+            CodeElement node = null;
+            if (outNo.Count > 0 || to > 0)
+            {
+                node = outNo[0] as CodeElement;
+                Assert.IsNotNull(node, n + "Identifier: Can't find node after reading");
+                Assert.AreEqual(value, node.Value, n + "Identifier: The value is not correct");
+                Assert.AreEqual(name, node.Name, n + "Identifier: The name is not correct");
+                Assert.AreEqual(from, ((TextSubString)node.SubString).From, n + "Identifier: The start is not correct");
+                Assert.AreEqual(to, ((TextSubString)node.SubString).To, n + "Identifier: The end is not correct");
+            }
+            Assert.AreEqual(end, textBuffer.PointerNextChar, n + "Identifier: The buffer pointer is of after reading");
+
+            return node;
         }
 
-        public static void ExpressionGrammarParse(string test, string grammar, string code, string expect)
+        public static void WordLoadError(string buf, WordBase word, string testName, string expected)
         {
-            var parser = new Parser(grammar);
+            TextBuffer textBuffer = Util.NewBufferWs(buf);
+            word.TextBuffer = textBuffer;
+            Rule rule = new Rule("testRule", word);
+
+            //rule.add
+            var outNo = new List<CodeElement>();
+            //var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
+            Assert.AreEqual(false, word.Load(outNo, 0), "No read error");
+            Assert.AreEqual(false, word.ResolveErrorsForward(), "No read error");
+            Assert.IsNotNull(textBuffer.Status.Error, testName + " No error object");
+
+            string actual = textBuffer.Status.Error.Message;
+            string s = string.Join("\r\n", textBuffer.Status.AllErrors.Select(err => err.Message).ToArray());
+            
+            //ParseErrorResPos(testName, line, col, errMsg1, resourceExpression, parm);
+            //string expected = 
+            Assert.AreEqual(expected, actual, testName);
+        }
+
+        public static Parser ParserGrammar(string grammar, params string[] errors)
+        {
+            Parser parser = null;
+            try { parser = new Parser(grammar); }
+            catch (ParserException e)
+            {
+                Assert.IsTrue(errors.Length > 0, "Grammar error: " + e.Message );
+                Assert.IsTrue(e.AllErrors.Count >= errors.Length, "Build missing error 1");
+                e.AllErrors.Sort(ParserError.Compare);
+                for (int i = 0; i < e.AllErrors.Count; i++)
+                    if (i < errors.Length)
+                        Assert.AreEqual(errors[i], e.AllErrors[i].Message, "Build error " + i);
+            }
+
+            if (errors.Length == 0)
+                Assert.IsNotNull(parser, "Build expects no error");
+            else
+                Assert.IsNull(parser, "Build missing error 2");
+            
+            return parser;
+        }
+
+        public static void ParserLoad(string name, string grammar, string code, string markup, params string[] errors)
+        {
+            Parser parser = ParserGrammar(grammar);
             var buf = new FlatBuffer(code);
             CodeDocument doc = parser.ParseString(buf);
-            string errMsg = buf.Status.Error?.Message;
-            Assert.IsNotNull(doc, test + " doc er null " + errMsg ?? "");
-            string actual = doc.ToMarkup();
-            string err = CompareTextLines(actual, expect);
-
-            Assert.AreEqual(string.Empty, err, test + " AST");
-        }
-
-        /// <summary>Compare two strings. Line for line and char for char.</summary>
-        /// <returns>Empty string if equal. Message with line and char number if different.</returns>
-        public static string CompareTextLines(string actual, string expect)
-        {
-            string[] sep = { "\r\n" };
-            string[] actualList = actual.Split(sep, StringSplitOptions.RemoveEmptyEntries);
-            string[] expectList = expect.Split(sep, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 0; i < actualList.Length; i++)
+            if (buf.Status.Error == null)
             {
-                if (i == expectList.Length)
-                    return string.Format("Actual text has {0} lines, expected text only {1} lines", actualList.Length, expectList.Length);
-                for (int j = 0; j < actualList[i].Length; j++)
+                Assert.IsTrue(errors.Count() == 0, name + " Expecting error");
+                Assert.AreEqual(string.Empty, parser.DefinitionError, "DifinitionError");
+                Assert.IsNotNull(doc, name + " doc er null");
+
+                if (!string.IsNullOrEmpty(markup))
                 {
-                    if (expectList[i].Length <= j) return string.Format("Actual line {0} is shorter than expected", i + 1);
-                    if (actualList[i][j] != expectList[i][j])
-                        return string.Format("Difference in line {0}, at positien {1}: actual '{2}', expect '{3}'", i + 1, j + 1, actualList[i][j], expectList[i][j]);
+                    string actual = doc.ToMarkup();
+                    string err = CompareTextLines(actual, markup);
+                    Assert.AreEqual(string.Empty, err, name + " AST");
                 }
-                if (expectList[i].Length > actualList[i].Length) return string.Format("Actual line {0} is longer than expected", i + 1);
             }
-            if (actualList.Length < expectList.Length)
-                return string.Format("Actual text has only {0} lines, expected text {1} lines", actualList.Length, expectList.Length);
-            return string.Empty;
+            else
+            {
+                Assert.IsTrue(errors.Count() > 0, name + " Parsing error");
+
+                Assert.IsTrue(buf.Status.AllErrors.Count >= errors.Length, name + " Load missing error 1");
+                buf.Status.AllErrors.Sort(ParserError.Compare);
+                for (int i = 0; i < buf.Status.AllErrors.Count; i++)
+                    if (i < errors.Length)
+                        Assert.AreEqual(errors[i], buf.Status.AllErrors[i].Message, name + " Load error " + i);
         }
+    }
+
+        #region utillity functions
 
         /// <summary>Create new buffer with a function to skip whitespaces.</summary>
         /// <param name="code">Contains of buffer.</param>
@@ -84,24 +159,11 @@ namespace IntoTheCodeUnitTest.Read
             return textBuffer;
         }
 
-        /// <summary>Test the simple hard coded grammar.</summary>
-        /// <param name="buf">String to parse.</param>
-        /// <param name="expected">Expected markup from rule output.</param>
-        /// <param name="rulename">Name of rule to test.</param>
-        public static void MetaHard(string buf, string expected, string rulename)
+        public static string BuildMsg(int line, int col, Expression<Func<string>> resourceExpression, params object[] parm)
         {
-            var parser = new Parser();
-            var outElements = new List<CodeElement>();
-
-            TextBuffer textBuffer = Util.NewBufferWs(buf);
-            SetHardCodedTestRules(parser, textBuffer);
-            Rule rule = parser.Rules.FirstOrDefault(e => e.Name == rulename);
-            Assert.AreEqual(true, rule.Load(outElements, 0), string.Format("rule '{0}': cant read", rulename));
-            string actual = ((CodeElement)outElements[0]).ToMarkupProtected(string.Empty);
-            Assert.AreEqual(expected, actual, "Equation TestOption: document fail");
+            string pos = (line > 0) ? " " + string.Format(MessageRes.LineAndCol, line, col) : string.Empty;
+            return DotNetUtil.Msg(resourceExpression, parm) + pos;
         }
-
-        #region utillity functions
 
         /// <summary>A grammar for test. Hard coded.</summary>
         private static void SetHardCodedTestRules(Parser parser, TextBuffer buffer)
@@ -151,72 +213,32 @@ namespace IntoTheCodeUnitTest.Read
             ParserFactory.ValidateGrammar(parser, buffer.Status);
         }
 
+
+        /// <summary>Compare two strings. Line for line and char for char.</summary>
+        /// <returns>Empty string if equal. Message with line and char number if different.</returns>
+        public static string CompareTextLines(string actual, string expect)
+        {
+            string[] sep = { "\r\n" };
+            string[] actualList = actual.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+            string[] expectList = expect.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < actualList.Length; i++)
+            {
+                if (i == expectList.Length)
+                    return string.Format("Actual text has {0} lines, expected text only {1} lines", actualList.Length, expectList.Length);
+                for (int j = 0; j < actualList[i].Length; j++)
+                {
+                    if (expectList[i].Length <= j) return string.Format("Actual line {0} is shorter than expected", i + 1);
+                    if (actualList[i][j] != expectList[i][j])
+                        return string.Format("Difference in line {0}, at positien {1}: actual '{2}', expect '{3}'", i + 1, j + 1, actualList[i][j], expectList[i][j]);
+                }
+                if (expectList[i].Length > actualList[i].Length) return string.Format("Actual line {0} is longer than expected", i + 1);
+            }
+            if (actualList.Length < expectList.Length)
+                return string.Format("Actual text has only {0} lines, expected text {1} lines", actualList.Length, expectList.Length);
+            return string.Empty;
+        }
+
         #endregion utillity functions
-
-        public static CodeElement WordLoad(string buf, WordBase word, string value, string name, int from, int to, int end)
-        {
-            string n = string.Empty;
-            TextBuffer textBuffer = Util.NewBufferWs(buf);
-            word.TextBuffer = textBuffer;
-
-            var outNo = new List<CodeElement>();
-            //var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
-            Assert.AreEqual(true, word.Load(outNo, 0), n + "Identifier: Can't read");
-
-            CodeElement node = null;
-            if (outNo.Count > 0 || to > 0)
-            {
-                node = outNo[0] as CodeElement;
-                Assert.IsNotNull(node, n + "Identifier: Can't find node after reading");
-                Assert.AreEqual(value, node.Value, n + "Identifier: The value is not correct");
-                Assert.AreEqual(name, node.Name, n + "Identifier: The name is not correct");
-                Assert.AreEqual(from, ((TextSubString)node.SubString).From, n + "Identifier: The start is not correct");
-                Assert.AreEqual(to, ((TextSubString)node.SubString).To, n + "Identifier: The end is not correct");
-            }
-            Assert.AreEqual(end, textBuffer.PointerNextChar, n + "Identifier: The buffer pointer is of after reading");
-
-            return node;
-        }
-
-        public static void ParserBuildError(string buf, params string[] expected)
-        {
-            Parser parser = null;
-            try { parser = new Parser(buf); }
-            catch (ParserException e) 
-            {
-                Assert.IsTrue(e.AllErrors.Count >= expected.Length, "Build missing error 1");
-                e.AllErrors.Sort(ParserError.Compare);
-                for (int i = 0; i < e.AllErrors.Count; i++)
-                    if (i < expected.Length)
-                        Assert.AreEqual(expected[i], e.AllErrors[i].Message, "Build error " + i);
-            }
-
-            if (expected.Length == 0)
-                Assert.IsNotNull(parser, "Build expects no error");
-            else
-                Assert.IsNull(parser, "Build missing error 2");
-        }
-
-        public static void WordLoadError(string buf, WordBase word, string testName, string expected)
-        {
-            TextBuffer textBuffer = Util.NewBufferWs(buf);
-            word.TextBuffer = textBuffer;
-            Rule rule = new Rule("testRule", word);
-
-            //rule.add
-            var outNo = new List<CodeElement>();
-            //var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
-            Assert.AreEqual(false, word.Load(outNo, 0), "No read error");
-            Assert.AreEqual(false, word.ResolveErrorsForward(), "No read error");
-            Assert.IsNotNull(textBuffer.Status.Error, testName + " No error object");
-
-            string actual = textBuffer.Status.Error.Message;
-            string s = string.Join("\r\n", textBuffer.Status.AllErrors.Select(err => err.Message).ToArray());
-            
-            //ParseErrorResPos(testName, line, col, errMsg1, resourceExpression, parm);
-            //string expected = 
-            Assert.AreEqual(expected, actual, testName);
-        }
 
     }
 }

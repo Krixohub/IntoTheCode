@@ -17,12 +17,22 @@ using IntoTheCodeUnitTest.Read;
 
 namespace Read
 {
+    /// <summary>
+    /// Some tests are name 'ITC##______________'
+    /// The number is an indication of how narrow/independent the test is. Low numbered tests should be fixed first.
+    /// Higthernumbered tests are depending on other tests.
+    /// Number
+    ///  00-09 buffer
+    ///  10-19 words
+    ///  20-29 MetaParser Hardcoded-parser parser-factory
+    ///  30-   
+    /// </summary>
     [TestClass]
     public class MetaParserTest
     {
 
         [TestMethod]
-        public void HardcodedTestGrammar()
+        public void ITC22HardcodedTestGrammar()
         {
             string expected;
 
@@ -72,7 +82,7 @@ namespace Read
         }
 
         [TestMethod]
-        public void HardCodeParser()
+        public void ITC23HardCodeParser()
         {
             // Test hard coded grammar
             // Status er kun til opsamling af fejl
@@ -85,7 +95,7 @@ namespace Read
         }
 
         [TestMethod]
-        public void MetaSyntax()
+        public void ITC24MetaSyntax()
         {
             // Build a grammar to test meta grammar
             string actual1, actual2, expect, msg;

@@ -83,6 +83,9 @@ namespace IntoTheCode.Read
         /// <exclude/>
         internal CodeDocument ParseString(TextBuffer buffer)
         {
+
+            if (buffer.Status.Error != null) return null;
+
             List<Rule> procesRules = Rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
             if (!ParserFactory.InitializeGrammar(this, procesRules, buffer.Status))
                 return null;

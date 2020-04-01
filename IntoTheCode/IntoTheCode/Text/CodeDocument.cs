@@ -42,11 +42,12 @@ namespace IntoTheCode
 
         public override string GetValue() { return _value; }
 
-        /// <summary>Transform code to xml.</summary>
-        /// <returns>A string of xml.</returns>
-        public string ToMarkup()
+        /// <summary>Transform code to markup.</summary>
+        /// <param name="xmlEncode">Encode the values to xml.</param>
+        /// <returns>A string of markup.</returns>
+        public string ToMarkup(bool xmlEncode = false)
         {
-            return ToMarkupProtected(string.Empty);
+            return ToMarkupProtected(string.Empty, xmlEncode);
         }
 
         // https://msdn.microsoft.com/en-us/library/bb675186(v=vs.110).aspx

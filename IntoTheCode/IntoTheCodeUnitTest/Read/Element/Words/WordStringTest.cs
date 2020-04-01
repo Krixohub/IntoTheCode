@@ -9,7 +9,7 @@ namespace Read.Element.Words
     public class WordStringTest
     {
         [TestMethod]
-        public void Load()
+        public void ITC10Load()
         {
             // load string
             var word = new WordString();
@@ -18,7 +18,7 @@ namespace Read.Element.Words
         }
 
         [TestMethod]
-        public void LoadError()
+        public void ITC10LoadError()
         {
             string testName = "String";
             var word = new WordString();

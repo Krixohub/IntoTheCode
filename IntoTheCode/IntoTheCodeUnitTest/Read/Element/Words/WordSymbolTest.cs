@@ -11,7 +11,7 @@ namespace Read.Element.Words
     public class WordSymbolTest
     {
         [TestMethod]
-        public void Load()
+        public void ITC10Load()
         {
             // load symbol
             var word = new WordSymbol("symbol1");
@@ -19,7 +19,7 @@ namespace Read.Element.Words
         }
 
         [TestMethod]
-        public void LoadError()
+        public void ITC10LoadError()
         {
             string testName = "Symbol";
             var word = new WordSymbol("loop");

@@ -11,7 +11,7 @@ namespace Read.Element.Words
     public class WordMixTest
     {
         [TestMethod]
-        public void LoadWord()
+        public void ITC11LoadWord()
         {
             //// test loading of basic grammar elements
             var outNo = new List<CodeElement>();

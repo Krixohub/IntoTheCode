@@ -231,4 +231,7 @@
   <data name="pb11" xml:space="preserve">
     <value>The rule '{0}' must have a non recursive path.</value>
   </data>
+  <data name="p06" xml:space="preserve">
+    <value>The input is null.</value>
+  </data>
 </root>

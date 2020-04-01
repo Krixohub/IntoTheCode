@@ -106,6 +106,17 @@ namespace IntoTheCode.Read
             AddError(err);
         }
 
+        public void AddFlatError(Expression<Func<string>> resourceExpression, params object[] parm)
+        {
+            var err = new ParserError()
+            {
+                Message = DotNetUtil.Msg(resourceExpression, parm),
+                ErrorPoint = TextBuffer.NotValidPtr
+            };
+
+            AddError(err);
+        }
+
         private void AddError(ParserError err)
         {
             if (AllErrors == null) AllErrors = new List<ParserError>();
