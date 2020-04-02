@@ -9,7 +9,7 @@ namespace IntoTheCode.Read.Element
     internal class Or : ParserElementBase
     {
         /// <summary>Creator for <see cref="Or"/>.</summary>
-        internal Or(ParserElementBase element1, ParserElementBase element2) 
+        internal Or(ParserElementBase element1, ParserElementBase element2)
         {
             AddElement(element1);
             AddElement(element2);
@@ -29,26 +29,22 @@ namespace IntoTheCode.Read.Element
 
         public override ElementContentType GetElementContent()
         {
-            // todo fejl ved Rule.Tag = true
-            return
-                //Element1.ElementContent == ElementContentType.OneValue &&
-                //Element2.ElementContent == ElementContentType.OneValue ?
-                //ElementContentType.OneValue :
-                ElementContentType.Many;
-        }
-        //public override ElementContentType SetElementContent(ParserElementBase origin)
-        //{
-        //    //// todo fejl ved Rule.Tag = true
-        //    //return
-        //    //    //Element1.ElementContent == ElementContentType.OneValue &&
-        //    //    //Element2.ElementContent == ElementContentType.OneValue ?
-        //    //    //ElementContentType.OneValue :
-        //    //    ElementContentType.Many;
-        //        _elementContent = ElementContentType.Many;
-        //    return _elementContent;
-        //}
+            //// todo fejl ved Rule.Tag = true
+            //var e0 = SubElements[0] as ParserElementBase;
+            //var e1 = SubElements[0] as ParserElementBase;
+            //if (e0 == null || e1 == null ||
+            //    (e0.ElementContent == ElementContentType.NotSet ||
+            //    e1.ElementContent == ElementContentType.NotSet)) return ElementContentType.NotSet;
+            //return e0.ElementContent == ElementContentType.OneValue &&
+            //    e1.ElementContent == ElementContentType.OneValue ?
+            //    ElementContentType.OneValue :
+            //    ElementContentType.Many;
 
-        public override string GetGrammar() {
+            return ElementContentType.Many;
+        }
+
+        public override string GetGrammar()
+        {
             return (SubElements[0] as ParserElementBase).GetGrammar() + " | " +
                 (SubElements[1] as ParserElementBase).GetGrammar();
         }
@@ -60,11 +56,11 @@ namespace IntoTheCode.Read.Element
             int from = TextBuffer.PointerNextChar;
             var subs = new List<CodeElement>();
             if (!(SubElements[0] as ParserElementBase).Load(subs, level) || from == TextBuffer.PointerNextChar)
-                if (TextBuffer.Status.Error != null || 
-                    (!(SubElements[1] as ParserElementBase).Load(subs, level) 
+                if (TextBuffer.Status.Error != null ||
+                    (!(SubElements[1] as ParserElementBase).Load(subs, level)
                     || from == TextBuffer.PointerNextChar))
                     return false;
-            
+
             outElements.AddRange(subs);
             return true;
         }

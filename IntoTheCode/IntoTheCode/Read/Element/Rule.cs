@@ -83,8 +83,8 @@ namespace IntoTheCode.Read.Element
 
         public override bool Load(List<CodeElement> outElements, int level)
         {
-            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 
+            TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
             if (Collapse)
             {
                 if (!LoadSet(outElements, level))
@@ -92,16 +92,21 @@ namespace IntoTheCode.Read.Element
             }
             else
             {
+
                 var outSubNotes = new List<CodeElement>();
                 CodeElement element;
+                if (!LoadSet(outSubNotes, level))
+                    return false;
+
                 if (ElementContent == ElementContentType.OneValue)
                 {
-                    if (!(SubElements[0] as ParserElementBase).Load(outSubNotes, level))
-                        return false;
+                    //if (!(SubElements[0] as ParserElementBase).Load(outSubNotes, level))
+                    //    return false;
 
                     CodeElement theOne = outSubNotes.FirstOrDefault(n => n.GetType() != typeof(CommentElement));
                     if (theOne != null)
                     {
+                        //if (theOne.)
                         theOne.Name = Name;
                         element = theOne;
                     }
@@ -112,12 +117,11 @@ namespace IntoTheCode.Read.Element
                     }
 
                     outElements.Add(element);
+                    // Add comments
                     outElements.AddRange(outSubNotes.OfType<CommentElement>());
                 }
                 else
                 {
-                    if (!LoadSet(outSubNotes, level))
-                        return false;
 
                     element = new CodeElement(this, subStr);
                     element.Add(outSubNotes);

@@ -21,7 +21,8 @@ namespace IntoTheCodeUnitTest.Read
         //    Assert.AreEqual(expected, actual, errorName);
         //}
 
-        /// <summary>Test the simple hard coded grammar.</summary>
+        /// <summary>Test the simple hard coded grammar.
+        /// One rule is testet at a time.</summary>
         /// <param name="code">String to parse.</param>
         /// <param name="expected">Expected markup from rule output.</param>
         /// <param name="rulename">Name of rule to test.</param>
@@ -32,6 +33,8 @@ namespace IntoTheCodeUnitTest.Read
 
             TextBuffer textBuffer = Util.NewBufferWs(code);
             SetHardCodedTestRules(parser, textBuffer);
+            string syntax = parser.GetGrammar();
+
             Rule rule = parser.Rules.FirstOrDefault(e => e.Name == rulename);
             Assert.AreEqual(true, rule.Load(outElements, 0), string.Format("rule '{0}': cant read", rulename));
             string actual = ((CodeElement)outElements[0]).ToMarkupProtected(string.Empty);
@@ -192,6 +195,7 @@ namespace IntoTheCodeUnitTest.Read
             list.Add(new Rule("TestSeries",
                 new WordSymbol("TestSeries"),
                 new Sequence(new WordIdent("finn"))));
+
             // TestOption       = 'TestOption' [TestIdentifier] [TestString];
             list.Add(new Rule("TestOption",
                 new WordSymbol("TestOption"),

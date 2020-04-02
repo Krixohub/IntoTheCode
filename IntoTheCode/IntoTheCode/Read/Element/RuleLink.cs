@@ -29,22 +29,13 @@ namespace IntoTheCode.Read.Element
         private bool _elementContentLoop = false;
         public override ElementContentType GetElementContent()
         {
-            if (_elementContentLoop || RuleElement == null) return ElementContentType.NotSet;
+            if (RuleElement == null) return ElementContentType.NotSet;
+            if (_elementContentLoop ) return ElementContentType.OneValue;
             _elementContentLoop = true;
             ElementContentType rc = RuleElement.ElementContent;
             _elementContentLoop = false;
             return rc;
         }
-        //public override ElementContentType SetElementContent(ParserElementBase origin)
-        //{
-        //    if (_elementContent == ElementContentType.NotSet && RuleElement != null)
-        //        _elementContent = RuleElement.SetElementContent(origin);
-        //    return _elementContent;
-
-        //    //return RuleElement != null ?
-        //    //    RuleElement.ElementContent :
-        //    //    ElementContentType.NotSet;
-        //}
 
         public override string GetGrammar()
         {
