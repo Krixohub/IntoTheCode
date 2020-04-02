@@ -13,10 +13,6 @@ namespace IntoTheCode.Read.Element
         {
             AddElement(element1);
             AddElement(element2);
-            //if (Element1.ElementContent == ElementContentType.OneValue && Element2.ElementContent == ElementContentType.OneValue)
-            //    ElementContent = ElementContentType.OneValue;
-            //else
-            //    ElementContent = ElementContentType.Many;
         }
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)
@@ -25,22 +21,6 @@ namespace IntoTheCode.Read.Element
                 ((ParserElementBase)SubElements[1]).CloneForParse(buffer));
             element.TextBuffer = buffer;
             return element;
-        }
-
-        public override ElementContentType GetElementContent()
-        {
-            //// todo fejl ved Rule.Tag = true
-            //var e0 = SubElements[0] as ParserElementBase;
-            //var e1 = SubElements[0] as ParserElementBase;
-            //if (e0 == null || e1 == null ||
-            //    (e0.ElementContent == ElementContentType.NotSet ||
-            //    e1.ElementContent == ElementContentType.NotSet)) return ElementContentType.NotSet;
-            //return e0.ElementContent == ElementContentType.OneValue &&
-            //    e1.ElementContent == ElementContentType.OneValue ?
-            //    ElementContentType.OneValue :
-            //    ElementContentType.Many;
-
-            return ElementContentType.Many;
         }
 
         public override string GetGrammar()

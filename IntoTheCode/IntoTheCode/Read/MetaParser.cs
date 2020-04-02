@@ -240,7 +240,7 @@ settings   collapse;";
             try
             {
                 // Hard coded parser
-                var hardcodeParser = GetHardCodeParser(buffer.Status);
+                Parser hardcodeParser = GetHardCodeParser(buffer.Status);
 
                 if (buffer.Status.Error == null)
                 {

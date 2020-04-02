@@ -11,6 +11,8 @@ namespace IntoTheCode.Read.Element.Words
     {
         internal WordIdent(string name)
         {
+            // todo: should always be named 'identifier'
+            //Name = MetaParser.WordIdent__;
             Name = name;
         }
 
@@ -28,8 +30,6 @@ namespace IntoTheCode.Read.Element.Words
 
         public override bool Load(List<CodeElement> outElements, int level)
         {
-            //SkipWhiteSpace();
-
             if (TextBuffer.IsEnd(1)) return false;
 
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);

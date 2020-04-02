@@ -214,15 +214,6 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Element content type not set, {0}, {1} , {2}.
-        /// </summary>
-        public static string pb01 {
-            get {
-                return ResourceManager.GetString("pb01", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to {0}: An expression element can&apos;t be siebling with other elements.
         /// </summary>
         public static string pb02 {

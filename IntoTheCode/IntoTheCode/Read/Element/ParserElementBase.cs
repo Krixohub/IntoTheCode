@@ -11,30 +11,6 @@ namespace IntoTheCode.Read.Element
     /// <summary>A basic element (or symbol) of a Grammar. Can read a peace of code/text.</summary>
     public abstract class ParserElementBase : TreeNode
     {
-        private ElementContentType _elementContent;
-        public ElementContentType ElementContent
-        {
-            get
-            {
-                if (_elementContent == ElementContentType.NotSet)
-                    _elementContent = GetElementContent();
-                return _elementContent;
-            }
-        }
-        public abstract ElementContentType GetElementContent();
-
-        //protected ElementContentType _elementContent;
-        //public ElementContentType ElementContent
-        //{
-        //    get
-        //    {
-        //        if (_elementContent == ElementContentType.NotSet)
-        //            SetElementContent(null);
-        //        return _elementContent;
-        //    }
-        //}
-        //public abstract ElementContentType SetElementContent(ParserElementBase origin);
-
         /// <summary>Clone this parser element, with sub elements, and set proces.</summary>
         /// <param name="proces">The load proces.</param>
         /// <returns>The new clone.</returns>
@@ -67,11 +43,9 @@ namespace IntoTheCode.Read.Element
         {
             TextBuffer.PointerNextChar = txtPtr;
 
-            // todo: Is the error fatal?
+            // Is the error fatal?
             if (txtPtr < TextBuffer.Status.UnambiguousPointer && TextBuffer.Status.Error == null)
-            {
                 ResolveErrorsForward();
-            }
 
             return false;
         }

@@ -112,6 +112,9 @@ namespace IntoTheCodeUnitTest.Read
         public static void ParserLoad(string name, string grammar, string code, string markup, params string[] errors)
         {
             Parser parser = ParserGrammar(grammar);
+
+            string s = parser.GetGrammar();
+
             var buf = new FlatBuffer(code);
             CodeDocument doc = parser.ParseString(buf);
             if (buf.Status.Error == null)

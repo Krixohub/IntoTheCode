@@ -29,17 +29,6 @@ namespace IntoTheCode.Read.Element
             return SubElements.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray();
         }
 
-        public override ElementContentType GetElementContent()
-        {
-            return ElementContentType.Many;
-        }
-
-        //public override ElementContentType SetElementContent(ParserElementBase origin)
-        //{
-        //    _elementContent = ElementContentType.Many;
-        //    return _elementContent;
-        //}
-
         protected bool LoadSet(List<CodeElement> outElements, int level)
         {
             int from = TextBuffer.PointerNextChar;
@@ -112,7 +101,6 @@ namespace IntoTheCode.Read.Element
 
             foreach (var item in SubElements.OfType<ParserElementBase>())
                 if (!item.ResolveErrorsForward())
-                    //return SetPointerBack(from, item);
                     return SetPointerBack(from);
             return true;
         }

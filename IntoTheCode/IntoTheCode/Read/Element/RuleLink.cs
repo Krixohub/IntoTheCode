@@ -14,8 +14,6 @@ namespace IntoTheCode.Read.Element
         {
             Name = "name";
             _value = value;
-            //if (value == "expression")
-                //Recursive = true;
         }
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)
@@ -25,17 +23,6 @@ namespace IntoTheCode.Read.Element
 
         /// <summary>The Reader has the current pointer of reading, and the context.</summary>
         internal Rule RuleElement;
-
-        private bool _elementContentLoop = false;
-        public override ElementContentType GetElementContent()
-        {
-            if (RuleElement == null) return ElementContentType.NotSet;
-            if (_elementContentLoop ) return ElementContentType.OneValue;
-            _elementContentLoop = true;
-            ElementContentType rc = RuleElement.ElementContent;
-            _elementContentLoop = false;
-            return rc;
-        }
 
         public override string GetGrammar()
         {

@@ -168,9 +168,6 @@
   <data name="p05" xml:space="preserve">
     <value>End of input not reached.</value>
   </data>
-  <data name="pb01" xml:space="preserve">
-    <value>Element content type not set, {0}, {1} , {2}</value>
-  </data>
   <data name="pb02" xml:space="preserve">
     <value>{0}: An expression element can't be siebling with other elements</value>
   </data>

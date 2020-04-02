@@ -261,26 +261,12 @@ namespace IntoTheCode.Read
             foreach (Rule rule in parser.Rules)
                 ok = ValidateGrammarElement(rule, status) && ok;
 
-            //// Loop check
-            //ok = ok && parser.Rules[0].InitializeLoop(new List<Rule>(), new List<Rule>(), new List<ParserElementBase>(), status);
-
             return ok;
         }
 
         private static bool ValidateGrammarElement(ParserElementBase elem, ParserStatus status)
         {
             bool ok = true;
-            //if (elem == null)
-            //{
-            //    int i = 3;
-            //}
-            if (elem.ElementContent == ElementContentType.NotSet)
-            {
-                status.AddBuildError(() => MessageRes.pb01,
-                    elem.DefinitionCodeElement,
-                    elem.GetType().Name, elem.Name, elem.Value);
-                ok = false;
-            }
 
             if (elem.SubElements == null) return ok;
             foreach (ParserElementBase sub in elem.SubElements)

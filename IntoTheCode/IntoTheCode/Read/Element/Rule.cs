@@ -27,6 +27,8 @@ namespace IntoTheCode.Read.Element
             if ((elements.Length > 2 && elements[elements.Length - 1] is WordSymbol) ||
                 AnyNested(elem => elem is WordSymbol && ((WordSymbol)elem).Value.Length > 2))
                 Trust = true;
+
+            _simplify = elements.Length == 1 && elements[0] is WordBase;
         }
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)
@@ -41,23 +43,6 @@ namespace IntoTheCode.Read.Element
 
             return element;
         }
-
-        public override ElementContentType GetElementContent()
-        {
-            return SubElements.Count == 1 ?
-                (SubElements[0] as ParserElementBase).ElementContent :
-                ElementContentType.Many;
-        }
-
-        //public override ElementContentType SetElementContent(ParserElementBase origin)
-        //{
-        //    if (_elementContent == ElementContentType.NotSet && origin != this)
-        //    {
-        //        if (SubElements.Count > 1) _elementContent = ElementContentType.Many;
-        //        else _elementContent = (SubElements[0] as ParserElementBase).SetElementContent(null);
-        //    }
-        //    return _elementContent;
-        //}
 
         internal bool Collapse { get; set; }
         internal bool Trust { get; set; }
@@ -81,6 +66,8 @@ namespace IntoTheCode.Read.Element
 
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
+        private bool _simplify;
+
         public override bool Load(List<CodeElement> outElements, int level)
         {
 
@@ -98,11 +85,11 @@ namespace IntoTheCode.Read.Element
                 if (!LoadSet(outSubNotes, level))
                     return false;
 
-                if (ElementContent == ElementContentType.OneValue)
+                // _simplify is true when a rule just contains a single word
+                // The word value is inserted directly (collapsed)
+                if (_simplify)
                 {
-                    //if (!(SubElements[0] as ParserElementBase).Load(outSubNotes, level))
-                    //    return false;
-
+                    //todo: element =
                     CodeElement theOne = outSubNotes.FirstOrDefault(n => n.GetType() != typeof(CommentElement));
                     if (theOne != null)
                     {
@@ -158,13 +145,16 @@ namespace IntoTheCode.Read.Element
             int rc = 0;
             if (last.Name != Name) return 0;
 
-            if (ElementContent == ElementContentType.OneValue)
+            
+            if (_simplify)
                 rc = ((ParserElementBase)SubElements[0]).ResolveErrorsLast(last);
             else if (last.SubElements != null && last.SubElements.Count() > 0)
                 // if succes finding a deeper element, return true.
                 rc = ResolveSetErrorsLast(last.SubElements.Last() as CodeElement);
+            else if (!ResolveErrorsForward())
+                return 1;
 
-            return rc;
+            return 2;
         }
 
         public override bool ResolveErrorsForward()
@@ -174,11 +164,11 @@ namespace IntoTheCode.Read.Element
             if (Collapse)
                 return ResolveSetErrorsForward();
 
-            if (ElementContent == ElementContentType.OneValue &&
+            if (_simplify &&
                 !(SubElements[0] as ParserElementBase).ResolveErrorsForward())
                 return SetPointerBack(from);
 
-            else if (ElementContent != ElementContentType.OneValue &&
+            else if (!_simplify &&
                 !ResolveSetErrorsForward())
                 return SetPointerBack(from);
 
@@ -187,10 +177,8 @@ namespace IntoTheCode.Read.Element
 
         public bool LoopHasEnd;
 
-
         public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         {
-            //bool ok = true;
             if (!rules.Contains(this)) rules.Add(this);
             path.Add(this);
 

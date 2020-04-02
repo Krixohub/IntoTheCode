@@ -73,8 +73,9 @@ settings fid trust; fstr trust; fsym trust;";
             Util.ParserLoad("CAN read", grammar, code, markup);
 
             // p05: End of input not reached. Line 1, colomn 3
+            // pe07: Grammar error (o). Expecting symbol 'o', found 'p' Line 1, colomn 3
             Util.ParserLoad("no EOF", grammar, "oop", null,
-                Util.BuildMsg(1, 3, () => MessageRes.p05));
+                Util.BuildMsg(1, 3, () => MessageRes.pe07, "o", "o", "p"));
 
         }
 
