@@ -114,7 +114,6 @@ namespace IntoTheCodeUnitTest.Read
             if (buf.Status.Error == null)
             {
                 Assert.IsTrue(errors.Count() == 0, name + " Expecting error");
-                Assert.AreEqual(string.Empty, parser.DefinitionError, "DifinitionError");
                 Assert.IsNotNull(doc, name + " doc er null");
 
                 if (!string.IsNullOrEmpty(markup))

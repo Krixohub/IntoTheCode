@@ -21,7 +21,6 @@ namespace IntoTheCode.Read
         /// <param name="Grammar">Create parser for proces Grammar definition. If empty a meta Grammar is created.</param>
         public Parser(string Grammar)
         {
-            DefinitionError = string.Empty;
             SetGrammar(string.IsNullOrWhiteSpace(Grammar) ? MetaParser.SoftMetaGrammarAndSettings : Grammar);
         }
 
@@ -50,10 +49,6 @@ namespace IntoTheCode.Read
             string Grammar = Rules.Aggregate(string.Empty, (ud, r) => (ud.Length == 0 ? ud : ud + "\r\n") + r.GetGrammar());
             return Grammar;
         }
-
-        /// <summary>Error message after parsing Grammar definition.</summary>
-        /// <exclude/>
-        internal string DefinitionError { get; set; }
 
         #endregion properties
 
