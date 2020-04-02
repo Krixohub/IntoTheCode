@@ -95,7 +95,7 @@ namespace IntoTheCode.Read
                                 elem = new WordInt();
                                 break;
                             case MetaParser.WordIdent__:
-                                elem = new WordIdent(element.Value);
+                                elem = new WordIdent();
                                 break;
                             default:
                                 elem = new RuleLink(element.Value);

@@ -72,6 +72,7 @@ namespace IntoTheCode.Read.Element
         {
 
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
+
             if (Collapse)
             {
                 if (!LoadSet(outElements, level))
@@ -85,23 +86,17 @@ namespace IntoTheCode.Read.Element
                 if (!LoadSet(outSubNotes, level))
                     return false;
 
+                subStr.To = TextBuffer.PointerNextChar;
+
                 // _simplify is true when a rule just contains a single word
                 // The word value is inserted directly (collapsed)
                 if (_simplify)
                 {
-                    //todo: element =
-                    CodeElement theOne = outSubNotes.FirstOrDefault(n => n.GetType() != typeof(CommentElement));
-                    if (theOne != null)
-                    {
-                        //if (theOne.)
-                        theOne.Name = Name;
-                        element = theOne;
-                    }
+                    element = outSubNotes.FirstOrDefault(n => n.GetType() != typeof(CommentElement));
+                    if (element != null)
+                        element.Name = Name;
                     else
-                    {
-                        subStr.To = TextBuffer.PointerNextChar;
                         element = new CodeElement(this, subStr);
-                    }
 
                     outElements.Add(element);
                     // Add comments
@@ -109,7 +104,6 @@ namespace IntoTheCode.Read.Element
                 }
                 else
                 {
-
                     element = new CodeElement(this, subStr);
                     element.Add(outSubNotes);
                     outElements.Add(element);

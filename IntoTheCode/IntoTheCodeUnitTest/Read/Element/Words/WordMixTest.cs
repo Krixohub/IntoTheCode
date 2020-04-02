@@ -15,7 +15,7 @@ namespace Read.Element.Words
         {
             //// test loading of basic grammar elements
             var outNo = new List<CodeElement>();
-            var idn = new WordIdent("kurt");
+            var idn = new WordIdent();
             var str = new WordString();
             var sym = new WordSymbol("symbol1");
 

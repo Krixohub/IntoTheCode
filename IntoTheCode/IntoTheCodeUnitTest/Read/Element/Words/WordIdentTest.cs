@@ -1,4 +1,5 @@
-﻿using IntoTheCode.Read.Element.Words;
+﻿using IntoTheCode.Read;
+using IntoTheCode.Read.Element.Words;
 using IntoTheCodeUnitTest.Read;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,8 +11,8 @@ namespace Read.Element.Words
         [TestMethod]
         public void ITC10Load()
         {
-            var idn = new WordIdent("kurt");
-            Util.WordLoad("  sym01  ", idn, "sym01", "kurt", 2, 7, 9);
+            var idn = new WordIdent();
+            Util.WordLoad("  sym01  ", idn, "sym01", MetaParser.WordIdent__, 2, 7, 9);
             //             123456789
         }
 
@@ -20,7 +21,7 @@ namespace Read.Element.Words
         public void ITC10LoadError()
         {
             string testName = "Ident";
-            var word = new WordIdent("kurt");
+            var word = new WordIdent();
 
             //                 "1234   Read 'identifier', EOF error.
             Util.WordLoadError("   ", word, testName,

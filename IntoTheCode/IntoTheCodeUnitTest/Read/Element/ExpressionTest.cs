@@ -38,7 +38,7 @@ namespace Read.Element
                         new WordSymbol("*") { Precedence = 2 },
                         link4),
                     new Or(new RuleLink(plusName) { RuleElement = ruleP },
-                        new WordIdent(MetaParser.WordIdent__))));
+                        new WordIdent())));
 
             link4.RuleElement = link3.RuleElement = link2.RuleElement = link1.RuleElement = ruleE;
 
@@ -73,7 +73,7 @@ namespace Read.Element
             // "expr = expr * expr | plus | identifyer;"
             var ruleE = new Rule(exprName,
                 new Or(new RuleLink(plusName) { RuleElement = ruleP },
-                        new WordIdent(MetaParser.WordIdent__)));
+                        new WordIdent()));
 
             link2.RuleElement = link1.RuleElement = ruleE;
 

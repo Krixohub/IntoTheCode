@@ -50,9 +50,9 @@ namespace Read
 
             // Read a TestSeries
             expected = @"<TestSeries>
-  <finn>jan</finn>
-  <finn>ole</finn>
-  <finn>Mat</finn>
+  <identifier>jan</identifier>
+  <identifier>ole</identifier>
+  <identifier>Mat</identifier>
 </TestSeries>
 ";
             Util.MetaHard("  TestSeries jan ole Mat  ", expected, "TestSeries");
@@ -70,11 +70,11 @@ namespace Read
 
             // Read: TestLines       = 'TestLines' { VarName '=' Quote ';' };
             expected = @"<TestLines>
-  <localVar>name</localVar>
+  <identifier>name</identifier>
   <string>Oscar</string>
-  <localVar>addr</localVar>
+  <identifier>addr</identifier>
   <string>GoRoad</string>
-  <localVar>mobile</localVar>
+  <identifier>mobile</identifier>
   <string>555 55</string>
 </TestLines>
 ";

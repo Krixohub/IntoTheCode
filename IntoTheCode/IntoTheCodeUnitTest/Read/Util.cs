@@ -183,7 +183,7 @@ namespace IntoTheCodeUnitTest.Read
                     new RuleLink("TestSymbol")))) /*{ Tag = true }*/);
             // TestIdentifier     = varName;
             list.Add(new Rule("TestIdentifier",
-                new WordIdent("VarName")) /*{ Tag = true }*/);
+                new WordIdent()) /*{ Tag = true }*/);
             // TestSymbol       = 'Abcde';
             list.Add(new Rule("TestSymbol",
                 new WordSymbol("Abcde"))
@@ -197,7 +197,7 @@ namespace IntoTheCodeUnitTest.Read
             // TestSeries       = 'TestSeries' { VarName };
             list.Add(new Rule("TestSeries",
                 new WordSymbol("TestSeries"),
-                new Sequence(new WordIdent("finn"))));
+                new Sequence(new WordIdent())));
 
             // TestOption       = 'TestOption' [TestIdentifier] [TestString];
             list.Add(new Rule("TestOption",
@@ -211,7 +211,7 @@ namespace IntoTheCodeUnitTest.Read
             // TestLines       = 'TestLines' { VarName '=' Quote ';' };
             list.Add(new Rule("TestLines",
                 new WordSymbol("TestLines"),
-                new Sequence(new WordIdent("localVar"), new WordSymbol("="), new WordString(), new WordSymbol(";"))));
+                new Sequence(new WordIdent(), new WordSymbol("="), new WordString(), new WordSymbol(";"))));
 
 
             parser.Rules = list.Select(r => r.CloneForParse(buffer) as Rule).ToList();

@@ -9,16 +9,14 @@ namespace IntoTheCode.Read.Element.Words
 {
     internal class WordIdent : WordBase
     {
-        internal WordIdent(string name)
+        internal WordIdent()
         {
-            // todo: should always be named 'identifier'
-            //Name = MetaParser.WordIdent__;
-            Name = name;
+            Name = MetaParser.WordIdent__;
         }
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
-            return new WordIdent(Name) { TextBuffer = buffer };
+            return new WordIdent() { TextBuffer = buffer };
         }
 
         public override string GetGrammar() { return MetaParser.WordIdent__; }

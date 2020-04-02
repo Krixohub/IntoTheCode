@@ -132,7 +132,7 @@ settings   collapse;";
 
             // rule = identifier '=' expression ';'
             list.Add(new Rule(Rule_______,
-                new WordIdent(WordIdent__),
+                new WordIdent(),
                 new WordSymbol("="),
                 new RuleLink(Expression_),
                 new WordSymbol(";")));
@@ -148,7 +148,7 @@ settings   collapse;";
 
             // element    = identifier | symbol | block;
             list.Add(new Rule(Element____,
-                new Or(new WordIdent(WordIdent__),
+                new Or(new WordIdent(),
                     new Or(new RuleLink(WordSymbol_),
                         new RuleLink(Block______))))
             { Collapse = true });
@@ -198,7 +198,7 @@ settings   collapse;";
 
             // setter     > identifier assignment {',' assignment} ';';
             list.Add(new Rule("setter",
-                new WordIdent(WordIdent__),
+                new WordIdent(),
                 new RuleLink(Assignment_),
                 new Sequence(
                     new WordSymbol(","),
@@ -215,7 +215,7 @@ settings   collapse;";
 
             // property   > identifier;
             list.Add(new Rule(Property___,
-                new WordIdent(WordIdent__)));
+                new WordIdent()));
 
             // value      > string;";
             list.Add(new Rule(Value______,
