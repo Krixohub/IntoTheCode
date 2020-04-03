@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using IntoTheCode;
-using IntoTheCode.Basic;
 using IntoTheCode.Buffer;
 using IntoTheCode.Read;
-using IntoTheCode.Read.Element;
-using IntoTheCode.Read.Element.Words;
-using IntoTheCode.Message;
-using System.Linq.Expressions;
-using IntoTheCode.Basic.Util;
 using IntoTheCodeUnitTest.Read;
 
 namespace Read
@@ -30,8 +22,6 @@ namespace Read
     [TestClass]
     public class MetaParserTest
     {
-
-
         [TestMethod]
         public void ITC23HardCodeParser()
         {
