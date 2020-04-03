@@ -57,6 +57,7 @@
     <Compile Include="Buffer\BufferTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Read\Element\ExpressionTest.cs" />
+    <Compile Include="Read\Element\RuleTest.cs" />
     <Compile Include="Read\MetaParserTest.cs" />
     <Compile Include="Read\Element\Words\WordMixTest.cs" />
     <Compile Include="Read\Element\Words\WordSymbolTest.cs" />

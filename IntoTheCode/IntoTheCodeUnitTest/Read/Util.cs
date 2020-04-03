@@ -15,31 +15,29 @@ namespace IntoTheCodeUnitTest.Read
 {
     class Util
     {
-        //public static void ParseErrorResPos(string errorName, int line, int col, string actual, Expression<Func<string>> resourceExpression, params object[] parm)
-        //{
-        //    string expected = BuildMsg(line, col, resourceExpression, parm);
-        //    Assert.AreEqual(expected, actual, errorName);
-        //}
-
         /// <summary>Test the simple hard coded grammar.
-        /// One rule is testet at a time.</summary>
+        /// One rule is testet with the load function.</summary>
         /// <param name="code">String to parse.</param>
-        /// <param name="expected">Expected markup from rule output.</param>
-        /// <param name="rulename">Name of rule to test.</param>
-        public static void MetaHard(string code, string expected, string rulename)
+        /// <param name="markup">Expected markup from rule output.</param>
+        /// <param name="rules">List of rules to test. The first rule is loaded.</param>
+        public static void HardcodeRule(string code, string markup, List<Rule> rules)
         {
             var parser = new Parser();
             var outElements = new List<CodeElement>();
 
-            TextBuffer textBuffer = Util.NewBufferWs(code);
-            SetHardCodedTestRules(parser, textBuffer);
+            TextBuffer buffer = Util.NewBufferWs(code);
+            parser.Rules = rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
+            ParserFactory.InitializeGrammar(parser, parser.Rules, buffer.Status);
+            ParserFactory.ValidateGrammar(parser, buffer.Status);
+
             string syntax = parser.GetGrammar();
 
-            Rule rule = parser.Rules.FirstOrDefault(e => e.Name == rulename);
-            Assert.AreEqual(true, rule.Load(outElements, 0), string.Format("rule '{0}': cant read", rulename));
-            string actual = ((CodeElement)outElements[0]).ToMarkupProtected(string.Empty);
-            Assert.AreEqual(expected, actual, "Equation TestOption: document fail");
+            Rule rule = parser.Rules[0];
+            Assert.AreEqual(true, rule.Load(outElements, 0), string.Format("rule '{0}': cant read", rule.Name));
+            string actual = outElements[0].ToMarkupProtected(string.Empty);
+            Assert.AreEqual(markup, actual, "Equation TestOption: document fail");
         }
+
 
         public static CodeElement WordLoad(string buf, WordBase word, string value, string name, int from, int to, int end)
         {
@@ -175,7 +173,7 @@ namespace IntoTheCodeUnitTest.Read
         {
             //bool equal = false;
             //bool tag = true;
-            List<RuleLink> symbolsToResolve = new List<RuleLink>();
+            //List<RuleLink> symbolsToResolve = new List<RuleLink>();
             List<Rule> list = new List<Rule>();
             list.Add(new Rule("grammar",
                     new Or(new RuleLink("TestIdentifier"),

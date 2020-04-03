@@ -31,61 +31,12 @@ namespace Read
     public class MetaParserTest
     {
 
-        [TestMethod]
-        public void ITC22HardcodedTestGrammar()
-        {
-            string expected;
-
-            //  Read a varname
-            expected = "<TestIdentifier>Bname</TestIdentifier>\r\n";
-            Util.MetaHard("  Bname  ", expected, "TestIdentifier");
-
-            // Read a 'or grammar = varname'
-            expected = "<grammar>\r\n  <TestIdentifier>Bcccc</TestIdentifier>\r\n</grammar>\r\n";
-            Util.MetaHard("  Bcccc  ", expected, "grammar");
-
-            // Read a 'or TestString'
-            expected = "<grammar>\r\n  <string>Ccccc</string>\r\n</grammar>\r\n";
-            Util.MetaHard(" 'Ccccc'  ", expected, "grammar");
-
-            // Read a TestSeries
-            expected = @"<TestSeries>
-  <identifier>jan</identifier>
-  <identifier>ole</identifier>
-  <identifier>Mat</identifier>
-</TestSeries>
-";
-            Util.MetaHard("  TestSeries jan ole Mat  ", expected, "TestSeries");
-
-
-            // Read a TestOption
-            expected = "<TestOption>\r\n  <TestQuote2>qwerty</TestQuote2>\r\n</TestOption>\r\n";
-            Util.MetaHard("  TestOption 'qwerty'  ", expected, "TestOption");
-
-
-            // Read a TestOption
-            expected = "<TestOption>\r\n  <TestIdentifier>wer</TestIdentifier>\r\n</TestOption>\r\n";
-            Util.MetaHard("  TestOption wer  ", expected, "TestOption");
-
-
-            // Read: TestLines       = 'TestLines' { VarName '=' Quote ';' };
-            expected = @"<TestLines>
-  <identifier>name</identifier>
-  <string>Oscar</string>
-  <identifier>addr</identifier>
-  <string>GoRoad</string>
-  <identifier>mobile</identifier>
-  <string>555 55</string>
-</TestLines>
-";
-            Util.MetaHard("  TestLines name = 'Oscar'; addr = 'GoRoad'; \r\n mobile = '555 55'; ", expected, "TestLines");
-        }
 
         [TestMethod]
         public void ITC23HardCodeParser()
         {
             // Test hard coded grammar
-            // Status er kun til opsamling af fejl
+            // Status is for collection of errors
             ParserStatus status = new ParserStatus(null);
             Parser hardcodeParser = MetaParser.GetHardCodeParser(status);
             string actual = hardcodeParser.GetGrammar();

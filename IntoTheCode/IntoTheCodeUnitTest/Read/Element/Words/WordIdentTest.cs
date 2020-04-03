@@ -13,7 +13,7 @@ namespace Read.Element.Words
         {
             var idn = new WordIdent();
             Util.WordLoad("  sym01  ", idn, "sym01", MetaParser.WordIdent__, 2, 7, 9);
-            //             123456789
+            //            "123456789
         }
 
 
