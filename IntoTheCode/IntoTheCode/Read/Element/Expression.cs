@@ -184,6 +184,25 @@ namespace IntoTheCode.Read.Element
             return false;
         }
 
+        /// <summary>
+        /// Get Precedence and 'RightAssociative' for operators.
+        /// </summary>
+        /// <param name="settings"></param>
+        public override void GetSettings(List<Tuple<string, string>> settings)
+        {
+            foreach (WordBinaryOperator op in _binaryOperators)
+            {
+                if (_binaryOperators.Any(o => o != op && o.Precedence == op.Precedence))
+                    settings.Add(new Tuple<string, string>(op.Name, nameof(op.Precedence) + string.Format(" = '{0}'", op.Precedence)));
+
+                if (op.RightAssociative)
+                    settings.Add(new Tuple<string, string>(op.Name, nameof(op.RightAssociative)));
+            }
+
+            foreach (ParserElementBase item in SubElements)
+                item.GetSettings(settings);
+        }
+
         public override bool Load(List<CodeElement> outElements, int level)
         {
             int from = TextBuffer.PointerNextChar;

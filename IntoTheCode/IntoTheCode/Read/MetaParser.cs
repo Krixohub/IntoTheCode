@@ -97,7 +97,7 @@ value       = string;";
             }
         }
 
-        // property    = 'collapse' | 'trust' | 'ws' | 'wsdef';
+        // property    = 'collapse' | 'trust';
 
         /// <summary>The shapin grammar.</summary>
         internal static string MetaSettings
@@ -106,9 +106,9 @@ value       = string;";
             {
                 string grammar = @"
 settings
-expression collapse;
-element    collapse;
-settings   collapse;";
+expression  collapse;
+element     collapse;
+settings    collapse;";
                 //    return "";
                 //                string grammar = @"
                 //settings

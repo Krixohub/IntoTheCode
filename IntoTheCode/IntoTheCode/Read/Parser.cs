@@ -5,6 +5,7 @@ using IntoTheCode.Buffer;
 using IntoTheCode.Message;
 using IntoTheCode.Read.Element;
 using System.Linq;
+using IntoTheCode.Basic.Util;
 
 namespace IntoTheCode.Read
 {
@@ -42,13 +43,41 @@ namespace IntoTheCode.Read
         /// <summary>Property for parser elements.</summary>
         internal List<Rule> Rules { get; set; }
 
-        internal string GetGrammar()
+        private string GetSyntax()
         {
             if (Rules == null || Rules.Count == 0) return MessageRes.p04;
             SymbolFixWidth = Rules.Max(eq => eq.Name.Length);
-            string Grammar = Rules.Aggregate(string.Empty, (ud, r) => (ud.Length == 0 ? ud : ud + "\r\n") + r.GetGrammar());
+            return Rules.Aggregate(string.Empty, (ud, r) => (ud.Length == 0 ? ud : ud + "\r\n") + r.GetGrammar());
+        }
+
+        internal string GetGrammar()
+        {
+            string Grammar = GetSyntax();
+
+            var settings = new List<Tuple<string, string>>();
+            foreach (var rule in Rules)
+                rule.GetSettings(settings);
+
+            if (settings.Count > 0)
+            {
+                Grammar = Grammar.NL() + MetaParser.Settings___;
+                List<String> done = new List<string>();
+
+                foreach (var set in settings)
+                {
+                    if (!done.Contains(set.Item1))
+                    {
+                        done.Add(set.Item1);
+                        Grammar = Grammar.NL() + set.Item1.PadRight(SymbolFixWidth) + " ";
+                        Grammar += string.Join(" , ", settings.Where(s => s.Item1 == set.Item1).Select(s => s.Item2));
+                        Grammar += ";";
+                    }
+                }
+
+            }
             return Grammar;
         }
+
 
         #endregion properties
 

@@ -40,7 +40,7 @@ namespace Read
         {
             // Build a grammar to test meta grammar
             string actual1, actual2, expect, msg;
-            expect = MetaParser.MetaGrammar;
+            expect = MetaParser.SoftMetaGrammarAndSettings;
 
             var parser = new Parser(MetaParser.SoftMetaGrammarAndSettings);
             actual1 = parser.GetGrammar();              // Test Meta grammar after after compilation in a Parser.
@@ -97,7 +97,12 @@ settings    = 'settings' {setter};
 setter      = identifier assignment {',' assignment} ';';
 assignment  = property ['=' value];
 property    = identifier;
-value       = string;";
+value       = string;
+settings
+expression  collapse;
+element     collapse;
+block       collapse;
+settings    collapse;";
             //property    = identifier;
             //property    = 'collapse' | 'milestone' | 'ws' | 'wsdef';
         }

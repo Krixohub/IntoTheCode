@@ -55,8 +55,13 @@ namespace IntoTheCode.Read.Element
         public abstract string GetGrammar();
 
         // todo implement GetSettings on decendants
-        public virtual string GetSettings()
-        { return string.Empty; }
+        public virtual void GetSettings(List<Tuple<string, string>> settings) 
+        {
+            if (SubElements == null) return;
+
+            foreach (ParserElementBase item in SubElements)
+                item.GetSettings(settings);
+        }
 
         //protected abstract string Read(int begin, ITextBuffer buffer);
 

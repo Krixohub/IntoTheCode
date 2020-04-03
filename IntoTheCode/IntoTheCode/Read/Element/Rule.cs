@@ -6,6 +6,7 @@ using IntoTheCode.Basic.Util;
 using IntoTheCode.Read.Element.Words;
 using System.Linq;
 using IntoTheCode.Message;
+using System;
 
 namespace IntoTheCode.Read.Element
 {
@@ -23,10 +24,7 @@ namespace IntoTheCode.Read.Element
             Name = name;
 
             // Set 'trust' property if this is the last of many elements
-            //    IList<TreeNode> siblings = Parent.SubElements;
-            if ((elements.Length > 2 && elements[elements.Length - 1] is WordSymbol) ||
-                AnyNested(elem => elem is WordSymbol && ((WordSymbol)elem).Value.Length > 2))
-                Trust = true;
+            Trust = GetTrustAuto();
 
             _simplify = elements.Length == 1 && elements[0] is WordBase;
         }
@@ -46,7 +44,14 @@ namespace IntoTheCode.Read.Element
 
         internal bool Collapse { get; set; }
         internal bool Trust { get; set; }
-        internal int Precendence { get; set; }
+
+        private bool GetTrustAuto()
+        {
+            // Set 'trust' property if this is the last of many elements
+            return (SubElements.Count > 2 && SubElements[SubElements.Count - 1] is WordSymbol) ||
+                AnyNested(elem => elem is WordSymbol && ((WordSymbol)elem).Value.Length > 2);
+
+        }
 
         public override string GetGrammar()
         {
@@ -57,11 +62,17 @@ namespace IntoTheCode.Read.Element
             return Grammar;
         }
 
-        public override string GetSettings()
+        public override void GetSettings(List<Tuple<string, string>> settings)
         {
-            //string setting = Tag ? string.Empty : Name.PadRight(Parser.SymbolFixWidth) + " tag = 'false';";
-            string setting = Collapse ? string.Empty : Name.PadRight(Parser.SymbolFixWidth) + " collapse = 'true';";
-            return setting;
+            ////string setting = Tag ? string.Empty : Name.PadRight(Parser.SymbolFixWidth) + " tag = 'false';";
+            //string setting = Collapse ? string.Empty : Name.PadRight(Parser.SymbolFixWidth) + " collapse = 'true';";
+            if (Trust != GetTrustAuto()) 
+                settings.Add(new Tuple<string, string>(Name, nameof(Trust).ToLower() + (Trust ? string.Empty : " = 'false'")));
+            if (Collapse) 
+                settings.Add(new Tuple<string, string>(Name, nameof(Collapse).ToLower()));
+
+            foreach (ParserElementBase item in SubElements)
+                item.GetSettings(settings);
         }
 
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
