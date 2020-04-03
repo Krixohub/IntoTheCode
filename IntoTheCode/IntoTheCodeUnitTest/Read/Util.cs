@@ -15,12 +15,12 @@ namespace IntoTheCodeUnitTest.Read
 {
     class Util
     {
-        /// <summary>Test the simple hard coded grammar.
+        /// <summary>Test the hard coded rules.
         /// One rule is testet with the load function.</summary>
         /// <param name="code">String to parse.</param>
         /// <param name="markup">Expected markup from rule output.</param>
         /// <param name="rules">List of rules to test. The first rule is loaded.</param>
-        public static void HardcodeRule(string code, string markup, List<Rule> rules)
+        public static void RuleLoad(string code, string markup, List<Rule> rules)
         {
             var parser = new Parser();
             var outElements = new List<CodeElement>();
@@ -38,6 +38,37 @@ namespace IntoTheCodeUnitTest.Read
             Assert.AreEqual(markup, actual, "Equation TestOption: document fail");
         }
 
+        /// <summary>Test Parser Elements.
+        /// First element is testet with the load function.</summary>
+        /// <param name="code">String to parse.</param>
+        /// <param name="markup">Expected markup from rule output.</param>
+        /// <param name="elements">List of rules to test. The first rule is loaded.</param>
+        public static void ParserElementLoad(string code, string markup, List<ParserElementBase> elements)
+        {
+            //var parser = new Parser();
+            var outElements = new List<CodeElement>();
+
+            TextBuffer buffer = Util.NewBufferWs(code);
+            for (int i = 0; i < elements.Count; i++)
+                elements[i] = elements[i].CloneForParse(buffer);
+            //foreach (var item in elements)
+            //    item = item.CloneForParse(buffer);
+
+
+            //parser.Rules = elements.Select(r => r.CloneForParse(buffer) as Rule).ToList();
+            //ParserFactory.InitializeGrammar(parser, parser.Rules, buffer.Status);
+            //ParserFactory.ValidateGrammar(parser, buffer.Status);
+
+            ParserElementBase elem = elements[0];
+            string syntax = elem.GetGrammar();
+
+            Assert.AreEqual(true, elem.Load(outElements, 0), string.Format("rule '{0}': cant read", elem.Name));
+            if (markup.Length > 0)
+            {
+                string actual = outElements.Aggregate("", (str,e) => str + e.ToMarkupProtected(string.Empty));
+                Assert.AreEqual(markup, actual, "Equation TestOption: document fail");
+            }
+        }
 
         public static CodeElement WordLoad(string buf, WordBase word, string value, string name, int from, int to, int end)
         {

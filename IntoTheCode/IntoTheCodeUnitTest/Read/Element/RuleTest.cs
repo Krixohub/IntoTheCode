@@ -20,10 +20,10 @@ namespace Read.Element
             // TestIdentifier = identifier;
             rules = new List<Rule>() { new Rule("TestIdentifier", new WordIdent()) };
             markup = "<TestIdentifier>Bname</TestIdentifier>\r\n";
-            Util.HardcodeRule("  Bname  ", markup, rules);
+            Util.RuleLoad("  Bname  ", markup, rules);
 
             // Read a TestSeries
-            // TestSeries       = 'TestSeries' { VarName };
+            // TestSeries       = 'TestSeries' { identifier };
             rules = new List<Rule>() { new Rule("TestSeries", new WordSymbol("TestSeries"), new Sequence(new WordIdent())) };
             markup = @"<TestSeries>
   <identifier>jan</identifier>
@@ -31,7 +31,7 @@ namespace Read.Element
   <identifier>Mat</identifier>
 </TestSeries>
 ";
-            Util.HardcodeRule("  TestSeries jan ole Mat  ", markup, rules);
+            Util.RuleLoad("  TestSeries jan ole Mat  ", markup, rules);
 
             // alt            = TestIdentifier | TestString | TestSymbol;
             // TestIdentifier = identifier;
@@ -39,27 +39,27 @@ namespace Read.Element
             // TestString     = string;
             rules = GetHardCodeRuleAlternatives();
 
-            // Read a 'or grammar = varname'
+            // Read a 'or grammar = identifier'
             markup = "<alt>\r\n  <TestIdentifier>Bcccc</TestIdentifier>\r\n</alt>\r\n";
-            Util.HardcodeRule("  Bcccc  ", markup, rules);
+            Util.RuleLoad("  Bcccc  ", markup, rules);
 
             // Read a 'or TestString'
             markup = "<alt>\r\n  <string>Ccccc</string>\r\n</alt>\r\n";
-            Util.HardcodeRule(" 'Ccccc'  ", markup, rules);
+            Util.RuleLoad(" 'Ccccc'  ", markup, rules);
 
             // Read a TestOption
             rules = GetHardCodeRuleTestOption();
             markup = "<TestOption>\r\n  <TestQuote2>qwerty</TestQuote2>\r\n</TestOption>\r\n";
-            Util.HardcodeRule("  TestOption 'qwerty'  ", markup, rules);
+            Util.RuleLoad("  TestOption 'qwerty'  ", markup, rules);
 
             markup = "<TestOption/>\r\n";
-            Util.HardcodeRule("  TestOption   ", markup, rules);
+            Util.RuleLoad("  TestOption   ", markup, rules);
 
             markup = "<TestOption>\r\n  <TestIdentifier>wer</TestIdentifier>\r\n</TestOption>\r\n";
-            Util.HardcodeRule("  TestOption wer  ", markup, rules);
+            Util.RuleLoad("  TestOption wer  ", markup, rules);
 
 
-            // Read: TestLines       = 'TestLines' { VarName '=' Quote ';' };
+            // Read: TestLines       = 'TestLines' { identifier '=' string ';' };
             rules = new List<Rule>() { new Rule("TestLines",
                 new WordSymbol("TestLines"),
                 new Sequence(new WordIdent(), new WordSymbol("="), new WordString(), new WordSymbol(";"))) };
@@ -72,7 +72,7 @@ namespace Read.Element
   <string>555 55</string>
 </TestLines>
 ";
-            Util.HardcodeRule("  TestLines name = 'Oscar'; addr = 'GoRoad'; \r\n mobile = '555 55'; ", markup, rules);
+            Util.RuleLoad("  TestLines name = 'Oscar'; addr = 'GoRoad'; \r\n mobile = '555 55'; ", markup, rules);
         }
 
         #region utillity functions
