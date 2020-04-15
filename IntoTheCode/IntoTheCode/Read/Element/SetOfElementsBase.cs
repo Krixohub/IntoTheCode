@@ -113,6 +113,21 @@ namespace IntoTheCode.Read.Element
             return ok;
         }
 
+        public /*override*/ bool GetFirstList(ParserElementBase org, List<ParserElementBase> firstList, List<ParserElementBase> followingList)
+        {
+            // this set is optional if alle elements are optional.
+            bool isOption = true;
+
+            for (int i = SubElements.Count - 1; i >= 0; i--)
+            {
+               // isOption = isOption && ((ParserElementBase)SubElements[i]).GetFirstList(org, firstList, followingList);
+
+                // todo
+            }
+
+            return isOption;
+        }
+
         public override string GetGrammar()
         {
             string Grammar = string.Join(" ", SubElements.OfType<ParserElementBase>().Select(s => s.GetGrammar()).ToArray());

@@ -66,8 +66,8 @@ namespace IntoTheCode.Read
         internal const string Collapse___ = "collapse";    // 
         internal const string Trust______ = "trust";   // 
         internal const string Comment____ = "comment";     // 
-        internal const string Whitespace_ = "ws";          // 
-        internal const string WsDef______ = "wsdef";       // 
+        //internal const string Whitespace_ = "ws";          // 
+        //internal const string WsDef______ = "wsdef";       // 
 
         #endregion element const names
 

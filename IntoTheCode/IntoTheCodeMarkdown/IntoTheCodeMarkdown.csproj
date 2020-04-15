@@ -1,0 +1,31 @@
+﻿<!--<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">-->
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Doc\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <TargetFramework>net452</TargetFramework>
+    </PropertyGroup>
+
+    <!-- This Import is present to make the AfterBuild work -->
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    
+    <Target Name="AfterBuild">
+        <Message Text="First occurrence" />
+        <XslTransformation XslInputPath="$(ProjectDir)xml-doc-filter.xslt" XmlInputPaths="$(SolutionDir)IntoTheCode\bin\Debug\IntoTheCode.xml" OutputPaths="$(OutputPath)doc-filter.xml" />
+
+        <!--<XslTransformation XslInputPath="xml-doc-filter.xslt" XmlInputPaths="$(OutputPath)$(AssemblyName).xml" OutputPaths="..\DotfuscOut\$(AssemblyName).xml" />-->
+        <XslTransformation XslInputPath="$(ProjectDir)xml-doc-to-html.xslt" XmlInputPaths="$(OutputPath)doc-filter.xml" OutputPaths="$(OutputPath)doc.html" />
+        <XslTransformation XslInputPath="$(ProjectDir)xml-doc-to-md.xslt" XmlInputPaths="$(OutputPath)doc-filter.xml" OutputPaths="..\..\..\web\MarkDown\IntoTheCode\content\4-doc\classes.txt" />
+        <XslTransformation XslInputPath="$(ProjectDir)xml-doc-to-html.xslt" XmlInputPaths="$(SolutionDir)IntoTheCode\bin\Debug\IntoTheCode.xml" OutputPaths="$(OutputPath)doc-full.html" />
+    </Target>
+</Project>
