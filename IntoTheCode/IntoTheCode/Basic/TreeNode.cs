@@ -60,7 +60,7 @@ namespace IntoTheCode.Basic
         protected string _value = string.Empty;
 
         /// <summary>Find sub elements with a given name.</summary>
-        /// <param name="name">The name.</param>
+        /// <param name="name">The name to search for.</param>
         /// <returns>A enumerable of elements.</returns>
         public virtual IEnumerable<TreeNode> Elements(string name)
         {
@@ -68,7 +68,7 @@ namespace IntoTheCode.Basic
         }
 
         /// <summary>Find sub elements with a predicate.</summary>
-        /// <param name="predicate">The predicate.</param>
+        /// <param name="predicate">The predicate to filter with.</param>
         /// <returns>A enumerable of elements.</returns>
         public virtual IEnumerable<TreeNode> Elements(Func<TreeNode, bool> predicate)
         {

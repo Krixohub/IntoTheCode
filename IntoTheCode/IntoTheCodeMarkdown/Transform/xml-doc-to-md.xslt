@@ -3,7 +3,7 @@
     xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
 
   <xsl:output method="html" indent="no"/>
-  <xsl:variable name="myAssembly" select="'MoehlData.Basic.AbstractModel'"/>
+  <!--<xsl:variable name="myAssembly" select="'MoehlData.Basic.AbstractModel'"/>-->
 
   <xsl:template match="doc">---
 Title: Classes
