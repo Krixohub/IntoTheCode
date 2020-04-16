@@ -42,7 +42,7 @@ namespace IntoTheCode
 
         public override string GetValue() { return _value; }
 
-        /// <summary>Transform code to markup.</summary>
+        /// <summary>Transform document to markup.</summary>
         /// <param name="xmlEncode">Encode the values to xml.</param>
         /// <returns>A string of markup.</returns>
         public string ToMarkup(bool xmlEncode = false)

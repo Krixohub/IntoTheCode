@@ -33,11 +33,10 @@ namespace IntoTheCode.Read
 
         #region properties
 
-        /// <summary>Grammar to read input.</summary>
-        //internal Grammar Grammar;
-
         /// <summary>parser.Level == 1 : HardParser; parser.Level == 2: MetaParser; parser.Level == 3: SoftParser </summary>
         internal int Level = 3;
+
+        /// <summary>Name of grammar; The name of the first rule.</summary>
         public virtual string Name { get { return Rules == null || Rules.Count == 0 ? MetaParser.Grammar : Rules[0].Name; } }
 
         /// <summary>Property for parser elements.</summary>
