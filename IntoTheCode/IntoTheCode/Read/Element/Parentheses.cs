@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace IntoTheCode.Read.Element
 {
+    /// <remarks>Inherids <see cref="SetOfElementsBase"/></remarks>
     internal class Parentheses : SetOfElementsBase
     {
         /// <summary>Creator for <see cref="Parentheses"/>.</summary>

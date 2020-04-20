@@ -7,6 +7,7 @@ using IntoTheCode.Buffer;
 
 namespace IntoTheCode.Read.Element
 {
+    /// <remarks>Inherids <see cref="SetOfElementsBase"/></remarks>
     internal class Optional : SetOfElementsBase
     {
         /// <summary>Creator for <see cref="Optional"/>.</summary>

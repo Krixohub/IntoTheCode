@@ -8,6 +8,7 @@ using IntoTheCode.Read.Element.Words;
 namespace IntoTheCode
 {
     /// <summary>The Elements that build up a CodeDokument.</summary>
+    /// <remarks>Inherids <see cref="TreeNode"/></remarks>
     public class CodeElement : TreeNode
     {
         internal CodeElement(ParserElementBase element, TextSubString pointer)

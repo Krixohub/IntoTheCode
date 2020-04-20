@@ -9,10 +9,10 @@ using IntoTheCode.Basic.Util;
 
 namespace IntoTheCode.Read
 {
-    /// <summary>Read text according to Grammar definition.
+    /// <summary>Read text according to a grammar.
     /// The parser holds the parser elements to read a code.
-    /// Parser = a program that reads code, acording to a Grammar.
-    /// ParserElement = an element of a program that reads code elements, acording to a Grammar element.</summary>
+    /// Parser = a program that reads code, acording to a grammar.
+    /// ParserElement = an element of a program that reads code elements, acording to a syntax element.</summary>
     public partial class Parser
     {
         internal int SymbolFixWidth;

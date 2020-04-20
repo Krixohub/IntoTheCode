@@ -108,8 +108,8 @@ Inherits [<xsl:value-of select="$link"/>](#<xsl:value-of select="$link"/>)
     <xsl:param name="cn" />
     <xsl:param name="fn" />
 
-    <xsl:variable name="pName" select="concat('P:',$fn)"/>
-    <xsl:variable name="mName" select="concat('M:',$fn)"/>
+    <xsl:variable name="pName" select="concat('P:',$fn, '.')"/>
+    <xsl:variable name="mName" select="concat('M:',$fn, '.')"/>
 
     <xsl:for-each select="../member">
       <xsl:variable name="memberName" select="@name"/>
@@ -146,8 +146,9 @@ Inherits [<xsl:value-of select="$link"/>](#<xsl:value-of select="$link"/>)
     </xsl:for-each>
   </xsl:template>
 
-  <!-- This template gets the qualified classname and calls the 'class' template with namespace and classname. -->
-  <xsl:template name="classNamespaceLoop">
+    <!-- This template extracts the classname from the qualified classname (full classname)
+        and calls the 'class' template with namespace and classname. -->
+    <xsl:template name="classNamespaceLoop">
     <xsl:param name="ns" />
     <xsl:param name="cn" />
     <xsl:param name="fn" />

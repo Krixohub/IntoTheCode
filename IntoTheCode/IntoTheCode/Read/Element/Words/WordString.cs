@@ -6,6 +6,7 @@ using IntoTheCode.Message;
 
 namespace IntoTheCode.Read.Element.Words
 {
+    /// <remarks>Inherids <see cref="WordBase"/></remarks>
     internal class WordString : WordBase
     {
         internal WordString()

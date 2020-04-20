@@ -1,6 +1,4 @@
 ﻿using IntoTheCode.Buffer;
-using IntoTheCode.Read.Element;
-using IntoTheCode.Basic;
 using IntoTheCode.Read.Element.Words;
 using System.Xml.Linq;
 
@@ -8,7 +6,8 @@ using System.Xml.Linq;
 
 namespace IntoTheCode
 {
-    /// <summary>The Elements that build up a CodeDokument.</summary>
+    /// <summary>Comments from the code.</summary>
+    /// <remarks>Inherids <see cref="CodeElement"/></remarks>
     public class CommentElement : CodeElement
     {
         private readonly bool _multiline;

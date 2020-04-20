@@ -10,6 +10,7 @@ using System;
 
 namespace IntoTheCode.Read.Element
 {
+    /// <remarks>Inherids <see cref="SetOfElementsBase"/></remarks>
     public class Rule : SetOfElementsBase
     {
         internal Parser Parser { get; set; }

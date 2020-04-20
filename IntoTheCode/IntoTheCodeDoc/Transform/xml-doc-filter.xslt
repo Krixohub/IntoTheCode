@@ -24,9 +24,7 @@
         <!-- Add class to this list to put the class on top. -->
         <xsl:variable name="putOnTop">
             <a>IntoTheCode.CodeDocument</a>
-            <a>IntoTheCode.Basic.TreeNode</a>
             <a>IntoTheCode.CodeElement</a>
-            <a>IntoTheCode.CommentElement</a>
             <a>IntoTheCode.Read.Parser</a>
         </xsl:variable>
 

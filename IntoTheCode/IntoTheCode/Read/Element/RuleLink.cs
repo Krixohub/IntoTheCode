@@ -7,6 +7,7 @@ namespace IntoTheCode.Read.Element
     /// <summary>
     /// Base class for Grammar symbols.
     /// </summary>
+    /// <remarks>Inherids <see cref="ParserElementBase"/></remarks>
     public class RuleLink : ParserElementBase
     {
         /// <summary>Creator for <see cref="RuleLink"/>.</summary>

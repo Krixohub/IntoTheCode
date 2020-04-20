@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace IntoTheCode.Read.Element.Struckture
 {
+    /// <remarks>Inherids <see cref="WordSymbol"/></remarks>
     internal class WordBinaryOperator : WordSymbol
     {
         /// <summary>Creator for <see cref="Or"/>.</summary>

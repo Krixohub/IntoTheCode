@@ -18,7 +18,7 @@ namespace IntoTheCode.Read
 
         private static Parser _instance;
 
-        /// <summary>A linked grammar for MoBNF.</summary>
+        /// <summary>A linked grammar for EBNF.</summary>
         internal MetaParser()
         {
         }
@@ -39,7 +39,7 @@ namespace IntoTheCode.Read
         internal const string Grammar      = "Grammar";      // Grammer
         internal const string MetaGrammar_ = "MetaGrammar";  // Grammer
         internal const string HardGrammar_ = "HardGrammar";  // Grammer
-        internal const string Rule_______ = "Rule";        // Equation , Statement, Action, Definition, Assignment,
+        internal const string Rule_______ = "rule";        // Equation , Statement, Action, Definition, Assignment,
         //internal const string RuleId_____ = "ruleId";      // ruleId, Word, Symbol(bnf), Term, literal,
         internal const string Expression_ = "expression";  // 
         internal const string Element____ = "element";     // 
@@ -48,7 +48,7 @@ namespace IntoTheCode.Read
         internal const string Optional___ = "optional";    // 
         internal const string Parentheses = "parentheses"; // 
         internal const string Or_________ = "or";          // 
-        internal const string WordIdent__ = "identifier";  // id, name, word, ident, didentifier(ebnf)
+        internal const string WordIdent__ = "identifier";  // id, name, word, ident, identifier(ebnf)
         internal const string WordString_ = "string";      // string, Token, symbol, name
         internal const string WordInt____ = "int";         // string, Token, symbol, name
         internal const string WordSymbol_ = "symbol";      // wordsymbol, symbol

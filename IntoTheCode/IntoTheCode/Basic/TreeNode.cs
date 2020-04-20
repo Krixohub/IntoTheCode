@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace IntoTheCode.Basic
 {
-    /// <summary>A Element has a parent and a set of sub elements.</summary>
+    /// <summary>A Element has a parent, a string value (text) and a set of sub elements.</summary>
     public abstract class TreeNode // : NotifyChanges
     {
         /// <summary>Creator for <see cref="TreeNode"/>.</summary>
@@ -56,6 +56,9 @@ namespace IntoTheCode.Basic
 
         //public string Value { get; protected set; }
         public string Value { get { return GetValue(); } }
+        
+        /// <summary>Get the text of this node.</summary>
+        /// <returns>The text value.</returns>
         public abstract string GetValue();// { return _value; }
         protected string _value = string.Empty;
 

@@ -6,6 +6,7 @@ using System;
 
 namespace IntoTheCode.Read.Element
 {
+    /// <remarks>Inherids <see cref="ParserElementBase"/></remarks>
     internal class Or : ParserElementBase
     {
         /// <summary>Creator for <see cref="Or"/>.</summary>

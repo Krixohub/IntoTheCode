@@ -5,6 +5,7 @@ using System.Collections.Generic;
 namespace IntoTheCode.Read.Element.Words
 {
     /// <summary>A Grammar element that can read charecters (a word).</summary>
+    /// <remarks>Inherids <see cref="ParserElementBase"/></remarks>
     public abstract class WordBase : ParserElementBase
     {
         /// <summary>Get string representation of value from buffer.</summary>

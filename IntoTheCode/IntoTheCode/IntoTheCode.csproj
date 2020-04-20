@@ -91,7 +91,6 @@
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Basic\Message\" />
     <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="Read\Element\RuleSpecial\" />
   </ItemGroup>

@@ -10,6 +10,7 @@ using IntoTheCode.Basic.Util;
 
 namespace IntoTheCode.Read.Element
 {
+    /// <remarks>Inherids <see cref="ParserElementBase"/></remarks>
     public abstract class SetOfElementsBase : ParserElementBase
     {
         protected SetOfElementsBase(params ParserElementBase[] elements)

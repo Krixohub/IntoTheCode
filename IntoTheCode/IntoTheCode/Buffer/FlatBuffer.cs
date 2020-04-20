@@ -4,6 +4,7 @@ using IntoTheCode.Read.Element.Words;
 
 namespace IntoTheCode.Buffer
 {
+    /// <remarks>Inherids <see cref="TextBuffer"/></remarks>
     internal class FlatBuffer : TextBuffer
     {
         private readonly string _buf;

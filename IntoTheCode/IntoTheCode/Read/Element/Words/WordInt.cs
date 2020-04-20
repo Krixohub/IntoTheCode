@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace IntoTheCode.Read.Element.Words
 {
+    /// <remarks>Inherids <see cref="WordBase"/></remarks>
     internal class WordInt : WordBase
     {
         internal WordInt()

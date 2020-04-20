@@ -40,6 +40,7 @@ namespace IntoTheCode
             throw error;
         }
 
+        /// <inheritdoc cref="TreeNode"/>
         public override string GetValue() { return _value; }
 
         /// <summary>Transform document to markup.</summary>

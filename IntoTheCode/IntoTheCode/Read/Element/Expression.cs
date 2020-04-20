@@ -44,6 +44,7 @@ namespace IntoTheCode.Read.Element
     /// The expression class is not just repressenting a node in the syntax tree. It represents a part of the tree.
     /// Thus normal recursiveness is not followed in this part of the tree for some functions.
     /// </summary>
+    /// <remarks>Inherids <see cref="Or"/></remarks>
     internal class Expression : Or
     {
         internal List<ParserElementBase> _otherForms = new List<ParserElementBase>();

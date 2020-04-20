@@ -9,6 +9,7 @@ using IntoTheCode.Read.Element.Words;
 namespace IntoTheCode.Read.Element
 {
     /// <summary>A basic element (or symbol) of a Grammar. Can read a peace of code/text.</summary>
+    /// <remarks>Inherids <see cref="TreeNode"/></remarks>
     public abstract class ParserElementBase : TreeNode
     {
         /// <summary>Clone this parser element, with sub elements, and set proces.</summary>
