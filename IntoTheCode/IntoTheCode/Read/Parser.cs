@@ -49,7 +49,9 @@ namespace IntoTheCode.Read
             return Rules.Aggregate(string.Empty, (ud, r) => (ud.Length == 0 ? ud : ud + "\r\n") + r.GetGrammar());
         }
 
-        internal string GetGrammar()
+        /// <summary>Get formatted grammar for this parser.</summary>
+        /// <returns>A grammar.</returns>
+        public string GetGrammar()
         {
             string Grammar = GetSyntax();
 

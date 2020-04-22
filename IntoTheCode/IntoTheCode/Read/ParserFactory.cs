@@ -167,6 +167,8 @@ namespace IntoTheCode.Read
                 var effectiveRules = new List<Rule>();
                 parser.Rules[0].InitializeLoop(effectiveRules, new List<ParserElementBase>(), status);
 
+                parser.Rules[0].InitializeLoop(effectiveRules, new List<ParserElementBase>(), status);
+
                 foreach (Rule rule in effectiveRules)
                     if (!rule.LoopHasEnd)
                         status.AddBuildError(() => MessageRes.pb11, rule.DefinitionCodeElement, rule.Name);

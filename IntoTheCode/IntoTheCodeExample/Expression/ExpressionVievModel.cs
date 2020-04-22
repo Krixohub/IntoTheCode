@@ -2,6 +2,7 @@
 using IntoTheCode.Basic.Layer;
 using IntoTheCode.Read;
 using IntoTheCodeExample.Expression.Executers;
+using System;
 
 namespace IntoTheCodeExample.Expression
 {
@@ -16,32 +17,27 @@ div    = exp '/' exp;
 sum    = exp '+' exp;
 sub    = exp '-' exp;";*/
 
-        private string _grammar = @"
-exp   = mul | sum | div | sub | number;
+        private string _grammar = @"input = [exp];
+exp   = mul | sum | div | sub | par | number;
 mul    = exp '*' exp;
 div    = exp '/' exp;
 sum    = exp '+' exp;
 sub    = exp '-' exp;
 number = int;
+par    = '(' exp ')';
 
 settings
 mul Precedence = '2';
 div Precedence = '2';
 sum Precedence = '1';
-sub Precedence = '1';";
-
+sub Precedence = '1';
+exp collapse;
+par collapse;";
 
         public ExpressionVievModel ()
         {
-            try
-            {
-                _parser = new Parser(_grammar);
-            }
-            catch (ParserException e)
-            {
-                Output = e.Message;
-            }
-            Input = "1 + 2";
+            BuildParser();
+            Input = "1 + 2 * (4 - 1)";
         }
 
         #region properties
@@ -83,7 +79,76 @@ sub Precedence = '1';";
         }
         private string _markup;
 
+
+
+
+
+
+        public string Grammar
+        {
+            get { return _grammar; }
+            set
+            {
+                if (_grammar == value) return;
+                _grammar = value;
+                BuildParser();
+                RaisePropertyChanged(nameof(Grammar));
+            }
+        }
+        //private string _grammar;
+
+        public string GrammarOutput
+        {
+            get { return _grammarOutput; }
+            private set
+            {
+                if (_grammarOutput == value) return;
+                _grammarOutput = value;
+                RaisePropertyChanged(nameof(GrammarOutput));
+            }
+        }
+        private string _grammarOutput;
+
+        public string GrammarMarkup
+        {
+            get { return _grammarMarkup; }
+            private set
+            {
+                if (_grammarMarkup == value) return;
+                _grammarMarkup = value;
+                RaisePropertyChanged(nameof(GrammarMarkup));
+            }
+        }
+        private string _grammarMarkup;
+
+
+
+
         #endregion properties
+
+        private void BuildParser()
+        {
+            try
+            {
+                _parser = new Parser(_grammar);
+                GrammarOutput = "Grammar is ok" + "\r\n\r\n" + _parser.GetGrammar();
+                BuildExpression();
+            }
+            catch (ParserException e)
+            {
+                GrammarOutput = e.Message;
+            }
+
+            try
+            {
+                CodeDocument doc = CodeDocument.Load(new Parser(string.Empty) , _grammar);
+                GrammarMarkup = doc.ToMarkup();
+            }
+            catch (ParserException e)
+            {
+                GrammarMarkup = e.Message;
+            }
+        }
 
         private void BuildExpression()
         {
@@ -116,7 +181,7 @@ sub Precedence = '1';";
             {
                 expression = ExpressionBase.CreateExpression(doc.SubElements[0]);
             }
-            catch (ParserException e)
+            catch (Exception e)
             {
                 Output = "Expression does not compile. \r\n" + e.Message;
                 return;

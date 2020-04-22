@@ -46,6 +46,7 @@
     <Compile Include="Expression\Executers\Minus.cs" />
     <Compile Include="Expression\Executers\Multiply.cs" />
     <Compile Include="Expression\Executers\Number.cs" />
+    <Compile Include="Expression\Executers\Parenthese.cs" />
     <Compile Include="Expression\Executers\Sum.cs" />
     <Compile Include="Expression\ExpressionVievModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -74,6 +74,9 @@
     </Compile>
     <Compile Include="ViewModel\SyntaxAnalyzerVm.cs" />
     <Compile Include="ViewModel\GrammarEditVm.cs" />
+    <Compile Include="View\ExpressionTab.xaml.cs">
+      <DependentUpon>ExpressionTab.xaml</DependentUpon>
+    </Compile>
     <Page Include="ComponentAdministration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -107,6 +110,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="TestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ExpressionTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

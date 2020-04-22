@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using TestApp.View;
 
 namespace TestApp
 {
@@ -22,6 +14,33 @@ namespace TestApp
         public TestWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowTab("Expression", typeof(ExpressionTab));
+        }
+
+        private void ShowTab(string name, Type controlType)
+        {
+            TabItem tab = Tabs.Items.OfType<TabItem>().SingleOrDefault(n => n.Header.ToString() == name);
+            if (tab != null)
+                tab.Focus();
+            else
+            {
+                UserControl item = Activator.CreateInstance(controlType, new object[0]) as UserControl;
+                tab = new TabItem
+                {
+                    Content = item,
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                    VerticalContentAlignment = VerticalAlignment.Stretch,
+                    Header = name,
+                    //Style = Application.Current.Resources["FaneStil"] as Style
+                };
+
+                Tabs.Items.Add(tab);
+                Tabs.SelectedIndex = Tabs.Items.Count - 1;
+            }
         }
     }
 }

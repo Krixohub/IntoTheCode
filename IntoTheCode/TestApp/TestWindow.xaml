@@ -6,7 +6,17 @@
         xmlns:vm="clr-namespace:IntoTheCodeExample.Expression;assembly=IntoTheCodeExample"
         mc:Ignorable="d"
         Title="TestWindow" Height="450" Width="800">
-    <Window.DataContext>
+    <Grid>
+        <TabControl x:Name="Tabs" >
+            <TabItem Header="Menu" HorizontalAlignment="Left" Height="20" Margin="0" VerticalAlignment="Top" Width="54">
+                <Grid Background="#FFE5E5E5">
+                    <Button Content="Expression" HorizontalAlignment="Left" Margin="35,46,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+    <!--<Window.DataContext>
         <vm:ExpressionVievModel/>
     </Window.DataContext>
     <Grid >
@@ -14,9 +24,9 @@
             <RowDefinition Height="3"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="5"/>
-            <!--<RowDefinition Height="*"/>
+            --><!--<RowDefinition Height="*"/>
             <RowDefinition Height="3"/>-->
-            <!--<RowDefinition Height="20"/>-->
+            <!--<RowDefinition Height="20"/>--><!--
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="1" >
@@ -63,5 +73,5 @@
         </Grid>
 
         <Rectangle Grid.Row="0" Stroke ="DarkGray" Height="3"/>
-    </Grid>
+    </Grid>-->
 </Window>

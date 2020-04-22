@@ -22,6 +22,10 @@ namespace IntoTheCodeExample.Expression.Executers
                     return new Minus(elem);
                 case "number":
                     return new Number(elem);
+                case "exp":
+                    return CreateExpression(elem.SubElements[0]);
+                case "par":
+                    return CreateExpression(elem.SubElements[0]); // new Parentese(elem);
                 default:
                     throw new Exception("Unknown expression element");
             }
