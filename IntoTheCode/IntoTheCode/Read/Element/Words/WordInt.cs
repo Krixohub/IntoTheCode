@@ -17,7 +17,7 @@ namespace IntoTheCode.Read.Element.Words
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
-            return new WordString() { Name = Name, TextBuffer = buffer };
+            return new WordInt() { Name = Name, TextBuffer = buffer };
         }
 
         public override string GetGrammar() { return MetaParser.WordInt____; }
@@ -29,10 +29,16 @@ namespace IntoTheCode.Read.Element.Words
         {
             int to = 0;
             if (TextBuffer.IsEnd(to)) return false;
-            if (Sign == TextBuffer.GetChar()) to++;
-            
-            if (TextBuffer.IsEnd(to) || !AllowedChars.Contains(TextBuffer.GetChar(to++))) 
+            if (Sign == TextBuffer.GetChar())
+            {
+                to++;
+                if (TextBuffer.IsEnd(to))
+                    return false;
+            }
+            if (!AllowedChars.Contains(TextBuffer.GetChar(to)))
                 return false;
+
+            to++;
 
             while (!TextBuffer.IsEnd(to) && AllowedChars.Contains(TextBuffer.GetChar(to)))
             { to++; }
@@ -55,10 +61,13 @@ namespace IntoTheCode.Read.Element.Words
             if (TextBuffer.IsEnd(1))
                 return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe10, GetGrammar(), "EOF");
 
-            if (Sign == TextBuffer.GetChar()) to++;
-
-            if (TextBuffer.IsEnd(2))
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe10, GetGrammar(), "EOF");
+            //if (Sign == TextBuffer.GetChar()) to++;
+            if (Sign == TextBuffer.GetChar())
+            {
+                to++;
+                if (TextBuffer.IsEnd(to))
+                    return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe10, GetGrammar(), "EOF");
+            }
 
             if (!AllowedChars.Contains(TextBuffer.GetChar(to)))
                 return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar + to, 0, () => MessageRes.pe10, GetGrammar(), TextBuffer.GetChar(to));

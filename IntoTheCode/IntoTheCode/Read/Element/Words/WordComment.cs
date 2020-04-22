@@ -27,7 +27,7 @@ namespace IntoTheCode.Read.Element.Words
             // Read comments on form '// rest of line cr nl'
             const string nl = "\r\n";
 
-            if (TextBuffer.IsEnd(2) || '/' != TextBuffer.GetChar() || '/' != TextBuffer.GetChar(1)) return false;
+            if (TextBuffer.IsEnd(1) || '/' != TextBuffer.GetChar() || '/' != TextBuffer.GetChar(1)) return false;
 
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar + 2);
 

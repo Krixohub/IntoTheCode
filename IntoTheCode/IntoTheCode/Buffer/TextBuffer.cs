@@ -60,7 +60,8 @@ namespace IntoTheCode.Buffer
         internal WordWhitespace ReaderWhitespace { get; set; }
         internal WordComment ReaderComment { get; set; }
 
-        public bool IsEnd(int length = 1) { return PointerNextChar + length > Length; }
+        public bool IsEnd(int pos) { return PointerNextChar + pos >= Length; }
+        public bool IsEnd() { return PointerNextChar >= Length; }
 
         public void IncPointer(int length = 1) { PointerNextChar += length; }
 

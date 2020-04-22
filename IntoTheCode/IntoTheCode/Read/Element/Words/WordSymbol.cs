@@ -68,7 +68,7 @@ namespace IntoTheCode.Read.Element.Words
         {
             //SkipWhiteSpace();
             int from = TextBuffer.PointerNextChar;
-            if (TextBuffer.IsEnd(_value.Length))
+            if (TextBuffer.IsEnd(_value.Length - 1))
                 return false;// SetPointerBack(proces, from, this);
 
             foreach (char ch in _value)
@@ -87,7 +87,7 @@ namespace IntoTheCode.Read.Element.Words
             int from = TextBuffer.PointerNextChar;
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 
-            if (TextBuffer.IsEnd(Value.Length))
+            if (TextBuffer.IsEnd(Value.Length -1))
             {
                 TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe10, MetaParser.WordSymbol_ +  " " + GetGrammar(), "EOF");
                 return SetPointerBack(subStr.From);

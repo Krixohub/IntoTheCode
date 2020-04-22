@@ -5,6 +5,7 @@ using IntoTheCode.Read;
 using IntoTheCode.Read.Element.Struckture;
 using IntoTheCodeUnitTest.Read;
 using IntoTheCode.Message;
+using IntoTheCode;
 
 namespace Read.Element
 {
@@ -240,10 +241,19 @@ exp collapse;
 </aaa>
 ";
             Util.ParserLoad("expr 5 nested", grammar, code, markup);
-        }
+
+//            grammar = @"expr   = mul | sum | div | sub | int | identifier;
+//mul    = expr '*' expr;
+//div    = expr '/' expr;
+//sum    = expr '+' expr;
+//sub    = expr '-' expr;";
+//            Parser prsr = new Parser(grammar);
+//            var doc2 = CodeDocument.Load(prsr, "-4+-5 ");
+
+    }
 
 
-        [TestMethod]
+    [TestMethod]
         public void ExpressionError()
         {
             string grammar;

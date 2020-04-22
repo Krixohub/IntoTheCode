@@ -83,8 +83,8 @@ namespace Read
         {
             return
          @"
-HardGrammar = {Rule} [settings];
-Rule        = identifier '=' expression ';';
+HardGrammar = {rule} [settings];
+rule        = identifier '=' expression ';';
 expression  = element {[or] element};
 element     = identifier | symbol | block;
 block       = sequence | optional | parentheses;
@@ -113,23 +113,23 @@ settings    collapse;";
             CodeDocument grammar = new CodeDocument(new List<CodeElement>(), null) { Name = MetaParser.MetaGrammar_ };
 
             // grammar   = {rule}
-            grammar.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("rule", string.Empty,
                 new HardElement("identifier", "MetaGrammar"),
                 new HardElement("sequence", string.Empty,
-                    new HardElement("identifier", "Rule")),
+                    new HardElement("identifier", "rule")),
                 new HardElement("optional", string.Empty,
                     new HardElement("identifier", MetaParser.Settings___))));
 
             // rule = identifier '=' expression ';'
-            grammar.AddElement(new HardElement("Rule", string.Empty,
-                new HardElement("identifier", "Rule"),
+            grammar.AddElement(new HardElement("rule", string.Empty,
+                new HardElement("identifier", "rule"),
                 new HardElement("identifier", "identifier"),
                 new HardElement("symbol", "="),
                 new HardElement("identifier", "expression"),
                 new HardElement("symbol", ";")));
 
             // expression = element {[or] element};
-            grammar.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("rule", string.Empty,
                 new HardElement("identifier", "expression"),
                 new HardElement("identifier", MetaParser.Element____),
                 new HardElement("sequence", string.Empty,
@@ -138,7 +138,7 @@ settings    collapse;";
                     new HardElement("identifier", MetaParser.Element____))));
 
             //// element    = identifier | symbol | block; Husk ny block
-            //grammar.AddElement(new HardElement("Rule", string.Empty,
+            //grammar.AddElement(new HardElement("rule", string.Empty,
             //    new HardElement("identifier", MetaParser.Element____),
             //    new HardElement("identifier", "identifier"),
             //    new HardElement(MetaParser.Or_________, string.Empty),
@@ -147,7 +147,7 @@ settings    collapse;";
             //    new HardElement("identifier", MetaParser.Block______)));
 
             //// block      = sequence | optional | parentheses);
-            //grammar.AddElement(new HardElement("Rule", string.Empty,
+            //grammar.AddElement(new HardElement("rule", string.Empty,
             //    new HardElement("identifier", MetaParser.Block______),
             //    new HardElement("identifier", "sequence"),
             //    new HardElement(MetaParser.Or_________, string.Empty),
@@ -155,7 +155,7 @@ settings    collapse;";
             //    new HardElement("or", string.Empty),
             //    new HardElement("identifier", "parentheses")));
             // element    = identifier | symbol | block; Husk ny block
-            grammar.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("rule", string.Empty,
                 new HardElement("identifier", MetaParser.Element____),
                 new HardElement("identifier", "identifier"),
                 new HardElement(MetaParser.Or_________, string.Empty),
@@ -168,50 +168,50 @@ settings    collapse;";
                 new HardElement("identifier", "parentheses")));
 
             // sequence      = '{' expression '}';
-            grammar.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("rule", string.Empty,
                 new HardElement("identifier", "sequence"),
                 new HardElement("symbol", "{"),
                 new HardElement("identifier", "expression"),
                 new HardElement("symbol", "}")));
 
             // optional     = '[' expression ']';
-            grammar.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("rule", string.Empty,
                 new HardElement("identifier", "optional"),
                 new HardElement("symbol", "["),
                 new HardElement("identifier", "expression"),
                 new HardElement("symbol", "]")));
 
             // parentheses      = '(' expression ')';
-            grammar.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("rule", string.Empty,
                 new HardElement("identifier", "parentheses"),
                 new HardElement("symbol", "("),
                 new HardElement("identifier", "expression"),
                 new HardElement("symbol", ")")));
 
             // or         = '|';
-            grammar.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("rule", string.Empty,
                 new HardElement("identifier", "or"),
                 new HardElement("symbol", "|")));
 
             //// ruleId      > identifier;
-            //grammar.AddElement(new HardElement("Rule", string.Empty,
+            //grammar.AddElement(new HardElement("rule", string.Empty,
             //    new HardElement("identifier", "ruleId"),
             //    new HardElement("identifier", "identifier")));
 
             // symbol     = string;
-            grammar.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("rule", string.Empty,
                 new HardElement("identifier", "symbol"),
                 new HardElement("identifier", "string")));
 
             // settings    = 'settings' {setter};
-            grammar.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("rule", string.Empty,
                 new HardElement("identifier", "settings"),
                 new HardElement("symbol", "settings"),
                 new HardElement("sequence", string.Empty,
                     new HardElement("identifier", MetaParser.Setter_____))));
 
             // setter      = identifier assignment {',' assignment} ';';
-            grammar.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("rule", string.Empty,
                 new HardElement("identifier", "setter"),
                 new HardElement("identifier", "identifier"),
                 new HardElement("identifier", "assignment"),
@@ -221,7 +221,7 @@ settings    collapse;";
                 new HardElement("symbol", ";")));
 
             // assignment  = property ['=' value];
-            grammar.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("rule", string.Empty,
                 new HardElement("identifier", "assignment"),
                 new HardElement("identifier", MetaParser.Property___),
                 new HardElement("optional", string.Empty,
@@ -229,12 +229,12 @@ settings    collapse;";
                     new HardElement("identifier", MetaParser.Value______))));
 
             // property    = identifier;
-            grammar.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("rule", string.Empty,
                 new HardElement("identifier", "property"),
                 new HardElement("identifier", "identifier")));
 
             // value       = string;
-            grammar.AddElement(new HardElement("Rule", string.Empty,
+            grammar.AddElement(new HardElement("rule", string.Empty,
                 new HardElement("identifier", "value"),
                 new HardElement("identifier", "string")));
 

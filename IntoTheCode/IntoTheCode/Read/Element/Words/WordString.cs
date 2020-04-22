@@ -25,7 +25,7 @@ namespace IntoTheCode.Read.Element.Words
 
         public override bool Load(List<CodeElement> outElements, int level)
         {
-            if (TextBuffer.IsEnd(2) || TextBuffer.GetChar() != '\'') return false;
+            if (TextBuffer.IsEnd(1) || TextBuffer.GetChar() != '\'') return false;
 
             int to = TextBuffer.GetIndexAfter("'", TextBuffer.PointerNextChar + 1);
             if (to <= TextBuffer.PointerNextChar) return false;
@@ -40,7 +40,7 @@ namespace IntoTheCode.Read.Element.Words
 
         public override bool ResolveErrorsForward()
         {
-            if (TextBuffer.IsEnd(2))
+            if (TextBuffer.IsEnd(1))
                 return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe03);
 
             if (TextBuffer.GetChar() != '\'')

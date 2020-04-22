@@ -29,7 +29,7 @@ namespace IntoTheCode.Read.Element.Words
 
         public override bool Load(List<CodeElement> outElements, int level)
         {
-            if (TextBuffer.IsEnd(1)) return false;
+            if (TextBuffer.IsEnd()) return false;
 
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 

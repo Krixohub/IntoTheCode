@@ -79,8 +79,8 @@ namespace IntoTheCode.Read
         {
             get
             {
-                string grammar = @"MetaGrammar = {Rule} [settings];
-Rule        = identifier '=' expression ';';
+                string grammar = @"MetaGrammar = {rule} [settings];
+rule        = identifier '=' expression ';';
 expression  = element {[or] element};
 element     = identifier | symbol | sequence | optional | parentheses;
 sequence    = '{' expression '}';

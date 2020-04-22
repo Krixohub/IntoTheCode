@@ -23,13 +23,13 @@ namespace TestApp
 
         private void BtnGrammarEditClick(object sender, RoutedEventArgs e)
         {
-            if (_grammarEdit == null)
-            {
-                _grammarEdit = new GrammarEdit();
-                _grammarEdit.Show();
-            }
-            else
-                _grammarEdit.Activate();
+            //if (_grammarEdit == null)
+            //{
+            //    _grammarEdit = new GrammarEdit();
+            //    _grammarEdit.Show();
+            //}
+            //else
+            //    _grammarEdit.Activate();
 
 
         }

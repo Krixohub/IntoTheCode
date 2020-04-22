@@ -69,6 +69,9 @@
     <Compile Include="Grammar\GrammarEdit.xaml.cs">
       <DependentUpon>GrammarEdit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TestWindow.xaml.cs">
+      <DependentUpon>TestWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\SyntaxAnalyzerVm.cs" />
     <Compile Include="ViewModel\GrammarEditVm.cs" />
     <Page Include="ComponentAdministration.xaml">
@@ -103,6 +106,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="TestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -132,6 +139,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IntoTheCodeExample\IntoTheCodeExample.csproj">
+      <Project>{46988254-4bdb-4ab0-bef9-128e89fa4ed1}</Project>
+      <Name>IntoTheCodeExample</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IntoTheCode\IntoTheCode.csproj">
       <Project>{A1618AC6-53F4-4F1D-99B3-84A5CA81706E}</Project>
       <Name>IntoTheCode</Name>
