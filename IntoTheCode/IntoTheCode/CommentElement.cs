@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace IntoTheCode
 {
-    /// <summary>Comments from the code.</summary>
+    /// <summary>Comments from the Text.</summary>
     /// <remarks>Inherids <see cref="CodeElement"/></remarks>
     public class CommentElement : TextElement
     {

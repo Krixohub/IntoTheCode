@@ -4,7 +4,7 @@
 
 namespace IntoTheCode
 {
-    /// <summary>The Elements that build up a CodeDokument.</summary>
+    /// <summary>The Elements that build up a TextDokument.</summary>
     /// <remarks>Inherids <see cref="TreeNode"/></remarks>
     public abstract class TextElement : TreeNode<TextElement>
     {

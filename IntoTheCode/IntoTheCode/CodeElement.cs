@@ -7,7 +7,7 @@ using IntoTheCode.Read.Element.Words;
 
 namespace IntoTheCode
 {
-    /// <summary>The Elements that build up a CodeDokument.</summary>
+    /// <summary>The Elements that is read as part of a syntax.</summary>
     /// <remarks>Inherids <see cref="TextElement"/></remarks>
     public class CodeElement : TextElement
     {

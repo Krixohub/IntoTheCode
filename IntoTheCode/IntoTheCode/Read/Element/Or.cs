@@ -26,8 +26,8 @@ namespace IntoTheCode.Read.Element
 
         public override string GetGrammar()
         {
-            return (SubElements[0] as ParserElementBase).GetGrammar() + " | " +
-                (SubElements[1] as ParserElementBase).GetGrammar();
+            return SubElements[0].GetGrammar() + " | " +
+                SubElements[1].GetGrammar();
         }
 
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
@@ -36,9 +36,9 @@ namespace IntoTheCode.Read.Element
         {
             int from = TextBuffer.PointerNextChar;
             var subs = new List<TextElement>();
-            if (!(SubElements[0] as ParserElementBase).Load(subs, level) || from == TextBuffer.PointerNextChar)
+            if (!SubElements[0].Load(subs, level) || from == TextBuffer.PointerNextChar)
                 if (TextBuffer.Status.Error != null ||
-                    (!(SubElements[1] as ParserElementBase).Load(subs, level)
+                    (!SubElements[1].Load(subs, level)
                     || from == TextBuffer.PointerNextChar))
                     return false;
 
@@ -48,8 +48,8 @@ namespace IntoTheCode.Read.Element
 
         public override bool ResolveErrorsForward()
         {
-            bool ok = (SubElements[0] as ParserElementBase).ResolveErrorsForward();
-            ok = ok || (SubElements[1] as ParserElementBase).ResolveErrorsForward();
+            bool ok = SubElements[0].ResolveErrorsForward();
+            ok = ok || SubElements[1].ResolveErrorsForward();
 
             return ok;
         }
@@ -57,9 +57,9 @@ namespace IntoTheCode.Read.Element
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int ResolveErrorsLast(TextElement last)
         {
-            int rc = (SubElements[0] as ParserElementBase).ResolveErrorsLast(last);
+            int rc = SubElements[0].ResolveErrorsLast(last);
             if (rc < 2)
-                rc = (SubElements[1] as ParserElementBase).ResolveErrorsLast(last);
+                rc = SubElements[1].ResolveErrorsLast(last);
 
             return rc;
         }

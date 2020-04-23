@@ -78,8 +78,8 @@ namespace IntoTheCode.Read.Element
             var or = alternative as Or;
             if (or != null)
             {
-                AddAlternatives(ExprRule, or.SubElements[0] as ParserElementBase);
-                AddAlternatives(ExprRule, or.SubElements[1] as ParserElementBase);
+                AddAlternatives(ExprRule, or.SubElements[0]);
+                AddAlternatives(ExprRule, or.SubElements[1]);
                 return;
             }
 

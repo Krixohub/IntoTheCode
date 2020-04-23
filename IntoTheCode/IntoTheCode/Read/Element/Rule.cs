@@ -171,7 +171,7 @@ namespace IntoTheCode.Read.Element
                 return ResolveSetErrorsForward();
 
             if (_simplify &&
-                !(SubElements[0] as ParserElementBase).ResolveErrorsForward())
+                !SubElements[0].ResolveErrorsForward())
                 return SetPointerBack(from);
 
             else if (!_simplify &&

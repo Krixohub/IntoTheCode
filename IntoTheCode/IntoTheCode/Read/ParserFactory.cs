@@ -157,7 +157,7 @@ namespace IntoTheCode.Read
                 WordSymbol symbol = null;
                 Rule ruleOp = null;
                 if (or != null && 
-                    Expression.IsBinaryAlternative(rule, or.SubElements[0] as ParserElementBase, out symbol, out ruleOp))
+                    Expression.IsBinaryAlternative(rule, or.SubElements[0], out symbol, out ruleOp))
                     rule.ReplaceSubElement(0, new Expression(rule, or));
             }
 
