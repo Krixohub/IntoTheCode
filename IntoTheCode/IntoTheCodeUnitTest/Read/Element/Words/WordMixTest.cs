@@ -29,10 +29,10 @@ namespace Read.Element.Words
             Assert.AreEqual(true, sym.Load(outNo, 0), "Can't read a combinded Symbol");
             Assert.AreEqual(true, str.Load(outNo, 0), "Can't read a combinded String");
             Assert.AreEqual(true, idn.Load(outNo, 0), "Can't read a combinded Identifier");
-            ReadElement node = outNo[1] as ReadElement;
+            CodeElement node = outNo[1] as CodeElement;
             Assert.IsNotNull(node, "Can't find node after reading combinded Quote");
             Assert.AreEqual("Fghij", node.Value, "The combinded Quote value is not correct");
-            node = outNo[2] as ReadElement;
+            node = outNo[2] as CodeElement;
             Assert.IsNotNull(node, "Can't find node after reading combinded VarName");
             Assert.AreEqual("sym02", node.Value, "The combinded VarName value is not correct");
             Assert.AreEqual(45, textBuffer.PointerNextChar, "The buffer pointer is of after reading combinded values");

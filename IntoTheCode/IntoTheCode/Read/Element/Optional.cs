@@ -29,7 +29,7 @@ namespace IntoTheCode.Read.Element
 
         public override bool Load(List<TextElement> outElements, int level)
         {
-            var elements = new List<ReadElement>();
+            var elements = new List<CodeElement>();
             if (LoadSet(outElements, level))
                 outElements.AddRange(elements);
             return TextBuffer.Status.Error == null;

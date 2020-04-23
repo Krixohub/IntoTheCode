@@ -8,7 +8,7 @@ using System.Xml.Linq;
 namespace IntoTheCode
 {
     /// <summary>Comments from the code.</summary>
-    /// <remarks>Inherids <see cref="ReadElement"/></remarks>
+    /// <remarks>Inherids <see cref="CodeElement"/></remarks>
     public class CommentElement : TextElement
     {
         private readonly bool _multiline;

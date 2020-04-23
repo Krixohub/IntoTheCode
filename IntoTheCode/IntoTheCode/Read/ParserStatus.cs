@@ -66,7 +66,7 @@ namespace IntoTheCode.Read
             AddError(err);
         }
 
-        public void AddBuildError(Expression<Func<string>> resourceExpression, ReadElement elem, params object[] parm)
+        public void AddBuildError(Expression<Func<string>> resourceExpression, CodeElement elem, params object[] parm)
         {
             string error = DotNetUtil.Msg(resourceExpression, parm);
             var err = new ParserError();
@@ -139,7 +139,7 @@ namespace IntoTheCode.Read
 
         #region Next 
 
-        public void ThisIsUnambiguous(ParserElementBase reader, ReadElement code)
+        public void ThisIsUnambiguous(ParserElementBase reader, CodeElement code)
         {
             // Set SafePointer to char after element
             UnambiguousPointer = code.SubString.To;

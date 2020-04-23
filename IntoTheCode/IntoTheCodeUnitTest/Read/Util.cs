@@ -70,7 +70,7 @@ namespace IntoTheCodeUnitTest.Read
             }
         }
 
-        public static ReadElement WordLoad(string buf, WordBase word, string value, string name, int from, int to, int end)
+        public static CodeElement WordLoad(string buf, WordBase word, string value, string name, int from, int to, int end)
         {
             string n = string.Empty;
             TextBuffer textBuffer = Util.NewBufferWs(buf);
@@ -80,10 +80,10 @@ namespace IntoTheCodeUnitTest.Read
             //var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
             Assert.AreEqual(true, word.Load(outNo, 0), n + "Identifier: Can't read");
 
-            ReadElement node = null;
+            CodeElement node = null;
             if (outNo.Count > 0 || to > 0)
             {
-                node = outNo[0] as ReadElement;
+                node = outNo[0] as CodeElement;
                 Assert.IsNotNull(node, n + "Identifier: Can't find node after reading");
                 Assert.AreEqual(value, node.Value, n + "Identifier: The value is not correct");
                 Assert.AreEqual(name, node.Name, n + "Identifier: The name is not correct");

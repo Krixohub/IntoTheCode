@@ -110,7 +110,7 @@ settings    collapse;";
         /// <summary>To test changes to the meta grammar.</summary>
         private static TextDocument TestMetaGrammarDoc()
         {
-            TextDocument grammar = new TextDocument(new List<ReadElement>(), MetaParser.MetaGrammar_);
+            TextDocument grammar = new TextDocument(new List<CodeElement>(), MetaParser.MetaGrammar_);
 
             // grammar   = {rule}
             grammar.AddElement(new HardElement("rule", string.Empty,

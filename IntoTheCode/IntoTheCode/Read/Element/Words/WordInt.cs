@@ -46,7 +46,7 @@ namespace IntoTheCode.Read.Element.Words
             if (to > 9 && !int.TryParse(TextBuffer.GetSubString(TextBuffer.PointerNextChar, to), out _))
                     return false;
   
-            outElements.Add(new ReadElement(this, 
+            outElements.Add(new CodeElement(this, 
                 new TextSubString(TextBuffer.PointerNextChar) { To = TextBuffer.PointerNextChar + to }));
 
             TextBuffer.PointerNextChar += to;
@@ -89,7 +89,7 @@ namespace IntoTheCode.Read.Element.Words
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int ResolveErrorsLast(TextElement last)
         {
-            ReadElement code = last as ReadElement;
+            CodeElement code = last as CodeElement;
             if (code != null && code.WordParser == this)
             {
                 // found!

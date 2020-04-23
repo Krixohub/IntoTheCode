@@ -27,7 +27,7 @@ namespace IntoTheCode.Read.Element.Struckture
                 return false;
 
             subStr.To = TextBuffer.PointerNextChar;
-            var element = new ReadElement(this, subStr);
+            var element = new CodeElement(this, subStr);
             outElements.Add(element);
 
             return true;

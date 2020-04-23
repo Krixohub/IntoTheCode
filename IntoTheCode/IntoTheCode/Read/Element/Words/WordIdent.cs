@@ -43,7 +43,7 @@ namespace IntoTheCode.Read.Element.Words
             
             subStr.To = TextBuffer.PointerNextChar;
 
-            outElements.Add(new ReadElement(this, subStr));
+            outElements.Add(new CodeElement(this, subStr));
 
             TextBuffer.FindNextWord(outElements, level);
             return true;
@@ -52,7 +52,7 @@ namespace IntoTheCode.Read.Element.Words
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int ResolveErrorsLast(TextElement last)
         {
-            ReadElement code = last as ReadElement;
+            CodeElement code = last as CodeElement;
             if (code!= null && code.WordParser == this)
             {
                 // found!

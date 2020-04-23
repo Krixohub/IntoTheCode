@@ -108,7 +108,7 @@ namespace IntoTheCode.Read.Element
                     if (element != null)
                         element.Name = Name;
                     else
-                        element = new ReadElement(this, subStr);
+                        element = new CodeElement(this, subStr);
 
                     outElements.Add(element);
                     // Add comments
@@ -116,7 +116,7 @@ namespace IntoTheCode.Read.Element
                 }
                 else
                 {
-                    element = new ReadElement(this, subStr);
+                    element = new CodeElement(this, subStr);
                     element.Add(outSubNotes);
                     outElements.Add(element);
                 }
@@ -125,7 +125,7 @@ namespace IntoTheCode.Read.Element
             // If this is a 'division' set unambiguous and insert comments
             if (Trust && TextBuffer.PointerNextChar > subStr.From && outElements.Count > 0)
             {
-                TextBuffer.Status.ThisIsUnambiguous(this, (ReadElement)outElements[outElements.Count - 1]);
+                TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
 
                 //// insert comments
                 //foreach (CodeElement elem in TextBuffer.Comments) elem.Name = "Comment";
@@ -156,7 +156,7 @@ namespace IntoTheCode.Read.Element
                 rc = ((ParserElementBase)SubElements[0]).ResolveErrorsLast(last);
             else if (last.SubElements != null && last.SubElements.Count() > 0)
                 // if succes finding a deeper element, return true.
-                rc = ResolveSetErrorsLast(last.SubElements.Last() as ReadElement);
+                rc = ResolveSetErrorsLast(last.SubElements.Last() as CodeElement);
             else if (!ResolveErrorsForward())
                 return 1;
 

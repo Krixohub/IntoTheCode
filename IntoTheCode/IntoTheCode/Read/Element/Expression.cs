@@ -214,14 +214,14 @@ namespace IntoTheCode.Read.Element
                 // todo: a value can be complex with an unambigous point.
                 return SetPointerBack(from);
 
-            TextBuffer.Status.ThisIsUnambiguous(this, (ReadElement)outElements[outElements.Count - 1]);
+            TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
 
             // Read following operations as alternately binary operators and values.
             var operations = new List<TextElement>();
             from = TextBuffer.PointerNextChar;
             while (LoadBinaryOperator(operations, level) && LoadValue(operations, level, false))
             {
-                TextBuffer.Status.ThisIsUnambiguous(this, (ReadElement)operations[operations.Count - 1]);
+                TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)operations[operations.Count - 1]);
                 from = TextBuffer.PointerNextChar;
             }
 
@@ -234,21 +234,21 @@ namespace IntoTheCode.Read.Element
 
             // Order elements in a tree according to precedence and association rules.
             // set first value under a dummy parent
-            ReadElement parent = new ReadElement(this, null);
+            CodeElement parent = new CodeElement(this, null);
             parent.AddElement(outElements[0]);
 
             int nextValueIndex = 0;
             while (nextValueIndex < operations.Count - 1)
-                AddOperationToTree(parent.SubElements[0], (ReadElement)operations[nextValueIndex++], (ReadElement)operations[nextValueIndex++]);
+                AddOperationToTree(parent.SubElements[0], (CodeElement)operations[nextValueIndex++], (CodeElement)operations[nextValueIndex++]);
 
-            outElements[0] = parent.SubElements[0] as ReadElement;
+            outElements[0] = parent.SubElements[0] as CodeElement;
             return true;
         }
 
-        private void AddOperationToTree(TextElement leftExprCode, ReadElement rightOpCode, ReadElement rightExprCode)
+        private void AddOperationToTree(TextElement leftExprCode, CodeElement rightOpCode, CodeElement rightExprCode)
         {
             // todo check for operators belonging to expression
-            WordBinaryOperator leftOperator = ((ReadElement)leftExprCode).WordParser as WordBinaryOperator;
+            WordBinaryOperator leftOperator = ((CodeElement)leftExprCode).WordParser as WordBinaryOperator;
             WordBinaryOperator rightOpSymbol = rightOpCode.WordParser as WordBinaryOperator;
 
             // is the insertpoint a value
@@ -276,11 +276,11 @@ namespace IntoTheCode.Read.Element
 
             // if the insertPoint has lower precedence
             if (leftOperator.Precedence < rightOpSymbol.Precedence)
-                AddOperationToTree(leftExprCode.SubElements[1] as ReadElement, rightOpCode, rightExprCode);
+                AddOperationToTree(leftExprCode.SubElements[1] as CodeElement, rightOpCode, rightExprCode);
 
             // if the insertPoint has same precedence and operator is rigth associative
             else if (rightOpSymbol.RightAssociative)
-                AddOperationToTree(leftExprCode.SubElements[1] as ReadElement, rightOpCode, rightExprCode);
+                AddOperationToTree(leftExprCode.SubElements[1] as CodeElement, rightOpCode, rightExprCode);
 
             // if the insertPoint has same precedence and operator is left associative
             else
@@ -301,7 +301,7 @@ namespace IntoTheCode.Read.Element
         private bool LoadValue(List<TextElement> operations, int level, bool first)
         {
             if (!first)
-                TextBuffer.Status.ThisIsUnambiguous(this, (ReadElement)operations[operations.Count - 1]);
+                TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)operations[operations.Count - 1]);
 
             // Read a value 
             foreach (var item in _otherForms)
@@ -340,7 +340,7 @@ namespace IntoTheCode.Read.Element
         public override int ResolveErrorsLast(TextElement last)
         {
 
-            last = ResolveErrorsLastFind((ReadElement)last);
+            last = ResolveErrorsLastFind((CodeElement)last);
             // The 'last' element will always be a value. 
             // Search for the value reader.
 
@@ -364,13 +364,13 @@ namespace IntoTheCode.Read.Element
             return rc;
         }
 
-        private TextElement ResolveErrorsLastFind(ReadElement last)
+        private TextElement ResolveErrorsLastFind(CodeElement last)
         {
             // if the element is a operator get the right value to find the last
             bool isOp = _binaryOperators.Any(op => last.WordParser == op);
 
             if (isOp)
-                return ResolveErrorsLastFind(last.SubElements[1] as ReadElement);
+                return ResolveErrorsLastFind(last.SubElements[1] as CodeElement);
             else
                 return last;
         }

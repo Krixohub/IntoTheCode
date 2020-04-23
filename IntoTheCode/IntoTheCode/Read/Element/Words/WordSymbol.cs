@@ -26,7 +26,7 @@ namespace IntoTheCode.Read.Element.Words
         /// <param name="value">Value string.</param>
         /// <param name="status">If error add to this.</param>
         /// <returns>True: property set. False: not set.</returns>
-        public override bool SetProperty(ReadElement property, string value, ParserStatus status)
+        public override bool SetProperty(CodeElement property, string value, ParserStatus status)
         {
             if (property.Value == nameof(Precedence))
             {
@@ -110,7 +110,7 @@ namespace IntoTheCode.Read.Element.Words
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int ResolveErrorsLast(TextElement last)
         {
-            ReadElement code = last as ReadElement;
+            CodeElement code = last as CodeElement;
             if (code != null && code.WordParser == this)
             {
                 // found!

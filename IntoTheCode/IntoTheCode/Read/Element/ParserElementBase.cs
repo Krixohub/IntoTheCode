@@ -22,7 +22,7 @@ namespace IntoTheCode.Read.Element
         /// <param name="value">Value string.</param>
         /// <param name="status">If error add to this.</param>
         /// <returns>True: property set. False: not set.</returns>
-        public virtual bool SetProperty(ReadElement property, string value, ParserStatus status)
+        public virtual bool SetProperty(CodeElement property, string value, ParserStatus status)
         {
             bool ok = false;
             foreach (ParserElementBase item in SubElements)
@@ -35,7 +35,7 @@ namespace IntoTheCode.Read.Element
 
         protected internal TextBuffer TextBuffer;
 
-        protected internal ReadElement DefinitionCodeElement;
+        protected internal CodeElement DefinitionCodeElement;
 
         /// <summary>If the element cant read; use this to reset (set pointer back):</summary>
         /// <param name="txtPtr">Pointer to set.</param>
