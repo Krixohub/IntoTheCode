@@ -28,7 +28,7 @@ namespace IntoTheCode.Basic
         {
             SubElements = new List<TElement>();
             foreach (TElement item in elements)
-                AddElement(item);
+                Add(item);
         }
 
         /// <summary>Property for name.</summary>
@@ -40,17 +40,17 @@ namespace IntoTheCode.Basic
         /// <summary>Property for sub elements (elements).</summary>
         public virtual IList<TElement> SubElements { get; private set; }
 
-        internal protected TElement AddElement(TElement element)
+        internal protected TElement Add(TElement element)
         {
             element.Parent = this as TElement;
             SubElements.Add(element);
             return this as TElement;
         }
 
-        internal protected TElement Add(IEnumerable<TElement> elements)
+        internal protected TElement AddRange(IEnumerable<TElement> elements)
         {
             foreach (var item in elements)
-                AddElement(item);
+                Add(item);
             return this as TElement;
         }
 

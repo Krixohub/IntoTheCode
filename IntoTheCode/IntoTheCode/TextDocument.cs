@@ -13,7 +13,7 @@ namespace IntoTheCode
         internal TextDocument(IEnumerable<TextElement> elements, string name)
         {
             Name = name;
-            Add(elements);
+            AddRange(elements);
         }
         
         /// <summary>

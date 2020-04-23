@@ -1,5 +1,5 @@
 ﻿using IntoTheCode;
-using IntoTheCode.Basic;
+using System.Linq;
 
 namespace IntoTheCodeExample.Expression.Executers
 {
@@ -10,8 +10,10 @@ namespace IntoTheCodeExample.Expression.Executers
 
         public Minus(TextElement elem)
         {
-            _op1 = Factory(elem.SubElements[0]);
-            _op2 = Factory(elem.SubElements[1]);
+            CodeElement first = elem.SubElements.OfType<CodeElement>().FirstOrDefault();
+            CodeElement next = elem.SubElements.OfType<CodeElement>().FirstOrDefault(c => c != first);
+            _op1 = Factory(first);
+            _op2 = Factory(next);
         }
 
         public override float execute()

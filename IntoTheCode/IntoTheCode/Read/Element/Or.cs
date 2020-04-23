@@ -12,8 +12,8 @@ namespace IntoTheCode.Read.Element
         /// <summary>Creator for <see cref="Or"/>.</summary>
         internal Or(ParserElementBase element1, ParserElementBase element2)
         {
-            AddElement(element1);
-            AddElement(element2);
+            Add(element1);
+            Add(element2);
         }
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)

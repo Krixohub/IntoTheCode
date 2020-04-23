@@ -17,6 +17,8 @@ namespace IntoTheCode.Read.Element.Struckture
             RightAssociative = symbol.RightAssociative;
         }
 
+        public bool Complete { get; set; }
+
         protected internal override string GetValue(TextSubString ptr) { return string.Empty; }
 
         public override bool Load(List<TextElement> outElements, int level)

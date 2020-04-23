@@ -214,14 +214,14 @@ namespace IntoTheCode.Read.Element
                 // todo: a value can be complex with an unambigous point.
                 return SetPointerBack(from);
 
-            TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
+            TextBuffer.Status.ThisIsUnambiguous(this, outElements[outElements.Count - 1]);
 
             // Read following operations as alternately binary operators and values.
             var operations = new List<TextElement>();
             from = TextBuffer.PointerNextChar;
             while (LoadBinaryOperator(operations, level) && LoadValue(operations, level, false))
             {
-                TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)operations[operations.Count - 1]);
+                TextBuffer.Status.ThisIsUnambiguous(this, operations[operations.Count - 1]);
                 from = TextBuffer.PointerNextChar;
             }
 
@@ -235,17 +235,39 @@ namespace IntoTheCode.Read.Element
             // Order elements in a tree according to precedence and association rules.
             // set first value under a dummy parent
             CodeElement parent = new CodeElement(this, null);
-            parent.AddElement(outElements[0]);
+            parent.Add(outElements[0]);
 
+            var comments = new List<TextElement>();
             int nextValueIndex = 0;
-            while (nextValueIndex < operations.Count - 1)
-                AddOperationToTree(parent.SubElements[0], (CodeElement)operations[nextValueIndex++], (CodeElement)operations[nextValueIndex++]);
+            while (nextValueIndex < operations.Count - 1 && operations[nextValueIndex] is CommentElement)
+                comments.Add(operations[nextValueIndex++]);
 
-            outElements[0] = parent.SubElements[0] as CodeElement;
+            while (nextValueIndex < operations.Count - 1)
+            {
+
+                int opIndex = nextValueIndex++;
+
+                while (nextValueIndex < operations.Count - 1 && operations[nextValueIndex] is CommentElement)
+                    comments.Add(operations[nextValueIndex++]);
+
+                int expIndex = nextValueIndex++;
+
+                while (nextValueIndex < operations.Count - 1 && operations[nextValueIndex] is CommentElement)
+                    comments.Add(operations[nextValueIndex++]);
+
+                AddOperationToTree(parent.SubElements[0], (CodeElement)operations[opIndex], (CodeElement)operations[expIndex], comments);
+                comments.Clear();
+            }
+
+            WordBinaryOperator op = ((CodeElement)parent.SubElements[0]).WordParser as WordBinaryOperator;
+            if (op != null)
+                op.Complete = true;
+
+            outElements[0] = parent.SubElements[0];
             return true;
         }
 
-        private void AddOperationToTree(TextElement leftExprCode, CodeElement rightOpCode, CodeElement rightExprCode)
+        private void AddOperationToTree(TextElement leftExprCode, CodeElement rightOpCode, CodeElement rightExprCode, List<TextElement> comments)
         {
             // todo check for operators belonging to expression
             WordBinaryOperator leftOperator = ((CodeElement)leftExprCode).WordParser as WordBinaryOperator;
@@ -253,13 +275,14 @@ namespace IntoTheCode.Read.Element
 
             // is the insertpoint a value
             //            if (!IsBinaryOperator(leftExprCode))
-            if (leftOperator == null)
+            if (leftOperator == null || leftOperator.Complete)
             {
                 // insert 
                 TextElement parent = leftExprCode.Parent;
-                rightOpCode.AddElement(leftExprCode);
-                rightOpCode.AddElement(rightExprCode);
+                rightOpCode.Add(leftExprCode);
+                rightOpCode.Add(rightExprCode);
                 parent.ReplaceSubElement(leftExprCode, rightOpCode);
+                rightOpCode.AddRange(comments);
                 return;
             }
 
@@ -268,28 +291,30 @@ namespace IntoTheCode.Read.Element
             {
                 // insert 
                 TextElement parent = leftExprCode.Parent;
-                rightOpCode.AddElement(leftExprCode);
-                rightOpCode.AddElement(rightExprCode);
+                rightOpCode.Add(leftExprCode);
+                rightOpCode.Add(rightExprCode);
                 parent.ReplaceSubElement(leftExprCode, rightOpCode);
+                rightOpCode.AddRange(comments);
                 return;
             }
 
             // if the insertPoint has lower precedence
             if (leftOperator.Precedence < rightOpSymbol.Precedence)
-                AddOperationToTree(leftExprCode.SubElements[1] as CodeElement, rightOpCode, rightExprCode);
+                AddOperationToTree(leftExprCode.SubElements[1] as CodeElement, rightOpCode, rightExprCode, comments);
 
             // if the insertPoint has same precedence and operator is rigth associative
             else if (rightOpSymbol.RightAssociative)
-                AddOperationToTree(leftExprCode.SubElements[1] as CodeElement, rightOpCode, rightExprCode);
+                AddOperationToTree(leftExprCode.SubElements[1] as CodeElement, rightOpCode, rightExprCode, comments);
 
             // if the insertPoint has same precedence and operator is left associative
             else
             {
                 // insert 
                 TextElement parent = leftExprCode.Parent;
-                rightOpCode.AddElement(leftExprCode);
-                rightOpCode.AddElement(rightExprCode);
+                rightOpCode.Add(leftExprCode);
+                rightOpCode.Add(rightExprCode);
                 parent.ReplaceSubElement(leftExprCode, rightOpCode);
+                rightOpCode.AddRange(comments);
                 return;
             }
         }
@@ -301,7 +326,7 @@ namespace IntoTheCode.Read.Element
         private bool LoadValue(List<TextElement> operations, int level, bool first)
         {
             if (!first)
-                TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)operations[operations.Count - 1]);
+                TextBuffer.Status.ThisIsUnambiguous(this, operations[operations.Count - 1]);
 
             // Read a value 
             foreach (var item in _otherForms)

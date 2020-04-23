@@ -3,6 +3,7 @@ using IntoTheCode.Basic.Layer;
 using IntoTheCode.Read;
 using IntoTheCodeExample.Expression.Executers;
 using System;
+using System.Linq;
 
 namespace IntoTheCodeExample.Expression
 {
@@ -179,7 +180,7 @@ par collapse;";
             ExpressionBase expression;
             try
             {
-                expression = ExpressionBase.Factory(doc.SubElements[0]);
+                expression = ExpressionBase.Factory(doc.SubElements.OfType<CodeElement>().FirstOrDefault());
             }
             catch (Exception e)
             {

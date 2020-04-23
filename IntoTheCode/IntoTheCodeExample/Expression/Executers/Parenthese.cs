@@ -1,4 +1,5 @@
 ﻿using IntoTheCode;
+using System.Linq;
 
 namespace IntoTheCodeExample.Expression.Executers
 {
@@ -8,7 +9,8 @@ namespace IntoTheCodeExample.Expression.Executers
 
         public Parenthese(TextElement elem)
         {
-            _op = Factory(elem.SubElements[0]);
+            CodeElement first = elem.SubElements.OfType<CodeElement>().FirstOrDefault();
+            _op = Factory(first);
         }
 
         public override float execute()

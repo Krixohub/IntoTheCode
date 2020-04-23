@@ -17,7 +17,7 @@ namespace IntoTheCode.Read.Element
         {
             if (elements.Count() == 0)
                 throw new Exception("A sequence of Grammar elements must contain at least one element");
-            Add(elements);
+            AddRange(elements);
         }
 
         /// <summary>To create unlinked Grammar.</summary>

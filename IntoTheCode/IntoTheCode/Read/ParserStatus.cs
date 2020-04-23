@@ -139,10 +139,11 @@ namespace IntoTheCode.Read
 
         #region Next 
 
-        public void ThisIsUnambiguous(ParserElementBase reader, CodeElement code)
+        public void ThisIsUnambiguous(ParserElementBase reader, TextElement code)
         {
             // Set SafePointer to char after element
-            UnambiguousPointer = code.SubString.To;
+            if (code is CodeElement) UnambiguousPointer = ((CodeElement)code).SubString.To;
+            if (code is CommentElement) UnambiguousPointer = ((CommentElement)code).SubString.To;
         }
 
         public int UnambiguousPointer;

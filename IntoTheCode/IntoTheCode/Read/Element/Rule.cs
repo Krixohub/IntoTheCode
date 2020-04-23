@@ -104,7 +104,7 @@ namespace IntoTheCode.Read.Element
                 // The word value is inserted directly (collapsed)
                 if (_simplify)
                 {
-                    element = outSubNotes.FirstOrDefault(n => n.GetType() != typeof(CommentElement));
+                    element = outSubNotes.FirstOrDefault(n => n is CodeElement);
                     if (element != null)
                         element.Name = Name;
                     else
@@ -117,7 +117,7 @@ namespace IntoTheCode.Read.Element
                 else
                 {
                     element = new CodeElement(this, subStr);
-                    element.Add(outSubNotes);
+                    element.AddRange(outSubNotes);
                     outElements.Add(element);
                 }
             }
@@ -125,7 +125,7 @@ namespace IntoTheCode.Read.Element
             // If this is a 'division' set unambiguous and insert comments
             if (Trust && TextBuffer.PointerNextChar > subStr.From && outElements.Count > 0)
             {
-                TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
+                TextBuffer.Status.ThisIsUnambiguous(this, outElements[outElements.Count - 1]);
 
                 //// insert comments
                 //foreach (CodeElement elem in TextBuffer.Comments) elem.Name = "Comment";
