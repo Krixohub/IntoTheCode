@@ -23,7 +23,7 @@ namespace IntoTheCodeUnitTest.Read
         public static void RuleLoad(string code, string markup, List<Rule> rules)
         {
             var parser = new Parser();
-            var outElements = new List<CodeElement>();
+            var outElements = new List<ReadElement>();
 
             TextBuffer buffer = Util.NewBufferWs(code);
             parser.Rules = rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
@@ -46,7 +46,7 @@ namespace IntoTheCodeUnitTest.Read
         public static void ParserElementLoad(string code, string markup, List<ParserElementBase> elements)
         {
             //var parser = new Parser();
-            var outElements = new List<CodeElement>();
+            var outElements = new List<ReadElement>();
 
             TextBuffer buffer = Util.NewBufferWs(code);
             for (int i = 0; i < elements.Count; i++)
@@ -70,20 +70,20 @@ namespace IntoTheCodeUnitTest.Read
             }
         }
 
-        public static CodeElement WordLoad(string buf, WordBase word, string value, string name, int from, int to, int end)
+        public static ReadElement WordLoad(string buf, WordBase word, string value, string name, int from, int to, int end)
         {
             string n = string.Empty;
             TextBuffer textBuffer = Util.NewBufferWs(buf);
             word.TextBuffer = textBuffer;
 
-            var outNo = new List<CodeElement>();
+            var outNo = new List<ReadElement>();
             //var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
             Assert.AreEqual(true, word.Load(outNo, 0), n + "Identifier: Can't read");
 
-            CodeElement node = null;
+            ReadElement node = null;
             if (outNo.Count > 0 || to > 0)
             {
-                node = outNo[0] as CodeElement;
+                node = outNo[0] as ReadElement;
                 Assert.IsNotNull(node, n + "Identifier: Can't find node after reading");
                 Assert.AreEqual(value, node.Value, n + "Identifier: The value is not correct");
                 Assert.AreEqual(name, node.Name, n + "Identifier: The name is not correct");
@@ -102,7 +102,7 @@ namespace IntoTheCodeUnitTest.Read
             Rule rule = new Rule("testRule", word);
 
             //rule.add
-            var outNo = new List<CodeElement>();
+            var outNo = new List<ReadElement>();
             //var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
             Assert.AreEqual(false, word.Load(outNo, 0), "No read error");
             Assert.AreEqual(false, word.ResolveErrorsForward(), "No read error");

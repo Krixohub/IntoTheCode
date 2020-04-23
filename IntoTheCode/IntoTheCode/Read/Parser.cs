@@ -114,7 +114,7 @@ namespace IntoTheCode.Read
             List<Rule> procesRules = Rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
             if (!ParserFactory.InitializeGrammar(this, procesRules, buffer.Status))
                 return null;
-            var elements = new List<CodeElement>();
+            var elements = new List<ReadElement>();
             bool ok;
 
             try
@@ -138,7 +138,7 @@ namespace IntoTheCode.Read
             {
                 if (elements != null && elements.Count() > 0)
                 {
-                    CodeElement last = elements.Last();
+                    ReadElement last = elements.Last();
                     string debug = last.ToMarkupProtected(string.Empty);
                     procesRules[0].ResolveErrorsLast(last);
                 }

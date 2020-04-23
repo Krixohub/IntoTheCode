@@ -25,7 +25,7 @@ namespace IntoTheCode.Read.Element.Words
         private const char Sign = '-';
         private const string AllowedChars = "0123456789";
 
-        public override bool Load(List<CodeElement> outElements, int level)
+        public override bool Load(List<ReadElement> outElements, int level)
         {
             int to = 0;
             if (TextBuffer.IsEnd(to)) return false;
@@ -46,7 +46,7 @@ namespace IntoTheCode.Read.Element.Words
             if (to > 9 && !int.TryParse(TextBuffer.GetSubString(TextBuffer.PointerNextChar, to), out _))
                     return false;
   
-            outElements.Add(new CodeElement(this, 
+            outElements.Add(new ReadElement(this, 
                 new TextSubString(TextBuffer.PointerNextChar) { To = TextBuffer.PointerNextChar + to }));
 
             TextBuffer.PointerNextChar += to;
@@ -87,7 +87,7 @@ namespace IntoTheCode.Read.Element.Words
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(CodeElement last)
+        public override int ResolveErrorsLast(ReadElement last)
         {
             if (last.WordParser == this)
             {

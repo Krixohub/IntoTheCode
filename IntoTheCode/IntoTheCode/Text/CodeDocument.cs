@@ -9,8 +9,8 @@ using IntoTheCode.Read.Element;
 namespace IntoTheCode
 {
     /// <summary>Represents a text or code document.</summary>
-    /// <remarks>Inherids <see cref="CodeElement"/></remarks>
-    public class CodeDocument : CodeElement
+    /// <remarks>Inherids <see cref="ReadElement"/></remarks>
+    public class CodeDocument : ReadElement
     {
         //internal CodeDocument()
         //{

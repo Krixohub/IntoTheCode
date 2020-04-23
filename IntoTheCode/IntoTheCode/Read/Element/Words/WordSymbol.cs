@@ -26,7 +26,7 @@ namespace IntoTheCode.Read.Element.Words
         /// <param name="value">Value string.</param>
         /// <param name="status">If error add to this.</param>
         /// <returns>True: property set. False: not set.</returns>
-        public override bool SetProperty(CodeElement property, string value, ParserStatus status)
+        public override bool SetProperty(ReadElement property, string value, ParserStatus status)
         {
             if (property.Value == nameof(Precedence))
             {
@@ -64,7 +64,7 @@ namespace IntoTheCode.Read.Element.Words
 
         //protected override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<CodeElement> outElements, int level)
+        public override bool Load(List<ReadElement> outElements, int level)
         {
             //SkipWhiteSpace();
             int from = TextBuffer.PointerNextChar;
@@ -108,7 +108,7 @@ namespace IntoTheCode.Read.Element.Words
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(CodeElement last)
+        public override int ResolveErrorsLast(ReadElement last)
         {
             if (last.WordParser == this)
             {

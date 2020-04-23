@@ -22,7 +22,7 @@ namespace IntoTheCode.Read
             {
                 string debug1 = "(" + parser.Name + ")".NL() + ruleElement.ToMarkupProtected("");
 
-                CodeElement elementId = ruleElement.SubElements[0] as CodeElement;
+                ReadElement elementId = ruleElement.SubElements[0] as ReadElement;
                 List<TopElement> docSubNotes = ruleElement.Elements(n => n != elementId).ToList();
                 List<ParserElementBase> elements = BuildExpression(parser, docSubNotes, status);
                 Rule rule = AddRule(parser, elementId, elements.ToArray());
@@ -35,7 +35,7 @@ namespace IntoTheCode.Read
                     ValidateGrammar(parser, status);
         }
 
-        private static Rule AddRule(Parser parser, CodeElement defElement, params ParserElementBase[] elements)
+        private static Rule AddRule(Parser parser, ReadElement defElement, params ParserElementBase[] elements)
         {
             var rule = new Rule(defElement.Value, elements) {
                 DefinitionCodeElement = defElement
@@ -49,7 +49,7 @@ namespace IntoTheCode.Read
             //string debug1 = "(" + parser.Name + ")".NL() + docNotes.Aggregate("", (s, n) => s + n.ToMarkupProtected(""));
 
             List<ParserElementBase> elements = new List<ParserElementBase>();
-            foreach (CodeElement element in docNotes.OfType<CodeElement>())
+            foreach (ReadElement element in docNotes.OfType<ReadElement>())
             {
                 switch (element.Name)
                 {
@@ -211,7 +211,7 @@ namespace IntoTheCode.Read
             bool ok = true;
             foreach (TopElement SetterElement in doc.Elements(MetaParser.Setter_____))
             {
-                CodeElement elementId = SetterElement.SubElements[0] as CodeElement;
+                ReadElement elementId = SetterElement.SubElements[0] as ReadElement;
 
                 Rule rule = parser.Rules.FirstOrDefault(r => r.Name == elementId.Value);
                 if (rule == null)
@@ -223,7 +223,7 @@ namespace IntoTheCode.Read
 
                 foreach (TopElement assignElement in SetterElement.Elements(MetaParser.Assignment_))
                 {
-                    CodeElement propName = assignElement.SubElements[0] as CodeElement;
+                    ReadElement propName = assignElement.SubElements[0] as ReadElement;
                     string propValue = assignElement.SubElements.Count > 1 ? assignElement.SubElements[1].Value : string.Empty;
                     switch (propName.Value)
                     {

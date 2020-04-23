@@ -9,9 +9,9 @@ namespace IntoTheCode
 {
     /// <summary>The Elements that build up a CodeDokument.</summary>
     /// <remarks>Inherids <see cref="TreeNode"/></remarks>
-    public class CodeElement : TopElement
+    public class ReadElement : TopElement
     {
-        internal CodeElement(ParserElementBase element, TextSubString pointer)
+        internal ReadElement(ParserElementBase element, TextSubString pointer)
         {
             if (element != null)
                 Name = element.Name;

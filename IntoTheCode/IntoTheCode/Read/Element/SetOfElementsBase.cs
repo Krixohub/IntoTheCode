@@ -30,10 +30,10 @@ namespace IntoTheCode.Read.Element
             return SubElements.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray();
         }
 
-        protected bool LoadSet(List<CodeElement> outElements, int level)
+        protected bool LoadSet(List<ReadElement> outElements, int level)
         {
             int from = TextBuffer.PointerNextChar;
-            List<CodeElement> elements = new List<CodeElement>();
+            List<ReadElement> elements = new List<ReadElement>();
             foreach (var item in SubElements.OfType<ParserElementBase>())
                 if (!item.Load(elements, level))
                     return SetPointerBackSet(from, item, outElements);
@@ -44,7 +44,7 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        private bool SetPointerBackSet(int from, ParserElementBase failItem, List<CodeElement> outElements)
+        private bool SetPointerBackSet(int from, ParserElementBase failItem, List<ReadElement> outElements)
         {
             int ptrFail = TextBuffer.PointerNextChar;
 
@@ -53,7 +53,7 @@ namespace IntoTheCode.Read.Element
             {
                 int failIndex = SubElements.IndexOf(failItem);
 
-                CodeElement last = outElements.LastOrDefault();
+                ReadElement last = outElements.LastOrDefault();
                 if (last != null)
                     for (int i = failIndex - 1; i > -1; i--)
                         if (((ParserElementBase)SubElements[i]).ResolveErrorsLast(last) != 0)
@@ -76,7 +76,7 @@ namespace IntoTheCode.Read.Element
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        protected internal int ResolveSetErrorsLast(CodeElement last)
+        protected internal int ResolveSetErrorsLast(ReadElement last)
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 

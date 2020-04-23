@@ -28,7 +28,7 @@ namespace IntoTheCode.Read.Element
 
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<CodeElement> outElements, int level)
+        public override bool Load(List<ReadElement> outElements, int level)
         {
             int p = TextBuffer.PointerNextChar;
             while (LoadSet(outElements, level) && TextBuffer.PointerNextChar > p)
@@ -39,7 +39,7 @@ namespace IntoTheCode.Read.Element
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(CodeElement last)
+        public override int ResolveErrorsLast(ReadElement last)
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 

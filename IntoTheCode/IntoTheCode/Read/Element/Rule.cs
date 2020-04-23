@@ -80,7 +80,7 @@ namespace IntoTheCode.Read.Element
 
         private bool _simplify;
 
-        public override bool Load(List<CodeElement> outElements, int level)
+        public override bool Load(List<ReadElement> outElements, int level)
         {
 
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
@@ -93,8 +93,8 @@ namespace IntoTheCode.Read.Element
             else
             {
 
-                var outSubNotes = new List<CodeElement>();
-                CodeElement element;
+                var outSubNotes = new List<ReadElement>();
+                ReadElement element;
                 if (!LoadSet(outSubNotes, level))
                     return false;
 
@@ -108,7 +108,7 @@ namespace IntoTheCode.Read.Element
                     if (element != null)
                         element.Name = Name;
                     else
-                        element = new CodeElement(this, subStr);
+                        element = new ReadElement(this, subStr);
 
                     outElements.Add(element);
                     // Add comments
@@ -116,7 +116,7 @@ namespace IntoTheCode.Read.Element
                 }
                 else
                 {
-                    element = new CodeElement(this, subStr);
+                    element = new ReadElement(this, subStr);
                     element.Add(outSubNotes);
                     outElements.Add(element);
                 }
@@ -125,7 +125,7 @@ namespace IntoTheCode.Read.Element
             // If this is a 'division' set unambiguous and insert comments
             if (Trust && TextBuffer.PointerNextChar > subStr.From && outElements.Count > 0)
             {
-                TextBuffer.Status.ThisIsUnambiguous(this, (CodeElement)outElements[outElements.Count - 1]);
+                TextBuffer.Status.ThisIsUnambiguous(this, (ReadElement)outElements[outElements.Count - 1]);
 
                 //// insert comments
                 //foreach (CodeElement elem in TextBuffer.Comments) elem.Name = "Comment";
@@ -141,7 +141,7 @@ namespace IntoTheCode.Read.Element
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(CodeElement last)
+        public override int ResolveErrorsLast(ReadElement last)
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
@@ -156,7 +156,7 @@ namespace IntoTheCode.Read.Element
                 rc = ((ParserElementBase)SubElements[0]).ResolveErrorsLast(last);
             else if (last.SubElements != null && last.SubElements.Count() > 0)
                 // if succes finding a deeper element, return true.
-                rc = ResolveSetErrorsLast(last.SubElements.Last() as CodeElement);
+                rc = ResolveSetErrorsLast(last.SubElements.Last() as ReadElement);
             else if (!ResolveErrorsForward())
                 return 1;
 

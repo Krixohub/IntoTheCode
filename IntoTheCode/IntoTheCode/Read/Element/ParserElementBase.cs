@@ -22,7 +22,7 @@ namespace IntoTheCode.Read.Element
         /// <param name="value">Value string.</param>
         /// <param name="status">If error add to this.</param>
         /// <returns>True: property set. False: not set.</returns>
-        public virtual bool SetProperty(CodeElement property, string value, ParserStatus status)
+        public virtual bool SetProperty(ReadElement property, string value, ParserStatus status)
         {
             bool ok = false;
             foreach (ParserElementBase item in SubElements)
@@ -35,7 +35,7 @@ namespace IntoTheCode.Read.Element
 
         protected internal TextBuffer TextBuffer;
 
-        protected internal CodeElement DefinitionCodeElement;
+        protected internal ReadElement DefinitionCodeElement;
 
         /// <summary>If the element cant read; use this to reset (set pointer back):</summary>
         /// <param name="txtPtr">Pointer to set.</param>
@@ -76,7 +76,7 @@ namespace IntoTheCode.Read.Element
         /// <param name="proces"></param>
         /// <param name="outElements">Read elements.</param>
         /// <returns>True = succes.</returns>
-        public abstract bool Load(List<CodeElement> outElements, int level);
+        public abstract bool Load(List<ReadElement> outElements, int level);
 
         /// <summary>Find the Rule/ 'read element', that correspond to the
         /// last CodeElement, and read it again with error resolving.
@@ -90,7 +90,7 @@ namespace IntoTheCode.Read.Element
         /// </summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public abstract int ResolveErrorsLast(CodeElement last);
+        public abstract int ResolveErrorsLast(ReadElement last);
 
         /// <summary>Find errors in following syntax.
         /// </summary>

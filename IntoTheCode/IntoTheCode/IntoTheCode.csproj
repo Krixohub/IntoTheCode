@@ -68,7 +68,7 @@
     <Compile Include="Text\TopElement.cs" />
     <Compile Include="Text\CommentElement.cs" />
     <Compile Include="Text\HardElement.cs" />
-    <Compile Include="Text\CodeElement.cs" />
+    <Compile Include="Text\ReadElement.cs" />
     <Compile Include="Read\ParserException.cs" />
     <Compile Include="Read\Element\Structure\XmlSyntax.cs" />
     <Compile Include="Read\MetaParser.cs" />

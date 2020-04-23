@@ -22,7 +22,7 @@ namespace IntoTheCode.Read.Element.Words
 
         public override string GetGrammar() { return string.Empty; }
 
-        public override bool Load(List<CodeElement> outElements, int level)
+        public override bool Load(List<ReadElement> outElements, int level)
         {
             // Read comments on form '// rest of line cr nl'
             const string nl = "\r\n";
@@ -52,7 +52,7 @@ namespace IntoTheCode.Read.Element.Words
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(CodeElement last)
+        public override int ResolveErrorsLast(ReadElement last)
         {
             throw new Exception("todo");
         }

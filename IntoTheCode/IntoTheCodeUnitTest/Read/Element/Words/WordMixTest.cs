@@ -14,7 +14,7 @@ namespace Read.Element.Words
         public void ITC11LoadWord()
         {
             //// test loading of basic grammar elements
-            var outNo = new List<CodeElement>();
+            var outNo = new List<ReadElement>();
             var idn = new WordIdent();
             var str = new WordString();
             var sym = new WordSymbol("symbol1");
@@ -29,10 +29,10 @@ namespace Read.Element.Words
             Assert.AreEqual(true, sym.Load(outNo, 0), "Can't read a combinded Symbol");
             Assert.AreEqual(true, str.Load(outNo, 0), "Can't read a combinded String");
             Assert.AreEqual(true, idn.Load(outNo, 0), "Can't read a combinded Identifier");
-            CodeElement node = outNo[1] as CodeElement;
+            ReadElement node = outNo[1] as ReadElement;
             Assert.IsNotNull(node, "Can't find node after reading combinded Quote");
             Assert.AreEqual("Fghij", node.Value, "The combinded Quote value is not correct");
-            node = outNo[2] as CodeElement;
+            node = outNo[2] as ReadElement;
             Assert.IsNotNull(node, "Can't find node after reading combinded VarName");
             Assert.AreEqual("sym02", node.Value, "The combinded VarName value is not correct");
             Assert.AreEqual(45, textBuffer.PointerNextChar, "The buffer pointer is of after reading combinded values");
