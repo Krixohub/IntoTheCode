@@ -64,10 +64,10 @@
     <Compile Include="Buffer\TextBuffer.cs" />
     <Compile Include="Buffer\TextSubString.cs" />
     <Compile Include="Read\Element\Words\WordBase.cs" />
-    <Compile Include="Text\CodeElement.cs" />
-    <Compile Include="Text\CommentElement.cs" />
-    <Compile Include="Text\HardElement.cs" />
-    <Compile Include="Text\ReadElement.cs" />
+    <Compile Include="CodeElement.cs" />
+    <Compile Include="CommentElement.cs" />
+    <Compile Include="Read\HardElement.cs" />
+    <Compile Include="ReadElement.cs" />
     <Compile Include="Read\ParserException.cs" />
     <Compile Include="Read\Element\Structure\XmlSyntax.cs" />
     <Compile Include="Read\MetaParser.cs" />
@@ -78,13 +78,13 @@
     <Compile Include="Read\Element\Optional.cs" />
     <Compile Include="Read\Element\Or.cs" />
     <Compile Include="Read\Element\Parentheses.cs" />
-    <Compile Include="Read\Parser.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="Read\Element\Words\WordSymbol.cs" />
     <Compile Include="Read\Element\Sequence.cs" />
     <Compile Include="Read\Element\Structure\SyntaxAttribute.cs" />
     <Compile Include="Read\Element\RuleLink.cs" />
     <Compile Include="Read\Element\Structure\SyntaxClass.cs" />
-    <Compile Include="Text\CodeDocument.cs" />
+    <Compile Include="CodeDocument.cs" />
     <Compile Include="Read\Element\Structure\TextSchema.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -94,6 +94,7 @@
   <ItemGroup>
     <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="Read\Element\RuleSpecial\" />
+    <Folder Include="Text\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Message\MessageRes.resx">
