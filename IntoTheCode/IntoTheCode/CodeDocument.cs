@@ -3,23 +3,17 @@ using System.Linq;
 
 using IntoTheCode.Buffer;
 using IntoTheCode.Read;
-using IntoTheCode.Basic;
-using IntoTheCode.Read.Element;
 
 namespace IntoTheCode
 {
     /// <summary>Represents a text or code document.</summary>
-    /// <remarks>Inherids <see cref="ReadElement"/></remarks>
-    public class CodeDocument : ReadElement
+    /// <remarks>Inherids <see cref="CodeElement"/></remarks>
+    public class CodeDocument : CodeElement
     {
-        //internal CodeDocument()
-        //{
-        //}
-
-        internal CodeDocument(IEnumerable<CodeElement> elements, ParserElementBase element) : base (element, null)
+        internal CodeDocument(IEnumerable<CodeElement> elements, string name)
         {
-            foreach (var item in elements)
-                AddElement(item);
+            Name = name;
+            Add(elements);
         }
         
         /// <summary>

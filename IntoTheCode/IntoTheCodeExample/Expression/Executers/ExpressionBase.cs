@@ -1,5 +1,4 @@
 ﻿using IntoTheCode;
-using IntoTheCode.Basic;
 using System;
 
 namespace IntoTheCodeExample.Expression.Executers
@@ -8,7 +7,7 @@ namespace IntoTheCodeExample.Expression.Executers
     {
         public abstract float execute();
 
-        public static ExpressionBase CreateExpression(CodeElement elem)
+        public static ExpressionBase Factory(CodeElement elem)
         {
             switch (elem.Name)
             {
@@ -23,9 +22,9 @@ namespace IntoTheCodeExample.Expression.Executers
                 case "number":
                     return new Number(elem);
                 case "exp":
-                    return CreateExpression(elem.SubElements[0]);
+                    return Factory(elem.SubElements[0]);
                 case "par":
-                    return CreateExpression(elem.SubElements[0]); // new Parentese(elem);
+                    return Factory(elem.SubElements[0]); // new Parentese(elem);
                 default:
                     throw new Exception("Unknown expression element");
             }

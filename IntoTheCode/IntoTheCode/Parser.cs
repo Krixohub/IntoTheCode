@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 using IntoTheCode.Buffer;
 using IntoTheCode.Message;
+using IntoTheCode.Read;
 using IntoTheCode.Read.Element;
 using System.Linq;
 using IntoTheCode.Basic.Util;
 
-namespace IntoTheCode.Read
+namespace IntoTheCode
 {
     /// <summary>Read text according to a grammar.
     /// The parser holds the parser elements to read a code.
@@ -144,11 +145,9 @@ namespace IntoTheCode.Read
                 }
                 buffer.Status.AddSyntaxErrorEof(() => MessageRes.p05);
             }
-            else if (elements.Count == 1 && elements[0] is CodeDocument)
-                return elements[0] as CodeDocument;
             else if (elements.Count == 1)
                 // todo get the document name from procesRules[0]
-                return new CodeDocument(elements[0].SubElements, procesRules[0]) { Name = elements[0].Name };
+                return new CodeDocument(elements[0].SubElements, procesRules[0].Name);
             else
                 buffer.Status.AddParseError(() => MessageRes.p01, procesRules[0].Name);
 

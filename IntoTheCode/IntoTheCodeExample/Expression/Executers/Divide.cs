@@ -10,8 +10,8 @@ namespace IntoTheCodeExample.Expression.Executers
 
         public Divide(CodeElement elem)
         {
-            _op1 = CreateExpression(elem.SubElements[0]);
-            _op2 = CreateExpression(elem.SubElements[1]);
+            _op1 = Factory(elem.SubElements[0]);
+            _op2 = Factory(elem.SubElements[1]);
         }
 
         public override float execute()
