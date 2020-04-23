@@ -23,7 +23,7 @@ namespace IntoTheCodeUnitTest.Read
         public static void RuleLoad(string code, string markup, List<Rule> rules)
         {
             var parser = new Parser();
-            var outElements = new List<ReadElement>();
+            var outElements = new List<TextElement>();
 
             TextBuffer buffer = Util.NewBufferWs(code);
             parser.Rules = rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
@@ -46,7 +46,7 @@ namespace IntoTheCodeUnitTest.Read
         public static void ParserElementLoad(string code, string markup, List<ParserElementBase> elements)
         {
             //var parser = new Parser();
-            var outElements = new List<ReadElement>();
+            var outElements = new List<TextElement>();
 
             TextBuffer buffer = Util.NewBufferWs(code);
             for (int i = 0; i < elements.Count; i++)
@@ -76,7 +76,7 @@ namespace IntoTheCodeUnitTest.Read
             TextBuffer textBuffer = Util.NewBufferWs(buf);
             word.TextBuffer = textBuffer;
 
-            var outNo = new List<ReadElement>();
+            var outNo = new List<TextElement>();
             //var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
             Assert.AreEqual(true, word.Load(outNo, 0), n + "Identifier: Can't read");
 
@@ -102,7 +102,7 @@ namespace IntoTheCodeUnitTest.Read
             Rule rule = new Rule("testRule", word);
 
             //rule.add
-            var outNo = new List<ReadElement>();
+            var outNo = new List<TextElement>();
             //var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
             Assert.AreEqual(false, word.Load(outNo, 0), "No read error");
             Assert.AreEqual(false, word.ResolveErrorsForward(), "No read error");
@@ -145,7 +145,7 @@ namespace IntoTheCodeUnitTest.Read
             string s = parser.GetGrammar();
 
             var buf = new FlatBuffer(code);
-            CodeDocument doc = parser.ParseString(buf);
+            TextDocument doc = parser.ParseString(buf);
             if (buf.Status.Error == null)
             {
                 Assert.IsTrue(errors.Count() == 0, name + " Expecting error");

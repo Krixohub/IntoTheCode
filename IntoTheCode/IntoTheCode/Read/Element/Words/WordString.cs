@@ -23,7 +23,7 @@ namespace IntoTheCode.Read.Element.Words
 
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<ReadElement> outElements, int level)
+        public override bool Load(List<TextElement> outElements, int level)
         {
             if (TextBuffer.IsEnd(1) || TextBuffer.GetChar() != '\'') return false;
 
@@ -58,12 +58,13 @@ namespace IntoTheCode.Read.Element.Words
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(ReadElement last)
+        public override int ResolveErrorsLast(TextElement last)
         {
-            if (last.WordParser == this)
+            ReadElement code = last as ReadElement;
+            if (code != null && code.WordParser == this)
             {
                 // found!
-                TextBuffer.PointerNextChar = last.SubString.To + a + 1;
+                TextBuffer.PointerNextChar = code.SubString.To + a + 1;
                 return 2;
             }
             return 0;

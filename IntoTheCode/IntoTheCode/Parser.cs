@@ -89,7 +89,7 @@ namespace IntoTheCode
         /// <exclude/>
         private void SetGrammar(string Grammar)
         {
-            CodeDocument grammarDoc = null;
+            TextDocument grammarDoc = null;
 
             TextBuffer buffer = new FlatBuffer(Grammar);
             grammarDoc = MetaParser.Instance.ParseString(buffer);
@@ -107,7 +107,7 @@ namespace IntoTheCode
         /// <param name="buffer">The text buffer.</param>
         /// <returns>A text document, or null if error.</returns>
         /// <exclude/>
-        internal CodeDocument ParseString(TextBuffer buffer)
+        internal TextDocument ParseString(TextBuffer buffer)
         {
 
             if (buffer.Status.Error != null) return null;
@@ -115,7 +115,7 @@ namespace IntoTheCode
             List<Rule> procesRules = Rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
             if (!ParserFactory.InitializeGrammar(this, procesRules, buffer.Status))
                 return null;
-            var elements = new List<ReadElement>();
+            var elements = new List<TextElement>();
             bool ok;
 
             try
@@ -139,7 +139,7 @@ namespace IntoTheCode
             {
                 if (elements != null && elements.Count() > 0)
                 {
-                    ReadElement last = elements.Last();
+                    TextElement last = elements.Last();
                     string debug = last.ToMarkupProtected(string.Empty);
                     procesRules[0].ResolveErrorsLast(last);
                 }
@@ -147,7 +147,7 @@ namespace IntoTheCode
             }
             else if (elements.Count == 1)
                 // todo get the document name from procesRules[0]
-                return new CodeDocument(elements[0].SubElements, procesRules[0].Name);
+                return new TextDocument(elements[0].SubElements, procesRules[0].Name);
             else
                 buffer.Status.AddParseError(() => MessageRes.p01, procesRules[0].Name);
 

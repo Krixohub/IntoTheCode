@@ -19,7 +19,7 @@ namespace IntoTheCode.Read.Element.Struckture
 
         protected internal override string GetValue(TextSubString ptr) { return string.Empty; }
 
-        public override bool Load(List<ReadElement> outElements, int level)
+        public override bool Load(List<TextElement> outElements, int level)
         {
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
 

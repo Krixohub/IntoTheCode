@@ -52,22 +52,22 @@ namespace Read
 
             // Compare generated CodeDocument with 'selected nodes'
             string actualTags1, actualTags2, expectTags;
-            CodeDocument docExpect = TestMetaGrammarDoc();
+            TextDocument docExpect = TestMetaGrammarDoc();
 
             //var metaParser = _metaparser;
             // todo MetaParser has not the settings.
             TextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaGrammarAndSettings);
-            CodeDocument docActual1 = parser.ParseString(buffer);
+            TextDocument docActual1 = parser.ParseString(buffer);
             buffer = new FlatBuffer(MetaParser.SoftMetaGrammarAndSettings);
-            CodeDocument docActual2 = MetaParser.Instance.ParseString(buffer);
+            TextDocument docActual2 = MetaParser.Instance.ParseString(buffer);
 
             expectTags = docExpect.ToMarkup();
             actualTags1 = docActual1.ToMarkup();
             actualTags2 = docActual2.ToMarkup();
 
-            msg = CodeDocument.CompareCode(docActual1, docExpect);
+            msg = TextDocument.CompareCode(docActual1, docExpect);
             Assert.AreEqual(string.Empty, msg, "Meta grammar document diff error");
-            msg = CodeDocument.CompareCode(docActual2, docExpect);
+            msg = TextDocument.CompareCode(docActual2, docExpect);
             Assert.AreEqual(string.Empty, msg, "Meta grammar internal document diff error");
             Assert.AreEqual(docExpect.Name, docActual1.Name, "Document name diff error");
 
@@ -108,9 +108,9 @@ settings    collapse;";
         }
 
         /// <summary>To test changes to the meta grammar.</summary>
-        private static CodeDocument TestMetaGrammarDoc()
+        private static TextDocument TestMetaGrammarDoc()
         {
-            CodeDocument grammar = new CodeDocument(new List<ReadElement>(), MetaParser.MetaGrammar_);
+            TextDocument grammar = new TextDocument(new List<ReadElement>(), MetaParser.MetaGrammar_);
 
             // grammar   = {rule}
             grammar.AddElement(new HardElement("rule", string.Empty,

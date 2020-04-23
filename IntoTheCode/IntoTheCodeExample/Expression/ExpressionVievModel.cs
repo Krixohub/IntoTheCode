@@ -141,7 +141,7 @@ par collapse;";
 
             try
             {
-                CodeDocument doc = CodeDocument.Load(new Parser(string.Empty) , _grammar);
+                TextDocument doc = TextDocument.Load(new Parser(string.Empty) , _grammar);
                 GrammarMarkup = doc.ToMarkup();
             }
             catch (ParserException e)
@@ -160,10 +160,10 @@ par collapse;";
             }
 
             // Load input
-            CodeDocument doc = null;
+            TextDocument doc = null;
             try
             {
-                doc = CodeDocument.Load(_parser, _input) ;
+                doc = TextDocument.Load(_parser, _input) ;
             }
             catch (ParserException e)
             {

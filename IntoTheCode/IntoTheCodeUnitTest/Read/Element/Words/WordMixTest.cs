@@ -14,7 +14,7 @@ namespace Read.Element.Words
         public void ITC11LoadWord()
         {
             //// test loading of basic grammar elements
-            var outNo = new List<ReadElement>();
+            var outNo = new List<TextElement>();
             var idn = new WordIdent();
             var str = new WordString();
             var sym = new WordSymbol("symbol1");

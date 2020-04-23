@@ -6,7 +6,7 @@ namespace IntoTheCodeExample.Expression.Executers
     {
         private ExpressionBase _op;
 
-        public Parenthese(CodeElement elem)
+        public Parenthese(TextElement elem)
         {
             _op = Factory(elem.SubElements[0]);
         }

@@ -8,7 +8,7 @@ namespace IntoTheCodeExample.Expression.Executers
         private ExpressionBase _op1;
         private ExpressionBase _op2;
 
-        public Minus(CodeElement elem)
+        public Minus(TextElement elem)
         {
             _op1 = Factory(elem.SubElements[0]);
             _op2 = Factory(elem.SubElements[1]);

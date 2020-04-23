@@ -204,7 +204,7 @@ namespace IntoTheCode.Read.Element
                 item.GetSettings(settings);
         }
 
-        public override bool Load(List<ReadElement> outElements, int level)
+        public override bool Load(List<TextElement> outElements, int level)
         {
             int from = TextBuffer.PointerNextChar;
 
@@ -214,14 +214,14 @@ namespace IntoTheCode.Read.Element
                 // todo: a value can be complex with an unambigous point.
                 return SetPointerBack(from);
 
-            TextBuffer.Status.ThisIsUnambiguous(this, outElements[outElements.Count - 1]);
+            TextBuffer.Status.ThisIsUnambiguous(this, (ReadElement)outElements[outElements.Count - 1]);
 
             // Read following operations as alternately binary operators and values.
-            var operations = new List<ReadElement>();
+            var operations = new List<TextElement>();
             from = TextBuffer.PointerNextChar;
             while (LoadBinaryOperator(operations, level) && LoadValue(operations, level, false))
             {
-                TextBuffer.Status.ThisIsUnambiguous(this, operations[operations.Count - 1]);
+                TextBuffer.Status.ThisIsUnambiguous(this, (ReadElement)operations[operations.Count - 1]);
                 from = TextBuffer.PointerNextChar;
             }
 
@@ -239,13 +239,13 @@ namespace IntoTheCode.Read.Element
 
             int nextValueIndex = 0;
             while (nextValueIndex < operations.Count - 1)
-                AddOperationToTree(parent.SubElements[0], operations[nextValueIndex++], operations[nextValueIndex++]);
+                AddOperationToTree(parent.SubElements[0], (ReadElement)operations[nextValueIndex++], (ReadElement)operations[nextValueIndex++]);
 
             outElements[0] = parent.SubElements[0] as ReadElement;
             return true;
         }
 
-        private void AddOperationToTree(CodeElement leftExprCode, ReadElement rightOpCode, ReadElement rightExprCode)
+        private void AddOperationToTree(TextElement leftExprCode, ReadElement rightOpCode, ReadElement rightExprCode)
         {
             // todo check for operators belonging to expression
             WordBinaryOperator leftOperator = ((ReadElement)leftExprCode).WordParser as WordBinaryOperator;
@@ -256,7 +256,7 @@ namespace IntoTheCode.Read.Element
             if (leftOperator == null)
             {
                 // insert 
-                CodeElement parent = leftExprCode.Parent;
+                TextElement parent = leftExprCode.Parent;
                 rightOpCode.AddElement(leftExprCode);
                 rightOpCode.AddElement(rightExprCode);
                 parent.ReplaceSubElement(leftExprCode, rightOpCode);
@@ -267,7 +267,7 @@ namespace IntoTheCode.Read.Element
             if (leftOperator.Precedence > rightOpSymbol.Precedence)
             {
                 // insert 
-                CodeElement parent = leftExprCode.Parent;
+                TextElement parent = leftExprCode.Parent;
                 rightOpCode.AddElement(leftExprCode);
                 rightOpCode.AddElement(rightExprCode);
                 parent.ReplaceSubElement(leftExprCode, rightOpCode);
@@ -286,7 +286,7 @@ namespace IntoTheCode.Read.Element
             else
             {
                 // insert 
-                CodeElement parent = leftExprCode.Parent;
+                TextElement parent = leftExprCode.Parent;
                 rightOpCode.AddElement(leftExprCode);
                 rightOpCode.AddElement(rightExprCode);
                 parent.ReplaceSubElement(leftExprCode, rightOpCode);
@@ -298,10 +298,10 @@ namespace IntoTheCode.Read.Element
         /// <param name="operations">The value is added to this list.</param>
         /// <param name="level">Level of rule links.</param>
         /// <returns>True if succes.</returns>
-        private bool LoadValue(List<ReadElement> operations, int level, bool first)
+        private bool LoadValue(List<TextElement> operations, int level, bool first)
         {
             if (!first)
-                TextBuffer.Status.ThisIsUnambiguous(this, operations[operations.Count - 1]);
+                TextBuffer.Status.ThisIsUnambiguous(this, (ReadElement)operations[operations.Count - 1]);
 
             // Read a value 
             foreach (var item in _otherForms)
@@ -326,7 +326,7 @@ namespace IntoTheCode.Read.Element
         /// <param name="outElements">The value is added to this list.</param>
         /// <param name="level">Level of rule links.</param>
         /// <returns>True if succes.</returns>
-        private bool LoadBinaryOperator(List<ReadElement> outElements, int level)
+        private bool LoadBinaryOperator(List<TextElement> outElements, int level)
         {
             // Read a value 
             foreach (var item in _binaryOperators)
@@ -337,10 +337,10 @@ namespace IntoTheCode.Read.Element
 
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(ReadElement last)
+        public override int ResolveErrorsLast(TextElement last)
         {
 
-            last = ResolveErrorsLastFind(last);
+            last = ResolveErrorsLastFind((ReadElement)last);
             // The 'last' element will always be a value. 
             // Search for the value reader.
 
@@ -364,7 +364,7 @@ namespace IntoTheCode.Read.Element
             return rc;
         }
 
-        private ReadElement ResolveErrorsLastFind(ReadElement last)
+        private TextElement ResolveErrorsLastFind(ReadElement last)
         {
             // if the element is a operator get the right value to find the last
             bool isOp = _binaryOperators.Any(op => last.WordParser == op);

@@ -7,7 +7,7 @@ namespace IntoTheCodeExample.Expression.Executers
     {
         public abstract float execute();
 
-        public static ExpressionBase Factory(CodeElement elem)
+        public static ExpressionBase Factory(TextElement elem)
         {
             switch (elem.Name)
             {

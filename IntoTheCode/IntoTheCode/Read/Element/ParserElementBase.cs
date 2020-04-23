@@ -76,7 +76,7 @@ namespace IntoTheCode.Read.Element
         /// <param name="proces"></param>
         /// <param name="outElements">Read elements.</param>
         /// <returns>True = succes.</returns>
-        public abstract bool Load(List<ReadElement> outElements, int level);
+        public abstract bool Load(List<TextElement> outElements, int level);
 
         /// <summary>Find the Rule/ 'read element', that correspond to the
         /// last CodeElement, and read it again with error resolving.
@@ -90,7 +90,7 @@ namespace IntoTheCode.Read.Element
         /// </summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public abstract int ResolveErrorsLast(ReadElement last);
+        public abstract int ResolveErrorsLast(TextElement last);
 
         /// <summary>Find errors in following syntax.
         /// </summary>

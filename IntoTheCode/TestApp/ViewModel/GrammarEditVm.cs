@@ -136,7 +136,7 @@ namespace ViewModel
             {
                 try
                 {
-                    CodeDocument doc = CodeDocument.Load(_metaParser, Grammar);
+                    TextDocument doc = TextDocument.Load(_metaParser, Grammar);
                     _codeParser = new Parser(Grammar);
                     GrammarOk = true;
                     Code = _codeParser.GetGrammar();
@@ -182,7 +182,7 @@ namespace ViewModel
         {
             try
             {
-                CodeDocument doc = CodeDocument.Load(_codeParser, Code);
+                TextDocument doc = TextDocument.Load(_codeParser, Code);
                 CodeOk = true;
                 Tree = doc.ToMarkup();
             }

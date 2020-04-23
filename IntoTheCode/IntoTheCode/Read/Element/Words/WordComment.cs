@@ -22,7 +22,7 @@ namespace IntoTheCode.Read.Element.Words
 
         public override string GetGrammar() { return string.Empty; }
 
-        public override bool Load(List<ReadElement> outElements, int level)
+        public override bool Load(List<TextElement> outElements, int level)
         {
             // Read comments on form '// rest of line cr nl'
             const string nl = "\r\n";
@@ -36,7 +36,7 @@ namespace IntoTheCode.Read.Element.Words
             if (subStr.To < 0) subStr.To = TextBuffer.Length;
 
             if (outElements != null)
-                outElements.Add(new CommentElement(this, subStr));
+                outElements.Add(new CommentElement(TextBuffer, subStr));
 
             if (subStr.To != TextBuffer.Length)
                 TextBuffer.PointerNextChar = subStr.To + 2;
@@ -52,7 +52,7 @@ namespace IntoTheCode.Read.Element.Words
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(ReadElement last)
+        public override int ResolveErrorsLast(TextElement last)
         {
             throw new Exception("todo");
         }

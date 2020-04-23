@@ -14,16 +14,16 @@ namespace IntoTheCode.Read
     internal class ParserFactory
     {
         ///
-        internal static bool BuildRules(Parser parser, CodeDocument doc, ParserStatus status)
+        internal static bool BuildRules(Parser parser, TextDocument doc, ParserStatus status)
         {
             parser.Rules = new List<Rule>();
 
-            foreach (CodeElement ruleElement in doc.Elements(MetaParser.Rule_______))
+            foreach (TextElement ruleElement in doc.Elements(MetaParser.Rule_______))
             {
                 string debug1 = "(" + parser.Name + ")".NL() + ruleElement.ToMarkupProtected("");
 
                 ReadElement elementId = ruleElement.SubElements[0] as ReadElement;
-                List<CodeElement> docSubNotes = ruleElement.Elements(n => n != elementId).ToList();
+                List<TextElement> docSubNotes = ruleElement.Elements(n => n != elementId).ToList();
                 List<ParserElementBase> elements = BuildExpression(parser, docSubNotes, status);
                 Rule rule = AddRule(parser, elementId, elements.ToArray());
 
@@ -44,7 +44,7 @@ namespace IntoTheCode.Read
             return rule;
         }
 
-        private static List<ParserElementBase> BuildExpression(Parser parser, IList<CodeElement> docNotes, ParserStatus status)
+        private static List<ParserElementBase> BuildExpression(Parser parser, IList<TextElement> docNotes, ParserStatus status)
         {
             //string debug1 = "(" + parser.Name + ")".NL() + docNotes.Aggregate("", (s, n) => s + n.ToMarkupProtected(""));
 
@@ -73,7 +73,7 @@ namespace IntoTheCode.Read
                         else
                             el1 = new Parentheses(elements.ToArray());
 
-                        IList<CodeElement> elementElements2 = new List<CodeElement>();
+                        IList<TextElement> elementElements2 = new List<TextElement>();
                         for (int i = pos + 1; i < docNotes.Count(); i++)
                             elementElements2.Add(docNotes[i]);
                         List<ParserElementBase> elements2 = BuildExpression(parser, elementElements2, status);
@@ -206,10 +206,10 @@ namespace IntoTheCode.Read
 
         /// <summary>Apply settings to a linked Grammar.</summary>
         /// <returns></returns>
-        private static bool ApplySettingsFromGrammar(Parser parser, CodeDocument doc, ParserStatus status)
+        private static bool ApplySettingsFromGrammar(Parser parser, TextDocument doc, ParserStatus status)
         {
             bool ok = true;
-            foreach (CodeElement SetterElement in doc.Elements(MetaParser.Setter_____))
+            foreach (TextElement SetterElement in doc.Elements(MetaParser.Setter_____))
             {
                 ReadElement elementId = SetterElement.SubElements[0] as ReadElement;
 
@@ -221,7 +221,7 @@ namespace IntoTheCode.Read
                     continue;
                 }
 
-                foreach (CodeElement assignElement in SetterElement.Elements(MetaParser.Assignment_))
+                foreach (TextElement assignElement in SetterElement.Elements(MetaParser.Assignment_))
                 {
                     ReadElement propName = assignElement.SubElements[0] as ReadElement;
                     string propValue = assignElement.SubElements.Count > 1 ? assignElement.SubElements[1].Value : string.Empty;

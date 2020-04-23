@@ -27,7 +27,7 @@ namespace IntoTheCode.Read.Element
         public override string GetGrammar() { return "[" + base.GetGrammar() + "]"; }
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<ReadElement> outElements, int level)
+        public override bool Load(List<TextElement> outElements, int level)
         {
             var elements = new List<ReadElement>();
             if (LoadSet(outElements, level))
@@ -40,7 +40,7 @@ namespace IntoTheCode.Read.Element
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(ReadElement last)
+        public override int ResolveErrorsLast(TextElement last)
         {
             return ResolveSetErrorsLast(last);
         }

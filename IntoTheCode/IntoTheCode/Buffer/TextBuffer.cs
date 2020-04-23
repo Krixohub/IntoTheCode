@@ -43,7 +43,7 @@ namespace IntoTheCode.Buffer
         //public Action<TextBuffer> FindNextWordAction { get; set; }
 
         /// <summary>Function for skipping white spaces and reading comments.</summary>
-        public void FindNextWord(List<ReadElement> outElements, int level)
+        public void FindNextWord(List<TextElement> outElements, int level)
         {
             // todo comments can be inserted multiple times
             do

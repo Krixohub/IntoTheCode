@@ -1,4 +1,5 @@
 ﻿using IntoTheCode.Buffer;
+using IntoTheCode.Read;
 using IntoTheCode.Read.Element.Words;
 using System.Xml.Linq;
 
@@ -8,18 +9,24 @@ namespace IntoTheCode
 {
     /// <summary>Comments from the code.</summary>
     /// <remarks>Inherids <see cref="ReadElement"/></remarks>
-    public class CommentElement : ReadElement
+    public class CommentElement : TextElement
     {
         private readonly bool _multiline;
 
-        internal CommentElement(WordComment reader, TextSubString pointer, bool multiline = false) :
-            base (reader, pointer)
+        internal CommentElement(TextBuffer buffer, TextSubString pointer, bool multiline = false) 
         {
             _multiline = multiline;
+            Name = MetaParser.Comment____;
+            SubString = pointer;
+            Buffer = buffer;
         }
 
-        //internal protected override string ToMarkupProtected(string indent)
-        //{
+        internal TextSubString SubString { get; private set; }
+
+        internal TextBuffer Buffer { get; private set; }
+
+        public override string GetValue() { return Buffer.ReaderComment.GetValue(SubString); }
+
         internal protected override string ToMarkupProtected(string indent, bool xmlEncode = false)
         {
             string value;

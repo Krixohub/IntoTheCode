@@ -7,7 +7,7 @@ namespace IntoTheCodeExample.Expression.Executers
         private ExpressionBase _op1;
         private ExpressionBase _op2;
 
-        public Sum(CodeElement elem)
+        public Sum(TextElement elem)
         {
             _op1 = Factory(elem.SubElements[0]);
             _op2 = Factory(elem.SubElements[1]);

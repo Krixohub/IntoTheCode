@@ -32,7 +32,7 @@ namespace IntoTheCode.Read.Element
 
         public bool Recursive;
 
-        public override bool Load(List<ReadElement> outElements, int level)
+        public override bool Load(List<TextElement> outElements, int level)
         {
             // End too many recursive calls
             if (Recursive)
@@ -53,7 +53,7 @@ namespace IntoTheCode.Read.Element
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(ReadElement last)
+        public override int ResolveErrorsLast(TextElement last)
         {
             return RuleElement.ResolveErrorsLast(last);
         }

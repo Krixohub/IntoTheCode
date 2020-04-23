@@ -80,7 +80,7 @@ namespace IntoTheCode.Read.Element
 
         private bool _simplify;
 
-        public override bool Load(List<ReadElement> outElements, int level)
+        public override bool Load(List<TextElement> outElements, int level)
         {
 
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
@@ -93,8 +93,8 @@ namespace IntoTheCode.Read.Element
             else
             {
 
-                var outSubNotes = new List<ReadElement>();
-                ReadElement element;
+                var outSubNotes = new List<TextElement>();
+                TextElement element;
                 if (!LoadSet(outSubNotes, level))
                     return false;
 
@@ -141,7 +141,7 @@ namespace IntoTheCode.Read.Element
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(ReadElement last)
+        public override int ResolveErrorsLast(TextElement last)
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 

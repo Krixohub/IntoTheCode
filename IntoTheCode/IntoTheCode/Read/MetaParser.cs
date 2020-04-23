@@ -236,7 +236,7 @@ settings    collapse;";
             if (_instance != null) return;
             int step = 1;
             TextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaGrammarAndSettings);
-            CodeDocument metaGrammarDoc = null;
+            TextDocument metaGrammarDoc = null;
             try
             {
                 // Hard coded parser

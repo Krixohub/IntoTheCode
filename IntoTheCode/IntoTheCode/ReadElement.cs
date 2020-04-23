@@ -8,8 +8,8 @@ using IntoTheCode.Read.Element.Words;
 namespace IntoTheCode
 {
     /// <summary>The Elements that build up a CodeDokument.</summary>
-    /// <remarks>Inherids <see cref="CodeElement"/></remarks>
-    public class ReadElement : CodeElement
+    /// <remarks>Inherids <see cref="TextElement"/></remarks>
+    public class ReadElement : TextElement
     {
         internal ReadElement(ParserElementBase element, TextSubString pointer)
         {

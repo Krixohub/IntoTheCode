@@ -32,10 +32,10 @@ namespace IntoTheCode.Read.Element
 
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<ReadElement> outElements, int level)
+        public override bool Load(List<TextElement> outElements, int level)
         {
             int from = TextBuffer.PointerNextChar;
-            var subs = new List<ReadElement>();
+            var subs = new List<TextElement>();
             if (!(SubElements[0] as ParserElementBase).Load(subs, level) || from == TextBuffer.PointerNextChar)
                 if (TextBuffer.Status.Error != null ||
                     (!(SubElements[1] as ParserElementBase).Load(subs, level)
@@ -55,7 +55,7 @@ namespace IntoTheCode.Read.Element
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(ReadElement last)
+        public override int ResolveErrorsLast(TextElement last)
         {
             int rc = (SubElements[0] as ParserElementBase).ResolveErrorsLast(last);
             if (rc < 2)

@@ -140,7 +140,7 @@ namespace TestCodeInternal.ViewModel
 
             //CodeDocument doc = CodeDocument.Load(ColorText, CustomInp);
             TextBuffer buffer = new FlatBuffer(CustomInp);
-            CodeDocument doc = Parser.ParseString(buffer);
+            TextDocument doc = Parser.ParseString(buffer);
 
             SetCustomDoc(doc != null ? doc.ToMarkup() : string.Empty);
             SetCustomOut(string.Empty);
@@ -166,20 +166,20 @@ namespace TestCodeInternal.ViewModel
 
             // Get expected Grammar document.
             //CodeDocument metaRef = MetaParserTest.TestMetaGrammarDoc();
-            CodeDocument metaRef = CodeDocument.Load(MetaParser.Instance, MetaParser.SoftMetaGrammarAndSettings);
+            TextDocument metaRef = TextDocument.Load(MetaParser.Instance, MetaParser.SoftMetaGrammarAndSettings);
             expectTags = metaRef.ToMarkup();
 
             // Get actual meta Grammar document.
             //if (Parser.MetaParser == null) _parser = new Parser("");
             TextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaGrammarAndSettings);
-            CodeDocument metaActual = _metaparser.ParseString(buffer);
+            TextDocument metaActual = _metaparser.ParseString(buffer);
 
             actualTags = metaActual.ToMarkup();
 //            actualTags = _metaparser.Grammar.doc.ToMarkup();
 
 
             // Write compare result to output.
-            msg = CodeDocument.CompareCode(metaActual, metaRef);
+            msg = TextDocument.CompareCode(metaActual, metaRef);
             msg = (string.IsNullOrEmpty(msg) ? "All expected tags are contained in actual document" : msg) + "\r\n";
             File.WriteAllText(expectFile, msg + expectTags);
             File.WriteAllText(actualFile, msg + actualTags);

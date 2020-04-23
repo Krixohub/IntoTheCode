@@ -64,7 +64,7 @@
     <Compile Include="Buffer\TextBuffer.cs" />
     <Compile Include="Buffer\TextSubString.cs" />
     <Compile Include="Read\Element\Words\WordBase.cs" />
-    <Compile Include="CodeElement.cs" />
+    <Compile Include="TextElement.cs" />
     <Compile Include="CommentElement.cs" />
     <Compile Include="Read\HardElement.cs" />
     <Compile Include="ReadElement.cs" />
@@ -84,7 +84,7 @@
     <Compile Include="Read\Element\Structure\SyntaxAttribute.cs" />
     <Compile Include="Read\Element\RuleLink.cs" />
     <Compile Include="Read\Element\Structure\SyntaxClass.cs" />
-    <Compile Include="CodeDocument.cs" />
+    <Compile Include="TextDocument.cs" />
     <Compile Include="Read\Element\Structure\TextSchema.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

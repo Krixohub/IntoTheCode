@@ -7,10 +7,10 @@ using IntoTheCode.Read;
 namespace IntoTheCode
 {
     /// <summary>Represents a text or code document.</summary>
-    /// <remarks>Inherids <see cref="CodeElement"/></remarks>
-    public class CodeDocument : CodeElement
+    /// <remarks>Inherids <see cref="TextElement"/></remarks>
+    public class TextDocument : TextElement
     {
-        internal CodeDocument(IEnumerable<CodeElement> elements, string name)
+        internal TextDocument(IEnumerable<TextElement> elements, string name)
         {
             Name = name;
             Add(elements);
@@ -22,10 +22,10 @@ namespace IntoTheCode
         /// <param name="parser"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static CodeDocument Load(Parser parser, string input)
+        public static TextDocument Load(Parser parser, string input)
         {
             TextBuffer buffer = new FlatBuffer(input);
-            CodeDocument doc = parser.ParseString(buffer);
+            TextDocument doc = parser.ParseString(buffer);
             if (doc != null) return doc;
 
             // only place to throw exception is CodeDocument.Load and Parser.SetGrammar (and MetaGrammar)
@@ -34,7 +34,7 @@ namespace IntoTheCode
             throw error;
         }
 
-        /// <inheritdoc cref="CodeElement"/>
+        /// <inheritdoc cref="TextElement"/>
         public override string GetValue() { return _value; }
 
         /// <summary>Transform document to markup.</summary>
@@ -82,7 +82,7 @@ namespace IntoTheCode
         /// <summary>Compare two TextDocuments. Only elements in the 'expect' document are compared.</summary>
         /// <returns>Empty string if equal. Message with path if different.</returns>
         /// <exclude/>
-        internal static string CompareCode(CodeDocument actual, CodeDocument expect)
+        internal static string CompareCode(TextDocument actual, TextDocument expect)
         {
             string msg;
             if (expect == null && actual == null) return string.Empty;
@@ -91,9 +91,9 @@ namespace IntoTheCode
             if (actual.SubElements == null && expect.SubElements == null) return string.Empty;
             if (expect == null || expect.SubElements == null) return "Expected doc has no elements";
             if (actual == null || actual.SubElements == null) return "Actual doc has no elements";
-            foreach (CodeElement xpct in expect.SubElements)
+            foreach (TextElement xpct in expect.SubElements)
             {
-                CodeElement actualElement = actual.SubElements.FirstOrDefault(n => n.Name == xpct.Name && GetRuleName(n) == GetRuleName(xpct));
+                TextElement actualElement = actual.SubElements.FirstOrDefault(n => n.Name == xpct.Name && GetRuleName(n) == GetRuleName(xpct));
                 if (actualElement == null)
                     return string.Format("Actual element '{0}', '{1}' is missing", xpct.Name, GetRuleName(xpct));
                 msg = CompareElement(actualElement, xpct, string.Format("{0}[{1}]", xpct.Name, GetRuleName(xpct)));
@@ -103,11 +103,11 @@ namespace IntoTheCode
             return string.Empty;
         }
 
-        private static string GetRuleName(CodeElement rule)
+        private static string GetRuleName(TextElement rule)
         {
             if (rule == null) return "Rule is null";
             if (rule.SubElements == null) return "Rule has no sub elements";
-            CodeElement ident = rule.SubElements.FirstOrDefault(n => n.Name == MetaParser.WordIdent__);
+            TextElement ident = rule.SubElements.FirstOrDefault(n => n.Name == MetaParser.WordIdent__);
             if (ident == null) return "Rule has no ruleId element";
             return string.IsNullOrEmpty(ident.Value) ? "Rule has no name" : ident.Value;
         }
@@ -115,7 +115,7 @@ namespace IntoTheCode
         /// <summary>Compare two Element.</summary>
         /// <returns>Empty string if equal. Message with path if different.</returns>
         /// <exclude/>
-        private static string CompareElement(CodeElement actual, CodeElement expect, string path)
+        private static string CompareElement(TextElement actual, TextElement expect, string path)
         {
             string msg;
             if (expect == null || actual == null) return string.Format("Path: ({0}). Missing element", path);
