@@ -8,7 +8,7 @@ namespace IntoTheCodeExample.Expression.Executers
         private ExpressionBase _op1;
         private ExpressionBase _op2;
 
-        public Multiply(TreeNode elem)
+        public Multiply(TopElement elem)
         {
             _op1 = CreateExpression(elem.SubElements[0]);
             _op2 = CreateExpression(elem.SubElements[1]);

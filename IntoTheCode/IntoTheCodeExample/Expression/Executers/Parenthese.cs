@@ -7,7 +7,7 @@ namespace IntoTheCodeExample.Expression.Executers
     {
         private ExpressionBase _op;
 
-        public Parenthese(TreeNode elem)
+        public Parenthese(TopElement elem)
         {
             _op = CreateExpression(elem.SubElements[0]);
         }

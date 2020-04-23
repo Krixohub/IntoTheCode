@@ -8,7 +8,7 @@ namespace IntoTheCodeExample.Expression.Executers
     {
         public abstract float execute();
 
-        public static ExpressionBase CreateExpression(TreeNode elem)
+        public static ExpressionBase CreateExpression(TopElement elem)
         {
             switch (elem.Name)
             {

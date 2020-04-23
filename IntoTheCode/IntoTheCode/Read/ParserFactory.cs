@@ -18,12 +18,12 @@ namespace IntoTheCode.Read
         {
             parser.Rules = new List<Rule>();
 
-            foreach (TreeNode ruleElement in doc.Elements(MetaParser.Rule_______))
+            foreach (TopElement ruleElement in doc.Elements(MetaParser.Rule_______))
             {
                 string debug1 = "(" + parser.Name + ")".NL() + ruleElement.ToMarkupProtected("");
 
                 CodeElement elementId = ruleElement.SubElements[0] as CodeElement;
-                List<TreeNode> docSubNotes = ruleElement.Elements(n => n != elementId).ToList();
+                List<TopElement> docSubNotes = ruleElement.Elements(n => n != elementId).ToList();
                 List<ParserElementBase> elements = BuildExpression(parser, docSubNotes, status);
                 Rule rule = AddRule(parser, elementId, elements.ToArray());
 
@@ -44,7 +44,7 @@ namespace IntoTheCode.Read
             return rule;
         }
 
-        private static List<ParserElementBase> BuildExpression(Parser parser, IList<TreeNode> docNotes, ParserStatus status)
+        private static List<ParserElementBase> BuildExpression(Parser parser, IList<TopElement> docNotes, ParserStatus status)
         {
             //string debug1 = "(" + parser.Name + ")".NL() + docNotes.Aggregate("", (s, n) => s + n.ToMarkupProtected(""));
 
@@ -73,7 +73,7 @@ namespace IntoTheCode.Read
                         else
                             el1 = new Parentheses(elements.ToArray());
 
-                        IList<TreeNode> elementElements2 = new List<TreeNode>();
+                        IList<TopElement> elementElements2 = new List<TopElement>();
                         for (int i = pos + 1; i < docNotes.Count(); i++)
                             elementElements2.Add(docNotes[i]);
                         List<ParserElementBase> elements2 = BuildExpression(parser, elementElements2, status);
@@ -209,7 +209,7 @@ namespace IntoTheCode.Read
         private static bool ApplySettingsFromGrammar(Parser parser, CodeDocument doc, ParserStatus status)
         {
             bool ok = true;
-            foreach (TreeNode SetterElement in doc.Elements(MetaParser.Setter_____))
+            foreach (TopElement SetterElement in doc.Elements(MetaParser.Setter_____))
             {
                 CodeElement elementId = SetterElement.SubElements[0] as CodeElement;
 
@@ -221,7 +221,7 @@ namespace IntoTheCode.Read
                     continue;
                 }
 
-                foreach (TreeNode assignElement in SetterElement.Elements(MetaParser.Assignment_))
+                foreach (TopElement assignElement in SetterElement.Elements(MetaParser.Assignment_))
                 {
                     CodeElement propName = assignElement.SubElements[0] as CodeElement;
                     string propValue = assignElement.SubElements.Count > 1 ? assignElement.SubElements[1].Value : string.Empty;

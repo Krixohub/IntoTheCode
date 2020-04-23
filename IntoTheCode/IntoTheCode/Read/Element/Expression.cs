@@ -245,7 +245,7 @@ namespace IntoTheCode.Read.Element
             return true;
         }
 
-        private void AddOperationToTree(TreeNode leftExprCode, CodeElement rightOpCode, CodeElement rightExprCode)
+        private void AddOperationToTree(TopElement leftExprCode, CodeElement rightOpCode, CodeElement rightExprCode)
         {
             // todo check for operators belonging to expression
             WordBinaryOperator leftOperator = ((CodeElement)leftExprCode).WordParser as WordBinaryOperator;
@@ -256,7 +256,7 @@ namespace IntoTheCode.Read.Element
             if (leftOperator == null)
             {
                 // insert 
-                TreeNode parent = leftExprCode.Parent;
+                TopElement parent = leftExprCode.Parent;
                 rightOpCode.AddElement(leftExprCode);
                 rightOpCode.AddElement(rightExprCode);
                 parent.ReplaceSubElement(leftExprCode, rightOpCode);
@@ -267,7 +267,7 @@ namespace IntoTheCode.Read.Element
             if (leftOperator.Precedence > rightOpSymbol.Precedence)
             {
                 // insert 
-                TreeNode parent = leftExprCode.Parent;
+                TopElement parent = leftExprCode.Parent;
                 rightOpCode.AddElement(leftExprCode);
                 rightOpCode.AddElement(rightExprCode);
                 parent.ReplaceSubElement(leftExprCode, rightOpCode);
@@ -286,7 +286,7 @@ namespace IntoTheCode.Read.Element
             else
             {
                 // insert 
-                TreeNode parent = leftExprCode.Parent;
+                TopElement parent = leftExprCode.Parent;
                 rightOpCode.AddElement(leftExprCode);
                 rightOpCode.AddElement(rightExprCode);
                 parent.ReplaceSubElement(leftExprCode, rightOpCode);

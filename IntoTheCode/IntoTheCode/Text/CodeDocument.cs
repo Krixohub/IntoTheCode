@@ -16,7 +16,7 @@ namespace IntoTheCode
         //{
         //}
 
-        internal CodeDocument(IEnumerable<TreeNode> elements, ParserElementBase element) : base (element, null)
+        internal CodeDocument(IEnumerable<TopElement> elements, ParserElementBase element) : base (element, null)
         {
             foreach (var item in elements)
                 AddElement(item);
@@ -40,7 +40,7 @@ namespace IntoTheCode
             throw error;
         }
 
-        /// <inheritdoc cref="TreeNode"/>
+        /// <inheritdoc cref="TopElement"/>
         public override string GetValue() { return _value; }
 
         /// <summary>Transform document to markup.</summary>
@@ -97,9 +97,9 @@ namespace IntoTheCode
             if (actual.SubElements == null && expect.SubElements == null) return string.Empty;
             if (expect == null || expect.SubElements == null) return "Expected doc has no elements";
             if (actual == null || actual.SubElements == null) return "Actual doc has no elements";
-            foreach (TreeNode xpct in expect.SubElements)
+            foreach (TopElement xpct in expect.SubElements)
             {
-                TreeNode actualElement = actual.SubElements.FirstOrDefault(n => n.Name == xpct.Name && GetRuleName(n) == GetRuleName(xpct));
+                TopElement actualElement = actual.SubElements.FirstOrDefault(n => n.Name == xpct.Name && GetRuleName(n) == GetRuleName(xpct));
                 if (actualElement == null)
                     return string.Format("Actual element '{0}', '{1}' is missing", xpct.Name, GetRuleName(xpct));
                 msg = CompareElement(actualElement, xpct, string.Format("{0}[{1}]", xpct.Name, GetRuleName(xpct)));
@@ -109,11 +109,11 @@ namespace IntoTheCode
             return string.Empty;
         }
 
-        private static string GetRuleName(TreeNode rule)
+        private static string GetRuleName(TopElement rule)
         {
             if (rule == null) return "Rule is null";
             if (rule.SubElements == null) return "Rule has no sub elements";
-            TreeNode ident = rule.SubElements.FirstOrDefault(n => n.Name == MetaParser.WordIdent__);
+            TopElement ident = rule.SubElements.FirstOrDefault(n => n.Name == MetaParser.WordIdent__);
             if (ident == null) return "Rule has no ruleId element";
             return string.IsNullOrEmpty(ident.Value) ? "Rule has no name" : ident.Value;
         }
@@ -121,7 +121,7 @@ namespace IntoTheCode
         /// <summary>Compare two Element.</summary>
         /// <returns>Empty string if equal. Message with path if different.</returns>
         /// <exclude/>
-        private static string CompareElement(TreeNode actual, TreeNode expect, string path)
+        private static string CompareElement(TopElement actual, TopElement expect, string path)
         {
             string msg;
             if (expect == null || actual == null) return string.Format("Path: ({0}). Missing element", path);
