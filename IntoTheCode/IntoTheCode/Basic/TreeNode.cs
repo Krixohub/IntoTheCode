@@ -9,25 +9,25 @@ using System.Xml.Linq;
 namespace IntoTheCode.Basic
 {
     /// <summary>A Element has a parent, a string value (text) and a set of sub elements.</summary>
-    public abstract class TreeNode // : NotifyChanges
+    public abstract class TreeNode<TElement> where TElement : TreeNode<TElement>// : NotifyChanges
     {
-        /// <summary>Creator for <see cref="TreeNode"/>.</summary>
+        /// <summary>Creator for <see cref="TreeNodeG"/>.</summary>
         /// <exclude/>
-        internal TreeNode(IList<TreeNode> elements)
+        internal TreeNode(IList<TElement> elements)
         {
             if (elements == null)
                 return;
             foreach (var element in elements)
-                element.Parent = this;
+                element.Parent = this as TElement;
             SubElements = elements;
         }
 
-        /// <summary>Creator for <see cref="TreeNode"/>.</summary>
+        /// <summary>Creator for <see cref="TreeNodeG"/>.</summary>
         /// <exclude/>
-        internal TreeNode(params TreeNode[] elements)
+        internal TreeNode(params TElement[] elements)
         {
-            SubElements = new List<TreeNode>();
-            foreach (TreeNode item in elements)
+            SubElements = new List<TElement>();
+            foreach (TElement item in elements)
                 AddElement(item);
         }
 
@@ -35,28 +35,28 @@ namespace IntoTheCode.Basic
         public virtual string Name { get; set; }
 
         /// <summary>Property for parent element.</summary>
-        public TreeNode Parent { get; private set; }
+        public TElement Parent { get; private set; }
 
         /// <summary>Property for sub elements (elements).</summary>
-        public virtual IList<TreeNode> SubElements { get; private set; }
+        public virtual IList<TElement> SubElements { get; private set; }
 
-        internal protected TreeNode AddElement(TreeNode element)
+        internal protected TElement AddElement(TElement element)
         {
-            element.Parent = this;
+            element.Parent = this as TElement;
             SubElements.Add(element);
-            return this;
+            return this as TElement;
         }
 
-        internal protected TreeNode Add(IEnumerable<TreeNode> elements)
+        internal protected TElement Add(IEnumerable<TElement> elements)
         {
             foreach (var item in elements)
                 AddElement(item);
-            return this;
+            return this as TElement;
         }
 
         //public string Value { get; protected set; }
         public string Value { get { return GetValue(); } }
-        
+
         /// <summary>Get the text of this node.</summary>
         /// <returns>The text value.</returns>
         public abstract string GetValue();// { return _value; }
@@ -65,7 +65,7 @@ namespace IntoTheCode.Basic
         /// <summary>Find sub elements with a given name.</summary>
         /// <param name="name">The name to search for.</param>
         /// <returns>A enumerable of elements.</returns>
-        public virtual IEnumerable<TreeNode> Elements(string name)
+        public virtual IEnumerable<TElement> Elements(string name)
         {
             return SubElements.Where(n => n.Name == name);
         }
@@ -73,7 +73,7 @@ namespace IntoTheCode.Basic
         /// <summary>Find sub elements with a predicate.</summary>
         /// <param name="predicate">The predicate to filter with.</param>
         /// <returns>A enumerable of elements.</returns>
-        public virtual IEnumerable<TreeNode> Elements(Func<TreeNode, bool> predicate)
+        public virtual IEnumerable<TElement> Elements(Func<TElement, bool> predicate)
         {
             return SubElements.Where(predicate);
         }
@@ -81,24 +81,24 @@ namespace IntoTheCode.Basic
         /// <summary>Find sub elements with a predicate.</summary>
         /// <param name="predicate">The predicate.</param>
         /// <returns>A enumerable of elements.</returns>
-        public virtual bool AnyNested(Func<TreeNode, bool> predicate)
+        public virtual bool AnyNested(Func<TElement, bool> predicate)
         {
             if (SubElements == null)
                 return false;
-            Func <TreeNode, bool> pred = tn => predicate(tn) || tn.AnyNested(predicate);
+            Func<TElement, bool> pred = tn => predicate(tn) || tn.AnyNested(predicate);
             return SubElements.Any(pred);
         }
 
 
-        public void ReplaceSubElement(int index, TreeNode replacement)
+        public void ReplaceSubElement(int index, TElement replacement)
         {
             if (index >= SubElements.Count)
                 return;
             SubElements[index] = replacement;
-            replacement.Parent = this;
+            replacement.Parent = this as TElement;
         }
 
-        public void ReplaceSubElement(TreeNode oldNode, TreeNode replacement)
+        public void ReplaceSubElement(TElement oldNode, TElement replacement)
         {
             for (int i = 0; i < SubElements.Count; i++)
                 if (SubElements[i] == oldNode)
@@ -108,7 +108,7 @@ namespace IntoTheCode.Basic
         internal protected virtual string ToMarkupProtected(string indent, bool xmlEncode = false)
         {
             string name, value;
-            if(xmlEncode)
+            if (xmlEncode)
             {
                 XElement elem = new XElement("e", Value);
                 name = XmlConvert.EncodeName(Name);
@@ -119,7 +119,7 @@ namespace IntoTheCode.Basic
                 name = Name;
                 value = Value;
             }
-             
+
             if (SubElements.Count == 0 && string.IsNullOrEmpty(value))
                 return indent + "<" + name + "/>\r\n";
             if (SubElements.Count == 0)

@@ -10,7 +10,7 @@ namespace IntoTheCode.Read.Element
 {
     /// <summary>A basic element (or symbol) of a Grammar. Can read a peace of code/text.</summary>
     /// <remarks>Inherids <see cref="TreeNode"/></remarks>
-    public abstract class ParserElementBase : TreeNodeG<ParserElementBase>
+    public abstract class ParserElementBase : TreeNode<ParserElementBase>
     {
         /// <summary>Clone this parser element, with sub elements, and set proces.</summary>
         /// <param name="proces">The load proces.</param>

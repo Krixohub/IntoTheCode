@@ -8,7 +8,7 @@ namespace IntoTheCodeExample.Expression.Executers
     {
         private int _value;
 
-        public Number(TopElement elem)
+        public Number(CodeElement elem)
         {
             int.TryParse(elem.Value, out _value);
         }

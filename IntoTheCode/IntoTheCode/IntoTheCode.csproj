@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="Basic\DotNetUtil.cs" />
     <Compile Include="Basic\NotifyChanges.cs" />
-    <Compile Include="Basic\TreeNodeGeneric.cs" />
     <Compile Include="Buffer\LoopLevel.cs" />
     <Compile Include="Message\MessageRes.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -65,7 +64,7 @@
     <Compile Include="Buffer\TextBuffer.cs" />
     <Compile Include="Buffer\TextSubString.cs" />
     <Compile Include="Read\Element\Words\WordBase.cs" />
-    <Compile Include="Text\TopElement.cs" />
+    <Compile Include="Text\CodeElement.cs" />
     <Compile Include="Text\CommentElement.cs" />
     <Compile Include="Text\HardElement.cs" />
     <Compile Include="Text\ReadElement.cs" />
