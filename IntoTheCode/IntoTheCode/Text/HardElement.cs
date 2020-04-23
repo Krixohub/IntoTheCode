@@ -4,8 +4,8 @@ using IntoTheCode.Basic;
 namespace IntoTheCode.Read
 {
     /// <summary>A hard coded element.</summary>
-    /// <remarks>Inherids <see cref="TreeNode"/></remarks>
-    internal class HardElement : TreeNode
+    /// <remarks>Inherids <see cref="TopElement"/></remarks>
+    internal class HardElement : TopElement
     {
         public HardElement(string name, string value, params HardElement[] elements)
         {

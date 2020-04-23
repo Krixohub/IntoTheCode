@@ -9,7 +9,7 @@ namespace IntoTheCode
 {
     /// <summary>The Elements that build up a CodeDokument.</summary>
     /// <remarks>Inherids <see cref="TreeNode"/></remarks>
-    public class CodeElement : TreeNode
+    public class CodeElement : TopElement
     {
         internal CodeElement(ParserElementBase element, TextSubString pointer)
         {
