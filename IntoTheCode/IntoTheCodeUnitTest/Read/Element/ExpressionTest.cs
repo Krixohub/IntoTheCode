@@ -253,7 +253,42 @@ exp collapse;
     }
 
 
-    [TestMethod]
+        [TestMethod]
+        public void ExpressionExtra()
+        {
+            string grammar;
+            string code;
+            string markup;
+
+            // Set grammar
+
+
+            // --------------------------------- Expression with parenthese---------------------------------
+            grammar = @"exp =  exp '+' exp | '(' exp ')' | identifier;";
+
+            // --------------------------------- expression comment ---------------------------------
+            code = "a + // comment \r\n b";
+            markup = @"";
+            markup = Util.ParserLoad("expr 3 swap", grammar, code, markup);
+
+            // --------------------------------- expression comment ---------------------------------
+            code = " // comment 1 \r\n a // comment 2\r\n + // comment 3\r\n b // comment 4\r\n // comment 5\r\n";
+            markup = @"<exp>
+  <+>
+    <identifier>a</identifier>
+    <identifier>b</identifier>
+    <!-- comment 3--!>
+    <!-- comment 4--!>
+    <!-- comment 5--!>
+  </+>
+  <!-- comment 2--!>
+  <!-- comment 1 --!>
+</exp>";
+            markup = Util.ParserLoad("expr 3 swap", grammar, code, markup);
+
+        }
+
+        [TestMethod]
         public void ExpressionError()
         {
             string grammar;

@@ -252,7 +252,7 @@ namespace IntoTheCode.Read.Element
 
                 int expIndex = nextValueIndex++;
 
-                while (nextValueIndex < operations.Count - 1 && operations[nextValueIndex] is CommentElement)
+                while (nextValueIndex < operations.Count && operations[nextValueIndex] is CommentElement)
                     comments.Add(operations[nextValueIndex++]);
 
                 AddOperationToTree(parent.SubElements[0], (CodeElement)operations[opIndex], (CodeElement)operations[expIndex], comments);

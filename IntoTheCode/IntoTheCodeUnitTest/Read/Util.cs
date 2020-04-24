@@ -65,7 +65,7 @@ namespace IntoTheCodeUnitTest.Read
             Assert.AreEqual(true, elem.Load(outElements, 0), string.Format("rule '{0}': cant read", elem.Name));
             if (markup.Length > 0)
             {
-                string actual = outElements.Aggregate("", (str,e) => str + e.ToMarkupProtected(string.Empty));
+                string actual = outElements.Aggregate("", (str, e) => str + e.ToMarkupProtected(string.Empty));
                 Assert.AreEqual(markup, actual, "Equation TestOption: document fail");
             }
         }
@@ -110,7 +110,7 @@ namespace IntoTheCodeUnitTest.Read
 
             string actual = textBuffer.Status.Error.Message;
             string s = string.Join("\r\n", textBuffer.Status.AllErrors.Select(err => err.Message).ToArray());
-            
+
             //ParseErrorResPos(testName, line, col, errMsg1, resourceExpression, parm);
             //string expected = 
             Assert.AreEqual(expected, actual, testName);
@@ -122,7 +122,7 @@ namespace IntoTheCodeUnitTest.Read
             try { parser = new Parser(grammar); }
             catch (ParserException e)
             {
-                Assert.IsTrue(errors.Length > 0, "Grammar error: " + e.Message );
+                Assert.IsTrue(errors.Length > 0, "Grammar error: " + e.Message);
                 Assert.IsTrue(e.AllErrors.Count >= errors.Length, "Build missing error 1");
                 e.AllErrors.Sort(ParserError.Compare);
                 for (int i = 0; i < e.AllErrors.Count; i++)
@@ -134,11 +134,11 @@ namespace IntoTheCodeUnitTest.Read
                 Assert.IsNotNull(parser, "Build expects no error");
             else
                 Assert.IsNull(parser, "Build missing error 2");
-            
+
             return parser;
         }
 
-        public static void ParserLoad(string name, string grammar, string code, string markup, params string[] errors)
+        public static string ParserLoad(string name, string grammar, string code, string markup, params string[] errors)
         {
             Parser parser = ParserGrammar(grammar);
 
@@ -151,12 +151,13 @@ namespace IntoTheCodeUnitTest.Read
                 Assert.IsTrue(errors.Count() == 0, name + " Expecting error");
                 Assert.IsNotNull(doc, name + " doc er null");
 
+                string actual = doc.ToMarkup();
                 if (!string.IsNullOrEmpty(markup))
                 {
-                    string actual = doc.ToMarkup();
                     string err = CompareTextLines(actual, markup);
                     Assert.AreEqual(string.Empty, err, name + " AST");
                 }
+                return actual;
             }
             else
             {
@@ -167,8 +168,11 @@ namespace IntoTheCodeUnitTest.Read
                 for (int i = 0; i < buf.Status.AllErrors.Count; i++)
                     if (i < errors.Length)
                         Assert.AreEqual(errors[i], buf.Status.AllErrors[i].Message, name + " Load error " + i);
+                    else
+                        return buf.Status.AllErrors[i].Message;
+            }
+            return string.Empty;
         }
-    }
 
         #region utillity functions
 

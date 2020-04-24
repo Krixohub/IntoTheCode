@@ -145,9 +145,13 @@ namespace IntoTheCode
                 }
                 buffer.Status.AddSyntaxErrorEof(() => MessageRes.p05);
             }
-            else if (elements.Count == 1)
+            else if (elements.OfType<CodeElement>().Count() == 1)
+            {
                 // todo get the document name from procesRules[0]
-                return new TextDocument(elements[0].SubElements, procesRules[0].Name);
+                CodeElement root = elements.OfType<CodeElement>().First();
+                root.AddRange(elements.OfType<CommentElement>());
+                return new TextDocument(root.SubElements, procesRules[0].Name);
+            }
             else
                 buffer.Status.AddParseError(() => MessageRes.p01, procesRules[0].Name);
 
