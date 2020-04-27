@@ -193,19 +193,8 @@ namespace IntoTheCodeUnitTest.Read
         /// <returns>A TextBuffer.</returns>
         public static TextBuffer NewBufferWs(string code)
         {
-            Action<TextBuffer> findNextWord = buf =>
-            {
-                // Skip whitespaces.
-                while (!buf.IsEnd() && " \r\n\t".Contains(buf.GetChar()))
-                    buf.IncPointer();
-
-                // todo: Read comments
-            };
-
-
             TextBuffer textBuffer = new FlatBuffer(code);
-            //textBuffer.FindNextWordAction = findNextWord;
-            textBuffer.ReaderWhitespace.Load(null, 0);
+            textBuffer.FindNextWord(null, false);
             return textBuffer;
         }
 

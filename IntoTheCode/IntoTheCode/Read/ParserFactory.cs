@@ -22,9 +22,12 @@ namespace IntoTheCode.Read
             {
                 string debug1 = "(" + parser.Name + ")".NL() + ruleElement.ToMarkupProtected("");
 
-                CodeElement elementId = ruleElement.SubElements[0] as CodeElement;
-                List<TextElement> docSubNotes = ruleElement.Elements(n => n != elementId).ToList();
-                List<ParserElementBase> elements = BuildExpression(parser, docSubNotes, status);
+                List<CodeElement> ruleElements = ruleElement.SubElements.OfType<CodeElement>().ToList();
+                CodeElement elementId = ruleElements.First();
+                ruleElements.Remove(elementId);
+                //List<TextElement> docSubNodes = new List<TextElement>();
+                //docSubNodes.AddRange(ruleElements);//.Where(n => n != elementId).ToList();
+                List<ParserElementBase> elements = BuildExpression(parser, ruleElements, status);
                 Rule rule = AddRule(parser, elementId, elements.ToArray());
 
                 string debug2 = debug1 + rule.GetGrammar();
@@ -44,28 +47,28 @@ namespace IntoTheCode.Read
             return rule;
         }
 
-        private static List<ParserElementBase> BuildExpression(Parser parser, IList<TextElement> docNotes, ParserStatus status)
+        private static List<ParserElementBase> BuildExpression(Parser parser, IEnumerable<CodeElement> docNodes, ParserStatus status)
         {
             //string debug1 = "(" + parser.Name + ")".NL() + docNotes.Aggregate("", (s, n) => s + n.ToMarkupProtected(""));
 
             List<ParserElementBase> elements = new List<ParserElementBase>();
-            foreach (CodeElement element in docNotes.OfType<CodeElement>())
+            foreach (CodeElement element in docNodes.OfType<CodeElement>())
             {
                 switch (element.Name)
                 {
                     case MetaParser.Expression_:
-                        if (docNotes.Count() > 1)
+                        if (docNodes.Count() > 1)
                             status.AddBuildError(() => MessageRes.pb02, element, parser.Name);
 
-                        return BuildExpression(parser, element.SubElements, status);
+                        return BuildExpression(parser, element.SubElements.OfType<CodeElement>(), status);
 
                     case MetaParser.Or_________:
                         ParserElementBase el1, el2;
-                        
+                        List<CodeElement> orNodes = docNodes.ToList();
                         // find position
                         int pos = 0;
-                        while (pos + 2 < docNotes.Count() && docNotes[++pos] != element) { }
-                        if (pos < 1 || pos + 2 > docNotes.Count())
+                        while (pos + 2 < orNodes.Count() && orNodes[++pos] != element) { }
+                        if (pos < 1 || pos + 2 > orNodes.Count())
                             status.AddBuildError(() => MessageRes.pb03, element, parser.Name);
 
                         if (pos == 1)
@@ -73,9 +76,9 @@ namespace IntoTheCode.Read
                         else
                             el1 = new Parentheses(elements.ToArray());
 
-                        IList<TextElement> elementElements2 = new List<TextElement>();
-                        for (int i = pos + 1; i < docNotes.Count(); i++)
-                            elementElements2.Add(docNotes[i]);
+                        var elementElements2 = new List<CodeElement>();
+                        for (int i = pos + 1; i < orNodes.Count(); i++)
+                            elementElements2.Add(orNodes[i]);
                         List<ParserElementBase> elements2 = BuildExpression(parser, elementElements2, status);
 
                         if (elements2.Count() == 1)
@@ -109,13 +112,13 @@ namespace IntoTheCode.Read
                         elements.Add(new WordSymbol(element.Value));
                         break;
                     case MetaParser.Sequence___:
-                        elements.Add(new Sequence(BuildExpression(parser, element.SubElements, status).ToArray()));
+                        elements.Add(new Sequence(BuildExpression(parser, element.SubElements.OfType<CodeElement>(), status).ToArray()));
                         break;
                     case MetaParser.Optional___:
-                        elements.Add(new Optional(BuildExpression(parser, element.SubElements, status).ToArray()));
+                        elements.Add(new Optional(BuildExpression(parser, element.SubElements.OfType<CodeElement>(), status).ToArray()));
                         break;
                     case MetaParser.Parentheses:
-                        elements.Add(new Parentheses(BuildExpression(parser, element.SubElements, status).ToArray()));
+                        elements.Add(new Parentheses(BuildExpression(parser, element.SubElements.OfType<CodeElement>(), status).ToArray()));
                         break;
                     case MetaParser.Comment____:
                         break;
@@ -148,7 +151,7 @@ namespace IntoTheCode.Read
             }
 
             foreach (Rule rule in rules)
-                InitializeElements(rule.SubElements.OfType<ParserElementBase>(), rules, status);
+                InitializeElements(rule.SubElements, rules, status);
 
             // Transformation of syntax: Initialize expressions here
             foreach (Rule rule in rules)
@@ -187,7 +190,7 @@ namespace IntoTheCode.Read
             {
                 var ruleId = element as RuleLink;
                 if (ruleId != null && ruleId.RuleElement == null) ruleId.RuleElement = InitializeResolve(rules, ruleId, status);
-                InitializeElements(element.SubElements.OfType<ParserElementBase>(), rules, status);
+                InitializeElements(element.SubElements, rules, status);
             }
         }
 
@@ -211,7 +214,7 @@ namespace IntoTheCode.Read
             bool ok = true;
             foreach (TextElement SetterElement in doc.Elements(MetaParser.Setter_____))
             {
-                CodeElement elementId = SetterElement.SubElements[0] as CodeElement;
+                CodeElement elementId = SetterElement.SubElements.OfType<CodeElement>().First() as CodeElement;
 
                 Rule rule = parser.Rules.FirstOrDefault(r => r.Name == elementId.Value);
                 if (rule == null)
@@ -223,8 +226,9 @@ namespace IntoTheCode.Read
 
                 foreach (TextElement assignElement in SetterElement.Elements(MetaParser.Assignment_))
                 {
-                    CodeElement propName = assignElement.SubElements[0] as CodeElement;
-                    string propValue = assignElement.SubElements.Count > 1 ? assignElement.SubElements[1].Value : string.Empty;
+                    List<CodeElement> assignNodes = assignElement.SubElements.OfType<CodeElement>().ToList();
+                    CodeElement propName = assignNodes[0];
+                    string propValue = assignNodes.Count > 1 ? assignNodes[1].Value : string.Empty;
                     switch (propName.Value)
                     {
                         case MetaParser.Trust______:

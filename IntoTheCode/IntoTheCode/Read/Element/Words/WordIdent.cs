@@ -29,6 +29,7 @@ namespace IntoTheCode.Read.Element.Words
 
         public override bool Load(List<TextElement> outElements, int level)
         {
+            TextBuffer.FindNextWord(outElements, false);
             if (TextBuffer.IsEnd()) return false;
 
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
@@ -43,27 +44,16 @@ namespace IntoTheCode.Read.Element.Words
             
             subStr.To = TextBuffer.PointerNextChar;
 
+            TextBuffer.InsertComments(outElements);
             outElements.Add(new CodeElement(this, subStr));
 
             TextBuffer.FindNextWord(outElements, true);
             return true;
         }
 
-        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last)
-        {
-            CodeElement code = last as CodeElement;
-            if (code!= null && code.WordParser == this)
-            {
-                // found!
-                TextBuffer.PointerNextChar = code.SubString.To + a;
-                return 2;
-            }
-            return 0;
-        }
-
         public override bool ResolveErrorsForward()
         {
+            TextBuffer.FindNextWord(null, false);
             int from = TextBuffer.PointerNextChar;
 
             if (TextBuffer.IsEnd(1))
@@ -79,6 +69,19 @@ namespace IntoTheCode.Read.Element.Words
 
             TextBuffer.FindNextWord(null, true);
             return true;
+        }
+
+        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
+        public override int ResolveErrorsLast(TextElement last)
+        {
+            CodeElement code = last as CodeElement;
+            if (code != null && code.WordParser == this)
+            {
+                // found!
+                TextBuffer.PointerNextChar = code.SubString.To + a;
+                return 2;
+            }
+            return 0;
         }
     }
 }

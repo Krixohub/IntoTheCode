@@ -279,11 +279,12 @@ exp collapse;
     <identifier>b</identifier>
     <!-- comment 3--!>
     <!-- comment 4--!>
-    <!-- comment 5--!>
   </+>
   <!-- comment 2--!>
   <!-- comment 1 --!>
-</exp>";
+  <!-- comment 5--!>
+</exp>
+";
             markup = Util.ParserLoad("expr 3 swap", grammar, code, markup);
 
         }

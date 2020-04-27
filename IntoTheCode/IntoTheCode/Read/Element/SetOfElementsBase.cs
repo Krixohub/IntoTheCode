@@ -27,14 +27,14 @@ namespace IntoTheCode.Read.Element
 
         protected ParserElementBase[] CloneSubElementsForParse(TextBuffer buffer)
         {
-            return SubElements.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray();
+            return SubElements.Select(r => r.CloneForParse(buffer)).ToArray();
         }
 
         protected bool LoadSet(List<TextElement> outElements, int level)
         {
             int from = TextBuffer.PointerNextChar;
             var elements = new List<TextElement>();
-            foreach (var item in SubElements.OfType<ParserElementBase>())
+            foreach (var item in SubElements)
                 if (!item.Load(elements, level))
                     return SetPointerBackSet(from, item, outElements);
 
@@ -56,13 +56,13 @@ namespace IntoTheCode.Read.Element
                 TextElement last = outElements.LastOrDefault();
                 if (last != null)
                     for (int i = failIndex - 1; i > -1; i--)
-                        if (((ParserElementBase)SubElements[i]).ResolveErrorsLast(last) != 0)
+                        if (SubElements[i].ResolveErrorsLast(last) != 0)
                             break;
 
                 TextBuffer.PointerNextChar = ptrFail;
 
                 for (int i = failIndex; i < SubElements.Count; i++)
-                    if (!((ParserElementBase)SubElements[i]).ResolveErrorsForward())
+                    if (!SubElements[i].ResolveErrorsForward())
                         break;
             }
 
@@ -81,7 +81,7 @@ namespace IntoTheCode.Read.Element
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
             int rc = 0;
-            foreach (var item in SubElements.OfType<ParserElementBase>())
+            foreach (var item in SubElements)
             {
                 if (rc == 0)
                     rc = item.ResolveErrorsLast(last);

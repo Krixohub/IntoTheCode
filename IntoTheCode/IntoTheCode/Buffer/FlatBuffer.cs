@@ -19,7 +19,6 @@ namespace IntoTheCode.Buffer
 
             _buf = text;
             ReaderComment = new Comment() { TextBuffer = this };
-            ReaderWhitespace = new WordWhitespace() { TextBuffer = this};
         }
 
         public override int Length { get { return _buf.Length; } }

@@ -25,12 +25,14 @@ namespace IntoTheCode.Read.Element.Words
 
         public override bool Load(List<TextElement> outElements, int level)
         {
+            TextBuffer.FindNextWord(outElements, false);
             if (TextBuffer.IsEnd(1) || TextBuffer.GetChar() != '\'') return false;
 
             int to = TextBuffer.GetIndexAfter("'", TextBuffer.PointerNextChar + 1);
             if (to <= TextBuffer.PointerNextChar) return false;
             
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar + 1) { To = to - 1 };
+            TextBuffer.InsertComments(outElements);
             outElements.Add(new CodeElement(this, subStr));
 
             TextBuffer.PointerNextChar = to;
@@ -40,6 +42,7 @@ namespace IntoTheCode.Read.Element.Words
 
         public override bool ResolveErrorsForward()
         {
+            TextBuffer.FindNextWord(null, false);
             if (TextBuffer.IsEnd(1))
                 return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe03);
 

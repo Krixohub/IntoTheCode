@@ -27,6 +27,7 @@ namespace IntoTheCode.Read.Element.Words
 
         public override bool Load(List<TextElement> outElements, int level)
         {
+            TextBuffer.FindNextWord(outElements, false);
             int to = 0;
             if (TextBuffer.IsEnd(to)) return false;
             if (Sign == TextBuffer.GetChar())
@@ -45,7 +46,8 @@ namespace IntoTheCode.Read.Element.Words
 
             if (to > 9 && !int.TryParse(TextBuffer.GetSubString(TextBuffer.PointerNextChar, to), out _))
                     return false;
-  
+
+            TextBuffer.InsertComments(outElements);
             outElements.Add(new CodeElement(this, 
                 new TextSubString(TextBuffer.PointerNextChar) { To = TextBuffer.PointerNextChar + to }));
 
@@ -57,6 +59,7 @@ namespace IntoTheCode.Read.Element.Words
         public override bool ResolveErrorsForward()
         {
 
+            TextBuffer.FindNextWord(null, false);
             int to = 0;
             if (TextBuffer.IsEnd(1))
                 return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe10, GetGrammar(), "EOF");

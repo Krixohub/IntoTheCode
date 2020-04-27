@@ -48,7 +48,7 @@ namespace Read.Element.Words
     <b/>
   </line>
 </stx>
-";
+"; 
             markup = Util.ParserLoad("inside comment", grammar, code, markup);
 
         }

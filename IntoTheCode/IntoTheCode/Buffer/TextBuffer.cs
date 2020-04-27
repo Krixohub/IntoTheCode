@@ -21,7 +21,17 @@ namespace IntoTheCode.Buffer
         }
 
         /// <summary>Pointing at the next char to read. When end is reached Length == PointerNextChar.</summary>
-        public int PointerNextChar { get; set; }
+        public int PointerNextChar { get { return _pointerNextChar; }
+                set
+                    {
+                if (_pointerNextChar > value)
+                    for (int i = ReaderComment.CommentBuffer.Count - 1; i >= 0 ; i--)
+                        if (ReaderComment.CommentBuffer[i].SubString.From >= value)
+                            ReaderComment.CommentBuffer.Remove(ReaderComment.CommentBuffer[i]);
+                    _pointerNextChar = value;
+                }
+            }
+        private int _pointerNextChar;
 
         public ParserStatus Status { get; protected set; }
 
@@ -40,9 +50,6 @@ namespace IntoTheCode.Buffer
         }
 
         /// <summary>Function for skipping white spaces and reading comments.</summary>
-        //public Action<TextBuffer> FindNextWordAction { get; set; }
-
-        /// <summary>Function for skipping white spaces and reading comments.</summary>
         public void FindNextWord(List<TextElement> outElements, bool inline)
         {
              
@@ -52,20 +59,27 @@ namespace IntoTheCode.Buffer
             {
                 // Skip whitespaces.
                 //                ReaderWhitespace.Load(outElements, level);
-                string ws = " \r\n\t";
-                //string ws = inline ? " \t" : " \r\n\t";
+                //string ws = " \r\n\t";
+                string ws = inline ? " \t" : " \r\n\t";
 
                 // Read white spaces
                 while (!IsEnd() && ws.Contains(GetChar()))
                     IncPointer();
 
                 // todo: Read comments
-            } while (ReaderComment.Load(outElements, inline));
+            } while (ReaderComment.Load(outElements, inline) && !inline);
+        }
+
+        /// <summary>Insert the preceding comments to output.</summary>
+        public void InsertComments(List<TextElement> outElements)
+        {
+            outElements.AddRange(ReaderComment.CommentBuffer);
+            ReaderComment.CommentBuffer.Clear();
         }
 
         /// <summary>Code element for adding comments.</summary>
         //public List<CodeElement> Comments { get; set; }
-        internal WordWhitespace ReaderWhitespace { get; set; }
+        //internal WordWhitespace ReaderWhitespace { get; set; }
         internal Comment ReaderComment { get; set; }
 
         public bool IsEnd(int pos) { return PointerNextChar + pos >= Length; }

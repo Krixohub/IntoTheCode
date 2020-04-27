@@ -11,11 +11,13 @@ namespace IntoTheCode.Read.Element.Structure
     {
         internal Comment()
         {
+            CommentBuffer = new List<CommentElement>();
         }
 
         internal TextBuffer TextBuffer;
 
-        public  bool Load(List<TextElement> outElements, bool inline)
+        public List<CommentElement> CommentBuffer { get; private set; }
+        public  bool Load(List<TextElement> outElements, bool lineEnd)
         {
             // Read comments on form '// rest of line cr nl'
             const string nl = "\r\n";
@@ -28,8 +30,11 @@ namespace IntoTheCode.Read.Element.Structure
             TextBuffer.SetToIndexOf(subStr, nl);
             if (subStr.To < 0) subStr.To = TextBuffer.Length;
 
-            if (outElements != null)
+            if (lineEnd && outElements != null)
                 outElements.Add(new CommentElement(TextBuffer, subStr));
+
+            if (!lineEnd)
+                CommentBuffer.Add(new CommentElement(TextBuffer, subStr));
 
             if (subStr.To != TextBuffer.Length)
                 TextBuffer.PointerNextChar = subStr.To + 2;
