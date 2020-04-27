@@ -54,7 +54,7 @@
     <Compile Include="Read\Element\Structure\WordBinaryOperator.cs" />
     <Compile Include="Read\Element\Words\WordInt.cs" />
     <Compile Include="Read\Element\Words\WordWhitespace.cs" />
-    <Compile Include="Read\Element\Words\WordComment.cs" />
+    <Compile Include="Read\Element\Structure\Comment.cs" />
     <Compile Include="Read\ParserError.cs" />
     <Compile Include="Read\ParserStatus.cs" />
     <Compile Include="Read\ParserFactory.cs" />

@@ -5,11 +5,11 @@ using IntoTheCode.Basic;
 using IntoTheCode.Message;
 using System;
 
-namespace IntoTheCode.Read.Element.Words
+namespace IntoTheCode.Read.Element.Structure
 {
-    internal class WordComment
+    internal class Comment
     {
-        internal WordComment()
+        internal Comment()
         {
         }
 

@@ -1,7 +1,7 @@
 ﻿using IntoTheCode.Read;
 using IntoTheCode.Read.Element;
+using IntoTheCode.Read.Element.Structure;
 using IntoTheCode.Read.Element.Words;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -52,7 +52,8 @@ namespace IntoTheCode.Buffer
             {
                 // Skip whitespaces.
                 //                ReaderWhitespace.Load(outElements, level);
-                string ws = inline ? " \t" : " \r\n\t";
+                string ws = " \r\n\t";
+                //string ws = inline ? " \t" : " \r\n\t";
 
                 // Read white spaces
                 while (!IsEnd() && ws.Contains(GetChar()))
@@ -65,7 +66,7 @@ namespace IntoTheCode.Buffer
         /// <summary>Code element for adding comments.</summary>
         //public List<CodeElement> Comments { get; set; }
         internal WordWhitespace ReaderWhitespace { get; set; }
-        internal WordComment ReaderComment { get; set; }
+        internal Comment ReaderComment { get; set; }
 
         public bool IsEnd(int pos) { return PointerNextChar + pos >= Length; }
         public bool IsEnd() { return PointerNextChar >= Length; }

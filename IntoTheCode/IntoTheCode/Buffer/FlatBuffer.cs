@@ -1,5 +1,5 @@
 ﻿using IntoTheCode.Message;
-using IntoTheCode.Read;
+using IntoTheCode.Read.Element.Structure;
 using IntoTheCode.Read.Element.Words;
 
 namespace IntoTheCode.Buffer
@@ -18,7 +18,7 @@ namespace IntoTheCode.Buffer
             }
 
             _buf = text;
-            ReaderComment = new WordComment() { TextBuffer = this };
+            ReaderComment = new Comment() { TextBuffer = this };
             ReaderWhitespace = new WordWhitespace() { TextBuffer = this};
         }
 
