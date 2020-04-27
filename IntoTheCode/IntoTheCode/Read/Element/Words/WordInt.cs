@@ -50,7 +50,7 @@ namespace IntoTheCode.Read.Element.Words
                 new TextSubString(TextBuffer.PointerNextChar) { To = TextBuffer.PointerNextChar + to }));
 
             TextBuffer.PointerNextChar += to;
-            TextBuffer.FindNextWord(outElements, level);
+            TextBuffer.FindNextWord(outElements, true);
             return true;
         }
 
@@ -82,7 +82,7 @@ namespace IntoTheCode.Read.Element.Words
                     to, 0, () => MessageRes.pe11, TextBuffer.GetSubString(TextBuffer.PointerNextChar, to));
 
             TextBuffer.PointerNextChar += to;
-            TextBuffer.FindNextWord(null, 0);
+            TextBuffer.FindNextWord(null, true);
             return true;
         }
 

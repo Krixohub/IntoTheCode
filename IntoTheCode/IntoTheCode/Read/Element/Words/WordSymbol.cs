@@ -78,7 +78,7 @@ namespace IntoTheCode.Read.Element.Words
                     //return SetPointerBack(from, this);
                     return SetPointerBack(from);
 
-            TextBuffer.FindNextWord(outElements, level);
+            TextBuffer.FindNextWord(outElements, true);
             return true;
         }
 
@@ -103,7 +103,7 @@ namespace IntoTheCode.Read.Element.Words
                     return SetPointerBack(subStr.From);
                 }
 
-            TextBuffer.FindNextWord(null, 0);
+            TextBuffer.FindNextWord(null, true);
             return true;
         }
 

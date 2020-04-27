@@ -7,22 +7,15 @@ using System;
 
 namespace IntoTheCode.Read.Element.Words
 {
-    /// <remarks>Inherids <see cref="WordBase"/></remarks>
-    internal class WordComment : WordBase
+    internal class WordComment
     {
         internal WordComment()
         {
-            Name = MetaParser.Comment____;
         }
 
-        public override ParserElementBase CloneForParse(TextBuffer buffer)
-        {
-            return null;
-        }
+        internal TextBuffer TextBuffer;
 
-        public override string GetGrammar() { return string.Empty; }
-
-        public override bool Load(List<TextElement> outElements, int level)
+        public  bool Load(List<TextElement> outElements, bool inline)
         {
             // Read comments on form '// rest of line cr nl'
             const string nl = "\r\n";
@@ -46,13 +39,13 @@ namespace IntoTheCode.Read.Element.Words
             return true;
         }
 
-        public override bool ResolveErrorsForward()
+        public bool ResolveErrorsForward()
         {
             throw new Exception("todo");
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last)
+        public int ResolveErrorsLast(TextElement last)
         {
             throw new Exception("todo");
         }

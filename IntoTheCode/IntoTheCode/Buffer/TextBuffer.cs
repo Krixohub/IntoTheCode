@@ -43,16 +43,23 @@ namespace IntoTheCode.Buffer
         //public Action<TextBuffer> FindNextWordAction { get; set; }
 
         /// <summary>Function for skipping white spaces and reading comments.</summary>
-        public void FindNextWord(List<TextElement> outElements, int level)
+        public void FindNextWord(List<TextElement> outElements, bool inline)
         {
+             
+
             // todo comments can be inserted multiple times
             do
             {
                 // Skip whitespaces.
-                ReaderWhitespace.Load(outElements, level);
+                //                ReaderWhitespace.Load(outElements, level);
+                string ws = inline ? " \t" : " \r\n\t";
+
+                // Read white spaces
+                while (!IsEnd() && ws.Contains(GetChar()))
+                    IncPointer();
 
                 // todo: Read comments
-            } while (ReaderComment.Load(outElements, level));
+            } while (ReaderComment.Load(outElements, inline));
         }
 
         /// <summary>Code element for adding comments.</summary>

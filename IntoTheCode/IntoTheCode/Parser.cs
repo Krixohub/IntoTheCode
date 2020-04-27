@@ -121,7 +121,7 @@ namespace IntoTheCode
             try
             {
                 // skip preceding white spaces and comments
-                buffer.FindNextWord(elements, 0);
+                buffer.FindNextWord(elements, false);
                 
                 ok = procesRules[0].Load(elements, 0);
             }

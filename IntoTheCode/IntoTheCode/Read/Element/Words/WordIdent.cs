@@ -45,7 +45,7 @@ namespace IntoTheCode.Read.Element.Words
 
             outElements.Add(new CodeElement(this, subStr));
 
-            TextBuffer.FindNextWord(outElements, level);
+            TextBuffer.FindNextWord(outElements, true);
             return true;
         }
 
@@ -77,7 +77,7 @@ namespace IntoTheCode.Read.Element.Words
             while (!TextBuffer.IsEnd() && AllowedCharsNext.Contains(TextBuffer.GetSubString(TextBuffer.PointerNextChar, 1).ToLower()))
             { TextBuffer.IncPointer(); }
 
-            TextBuffer.FindNextWord(null, 0);
+            TextBuffer.FindNextWord(null, true);
             return true;
         }
     }

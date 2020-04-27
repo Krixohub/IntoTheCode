@@ -34,7 +34,7 @@ namespace IntoTheCode.Read.Element.Words
             outElements.Add(new CodeElement(this, subStr));
 
             TextBuffer.PointerNextChar = to;
-            TextBuffer.FindNextWord(outElements, level);
+            TextBuffer.FindNextWord(outElements, true);
             return true;
         }
 
@@ -52,7 +52,7 @@ namespace IntoTheCode.Read.Element.Words
                 return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar + 1, 0, () => MessageRes.pe05);
 
             TextBuffer.PointerNextChar = to;
-            TextBuffer.FindNextWord(null, 0);
+            TextBuffer.FindNextWord(null, true);
 
             return true;
         }

@@ -25,7 +25,7 @@ namespace IntoTheCode
 
         internal TextBuffer Buffer { get; private set; }
 
-        public override string GetValue() { return Buffer.ReaderComment.GetValue(SubString); }
+        public override string GetValue() { return Buffer.GetSubString(SubString); }
 
         internal protected override string ToMarkupProtected(string indent, bool xmlEncode = false)
         {
