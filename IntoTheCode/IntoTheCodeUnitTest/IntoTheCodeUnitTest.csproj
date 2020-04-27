@@ -60,6 +60,7 @@
     <Compile Include="Read\Element\SequenceTest.cs" />
     <Compile Include="Read\Element\OrTest.cs" />
     <Compile Include="Read\Element\RuleTest.cs" />
+    <Compile Include="Read\Element\Words\WordCommentTest.cs" />
     <Compile Include="Read\MetaParserTest.cs" />
     <Compile Include="Read\Element\Words\WordMixTest.cs" />
     <Compile Include="Read\Element\Words\WordSymbolTest.cs" />
