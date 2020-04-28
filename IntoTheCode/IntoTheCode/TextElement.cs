@@ -11,17 +11,17 @@ namespace IntoTheCode
     /// <remarks>Inherids <see cref="TreeNode"/></remarks>
     public abstract class TextElement : TreeNode<TextElement>
     {
-        /// <summary>Find sub elements with a given name.</summary>
+        /// <summary>Find child code elements with a given name.</summary>
         /// <param name="name">The name to search for.</param>
-        /// <returns>A enumerable of elements.</returns>
+        /// <returns>A enumerable of codes.</returns>
         public virtual IEnumerable<CodeElement> ChildCodes(string name)
         {
             return ChildNodes.OfType<CodeElement>().Where(n => n.Name == name);
         }
 
-        /// <summary>Find sub elements with a predicate.</summary>
+        /// <summary>Find child code elements with a predicate.</summary>
         /// <param name="predicate">The predicate to filter with.</param>
-        /// <returns>A enumerable of elements.</returns>
+        /// <returns>A enumerable of codes.</returns>
         public virtual IEnumerable<CodeElement> ChildCodes(Func<CodeElement, bool> predicate)
         {
             return ChildNodes.OfType<CodeElement>().Where(predicate);

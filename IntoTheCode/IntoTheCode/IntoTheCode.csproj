@@ -50,41 +50,41 @@
       <DependentUpon>MessageRes.resx</DependentUpon>
     </Compile>
     <Compile Include="Basic\TreeNode.cs" />
-    <Compile Include="Read\Element\Expression.cs" />
-    <Compile Include="Read\Element\Structure\WordBinaryOperator.cs" />
-    <Compile Include="Read\Element\Words\WordInt.cs" />
-    <Compile Include="Read\Element\Structure\Comment.cs" />
+    <Compile Include="Read\Structure\Expression.cs" />
+    <Compile Include="Read\Structure\Structure\WordBinaryOperator.cs" />
+    <Compile Include="Read\Words\WordInt.cs" />
+    <Compile Include="Read\Structure\Structure\Comment.cs" />
     <Compile Include="Read\ParserError.cs" />
     <Compile Include="Read\ParserStatus.cs" />
     <Compile Include="Read\ParserFactory.cs" />
-    <Compile Include="Read\Element\Words\WordIdent.cs" />
-    <Compile Include="Read\Element\Words\WordString.cs" />
+    <Compile Include="Read\Words\WordIdent.cs" />
+    <Compile Include="Read\Words\WordString.cs" />
     <Compile Include="Buffer\FlatBuffer.cs" />
     <Compile Include="Buffer\TextBuffer.cs" />
     <Compile Include="Buffer\TextSubString.cs" />
-    <Compile Include="Read\Element\Words\WordBase.cs" />
+    <Compile Include="Read\Words\WordBase.cs" />
     <Compile Include="TextElement.cs" />
     <Compile Include="CommentElement.cs" />
     <Compile Include="Read\HardElement.cs" />
     <Compile Include="CodeElement.cs" />
     <Compile Include="Read\ParserException.cs" />
-    <Compile Include="Read\Element\Structure\XmlSyntax.cs" />
+    <Compile Include="Read\Structure\Structure\XmlSyntax.cs" />
     <Compile Include="Read\MetaParser.cs" />
-    <Compile Include="Read\Element\SetOfElementsBase.cs" />
-    <Compile Include="Read\Element\ElementStringEscapeStyle.cs" />
-    <Compile Include="Read\Element\ParserElementBase.cs" />
-    <Compile Include="Read\Element\Rule.cs" />
-    <Compile Include="Read\Element\Optional.cs" />
-    <Compile Include="Read\Element\Or.cs" />
-    <Compile Include="Read\Element\Parentheses.cs" />
+    <Compile Include="Read\Structure\SetOfElementsBase.cs" />
+    <Compile Include="Read\Structure\ElementStringEscapeStyle.cs" />
+    <Compile Include="Read\Structure\ParserElementBase.cs" />
+    <Compile Include="Read\Structure\Rule.cs" />
+    <Compile Include="Read\Structure\Optional.cs" />
+    <Compile Include="Read\Structure\Or.cs" />
+    <Compile Include="Read\Structure\Parentheses.cs" />
     <Compile Include="Parser.cs" />
-    <Compile Include="Read\Element\Words\WordSymbol.cs" />
-    <Compile Include="Read\Element\Sequence.cs" />
-    <Compile Include="Read\Element\Structure\SyntaxAttribute.cs" />
-    <Compile Include="Read\Element\RuleLink.cs" />
-    <Compile Include="Read\Element\Structure\SyntaxClass.cs" />
+    <Compile Include="Read\Words\WordSymbol.cs" />
+    <Compile Include="Read\Structure\Sequence.cs" />
+    <Compile Include="Read\Structure\Structure\SyntaxAttribute.cs" />
+    <Compile Include="Read\Structure\RuleLink.cs" />
+    <Compile Include="Read\Structure\Structure\SyntaxClass.cs" />
     <Compile Include="TextDocument.cs" />
-    <Compile Include="Read\Element\Structure\TextSchema.cs" />
+    <Compile Include="Read\Structure\Structure\TextSchema.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -92,7 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="obj\Debug\TempPE\" />
-    <Folder Include="Read\Element\RuleSpecial\" />
+    <Folder Include="Read\Structure\RuleSpecial\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Message\MessageRes.resx">
