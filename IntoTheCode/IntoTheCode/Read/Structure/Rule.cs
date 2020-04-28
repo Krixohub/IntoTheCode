@@ -34,7 +34,8 @@ namespace IntoTheCode.Read.Structure
                 DefinitionCodeElement = DefinitionCodeElement,
                 TextBuffer = buffer,
                 Collapse = Collapse,
-                Trust = Trust
+                Trust = Trust,
+                Comment = Comment
             };
 
             return element;
@@ -42,6 +43,7 @@ namespace IntoTheCode.Read.Structure
 
         internal bool Collapse { get; set; }
         internal bool Trust { get; set; }
+        internal bool Comment { get; set; }
 
         private bool GetTrustAuto()
         {
@@ -66,8 +68,12 @@ namespace IntoTheCode.Read.Structure
             //string setting = Collapse ? string.Empty : Name.PadRight(Parser.SymbolFixWidth) + " collapse = 'true';";
             if (Trust != GetTrustAuto()) 
                 settings.Add(new Tuple<string, string>(Name, nameof(Trust).ToLower() + (Trust ? string.Empty : " = 'false'")));
-            if (Collapse) 
+            if (Collapse)
                 settings.Add(new Tuple<string, string>(Name, nameof(Collapse).ToLower()));
+
+            bool commentDefalut = this == Parser.Rules[0];
+            if (Comment != commentDefalut)
+                settings.Add(new Tuple<string, string>(Name, nameof(Comment).ToLower() + (Comment ? string.Empty : " = 'false'")));
 
             foreach (ParserElementBase item in ChildNodes)
                 item.GetSettings(settings);
@@ -107,15 +113,17 @@ namespace IntoTheCode.Read.Structure
                     else
                         element = new CodeElement(this, subStr);
 
+                    if (Comment) TextBuffer.InsertComments(outElements);
                     outElements.Add(element);
-                    // Add comments
-                    outElements.AddRange(outSubNotes.OfType<CommentElement>());
+                    if (Comment) TextBuffer.FindNextWord(outElements, true);
                 }
                 else
                 {
+                    if (Comment) TextBuffer.InsertComments(outElements);
                     element = new CodeElement(this, subStr);
                     element.AddRange(outSubNotes);
                     outElements.Add(element);
+                    if (Comment) TextBuffer.FindNextWord(outElements, true);
                 }
             }
 

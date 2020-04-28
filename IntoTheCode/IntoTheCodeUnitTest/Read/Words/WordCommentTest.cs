@@ -36,17 +36,19 @@ namespace Read.Words
   <!-- comment --!>
 </stx>
 ";
+            //markup = "";
             markup = Util.ParserLoad("just comment", grammar, code, markup);
 
             code = "a // comment \r\n b";
             markup = @"<stx>
   <line>
     <a/>
-    <!-- comment --!>
     <b/>
   </line>
+  <!-- comment --!>
 </stx>
-"; 
+";
+            //markup = "";
             markup = Util.ParserLoad("inside comment", grammar, code, markup);
 
         }

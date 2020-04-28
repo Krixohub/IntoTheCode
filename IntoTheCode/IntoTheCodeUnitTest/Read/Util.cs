@@ -80,6 +80,7 @@ namespace IntoTheCodeUnitTest.Read
             //var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
             Assert.AreEqual(true, word.Load(outNo, 0), n + "Identifier: Can't read");
 
+            textBuffer.FindNextWord(null, false);
             TextElement text = null;
             if (outNo.Count > 0 || to > 0)
                 text = outNo[0];

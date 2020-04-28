@@ -122,12 +122,12 @@ namespace IntoTheCode
             {
                 // skip preceding white spaces and comments
                 buffer.FindNextWord(elements, false);
-                buffer.InsertComments(elements);
+                //buffer.InsertComments(elements);
 
                 ok = procesRules[0].Load(elements, 0);
 
                 buffer.FindNextWord(elements, false);
-                buffer.InsertComments(elements);
+                //buffer.InsertComments(elements);
             }
             catch (Exception e)
             {

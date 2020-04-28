@@ -266,7 +266,7 @@ exp collapse;
             markup = Util.ParserLoad("expr 3 swap", grammar, code, markup);
 
             // --------------------------------- expression comment ---------------------------------
-            code = " // comment 1 \r\n a // comment 2\r\n + // comment 3\r\n b // comment 4\r\n // comment 5\r\n";
+            code = " // comment 1 \r\n a // comment 2\r\n + // comment 3\r\n b // comment 4\r\n // comment 5\r\n  ";
             markup = @"<exp>
   <+>
     <identifier>a</identifier>
@@ -279,6 +279,7 @@ exp collapse;
   <!-- comment 5--!>
 </exp>
 ";
+            markup = "";
             markup = Util.ParserLoad("expr 3 swap", grammar, code, markup);
 
         }

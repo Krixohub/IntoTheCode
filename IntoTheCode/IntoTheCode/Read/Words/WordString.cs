@@ -24,18 +24,18 @@ namespace IntoTheCode.Read.Words
 
         public override bool Load(List<TextElement> outElements, int level)
         {
-            TextBuffer.FindNextWord(outElements, false);
+            TextBuffer.FindNextWord(null, false);
             if (TextBuffer.IsEnd(1) || TextBuffer.GetChar() != '\'') return false;
 
             int to = TextBuffer.GetIndexAfter("'", TextBuffer.PointerNextChar + 1);
             if (to <= TextBuffer.PointerNextChar) return false;
             
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar + 1) { To = to - 1 };
-            TextBuffer.InsertComments(outElements);
+            //TextBuffer.InsertComments(outElements);
             outElements.Add(new CodeElement(this, subStr));
 
             TextBuffer.PointerNextChar = to;
-            TextBuffer.FindNextWord(outElements, true);
+            TextBuffer.FindNextWord(null, true);
             return true;
         }
 
@@ -54,7 +54,7 @@ namespace IntoTheCode.Read.Words
                 return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar + 1, 0, () => MessageRes.pe05);
 
             TextBuffer.PointerNextChar = to;
-            TextBuffer.FindNextWord(null, true);
+            //TextBuffer.FindNextWord(null, true);
 
             return true;
         }

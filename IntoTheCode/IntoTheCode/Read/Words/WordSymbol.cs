@@ -65,7 +65,7 @@ namespace IntoTheCode.Read.Words
 
         public override bool Load(List<TextElement> outElements, int level)
         {
-            TextBuffer.FindNextWord(outElements, false);
+            TextBuffer.FindNextWord(null, false);
             int from = TextBuffer.PointerNextChar;
             if (TextBuffer.IsEnd(_value.Length - 1))
                 return false;// SetPointerBack(proces, from, this);
@@ -77,8 +77,8 @@ namespace IntoTheCode.Read.Words
                     //return SetPointerBack(from, this);
                     return SetPointerBack(from);
 
-            TextBuffer.InsertComments(outElements);
-            TextBuffer.FindNextWord(outElements, true);
+            //TextBuffer.InsertComments(outElements);
+            //TextBuffer.FindNextWord(outElements, true);
             return true;
         }
 

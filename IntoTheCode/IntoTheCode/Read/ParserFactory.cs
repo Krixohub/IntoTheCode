@@ -31,6 +31,8 @@ namespace IntoTheCode.Read
                 string debug2 = debug1 + rule.GetGrammar();
             }
 
+            parser.Rules[0].Comment = true;
+
             return ApplySettingsFromGrammar(parser, doc, status) &&
                     InitializeGrammar(parser, parser.Rules, status) &&
                     ValidateGrammar(parser, status);
@@ -234,6 +236,9 @@ namespace IntoTheCode.Read
                             break;
                         case MetaParser.Collapse___:
                             rule.Collapse = propValue != "false";
+                            break;
+                        case MetaParser.Comment____:
+                            rule.Comment = propValue != "false";
                             break;
                         default:
                             // set the property on rule or sub elements.

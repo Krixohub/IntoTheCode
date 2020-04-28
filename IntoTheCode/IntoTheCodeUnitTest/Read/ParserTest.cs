@@ -16,7 +16,7 @@ namespace Read
             string code;
             string markup;
 
-            grammar = "grammar = {o};// remark\r\n// remark2\r\n o = 'o';settings o collapse = 'false';";
+            grammar = "grammar = {o};// remark\r\n// remark2\r\n o = 'o';settings o collapse = 'false', comment;";
             code = "ooo// remark \r\n o";
             markup = @"<grammar>
   <o/>
@@ -26,8 +26,8 @@ namespace Read
   <o/>
 </grammar>
 ";
-
-            Util.ParserLoad("Markup", grammar, code, markup);
+            //markup = "";
+            markup = Util.ParserLoad("Markup", grammar, code, markup);
 
             grammar = "sntx = [identifier];";
             markup = "<sntx/>";

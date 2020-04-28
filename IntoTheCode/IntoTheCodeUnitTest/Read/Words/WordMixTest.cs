@@ -29,6 +29,7 @@ namespace Read.Words
             Assert.AreEqual(true, sym.Load(outNo, 0), "Can't read a combinded Symbol");
             Assert.AreEqual(true, str.Load(outNo, 0), "Can't read a combinded String");
             Assert.AreEqual(true, idn.Load(outNo, 0), "Can't read a combinded Identifier");
+            textBuffer.FindNextWord(null, false);
             CodeElement node = outNo[1] as CodeElement;
             Assert.IsNotNull(node, "Can't find node after reading combinded Quote");
             Assert.AreEqual("Fghij", node.Value, "The combinded Quote value is not correct");

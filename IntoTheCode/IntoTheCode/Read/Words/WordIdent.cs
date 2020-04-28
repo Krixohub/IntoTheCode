@@ -27,7 +27,7 @@ namespace IntoTheCode.Read.Words
 
         public override bool Load(List<TextElement> outElements, int level)
         {
-            TextBuffer.FindNextWord(outElements, false);
+            TextBuffer.FindNextWord(null, false);
             if (TextBuffer.IsEnd()) return false;
 
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar);
@@ -42,10 +42,10 @@ namespace IntoTheCode.Read.Words
             
             subStr.To = TextBuffer.PointerNextChar;
 
-            TextBuffer.InsertComments(outElements);
+            //TextBuffer.InsertComments(outElements);
             outElements.Add(new CodeElement(this, subStr));
 
-            TextBuffer.FindNextWord(outElements, true);
+            //TextBuffer.FindNextWord(outElements, true);
             return true;
         }
 

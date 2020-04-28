@@ -241,6 +241,12 @@ settings    collapse;";
             // settings
             // expression collapse;
             grammar.Add(new HardElement("setter", string.Empty,
+                new HardElement("identifier", "rule"),
+                new HardElement("assignment", string.Empty,
+                    new HardElement("property", "comment"))));
+
+            // expression collapse;
+            grammar.Add(new HardElement("setter", string.Empty,
                 new HardElement("identifier", "expression"),
                 new HardElement("assignment", string.Empty,
                     new HardElement("property", "collapse"))));
@@ -250,12 +256,6 @@ settings    collapse;";
                 new HardElement("identifier", "element"),
                 new HardElement("assignment", string.Empty,
                     new HardElement("property", "collapse"))));
-
-            //// block collapse;
-            //grammar.AddElement(new HardElement("setter", string.Empty,
-            //    new HardElement("identifier", "block"),
-            //    new HardElement("assignment", string.Empty,
-            //        new HardElement("property", "collapse"))));
 
             // settings collapse;
             grammar.Add(new HardElement("setter", string.Empty,

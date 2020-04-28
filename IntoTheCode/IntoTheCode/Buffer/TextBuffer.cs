@@ -67,6 +67,8 @@ namespace IntoTheCode.Buffer
 
                 // todo: Read comments
             } while (ReaderComment.Load(outElements, inline) && !inline);
+
+            if (outElements != null) InsertComments(outElements);
         }
 
         /// <summary>Insert the preceding comments to output.</summary>

@@ -106,6 +106,7 @@ value       = string;";
             {
                 string grammar = @"
 settings
+rule        comment;
 expression  collapse;
 element     collapse;
 settings    collapse;";
@@ -128,7 +129,8 @@ settings    collapse;";
             // grammar   = {rule} [settings];
             list.Add(new Rule(HardGrammar_,
                 new Sequence(new RuleLink(Rule_______)),
-                new Optional(new RuleLink(Settings___))));
+                new Optional(new RuleLink(Settings___)))
+                { Comment = true });
 
             // rule = identifier '=' expression ';'
             list.Add(new Rule(Rule_______,

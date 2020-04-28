@@ -91,7 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="obj\Debug\TempPE\" />
-    <Folder Include="Read\Structure\RuleSpecial\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Message\MessageRes.resx">
