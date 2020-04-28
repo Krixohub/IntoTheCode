@@ -154,7 +154,7 @@ namespace IntoTheCode
                 // todo get the document name from procesRules[0]
                 CodeElement root = elements.OfType<CodeElement>().First();
                 root.AddRange(elements.OfType<CommentElement>());
-                return new TextDocument(root.SubElements, procesRules[0].Name);
+                return new TextDocument(root.ChildNodes, procesRules[0].Name);
             }
             else
                 buffer.Status.AddParseError(() => MessageRes.p01, procesRules[0].Name);

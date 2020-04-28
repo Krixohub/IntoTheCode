@@ -10,8 +10,8 @@ namespace IntoTheCodeExample.Expression.Executers
 
         public Minus(TextElement elem)
         {
-            CodeElement first = elem.SubElements.OfType<CodeElement>().FirstOrDefault();
-            CodeElement next = elem.SubElements.OfType<CodeElement>().FirstOrDefault(c => c != first);
+            CodeElement first = elem.ChildNodes.OfType<CodeElement>().FirstOrDefault();
+            CodeElement next = elem.ChildNodes.OfType<CodeElement>().FirstOrDefault(c => c != first);
             _op1 = Factory(first);
             _op2 = Factory(next);
         }

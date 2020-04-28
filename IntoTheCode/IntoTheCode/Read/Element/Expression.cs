@@ -55,7 +55,7 @@ namespace IntoTheCode.Read.Element
 
         /// <summary>Creator for <see cref="Expression"/>.</summary>
         internal Expression(Rule ExprRule, Or or) :
-            base((ParserElementBase)or.SubElements[0], (ParserElementBase)or.SubElements[1])
+            base((ParserElementBase)or.ChildNodes[0], (ParserElementBase)or.ChildNodes[1])
         {
             // The elements in the base class are only used for getting the grammar and cloning.
 
@@ -78,8 +78,8 @@ namespace IntoTheCode.Read.Element
             var or = alternative as Or;
             if (or != null)
             {
-                AddAlternatives(ExprRule, or.SubElements[0]);
-                AddAlternatives(ExprRule, or.SubElements[1]);
+                AddAlternatives(ExprRule, or.ChildNodes[0]);
+                AddAlternatives(ExprRule, or.ChildNodes[1]);
                 return;
             }
 
@@ -168,11 +168,11 @@ namespace IntoTheCode.Read.Element
                 binaryOperation = alternative;
 
             // Is it a binary operation ?
-            if (binaryOperation != null && binaryOperation.SubElements.Count == 3)
+            if (binaryOperation != null && binaryOperation.ChildNodes.Count == 3)
             {
-                var expre1 = binaryOperation.SubElements[0] as RuleLink;
-                symbol = binaryOperation.SubElements[1] as WordSymbol;
-                var expre2 = binaryOperation.SubElements[2] as RuleLink;
+                var expre1 = binaryOperation.ChildNodes[0] as RuleLink;
+                symbol = binaryOperation.ChildNodes[1] as WordSymbol;
+                var expre2 = binaryOperation.ChildNodes[2] as RuleLink;
 
                 // add binary operator
                 if (expre1 != null && expre1.RuleElement == ExprRule &&
@@ -200,7 +200,7 @@ namespace IntoTheCode.Read.Element
                     settings.Add(new Tuple<string, string>(op.Name, nameof(op.RightAssociative)));
             }
 
-            foreach (ParserElementBase item in SubElements)
+            foreach (ParserElementBase item in ChildNodes)
                 item.GetSettings(settings);
         }
 
@@ -255,15 +255,15 @@ namespace IntoTheCode.Read.Element
                 while (nextValueIndex < operations.Count && operations[nextValueIndex] is CommentElement)
                     comments.Add(operations[nextValueIndex++]);
 
-                AddOperationToTree(parent.SubElements[0], (CodeElement)operations[opIndex], (CodeElement)operations[expIndex], comments);
+                AddOperationToTree(parent.ChildNodes[0], (CodeElement)operations[opIndex], (CodeElement)operations[expIndex], comments);
                 comments.Clear();
             }
 
-            WordBinaryOperator op = ((CodeElement)parent.SubElements[0]).WordParser as WordBinaryOperator;
+            WordBinaryOperator op = ((CodeElement)parent.ChildNodes[0]).WordParser as WordBinaryOperator;
             if (op != null)
                 op.Complete = true;
 
-            outElements[0] = parent.SubElements[0];
+            outElements[0] = parent.ChildNodes[0];
             return true;
         }
 
@@ -300,11 +300,11 @@ namespace IntoTheCode.Read.Element
 
             // if the insertPoint has lower precedence
             if (leftOperator.Precedence < rightOpSymbol.Precedence)
-                AddOperationToTree(leftExprCode.SubElements[1] as CodeElement, rightOpCode, rightExprCode, comments);
+                AddOperationToTree(leftExprCode.ChildNodes[1] as CodeElement, rightOpCode, rightExprCode, comments);
 
             // if the insertPoint has same precedence and operator is rigth associative
             else if (rightOpSymbol.RightAssociative)
-                AddOperationToTree(leftExprCode.SubElements[1] as CodeElement, rightOpCode, rightExprCode, comments);
+                AddOperationToTree(leftExprCode.ChildNodes[1] as CodeElement, rightOpCode, rightExprCode, comments);
 
             // if the insertPoint has same precedence and operator is left associative
             else
@@ -395,7 +395,7 @@ namespace IntoTheCode.Read.Element
             bool isOp = _binaryOperators.Any(op => last.WordParser == op);
 
             if (isOp)
-                return ResolveErrorsLastFind(last.SubElements[1] as CodeElement);
+                return ResolveErrorsLastFind(last.ChildNodes[1] as CodeElement);
             else
                 return last;
         }

@@ -18,11 +18,11 @@ namespace IntoTheCode.Read
         {
             parser.Rules = new List<Rule>();
 
-            foreach (TextElement ruleElement in doc.Elements(MetaParser.Rule_______))
+            foreach (TextElement ruleElement in doc.ChildCodes(MetaParser.Rule_______))
             {
                 string debug1 = "(" + parser.Name + ")".NL() + ruleElement.ToMarkupProtected("");
 
-                List<CodeElement> ruleElements = ruleElement.SubElements.OfType<CodeElement>().ToList();
+                List<CodeElement> ruleElements = ruleElement.ChildNodes.OfType<CodeElement>().ToList();
                 CodeElement elementId = ruleElements.First();
                 ruleElements.Remove(elementId);
                 //List<TextElement> docSubNodes = new List<TextElement>();
@@ -60,7 +60,7 @@ namespace IntoTheCode.Read
                         if (docNodes.Count() > 1)
                             status.AddBuildError(() => MessageRes.pb02, element, parser.Name);
 
-                        return BuildExpression(parser, element.SubElements.OfType<CodeElement>(), status);
+                        return BuildExpression(parser, element.ChildNodes.OfType<CodeElement>(), status);
 
                     case MetaParser.Or_________:
                         ParserElementBase el1, el2;
@@ -112,13 +112,13 @@ namespace IntoTheCode.Read
                         elements.Add(new WordSymbol(element.Value));
                         break;
                     case MetaParser.Sequence___:
-                        elements.Add(new Sequence(BuildExpression(parser, element.SubElements.OfType<CodeElement>(), status).ToArray()));
+                        elements.Add(new Sequence(BuildExpression(parser, element.ChildNodes.OfType<CodeElement>(), status).ToArray()));
                         break;
                     case MetaParser.Optional___:
-                        elements.Add(new Optional(BuildExpression(parser, element.SubElements.OfType<CodeElement>(), status).ToArray()));
+                        elements.Add(new Optional(BuildExpression(parser, element.ChildNodes.OfType<CodeElement>(), status).ToArray()));
                         break;
                     case MetaParser.Parentheses:
-                        elements.Add(new Parentheses(BuildExpression(parser, element.SubElements.OfType<CodeElement>(), status).ToArray()));
+                        elements.Add(new Parentheses(BuildExpression(parser, element.ChildNodes.OfType<CodeElement>(), status).ToArray()));
                         break;
                     case MetaParser.Comment____:
                         break;
@@ -151,16 +151,16 @@ namespace IntoTheCode.Read
             }
 
             foreach (Rule rule in rules)
-                InitializeElements(rule.SubElements, rules, status);
+                InitializeElements(rule.ChildNodes, rules, status);
 
             // Transformation of syntax: Initialize expressions here
             foreach (Rule rule in rules)
             {
-                Or or = rule.SubElements[0] as Or;
+                Or or = rule.ChildNodes[0] as Or;
                 WordSymbol symbol = null;
                 Rule ruleOp = null;
                 if (or != null && 
-                    Expression.IsBinaryAlternative(rule, or.SubElements[0], out symbol, out ruleOp))
+                    Expression.IsBinaryAlternative(rule, or.ChildNodes[0], out symbol, out ruleOp))
                     rule.ReplaceSubElement(0, new Expression(rule, or));
             }
 
@@ -190,7 +190,7 @@ namespace IntoTheCode.Read
             {
                 var ruleId = element as RuleLink;
                 if (ruleId != null && ruleId.RuleElement == null) ruleId.RuleElement = InitializeResolve(rules, ruleId, status);
-                InitializeElements(element.SubElements, rules, status);
+                InitializeElements(element.ChildNodes, rules, status);
             }
         }
 
@@ -201,9 +201,9 @@ namespace IntoTheCode.Read
         /// <returns></returns>
         private static Rule InitializeResolve(List<Rule> rules, RuleLink link, ParserStatus status)
         {
-            Rule rule = rules.FirstOrDefault(r => r.Name == link.GetValue());
+            Rule rule = rules.FirstOrDefault(r => r.Name == link.Value);
             if (rule == null)
-                status.AddBuildError(() => MessageRes.pb06, link.DefinitionCodeElement, link.GetValue());
+                status.AddBuildError(() => MessageRes.pb06, link.DefinitionCodeElement, link.Value);
             return rule;
         }
 
@@ -212,9 +212,9 @@ namespace IntoTheCode.Read
         private static bool ApplySettingsFromGrammar(Parser parser, TextDocument doc, ParserStatus status)
         {
             bool ok = true;
-            foreach (TextElement SetterElement in doc.Elements(MetaParser.Setter_____))
+            foreach (TextElement SetterElement in doc.ChildCodes(MetaParser.Setter_____))
             {
-                CodeElement elementId = SetterElement.SubElements.OfType<CodeElement>().First() as CodeElement;
+                CodeElement elementId = SetterElement.ChildNodes.OfType<CodeElement>().First() as CodeElement;
 
                 Rule rule = parser.Rules.FirstOrDefault(r => r.Name == elementId.Value);
                 if (rule == null)
@@ -224,9 +224,9 @@ namespace IntoTheCode.Read
                     continue;
                 }
 
-                foreach (TextElement assignElement in SetterElement.Elements(MetaParser.Assignment_))
+                foreach (TextElement assignElement in SetterElement.ChildCodes(MetaParser.Assignment_))
                 {
-                    List<CodeElement> assignNodes = assignElement.SubElements.OfType<CodeElement>().ToList();
+                    List<CodeElement> assignNodes = assignElement.ChildNodes.OfType<CodeElement>().ToList();
                     CodeElement propName = assignNodes[0];
                     string propValue = assignNodes.Count > 1 ? assignNodes[1].Value : string.Empty;
                     switch (propName.Value)
@@ -274,8 +274,8 @@ namespace IntoTheCode.Read
         {
             bool ok = true;
 
-            if (elem.SubElements == null) return ok;
-            foreach (ParserElementBase sub in elem.SubElements)
+            if (elem.ChildNodes == null) return ok;
+            foreach (ParserElementBase sub in elem.ChildNodes)
                 ok = ValidateGrammarElement(sub, status) && ok;
 
             return ok;

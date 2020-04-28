@@ -58,7 +58,7 @@ namespace IntoTheCode.Read.Element.Words
             };
         }
 
-        protected internal override string GetValue(TextSubString ptr) { return _value; }
+        protected internal override string GetWord(TextSubString ptr) { return _value; }
         
         public override string GetGrammar() { return "'" + _value + "'"; }
 

@@ -19,7 +19,7 @@ namespace IntoTheCode.Read.Element
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
-            var element = new Optional(SubElements.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray());// { Parser = Parser };
+            var element = new Optional(ChildNodes.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray());// { Parser = Parser };
             element.TextBuffer = buffer;
             return element;
         }

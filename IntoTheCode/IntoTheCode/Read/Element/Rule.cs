@@ -32,7 +32,7 @@ namespace IntoTheCode.Read.Element
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
-            var element = new Rule(Name, SubElements.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray())
+            var element = new Rule(Name, ChildNodes.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray())
             {
                 DefinitionCodeElement = DefinitionCodeElement,
                 TextBuffer = buffer,
@@ -49,7 +49,7 @@ namespace IntoTheCode.Read.Element
         private bool GetTrustAuto()
         {
             // Set 'trust' property if this is the last of many elements
-            return (SubElements.Count > 2 && SubElements[SubElements.Count - 1] is WordSymbol) ||
+            return (ChildNodes.Count > 2 && ChildNodes[ChildNodes.Count - 1] is WordSymbol) ||
                 AnyNested(elem => elem is WordSymbol && ((WordSymbol)elem).Value.Length > 2);
 
         }
@@ -72,7 +72,7 @@ namespace IntoTheCode.Read.Element
             if (Collapse) 
                 settings.Add(new Tuple<string, string>(Name, nameof(Collapse).ToLower()));
 
-            foreach (ParserElementBase item in SubElements)
+            foreach (ParserElementBase item in ChildNodes)
                 item.GetSettings(settings);
         }
 
@@ -153,10 +153,10 @@ namespace IntoTheCode.Read.Element
 
             
             if (_simplify)
-                rc = ((ParserElementBase)SubElements[0]).ResolveErrorsLast(last);
-            else if (last.SubElements != null && last.SubElements.Count() > 0)
+                rc = ((ParserElementBase)ChildNodes[0]).ResolveErrorsLast(last);
+            else if (last.ChildNodes != null && last.ChildNodes.Count() > 0)
                 // if succes finding a deeper element, return true.
-                rc = ResolveSetErrorsLast(last.SubElements.Last() as CodeElement);
+                rc = ResolveSetErrorsLast(last.ChildNodes.Last() as CodeElement);
             else if (!ResolveErrorsForward())
                 return 1;
 
@@ -171,7 +171,7 @@ namespace IntoTheCode.Read.Element
                 return ResolveSetErrorsForward();
 
             if (_simplify &&
-                !SubElements[0].ResolveErrorsForward())
+                !ChildNodes[0].ResolveErrorsForward())
                 return SetPointerBack(from);
 
             else if (!_simplify &&

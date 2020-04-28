@@ -22,7 +22,7 @@ namespace IntoTheCode
         internal TextSubString SubString { get; private set; }
         internal WordBase WordParser { get; set; }
 
-        public override string GetValue() {
-            return WordParser == null ? string.Empty : WordParser.GetValue(SubString); }
+        protected override string GetValue() {
+            return WordParser == null ? string.Empty : WordParser.GetWord(SubString); }
     }
 }

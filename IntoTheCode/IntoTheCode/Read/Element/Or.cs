@@ -18,16 +18,16 @@ namespace IntoTheCode.Read.Element
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
-            var element = new Or(((ParserElementBase)SubElements[0]).CloneForParse(buffer),
-                ((ParserElementBase)SubElements[1]).CloneForParse(buffer));
+            var element = new Or(((ParserElementBase)ChildNodes[0]).CloneForParse(buffer),
+                ((ParserElementBase)ChildNodes[1]).CloneForParse(buffer));
             element.TextBuffer = buffer;
             return element;
         }
 
         public override string GetGrammar()
         {
-            return SubElements[0].GetGrammar() + " | " +
-                SubElements[1].GetGrammar();
+            return ChildNodes[0].GetGrammar() + " | " +
+                ChildNodes[1].GetGrammar();
         }
 
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
@@ -36,9 +36,9 @@ namespace IntoTheCode.Read.Element
         {
             int from = TextBuffer.PointerNextChar;
             var subs = new List<TextElement>();
-            if (!SubElements[0].Load(subs, level) || from == TextBuffer.PointerNextChar)
+            if (!ChildNodes[0].Load(subs, level) || from == TextBuffer.PointerNextChar)
                 if (TextBuffer.Status.Error != null ||
-                    (!SubElements[1].Load(subs, level)
+                    (!ChildNodes[1].Load(subs, level)
                     || from == TextBuffer.PointerNextChar))
                     return false;
 
@@ -48,8 +48,8 @@ namespace IntoTheCode.Read.Element
 
         public override bool ResolveErrorsForward()
         {
-            bool ok = SubElements[0].ResolveErrorsForward();
-            ok = ok || SubElements[1].ResolveErrorsForward();
+            bool ok = ChildNodes[0].ResolveErrorsForward();
+            ok = ok || ChildNodes[1].ResolveErrorsForward();
 
             return ok;
         }
@@ -57,17 +57,17 @@ namespace IntoTheCode.Read.Element
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int ResolveErrorsLast(TextElement last)
         {
-            int rc = SubElements[0].ResolveErrorsLast(last);
+            int rc = ChildNodes[0].ResolveErrorsLast(last);
             if (rc < 2)
-                rc = SubElements[1].ResolveErrorsLast(last);
+                rc = ChildNodes[1].ResolveErrorsLast(last);
 
             return rc;
         }
 
         public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         {
-            return ((ParserElementBase)SubElements[0]).InitializeLoop(rules, path, status) |
-                    ((ParserElementBase)SubElements[1]).InitializeLoop(rules, path, status);
+            return ((ParserElementBase)ChildNodes[0]).InitializeLoop(rules, path, status) |
+                    ((ParserElementBase)ChildNodes[1]).InitializeLoop(rules, path, status);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace IntoTheCode
         }
 
         /// <inheritdoc cref="TextElement"/>
-        public override string GetValue() { return _value; }
+        protected override string GetValue() { return _value; }
 
         /// <summary>Transform document to markup.</summary>
         /// <param name="xmlEncode">Encode the values to xml.</param>
@@ -88,12 +88,12 @@ namespace IntoTheCode
             if (expect == null && actual == null) return string.Empty;
             if (expect == null) return "Expected doc is null";
             if (actual == null) return "Actual doc is null";
-            if (actual.SubElements == null && expect.SubElements == null) return string.Empty;
-            if (expect == null || expect.SubElements == null) return "Expected doc has no elements";
-            if (actual == null || actual.SubElements == null) return "Actual doc has no elements";
-            foreach (TextElement xpct in expect.SubElements)
+            if (actual.ChildNodes == null && expect.ChildNodes == null) return string.Empty;
+            if (expect == null || expect.ChildNodes == null) return "Expected doc has no elements";
+            if (actual == null || actual.ChildNodes == null) return "Actual doc has no elements";
+            foreach (TextElement xpct in expect.ChildNodes)
             {
-                TextElement actualElement = actual.SubElements.FirstOrDefault(n => n.Name == xpct.Name && GetRuleName(n) == GetRuleName(xpct));
+                TextElement actualElement = actual.ChildNodes.FirstOrDefault(n => n.Name == xpct.Name && GetRuleName(n) == GetRuleName(xpct));
                 if (actualElement == null)
                     return string.Format("Actual element '{0}', '{1}' is missing", xpct.Name, GetRuleName(xpct));
                 msg = CompareElement(actualElement, xpct, string.Format("{0}[{1}]", xpct.Name, GetRuleName(xpct)));
@@ -106,8 +106,8 @@ namespace IntoTheCode
         private static string GetRuleName(TextElement rule)
         {
             if (rule == null) return "Rule is null";
-            if (rule.SubElements == null) return "Rule has no sub elements";
-            TextElement ident = rule.SubElements.FirstOrDefault(n => n.Name == MetaParser.WordIdent__);
+            if (rule.ChildNodes == null) return "Rule has no sub elements";
+            TextElement ident = rule.ChildNodes.FirstOrDefault(n => n.Name == MetaParser.WordIdent__);
             if (ident == null) return "Rule has no ruleId element";
             return string.IsNullOrEmpty(ident.Value) ? "Rule has no name" : ident.Value;
         }
@@ -121,13 +121,13 @@ namespace IntoTheCode
             if (expect == null || actual == null) return string.Format("Path: ({0}). Missing element", path);
             if (expect.Name != actual.Name) return string.Format("Path: ({0}). Name difference ({1})", path, actual.Name);
             if (expect.Value != actual.Value) return string.Format("Path: ({0}). Value difference ({1})", path, actual.Value);
-            if (expect.SubElements == null && actual.SubElements == null) return string.Empty;
-            if (expect.SubElements == null && actual.SubElements != null) return string.Format("Path: ({0}). Expected has no subelements", path);
-            if (expect.SubElements != null && actual.SubElements == null) return string.Format("Path: ({0}). Actual has no subelements", path);
-            if (expect.SubElements.Count() != actual.SubElements.Count()) return string.Format("Path: ({0}). Number of subelements difference", path);
-            for (int i = 0; i < actual.SubElements.Count(); i++)
+            if (expect.ChildNodes == null && actual.ChildNodes == null) return string.Empty;
+            if (expect.ChildNodes == null && actual.ChildNodes != null) return string.Format("Path: ({0}). Expected has no subelements", path);
+            if (expect.ChildNodes != null && actual.ChildNodes == null) return string.Format("Path: ({0}). Actual has no subelements", path);
+            if (expect.ChildNodes.Count() != actual.ChildNodes.Count()) return string.Format("Path: ({0}). Number of subelements difference", path);
+            for (int i = 0; i < actual.ChildNodes.Count(); i++)
             {
-                msg = CompareElement(actual.SubElements[i], expect.SubElements[i], path + string.Format("[{1}]-'{0}'", expect.Name, i));
+                msg = CompareElement(actual.ChildNodes[i], expect.ChildNodes[i], path + string.Format("[{1}]-'{0}'", expect.Name, i));
                 if (!string.IsNullOrEmpty(msg))
                     return msg;
             }

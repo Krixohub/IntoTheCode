@@ -19,14 +19,14 @@ namespace IntoTheCode.Basic
                 return;
             foreach (var element in elements)
                 element.Parent = this as TElement;
-            SubElements = elements;
+            ChildNodes = elements;
         }
 
         /// <summary>Creator for <see cref="TreeNodeG"/>.</summary>
         /// <exclude/>
         internal TreeNode(params TElement[] elements)
         {
-            SubElements = new List<TElement>();
+            ChildNodes = new List<TElement>();
             foreach (TElement item in elements)
                 Add(item);
         }
@@ -38,12 +38,12 @@ namespace IntoTheCode.Basic
         public TElement Parent { get; private set; }
 
         /// <summary>Property for sub elements (elements).</summary>
-        public virtual IList<TElement> SubElements { get; private set; }
+        public virtual IList<TElement> ChildNodes { get; private set; }
 
         internal protected TElement Add(TElement element)
         {
             element.Parent = this as TElement;
-            SubElements.Add(element);
+            ChildNodes.Add(element);
             return this as TElement;
         }
 
@@ -59,23 +59,23 @@ namespace IntoTheCode.Basic
 
         /// <summary>Get the text of this node.</summary>
         /// <returns>The text value.</returns>
-        public abstract string GetValue();// { return _value; }
+        protected virtual string GetValue() { return _value; }
         protected string _value = string.Empty;
 
         /// <summary>Find sub elements with a given name.</summary>
         /// <param name="name">The name to search for.</param>
         /// <returns>A enumerable of elements.</returns>
-        public virtual IEnumerable<TElement> Elements(string name)
+        public virtual IEnumerable<TElement> Nodes(string name)
         {
-            return SubElements.Where(n => n.Name == name);
+            return ChildNodes.Where(n => n.Name == name);
         }
 
         /// <summary>Find sub elements with a predicate.</summary>
         /// <param name="predicate">The predicate to filter with.</param>
         /// <returns>A enumerable of elements.</returns>
-        public virtual IEnumerable<TElement> Elements(Func<TElement, bool> predicate)
+        public virtual IEnumerable<TElement> Nodes(Func<TElement, bool> predicate)
         {
-            return SubElements.Where(predicate);
+            return ChildNodes.Where(predicate);
         }
 
         /// <summary>Find sub elements with a predicate.</summary>
@@ -83,25 +83,25 @@ namespace IntoTheCode.Basic
         /// <returns>A enumerable of elements.</returns>
         public virtual bool AnyNested(Func<TElement, bool> predicate)
         {
-            if (SubElements == null)
+            if (ChildNodes == null)
                 return false;
             Func<TElement, bool> pred = tn => predicate(tn) || tn.AnyNested(predicate);
-            return SubElements.Any(pred);
+            return ChildNodes.Any(pred);
         }
 
 
         public void ReplaceSubElement(int index, TElement replacement)
         {
-            if (index >= SubElements.Count)
+            if (index >= ChildNodes.Count)
                 return;
-            SubElements[index] = replacement;
+            ChildNodes[index] = replacement;
             replacement.Parent = this as TElement;
         }
 
         public void ReplaceSubElement(TElement oldNode, TElement replacement)
         {
-            for (int i = 0; i < SubElements.Count; i++)
-                if (SubElements[i] == oldNode)
+            for (int i = 0; i < ChildNodes.Count; i++)
+                if (ChildNodes[i] == oldNode)
                     ReplaceSubElement(i, replacement);
         }
 
@@ -120,12 +120,12 @@ namespace IntoTheCode.Basic
                 value = Value;
             }
 
-            if (SubElements.Count == 0 && string.IsNullOrEmpty(value))
+            if (ChildNodes.Count == 0 && string.IsNullOrEmpty(value))
                 return indent + "<" + name + "/>\r\n";
-            if (SubElements.Count == 0)
+            if (ChildNodes.Count == 0)
                 return indent + "<" + name + ">" + value + "</" + name + ">\r\n";
             string s = indent + "<" + name + ">" + value + "\r\n";
-            s = SubElements.Aggregate(s, (current, item) => current + item.ToMarkupProtected(indent + "  ", xmlEncode));
+            s = ChildNodes.Aggregate(s, (current, item) => current + item.ToMarkupProtected(indent + "  ", xmlEncode));
             s += indent + "</" + name + ">\r\n";
             return s;
         }

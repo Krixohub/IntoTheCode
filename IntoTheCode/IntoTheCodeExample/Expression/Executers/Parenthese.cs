@@ -9,7 +9,7 @@ namespace IntoTheCodeExample.Expression.Executers
 
         public Parenthese(TextElement elem)
         {
-            CodeElement first = elem.SubElements.OfType<CodeElement>().FirstOrDefault();
+            CodeElement first = elem.ChildNodes.OfType<CodeElement>().FirstOrDefault();
             _op = Factory(first);
         }
 

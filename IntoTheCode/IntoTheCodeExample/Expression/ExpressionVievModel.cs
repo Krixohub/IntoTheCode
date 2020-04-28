@@ -180,7 +180,7 @@ par collapse;";
             ExpressionBase expression;
             try
             {
-                expression = ExpressionBase.Factory(doc.SubElements.OfType<CodeElement>().FirstOrDefault());
+                expression = ExpressionBase.Factory(doc.ChildNodes.OfType<CodeElement>().FirstOrDefault());
             }
             catch (Exception e)
             {

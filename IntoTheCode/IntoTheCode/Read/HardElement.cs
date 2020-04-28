@@ -11,12 +11,14 @@ namespace IntoTheCode.Read
         {
             Name = name;
             //GrammarElement = element;
+
+            // todo addrange
             _value = value;
             if (elements != null)
                 foreach (var element in elements)
-                    SubElements.Add(element);
+                    ChildNodes.Add(element);
         }
 
-        public override string GetValue() { return _value; }
+        protected override string GetValue() { return _value; }
     }
 }

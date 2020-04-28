@@ -12,7 +12,7 @@ namespace IntoTheCode.Read.Element.Words
         /// <param name="buf"></param>
         /// <param name="ptr"></param>
         /// <returns></returns>
-        protected internal virtual string GetValue(TextSubString ptr)
+        protected internal virtual string GetWord(TextSubString ptr)
         {
             return ptr == null || ptr.Length() == 0 ? string.Empty : TextBuffer.GetSubString(ptr);
         }

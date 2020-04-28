@@ -43,7 +43,7 @@ namespace Read.Element
 
             link4.RuleElement = link3.RuleElement = link2.RuleElement = link1.RuleElement = ruleE;
 
-            var expr = new Expression(ruleE, ruleE.SubElements[0] as Or);
+            var expr = new Expression(ruleE, ruleE.ChildNodes[0] as Or);
             //ruleE.ReplaceSubElement(ruleE.SubElements[0], expr);
             Assert.AreEqual(2, expr._binaryOperators.Count, "There should be 2 operators.");
             Assert.AreEqual("*", expr._binaryOperators[0].Name, "There multiplier name.");
@@ -78,7 +78,7 @@ namespace Read.Element
 
             link2.RuleElement = link1.RuleElement = ruleE;
 
-            var expr = new Expression(ruleE, ruleE.SubElements[0] as Or);
+            var expr = new Expression(ruleE, ruleE.ChildNodes[0] as Or);
             //ruleE.ReplaceSubElement(ruleE.SubElements[0], expr);
             Assert.AreEqual(1, expr._binaryOperators.Count, "expr 1: 1 operators.");
             Assert.AreEqual(1, expr._binaryOperators[0].Precedence, "expr 1: precedence = 1.");

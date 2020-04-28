@@ -25,13 +25,11 @@ namespace IntoTheCode.Read.Element
         public virtual bool SetProperty(CodeElement property, string value, ParserStatus status)
         {
             bool ok = false;
-            foreach (ParserElementBase item in SubElements)
+            foreach (ParserElementBase item in ChildNodes)
                 ok = ok | item.SetProperty(property, value, status);
 
             return ok;
         }
-
-        public override string GetValue() { return _value; }
 
         protected internal TextBuffer TextBuffer;
 
@@ -58,9 +56,9 @@ namespace IntoTheCode.Read.Element
         // todo implement GetSettings on decendants
         public virtual void GetSettings(List<Tuple<string, string>> settings) 
         {
-            if (SubElements == null) return;
+            if (ChildNodes == null) return;
 
-            foreach (ParserElementBase item in SubElements)
+            foreach (ParserElementBase item in ChildNodes)
                 item.GetSettings(settings);
         }
 

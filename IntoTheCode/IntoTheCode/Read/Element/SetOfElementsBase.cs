@@ -27,14 +27,14 @@ namespace IntoTheCode.Read.Element
 
         protected ParserElementBase[] CloneSubElementsForParse(TextBuffer buffer)
         {
-            return SubElements.Select(r => r.CloneForParse(buffer)).ToArray();
+            return ChildNodes.Select(r => r.CloneForParse(buffer)).ToArray();
         }
 
         protected bool LoadSet(List<TextElement> outElements, int level)
         {
             int from = TextBuffer.PointerNextChar;
             var elements = new List<TextElement>();
-            foreach (var item in SubElements)
+            foreach (var item in ChildNodes)
                 if (!item.Load(elements, level))
                     return SetPointerBackSet(from, item, outElements);
 
@@ -51,18 +51,18 @@ namespace IntoTheCode.Read.Element
             // todo: Is the error fatal?
             if (from < TextBuffer.Status.UnambiguousPointer && TextBuffer.Status.Error == null)
             {
-                int failIndex = SubElements.IndexOf(failItem);
+                int failIndex = ChildNodes.IndexOf(failItem);
 
                 TextElement last = outElements.LastOrDefault();
                 if (last != null)
                     for (int i = failIndex - 1; i > -1; i--)
-                        if (SubElements[i].ResolveErrorsLast(last) != 0)
+                        if (ChildNodes[i].ResolveErrorsLast(last) != 0)
                             break;
 
                 TextBuffer.PointerNextChar = ptrFail;
 
-                for (int i = failIndex; i < SubElements.Count; i++)
-                    if (!SubElements[i].ResolveErrorsForward())
+                for (int i = failIndex; i < ChildNodes.Count; i++)
+                    if (!ChildNodes[i].ResolveErrorsForward())
                         break;
             }
 
@@ -81,7 +81,7 @@ namespace IntoTheCode.Read.Element
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
             int rc = 0;
-            foreach (var item in SubElements)
+            foreach (var item in ChildNodes)
             {
                 if (rc == 0)
                     rc = item.ResolveErrorsLast(last);
@@ -100,7 +100,7 @@ namespace IntoTheCode.Read.Element
         {
             int from = TextBuffer.PointerNextChar;
 
-            foreach (var item in SubElements.OfType<ParserElementBase>())
+            foreach (var item in ChildNodes.OfType<ParserElementBase>())
                 if (!item.ResolveErrorsForward())
                     return SetPointerBack(from);
             return true;
@@ -109,7 +109,7 @@ namespace IntoTheCode.Read.Element
         public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         {
             bool ok = true;
-            foreach (ParserElementBase item in this.SubElements.OfType<ParserElementBase>())
+            foreach (ParserElementBase item in this.ChildNodes.OfType<ParserElementBase>())
                 ok = ok && item.InitializeLoop(rules, path, status);
             return ok;
         }
@@ -119,7 +119,7 @@ namespace IntoTheCode.Read.Element
             // this set is optional if alle elements are optional.
             bool isOption = true;
 
-            for (int i = SubElements.Count - 1; i >= 0; i--)
+            for (int i = ChildNodes.Count - 1; i >= 0; i--)
             {
                // isOption = isOption && ((ParserElementBase)SubElements[i]).GetFirstList(org, firstList, followingList);
 
@@ -131,7 +131,7 @@ namespace IntoTheCode.Read.Element
 
         public override string GetGrammar()
         {
-            string Grammar = string.Join(" ", SubElements.OfType<ParserElementBase>().Select(s => s.GetGrammar()).ToArray());
+            string Grammar = string.Join(" ", ChildNodes.OfType<ParserElementBase>().Select(s => s.GetGrammar()).ToArray());
             return Grammar;
         }
     }
