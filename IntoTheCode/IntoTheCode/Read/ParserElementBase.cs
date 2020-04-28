@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
-using IntoTheCode.Read.Element.Words;
+using IntoTheCode.Read.Structure;
 
-namespace IntoTheCode.Read.Element
+namespace IntoTheCode.Read
 {
     /// <summary>A basic element (or symbol) of a Grammar. Can read a peace of code/text.</summary>
     /// <remarks>Inherids <see cref="TreeNode"/></remarks>

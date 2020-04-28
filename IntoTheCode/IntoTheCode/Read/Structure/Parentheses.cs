@@ -5,7 +5,7 @@ using IntoTheCode.Basic;
 using IntoTheCode.Read;
 using System.Linq;
 
-namespace IntoTheCode.Read.Element
+namespace IntoTheCode.Read.Structure
 {
     /// <remarks>Inherids <see cref="SetOfElementsBase"/></remarks>
     internal class Parentheses : SetOfElementsBase

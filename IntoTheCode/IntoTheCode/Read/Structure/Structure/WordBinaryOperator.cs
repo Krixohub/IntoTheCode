@@ -1,9 +1,9 @@
 ﻿
 using IntoTheCode.Buffer;
-using IntoTheCode.Read.Element.Words;
+using IntoTheCode.Read.Words;
 using System.Collections.Generic;
 
-namespace IntoTheCode.Read.Element.Struckture
+namespace IntoTheCode.Read.Structure.Struckture
 {
     /// <remarks>Inherids <see cref="WordSymbol"/></remarks>
     internal class WordBinaryOperator : WordSymbol

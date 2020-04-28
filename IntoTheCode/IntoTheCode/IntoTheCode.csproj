@@ -72,7 +72,7 @@
     <Compile Include="Read\MetaParser.cs" />
     <Compile Include="Read\Structure\SetOfElementsBase.cs" />
     <Compile Include="Read\Structure\ElementStringEscapeStyle.cs" />
-    <Compile Include="Read\Structure\ParserElementBase.cs" />
+    <Compile Include="Read\ParserElementBase.cs" />
     <Compile Include="Read\Structure\Rule.cs" />
     <Compile Include="Read\Structure\Optional.cs" />
     <Compile Include="Read\Structure\Or.cs" />

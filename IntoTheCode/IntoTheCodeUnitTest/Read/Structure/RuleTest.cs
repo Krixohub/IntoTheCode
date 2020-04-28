@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using IntoTheCode.Read.Element;
-using IntoTheCode.Read.Element.Words;
+using IntoTheCode.Read.Structure;
+using IntoTheCode.Read.Words;
 using IntoTheCodeUnitTest.Read;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -5,12 +5,12 @@ using IntoTheCode.Basic;
 using System;
 using System.Linq;
 using IntoTheCode;
-using IntoTheCode.Read.Element;
-using IntoTheCode.Read.Element.Words;
-using IntoTheCode.Read.Element.Struckture;
+using IntoTheCode.Read.Structure;
+using IntoTheCode.Read.Words;
+using IntoTheCode.Read.Structure.Struckture;
 using IntoTheCode.Message;
 
-namespace IntoTheCode.Read.Element
+namespace IntoTheCode.Read.Structure
 {
     /// <summary>Expressions read strings like this 'a + b * - c * ( 2 + d )'. (Infix notation)
     /// The expression rule must look like this "expr = mul | sum | value".

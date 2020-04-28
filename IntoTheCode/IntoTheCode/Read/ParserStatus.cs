@@ -1,7 +1,7 @@
 ﻿using IntoTheCode.Basic.Util;
 using IntoTheCode.Buffer;
-using IntoTheCode.Read.Element;
-using IntoTheCode.Read.Element.Words;
+using IntoTheCode.Read.Structure;
+using IntoTheCode.Read.Words;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;

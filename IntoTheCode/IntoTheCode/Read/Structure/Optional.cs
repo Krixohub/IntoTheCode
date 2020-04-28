@@ -5,7 +5,7 @@ using IntoTheCode.Basic;
 using System.Linq;
 using IntoTheCode.Buffer;
 
-namespace IntoTheCode.Read.Element
+namespace IntoTheCode.Read.Structure
 {
     /// <remarks>Inherids <see cref="SetOfElementsBase"/></remarks>
     internal class Optional : SetOfElementsBase

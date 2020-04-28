@@ -1,7 +1,6 @@
 ﻿using IntoTheCode.Buffer;
-using IntoTheCode.Read.Element;
-using IntoTheCode.Basic;
-using IntoTheCode.Read.Element.Words;
+using IntoTheCode.Read;
+using IntoTheCode.Read.Words;
 
 #pragma warning disable 1591 // no warning for missing comments
 

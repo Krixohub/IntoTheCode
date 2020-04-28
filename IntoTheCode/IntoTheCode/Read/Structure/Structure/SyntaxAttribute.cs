@@ -1,4 +1,4 @@
-﻿namespace IntoTheCode.Read.Element.Structure
+﻿namespace IntoTheCode.Read.Structure.Structure
 {
     //internal class GrammarAttribute //: GrammarBase
     //{

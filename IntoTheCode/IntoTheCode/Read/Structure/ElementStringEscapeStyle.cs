@@ -1,4 +1,4 @@
-﻿namespace IntoTheCode.Read.Element
+﻿namespace IntoTheCode.Read.Structure
 {
     internal enum ElementStringEscapeStyle
     {

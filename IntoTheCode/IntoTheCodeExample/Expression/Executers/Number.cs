@@ -1,6 +1,6 @@
 ﻿using IntoTheCode;
 using IntoTheCode.Basic;
-using IntoTheCode.Read.Element.Words;
+using IntoTheCode.Read.Words;
 
 namespace IntoTheCodeExample.Expression.Executers
 {

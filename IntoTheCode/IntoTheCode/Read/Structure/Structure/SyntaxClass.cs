@@ -1,4 +1,4 @@
-﻿namespace IntoTheCode.Read.Element.Structure
+﻿namespace IntoTheCode.Read.Structure.Structure
 {
     //internal abstract class GrammarClass : ElementBase
     //{

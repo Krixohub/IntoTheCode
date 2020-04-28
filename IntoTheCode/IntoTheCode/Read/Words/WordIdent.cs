@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 
 using IntoTheCode.Buffer;
-using IntoTheCode.Basic;
-using System;
 using IntoTheCode.Message;
 
-namespace IntoTheCode.Read.Element.Words
+namespace IntoTheCode.Read.Words
 {
     /// <remarks>Inherids <see cref="WordBase"/></remarks>
     internal class WordIdent : WordBase

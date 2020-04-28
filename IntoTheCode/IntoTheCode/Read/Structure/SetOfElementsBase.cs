@@ -5,10 +5,10 @@ using System.Linq;
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
 using IntoTheCode.Read;
-using IntoTheCode.Read.Element.Words;
+using IntoTheCode.Read.Words;
 using IntoTheCode.Basic.Util;
 
-namespace IntoTheCode.Read.Element
+namespace IntoTheCode.Read.Structure
 {
     /// <remarks>Inherids <see cref="ParserElementBase"/></remarks>
     public abstract class SetOfElementsBase : ParserElementBase

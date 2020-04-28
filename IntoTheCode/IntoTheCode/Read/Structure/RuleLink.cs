@@ -2,7 +2,7 @@
 using IntoTheCode.Basic;
 using IntoTheCode.Buffer;
 
-namespace IntoTheCode.Read.Element
+namespace IntoTheCode.Read.Structure
 {
     /// <summary>
     /// Base class for Grammar symbols.

@@ -1,6 +1,6 @@
 ﻿using IntoTheCode.Message;
-using IntoTheCode.Read.Element.Structure;
-using IntoTheCode.Read.Element.Words;
+using IntoTheCode.Read.Structure.Structure;
+using IntoTheCode.Read.Words;
 
 namespace IntoTheCode.Buffer
 {

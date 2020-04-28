@@ -5,7 +5,7 @@ using IntoTheCode.Basic;
 using IntoTheCode.Message;
 using System;
 
-namespace IntoTheCode.Read.Element.Structure
+namespace IntoTheCode.Read.Structure.Structure
 {
     internal class Comment
     {

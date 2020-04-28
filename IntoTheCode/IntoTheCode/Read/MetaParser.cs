@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 
-using IntoTheCode.Read.Element;
+using IntoTheCode.Read.Structure;
 using System;
 using IntoTheCode.Buffer;
-using IntoTheCode.Read.Element.Words;
+using IntoTheCode.Read.Words;
 
 namespace IntoTheCode.Read
 {

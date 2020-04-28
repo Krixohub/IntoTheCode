@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using IntoTheCode.Buffer;
 using IntoTheCode.Message;
 using IntoTheCode.Read;
-using IntoTheCode.Read.Element;
+using IntoTheCode.Read.Structure;
 using System.Linq;
 using IntoTheCode.Basic.Util;
 
