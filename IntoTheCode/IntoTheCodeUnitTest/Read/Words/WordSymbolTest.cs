@@ -5,7 +5,7 @@ using IntoTheCodeUnitTest.Read;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
-namespace Read.Element.Words
+namespace Read.Words
 {
     [TestClass]
     public class WordSymbolTest

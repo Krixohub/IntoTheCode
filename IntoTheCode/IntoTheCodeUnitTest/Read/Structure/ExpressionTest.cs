@@ -4,7 +4,7 @@ using IntoTheCode.Read.Words;
 using IntoTheCodeUnitTest.Read;
 using IntoTheCode.Message;
 
-namespace Read.Element
+namespace Read.Structure
 {
     [TestClass]
     public class ExpressionTest
@@ -217,11 +217,11 @@ sub Precedence = '1';
 exp collapse;
 ";
 
-            code = "a + b * ( c - d)  > e / f ";
+            code = "a + b * ( c - d) / e ";
             markup = @"<aaa>
-  <gt>
-    <sum>
-      <identifier>a</identifier>
+  <sum>
+    <identifier>a</identifier>
+    <div>
       <mul>
         <identifier>b</identifier>
         <sub>
@@ -229,15 +229,12 @@ exp collapse;
           <identifier>d</identifier>
         </sub>
       </mul>
-    </sum>
-    <div>
       <identifier>e</identifier>
-      <identifier>f</identifier>
     </div>
-  </gt>
+  </sum>
 </aaa>
 ";
-            Util.ParserLoad("expr 5 nested", grammar, code, markup);
+            markup = Util.ParserLoad("expr 5 nested", grammar, code, markup);
 
 //            grammar = @"expr   = mul | sum | div | sub | int | identifier;
 //mul    = expr '*' expr;

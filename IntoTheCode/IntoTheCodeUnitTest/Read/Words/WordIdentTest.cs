@@ -3,7 +3,7 @@ using IntoTheCode.Read.Words;
 using IntoTheCodeUnitTest.Read;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Read.Element.Words
+namespace Read.Words
 {
     [TestClass]
     public class WordIdentTest
