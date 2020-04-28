@@ -51,9 +51,9 @@
     </Compile>
     <Compile Include="Basic\TreeNode.cs" />
     <Compile Include="Read\Structure\Expression.cs" />
-    <Compile Include="Read\Structure\Structure\WordBinaryOperator.cs" />
+    <Compile Include="Read\Words\WordBinaryOperator.cs" />
     <Compile Include="Read\Words\WordInt.cs" />
-    <Compile Include="Read\Structure\Structure\Comment.cs" />
+    <Compile Include="Read\Words\Comment.cs" />
     <Compile Include="Read\ParserError.cs" />
     <Compile Include="Read\ParserStatus.cs" />
     <Compile Include="Read\ParserFactory.cs" />
@@ -68,7 +68,6 @@
     <Compile Include="Read\HardElement.cs" />
     <Compile Include="CodeElement.cs" />
     <Compile Include="Read\ParserException.cs" />
-    <Compile Include="Read\Structure\Structure\XmlSyntax.cs" />
     <Compile Include="Read\MetaParser.cs" />
     <Compile Include="Read\Structure\SetOfElementsBase.cs" />
     <Compile Include="Read\Structure\ElementStringEscapeStyle.cs" />

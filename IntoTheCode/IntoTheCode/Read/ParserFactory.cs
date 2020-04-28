@@ -18,15 +18,13 @@ namespace IntoTheCode.Read
         {
             parser.Rules = new List<Rule>();
 
-            foreach (TextElement ruleElement in doc.ChildCodes(MetaParser.Rule_______))
+            foreach (CodeElement ruleElement in doc.Codes(MetaParser.Rule_______))
             {
                 string debug1 = "(" + parser.Name + ")".NL() + ruleElement.ToMarkupProtected("");
 
-                List<CodeElement> ruleElements = ruleElement.ChildNodes.OfType<CodeElement>().ToList();
+                List<CodeElement> ruleElements = ruleElement.Codes().ToList();
                 CodeElement elementId = ruleElements.First();
                 ruleElements.Remove(elementId);
-                //List<TextElement> docSubNodes = new List<TextElement>();
-                //docSubNodes.AddRange(ruleElements);//.Where(n => n != elementId).ToList();
                 List<ParserElementBase> elements = BuildExpression(parser, ruleElements, status);
                 Rule rule = AddRule(parser, elementId, elements.ToArray());
 
@@ -52,7 +50,7 @@ namespace IntoTheCode.Read
             //string debug1 = "(" + parser.Name + ")".NL() + docNotes.Aggregate("", (s, n) => s + n.ToMarkupProtected(""));
 
             List<ParserElementBase> elements = new List<ParserElementBase>();
-            foreach (CodeElement element in docNodes.OfType<CodeElement>())
+            foreach (CodeElement element in docNodes)
             {
                 switch (element.Name)
                 {
@@ -60,7 +58,7 @@ namespace IntoTheCode.Read
                         if (docNodes.Count() > 1)
                             status.AddBuildError(() => MessageRes.pb02, element, parser.Name);
 
-                        return BuildExpression(parser, element.ChildNodes.OfType<CodeElement>(), status);
+                        return BuildExpression(parser, element.Codes(), status);
 
                     case MetaParser.Or_________:
                         ParserElementBase el1, el2;
@@ -112,13 +110,13 @@ namespace IntoTheCode.Read
                         elements.Add(new WordSymbol(element.Value));
                         break;
                     case MetaParser.Sequence___:
-                        elements.Add(new Sequence(BuildExpression(parser, element.ChildNodes.OfType<CodeElement>(), status).ToArray()));
+                        elements.Add(new Sequence(BuildExpression(parser, element.Codes(), status).ToArray()));
                         break;
                     case MetaParser.Optional___:
-                        elements.Add(new Optional(BuildExpression(parser, element.ChildNodes.OfType<CodeElement>(), status).ToArray()));
+                        elements.Add(new Optional(BuildExpression(parser, element.Codes(), status).ToArray()));
                         break;
                     case MetaParser.Parentheses:
-                        elements.Add(new Parentheses(BuildExpression(parser, element.ChildNodes.OfType<CodeElement>(), status).ToArray()));
+                        elements.Add(new Parentheses(BuildExpression(parser, element.Codes(), status).ToArray()));
                         break;
                     case MetaParser.Comment____:
                         break;
@@ -212,9 +210,9 @@ namespace IntoTheCode.Read
         private static bool ApplySettingsFromGrammar(Parser parser, TextDocument doc, ParserStatus status)
         {
             bool ok = true;
-            foreach (TextElement SetterElement in doc.ChildCodes(MetaParser.Setter_____))
+            foreach (CodeElement SetterElement in doc.Codes(MetaParser.Setter_____))
             {
-                CodeElement elementId = SetterElement.ChildNodes.OfType<CodeElement>().First() as CodeElement;
+                CodeElement elementId = SetterElement.Codes().First();
 
                 Rule rule = parser.Rules.FirstOrDefault(r => r.Name == elementId.Value);
                 if (rule == null)
@@ -224,9 +222,9 @@ namespace IntoTheCode.Read
                     continue;
                 }
 
-                foreach (TextElement assignElement in SetterElement.ChildCodes(MetaParser.Assignment_))
+                foreach (CodeElement assignElement in SetterElement.Codes(MetaParser.Assignment_))
                 {
-                    List<CodeElement> assignNodes = assignElement.ChildNodes.OfType<CodeElement>().ToList();
+                    List<CodeElement> assignNodes = assignElement.Codes().ToList();
                     CodeElement propName = assignNodes[0];
                     string propValue = assignNodes.Count > 1 ? assignNodes[1].Value : string.Empty;
                     switch (propName.Value)

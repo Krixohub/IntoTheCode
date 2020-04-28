@@ -1,13 +1,9 @@
 ﻿using System.Collections.Generic;
 
 using IntoTheCode.Buffer;
-using IntoTheCode.Basic;
 using System;
 using System.Linq;
-using IntoTheCode;
-using IntoTheCode.Read.Structure;
 using IntoTheCode.Read.Words;
-using IntoTheCode.Read.Structure.Struckture;
 using IntoTheCode.Message;
 
 namespace IntoTheCode.Read.Structure
@@ -255,7 +251,7 @@ namespace IntoTheCode.Read.Structure
                 while (nextValueIndex < operations.Count && operations[nextValueIndex] is CommentElement)
                     comments.Add(operations[nextValueIndex++]);
 
-                AddOperationToTree(parent.ChildNodes[0], (CodeElement)operations[opIndex], (CodeElement)operations[expIndex], comments);
+                AddOperationToTree(parent.Codes().First(), (CodeElement)operations[opIndex], (CodeElement)operations[expIndex], comments);
                 comments.Clear();
             }
 
@@ -267,7 +263,7 @@ namespace IntoTheCode.Read.Structure
             return true;
         }
 
-        private void AddOperationToTree(TextElement leftExprCode, CodeElement rightOpCode, CodeElement rightExprCode, List<TextElement> comments)
+        private void AddOperationToTree(CodeElement leftExprCode, CodeElement rightOpCode, CodeElement rightExprCode, List<TextElement> comments)
         {
             // todo check for operators belonging to expression
             WordBinaryOperator leftOperator = ((CodeElement)leftExprCode).WordParser as WordBinaryOperator;

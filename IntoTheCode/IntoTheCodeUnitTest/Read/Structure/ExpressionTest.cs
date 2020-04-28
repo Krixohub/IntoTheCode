@@ -1,11 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IntoTheCode.Read.Structure;
 using IntoTheCode.Read.Words;
-using IntoTheCode.Read;
-using IntoTheCode.Read.Structure.Struckture;
 using IntoTheCodeUnitTest.Read;
 using IntoTheCode.Message;
-using IntoTheCode;
 
 namespace Read.Element
 {
