@@ -11,8 +11,8 @@ namespace Read.Words
         [TestMethod]
         public void ITC10Load()
         {
-            var idn = new WordIdent();
-            Util.WordLoad("  sym01  ", idn, "sym01", MetaParser.WordIdent__, 2, 7, 9);
+            var word = new WordIdent();
+            Util.ParserLoadWord(word, "  sym01  ", "sym01", MetaParser.WordIdent__, 2, 7, 9);
             //            "123456789
         }
 

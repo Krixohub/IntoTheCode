@@ -36,7 +36,7 @@ namespace IntoTheCode.Read.Structure
             var elements = new List<TextElement>();
             foreach (var item in ChildNodes)
                 if (!item.Load(elements, level))
-                    return SetPointerBackSet(from, item, outElements);
+                    return SetPointerBackSet(from, item, outElements, level);
 
             foreach (var item in elements)
                 outElements.Add(item);
@@ -44,7 +44,7 @@ namespace IntoTheCode.Read.Structure
             return true;
         }
 
-        private bool SetPointerBackSet(int from, ParserElementBase failItem, List<TextElement> outElements)
+        private bool SetPointerBackSet(int from, ParserElementBase failItem, List<TextElement> outElements, int level)
         {
             int ptrFail = TextBuffer.PointerNextChar;
 
@@ -56,7 +56,7 @@ namespace IntoTheCode.Read.Structure
                 TextElement last = outElements.LastOrDefault();
                 if (last != null)
                     for (int i = failIndex - 1; i > -1; i--)
-                        if (ChildNodes[i].ResolveErrorsLast(last) != 0)
+                        if (ChildNodes[i].ResolveErrorsLast(last, level) != 0)
                             break;
 
                 TextBuffer.PointerNextChar = ptrFail;
@@ -76,7 +76,7 @@ namespace IntoTheCode.Read.Structure
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        protected internal int ResolveSetErrorsLast(TextElement last)
+        protected internal int ResolveSetErrorsLast(TextElement last, int level)
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
@@ -84,7 +84,7 @@ namespace IntoTheCode.Read.Structure
             foreach (var item in ChildNodes)
             {
                 if (rc == 0)
-                    rc = item.ResolveErrorsLast(last);
+                    rc = item.ResolveErrorsLast(last, level);
 
                 // if 'Found-read ok' then track errors further.
                 else if (rc == 2 &&
@@ -110,7 +110,7 @@ namespace IntoTheCode.Read.Structure
         {
             bool ok = true;
             foreach (ParserElementBase item in this.ChildNodes.OfType<ParserElementBase>())
-                ok = ok && item.InitializeLoop(rules, path, status);
+                ok = ok & item.InitializeLoop(rules, path, status);
             return ok;
         }
 

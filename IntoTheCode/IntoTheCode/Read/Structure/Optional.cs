@@ -40,9 +40,9 @@ namespace IntoTheCode.Read.Structure
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last)
+        public override int ResolveErrorsLast(TextElement last, int level)
         {
-            return ResolveSetErrorsLast(last);
+            return ResolveSetErrorsLast(last, level);
         }
 
         public override bool ResolveErrorsForward()

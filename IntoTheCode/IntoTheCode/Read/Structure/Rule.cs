@@ -105,6 +105,7 @@ namespace IntoTheCode.Read.Structure
 
                 // _simplify is true when a rule just contains a single word
                 // The word value is inserted directly (collapsed)
+                if (Comment) TextBuffer.InsertComments(outElements);
                 if (_simplify)
                 {
                     element = outSubNotes.FirstOrDefault(n => n is CodeElement);
@@ -113,30 +114,22 @@ namespace IntoTheCode.Read.Structure
                     else
                         element = new CodeElement(this, subStr);
 
-                    if (Comment) TextBuffer.InsertComments(outElements);
                     outElements.Add(element);
-                    if (Comment) TextBuffer.FindNextWord(outElements, true);
                 }
                 else
                 {
-                    if (Comment) TextBuffer.InsertComments(outElements);
                     element = new CodeElement(this, subStr);
                     element.AddRange(outSubNotes);
                     outElements.Add(element);
-                    if (Comment) TextBuffer.FindNextWord(outElements, true);
                 }
             }
 
+            if (Comment) TextBuffer.FindNextWord(outElements, true);
+
             // If this is a 'division' set unambiguous and insert comments
             if (Trust && TextBuffer.PointerNextChar > subStr.From && outElements.Count > 0)
-            {
                 TextBuffer.Status.ThisIsUnambiguous(this, outElements[outElements.Count - 1]);
 
-                //// insert comments
-                //foreach (CodeElement elem in TextBuffer.Comments) elem.Name = "Comment";
-                //outElements.AddRange(TextBuffer.Comments);
-                //TextBuffer.Comments.Clear();
-            }
             return true;
 
         }
@@ -146,22 +139,22 @@ namespace IntoTheCode.Read.Structure
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last)
+        public override int ResolveErrorsLast(TextElement last, int level)
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
             if (Collapse)
-                 return ResolveSetErrorsLast(last);
+                 return ResolveSetErrorsLast(last, level);
 
             int rc = 0;
             if (last.Name != Name) return 0;
 
             
             if (_simplify)
-                rc = ((ParserElementBase)ChildNodes[0]).ResolveErrorsLast(last);
+                rc = ((ParserElementBase)ChildNodes[0]).ResolveErrorsLast(last, level);
             else if (last.ChildNodes != null && last.ChildNodes.Count() > 0)
                 // if succes finding a deeper element, return true.
-                rc = ResolveSetErrorsLast(last.ChildNodes.Last() as CodeElement);
+                rc = ResolveSetErrorsLast(last.ChildNodes.Last() as CodeElement, level);
             else if (!ResolveErrorsForward())
                 return 1;
 

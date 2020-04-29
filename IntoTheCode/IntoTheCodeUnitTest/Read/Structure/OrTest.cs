@@ -24,15 +24,15 @@ namespace Read.Structure
 
             // Read identifier
             markup = "<identifier>Bcccc</identifier>\r\n";
-            Util.ParserElementLoad("  Bcccc  ", markup, elements);
+            Util.ParserLoadElement(elements, "  Bcccc  ", markup);
 
             // Read string
             markup = "<string>Bcccc</string>\r\n";
-            Util.ParserElementLoad("  'Bcccc'  ", markup, elements);
+            Util.ParserLoadElement(elements, "  'Bcccc'  ", markup);
 
             // Read symbol 'Abcde'
             markup = "";
-            Util.ParserElementLoad("  Abcde  ", markup, elements);
+            Util.ParserLoadElement(elements, "  Abcde  ", markup);
         }
     }
 }

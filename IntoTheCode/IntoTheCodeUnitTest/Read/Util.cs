@@ -20,7 +20,7 @@ namespace IntoTheCodeUnitTest.Read
         /// <param name="code">String to parse.</param>
         /// <param name="markup">Expected markup from rule output.</param>
         /// <param name="rules">List of rules to test. The first rule is loaded.</param>
-        public static void RuleLoad(string code, string markup, List<Rule> rules)
+        public static void ParserLoadRule(List<Rule> rules, string code, string markup)
         {
             var parser = new Parser();
             var outElements = new List<TextElement>();
@@ -43,7 +43,7 @@ namespace IntoTheCodeUnitTest.Read
         /// <param name="code">String to parse.</param>
         /// <param name="markup">Expected markup from rule output.</param>
         /// <param name="elements">List of rules to test. The first rule is loaded.</param>
-        public static void ParserElementLoad(string code, string markup, List<ParserElementBase> elements)
+        public static void ParserLoadElement(List<ParserElementBase> elements, string code, string markup)
         {
             //var parser = new Parser();
             var outElements = new List<TextElement>();
@@ -70,10 +70,10 @@ namespace IntoTheCodeUnitTest.Read
             }
         }
 
-        public static TextElement WordLoad(string buf, WordBase word, string value, string name, int from, int to, int end)
+        public static TextElement ParserLoadWord(WordBase word, string code, string value, string name, int from, int to, int end)
         {
             string n = string.Empty;
-            TextBuffer textBuffer = Util.NewBufferWs(buf);
+            TextBuffer textBuffer = Util.NewBufferWs(code);
             word.TextBuffer = textBuffer;
 
             var outNo = new List<TextElement>();
@@ -87,12 +87,12 @@ namespace IntoTheCodeUnitTest.Read
 
             if (text != null && text is CodeElement)
             {
-                var code = text as CodeElement;
-                Assert.IsNotNull(code, n + "Identifier: Can't find node after reading");
-                Assert.AreEqual(value, code.Value, n + "Identifier: The value is not correct");
-                Assert.AreEqual(name, code.Name, n + "Identifier: The name is not correct");
-                Assert.AreEqual(from, code.SubString.From, n + "Identifier: The start is not correct");
-                Assert.AreEqual(to, code.SubString.To, n + "Identifier: The end is not correct");
+                var codeElem = text as CodeElement;
+                Assert.IsNotNull(codeElem, n + "Identifier: Can't find node after reading");
+                Assert.AreEqual(value, codeElem.Value, n + "Identifier: The value is not correct");
+                Assert.AreEqual(name, codeElem.Name, n + "Identifier: The name is not correct");
+                Assert.AreEqual(from, codeElem.SubString.From, n + "Identifier: The start is not correct");
+                Assert.AreEqual(to, codeElem.SubString.To, n + "Identifier: The end is not correct");
             }
             if (text != null && text is CommentElement)
             {
@@ -129,58 +129,57 @@ namespace IntoTheCodeUnitTest.Read
             Assert.AreEqual(expected, actual, testName);
         }
 
-        public static Parser ParserGrammar(string grammar, params string[] errors)
+        public static string ParserLoad(string grammar, string code, string markup, params string[] errors)
         {
+            // Try create parser
+            //Parser parser = ParserGrammar(grammar, errors);
             Parser parser = null;
             try { parser = new Parser(grammar); }
             catch (ParserException e)
             {
                 Assert.IsTrue(errors.Length > 0, "Grammar error: " + e.Message);
-                Assert.IsTrue(e.AllErrors.Count >= errors.Length, "Build missing error 1");
+                Assert.IsTrue(e.AllErrors.Count >= errors.Length, "Grammar error: missing error 1");
                 e.AllErrors.Sort(ParserError.Compare);
                 for (int i = 0; i < e.AllErrors.Count; i++)
                     if (i < errors.Length)
-                        Assert.AreEqual(errors[i], e.AllErrors[i].Message, "Build error " + i);
+                        Assert.AreEqual(errors[i], e.AllErrors[i].Message, "Grammar error: Build error " + i);
             }
 
             if (errors.Length == 0)
-                Assert.IsNotNull(parser, "Build expects no error");
-            else
-                Assert.IsNull(parser, "Build missing error 2");
+                Assert.IsNotNull(parser, "Grammar error: parser is null");
+            else if (string.IsNullOrEmpty(code) &&  markup != "grammar ok")
+                Assert.IsNull(parser, "Grammar error expected");
 
-            return parser;
-        }
+            if (parser == null || (string.IsNullOrEmpty(code) && string.IsNullOrEmpty(markup))) return string.Empty;
 
-        public static string ParserLoad(string name, string grammar, string code, string markup, params string[] errors)
-        {
-            Parser parser = ParserGrammar(grammar);
 
+            // Try read the code
             string s = parser.GetGrammar();
 
             var buf = new FlatBuffer(code);
             TextDocument doc = parser.ParseString(buf);
             if (buf.Status.Error == null)
             {
-                Assert.IsTrue(errors.Count() == 0, name + " Expecting error");
-                Assert.IsNotNull(doc, name + " doc er null");
+                Assert.IsTrue(errors.Count() == 0, " Expecting error");
+                Assert.IsNotNull(doc, " doc er null");
 
                 string actual = doc.ToMarkup();
                 if (!string.IsNullOrEmpty(markup))
                 {
                     string err = CompareTextLines(actual, markup);
-                    Assert.AreEqual(string.Empty, err, name + " AST");
+                    Assert.AreEqual(string.Empty, err, " AST");
                 }
                 return actual;
             }
             else
             {
-                Assert.IsTrue(errors.Count() > 0, name + " Parsing error");
+                Assert.IsTrue(errors.Count() > 0, " Parsing error");
 
-                Assert.IsTrue(buf.Status.AllErrors.Count >= errors.Length, name + " Load missing error 1");
+                Assert.IsTrue(buf.Status.AllErrors.Count >= errors.Length, " Load missing error 1");
                 buf.Status.AllErrors.Sort(ParserError.Compare);
                 for (int i = 0; i < buf.Status.AllErrors.Count; i++)
                     if (i < errors.Length)
-                        Assert.AreEqual(errors[i], buf.Status.AllErrors[i].Message, name + " Load error " + i);
+                        Assert.AreEqual(errors[i], buf.Status.AllErrors[i].Message, " Load error " + i);
                     else
                         return buf.Status.AllErrors[i].Message;
             }
@@ -204,56 +203,6 @@ namespace IntoTheCodeUnitTest.Read
             string pos = (line > 0) ? " " + string.Format(MessageRes.LineAndCol, line, col) : string.Empty;
             return DotNetUtil.Msg(resourceExpression, parm) + pos;
         }
-
-        /// <summary>A grammar for test. Hard coded.</summary>
-        private static void SetHardCodedTestRules(Parser parser, TextBuffer buffer)
-        {
-            //bool equal = false;
-            //bool tag = true;
-            //List<RuleLink> symbolsToResolve = new List<RuleLink>();
-            List<Rule> list = new List<Rule>();
-            list.Add(new Rule("grammar",
-                    new Or(new RuleLink("TestIdentifier"),
-                    new Or(new RuleLink("TestString"),
-                    new RuleLink("TestSymbol")))) /*{ Tag = true }*/);
-            // TestIdentifier     = varName;
-            list.Add(new Rule("TestIdentifier",
-                new WordIdent()) /*{ Tag = true }*/);
-            // TestSymbol       = 'Abcde';
-            list.Add(new Rule("TestSymbol",
-                new WordSymbol("Abcde"))
-            { Collapse = true });
-
-            // TestString       = Quote;
-            list.Add(new Rule("TestString",
-                new WordString())
-            { Collapse = true });
-
-            // TestSeries       = 'TestSeries' { VarName };
-            list.Add(new Rule("TestSeries",
-                new WordSymbol("TestSeries"),
-                new Sequence(new WordIdent())));
-
-            // TestOption       = 'TestOption' [TestIdentifier] [TestString];
-            list.Add(new Rule("TestOption",
-                new WordSymbol("TestOption"),
-                new Optional(new RuleLink("TestIdentifier")),
-                new Optional(new RuleLink("TestQuote2")))
-            /*{ Tag = true }*/);
-            // TestQuote2      = Quote;
-            list.Add(new Rule("TestQuote2",
-                new WordString()));
-            // TestLines       = 'TestLines' { VarName '=' Quote ';' };
-            list.Add(new Rule("TestLines",
-                new WordSymbol("TestLines"),
-                new Sequence(new WordIdent(), new WordSymbol("="), new WordString(), new WordSymbol(";"))));
-
-
-            parser.Rules = list.Select(r => r.CloneForParse(buffer) as Rule).ToList();
-            ParserFactory.InitializeGrammar(parser, parser.Rules, buffer.Status);
-            ParserFactory.ValidateGrammar(parser, buffer.Status);
-        }
-
 
         /// <summary>Compare two strings. Line for line and char for char.</summary>
         /// <returns>Empty string if equal. Message with line and char number if different.</returns>

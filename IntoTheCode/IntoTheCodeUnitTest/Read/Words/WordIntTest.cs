@@ -12,14 +12,14 @@ namespace Read.Words
         [TestMethod]
         public void ITC10Load()
         {
-            var idn = new WordInt();
-            Util.WordLoad("  1235  ", idn, "1235", "int", 2, 6, 8);
+            var word = new WordInt();
+            Util.ParserLoadWord(word, "  1235  ", "1235", "int", 2, 6, 8);
             //             123456789
 
-            Util.WordLoad("  -123  ", idn, "-123", "int", 2, 6, 8);
+            Util.ParserLoadWord(word, "  -123  ", "-123", "int", 2, 6, 8);
             //             123456789
 
-            Util.WordLoad("  2     ", idn, "2", "int", 2, 3, 8);
+            Util.ParserLoadWord(word, "  2     ", "2", "int", 2, 3, 8);
             //             123456789
         }
 

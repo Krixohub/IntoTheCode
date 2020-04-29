@@ -15,7 +15,7 @@ namespace Read.Words
         {
             // load symbol
             var word = new WordSymbol("symbol1");
-            Util.WordLoad("  symbol1  ", word, "Abcde", "string", 0, 0, 11);
+            Util.ParserLoadWord(word,"  symbol1  ",  "Abcde", "string", 0, 0, 11);
         }
 
         [TestMethod]

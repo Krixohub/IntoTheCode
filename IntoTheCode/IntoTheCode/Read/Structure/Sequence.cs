@@ -39,11 +39,11 @@ namespace IntoTheCode.Read.Structure
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last)
+        public override int ResolveErrorsLast(TextElement last, int level)
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
-            int rc = ResolveSetErrorsLast(last);
+            int rc = ResolveSetErrorsLast(last, level);
 
             // If read ok, try to read further.
             if (rc == 2)

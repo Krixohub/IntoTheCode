@@ -20,7 +20,7 @@ namespace Read.Structure
             // TestIdentifier = identifier;
             rules = new List<Rule>() { new Rule("TestIdentifier", new WordIdent()) };
             markup = "<TestIdentifier>Bname</TestIdentifier>\r\n";
-            Util.RuleLoad("  Bname  ", markup, rules);
+            Util.ParserLoadRule(rules, "  Bname  ", markup);
 
             // Read a TestSeries
             // TestSeries       = 'TestSeries' { identifier };
@@ -31,7 +31,7 @@ namespace Read.Structure
   <identifier>Mat</identifier>
 </TestSeries>
 ";
-            Util.RuleLoad("  TestSeries jan ole Mat  ", markup, rules);
+            Util.ParserLoadRule(rules, "  TestSeries jan ole Mat  ", markup);
 
             // alt            = TestIdentifier | TestString | TestSymbol;
             // TestIdentifier = identifier;
@@ -41,22 +41,22 @@ namespace Read.Structure
 
             // Read a 'or grammar = identifier'
             markup = "<alt>\r\n  <TestIdentifier>Bcccc</TestIdentifier>\r\n</alt>\r\n";
-            Util.RuleLoad("  Bcccc  ", markup, rules);
+            Util.ParserLoadRule(rules, "  Bcccc  ", markup);
 
             // Read a 'or TestString'
             markup = "<alt>\r\n  <string>Ccccc</string>\r\n</alt>\r\n";
-            Util.RuleLoad(" 'Ccccc'  ", markup, rules);
+            Util.ParserLoadRule(rules, " 'Ccccc'  ", markup);
 
             // Read a TestOption
             rules = GetHardCodeRuleTestOption();
             markup = "<TestOption>\r\n  <TestQuote2>qwerty</TestQuote2>\r\n</TestOption>\r\n";
-            Util.RuleLoad("  TestOption 'qwerty'  ", markup, rules);
+            Util.ParserLoadRule(rules, "  TestOption 'qwerty'  ", markup);
 
             markup = "<TestOption/>\r\n";
-            Util.RuleLoad("  TestOption   ", markup, rules);
+            Util.ParserLoadRule(rules, "  TestOption   ", markup);
 
             markup = "<TestOption>\r\n  <TestIdentifier>wer</TestIdentifier>\r\n</TestOption>\r\n";
-            Util.RuleLoad("  TestOption wer  ", markup, rules);
+            Util.ParserLoadRule(rules, "  TestOption wer  ", markup);
 
 
             // Read: TestLines       = 'TestLines' { identifier '=' string ';' };
@@ -72,7 +72,7 @@ namespace Read.Structure
   <string>555 55</string>
 </TestLines>
 ";
-            Util.RuleLoad("  TestLines name = 'Oscar'; addr = 'GoRoad'; \r\n mobile = '555 55'; ", markup, rules);
+            Util.ParserLoadRule(rules, "  TestLines name = 'Oscar'; addr = 'GoRoad'; \r\n mobile = '555 55'; ", markup);
         }
 
         #region utillity functions

@@ -19,7 +19,7 @@ namespace IntoTheCode.Read.Structure
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
-            return new RuleLink(_value) { Name = "name", TextBuffer = buffer };
+            return new RuleLink(_value) { Name = "name", TextBuffer = buffer, Recursive = Recursive };
         }
 
         /// <summary>The Reader has the current pointer of reading, and the context.</summary>
@@ -37,6 +37,8 @@ namespace IntoTheCode.Read.Structure
             // End too many recursive calls
             if (Recursive)
             {
+                string name = Value;
+
                 LoopLevel loop = TextBuffer.GetLoopLevel(this);
                 if (loop.LastInvokePos == TextBuffer.PointerNextChar &&
                     level > loop.LastInvokeLevel) return false;
@@ -53,9 +55,21 @@ namespace IntoTheCode.Read.Structure
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last)
+        public override int ResolveErrorsLast(TextElement last, int level)
         {
-            return RuleElement.ResolveErrorsLast(last);
+            // End too many recursive calls
+            if (Recursive)
+            {
+                string name = Value;
+
+                LoopLevel loop = TextBuffer.GetLoopLevel(this);
+                if (loop.LastInvokePos == TextBuffer.PointerNextChar &&
+                    level > loop.LastInvokeLevel) return 0;
+                loop.LastInvokePos = TextBuffer.PointerNextChar;
+                loop.LastInvokeLevel = level;
+            }
+
+            return RuleElement.ResolveErrorsLast(last, level + 1);
         }
 
         public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)

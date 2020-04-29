@@ -60,7 +60,7 @@ namespace IntoTheCode.Read.Words
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last)
+        public override int ResolveErrorsLast(TextElement last, int level)
         {
             CodeElement code = last as CodeElement;
             if (code != null && code.WordParser == this)

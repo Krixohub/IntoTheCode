@@ -141,8 +141,8 @@ namespace IntoTheCode.Read
             {
                 rule.Parser = parser;
 
-                string debug1 = "" + parser.Level + ": " + rule.GetGrammar().NL() +
-                    rule.ToMarkupProtected(string.Empty);
+                //string debug1 = "" + parser.Level + ": " + rule.GetGrammar().NL() +
+                //    rule.ToMarkupProtected(string.Empty);
 
                 if (rules.Any(r => r != rule && r.Name.ToLower() == rule.Name.ToLower()))
                     status.AddBuildError(() => MessageRes.pb05, rule.DefinitionCodeElement, 

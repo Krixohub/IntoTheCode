@@ -51,7 +51,7 @@ namespace IntoTheCode.Read.Structure
 
         /// <summary>Creator for <see cref="Expression"/>.</summary>
         internal Expression(Rule ExprRule, Or or) :
-            base((ParserElementBase)or.ChildNodes[0], (ParserElementBase)or.ChildNodes[1])
+            base(or.ChildNodes[0], or.ChildNodes[1])
         {
             // The elements in the base class are only used for getting the grammar and cloning.
 
@@ -358,7 +358,7 @@ namespace IntoTheCode.Read.Structure
 
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last)
+        public override int ResolveErrorsLast(TextElement last, int level)
         {
 
             last = ResolveErrorsLastFind((CodeElement)last);
@@ -371,7 +371,7 @@ namespace IntoTheCode.Read.Structure
             foreach (var item in _otherForms)
             {
                 if (rc == 0)
-                    rc = item.ResolveErrorsLast(last);
+                    rc = item.ResolveErrorsLast(last, level);
                 else if (rc == 2 &&
                     !item.ResolveErrorsForward())
                     return 1;

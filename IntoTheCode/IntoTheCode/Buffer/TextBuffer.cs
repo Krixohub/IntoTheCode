@@ -49,7 +49,7 @@ namespace IntoTheCode.Buffer
         }
 
         /// <summary>Function for skipping white spaces and reading comments.</summary>
-        public void FindNextWord(List<TextElement> outElements, bool inline)
+        public void FindNextWord(IList<TextElement> outElements, bool inline)
         {
              
 
@@ -72,9 +72,10 @@ namespace IntoTheCode.Buffer
         }
 
         /// <summary>Insert the preceding comments to output.</summary>
-        public void InsertComments(List<TextElement> outElements)
+        public void InsertComments(IList<TextElement> outElements)
         {
-            outElements.AddRange(ReaderComment.CommentBuffer);
+            foreach (var item in ReaderComment.CommentBuffer)
+                outElements.Add(item);
             ReaderComment.CommentBuffer.Clear();
         }
 

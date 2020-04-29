@@ -118,12 +118,14 @@ namespace IntoTheCode
             var elements = new List<TextElement>();
             bool ok;
 
+            var resultDoc = new TextDocument(elements, procesRules[0].Name);
+
             try
             {
                 // skip preceding white spaces and comments
-                buffer.FindNextWord(elements, false);
+                buffer.FindNextWord(resultDoc.ChildNodes, false);
                 //buffer.InsertComments(elements);
-
+                
                 ok = procesRules[0].Load(elements, 0);
 
                 buffer.FindNextWord(elements, false);
@@ -145,16 +147,15 @@ namespace IntoTheCode
                 {
                     TextElement last = elements.Last();
                     string debug = last.ToMarkupProtected(string.Empty);
-                    procesRules[0].ResolveErrorsLast(last);
+                    procesRules[0].ResolveErrorsLast(last, 0);
                 }
                 buffer.Status.AddSyntaxErrorEof(() => MessageRes.p05);
             }
             else if (elements.OfType<CodeElement>().Count() == 1)
             {
-                // todo get the document name from procesRules[0]
-                CodeElement root = elements.OfType<CodeElement>().First();
-                root.AddRange(elements.OfType<CommentElement>());
-                return new TextDocument(root.ChildNodes, procesRules[0].Name);
+                resultDoc.AddRange(elements.OfType<CodeElement>().First().ChildNodes);
+                resultDoc.AddRange(elements.OfType<CommentElement>());
+                return resultDoc;
             }
             else
                 buffer.Status.AddParseError(() => MessageRes.p01, procesRules[0].Name);

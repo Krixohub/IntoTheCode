@@ -13,7 +13,7 @@ namespace Read.Words
         {
             // load string
             var word = new WordString();
-            Util.WordLoad(" 'Abcde' ", word, "Abcde", "string", 2, 7, 9);
+            Util.ParserLoadWord(word, " 'Abcde' ", "Abcde", "string", 2, 7, 9);
             //            "1234567890  
         }
 

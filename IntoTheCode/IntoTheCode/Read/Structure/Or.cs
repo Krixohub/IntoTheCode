@@ -55,11 +55,11 @@ namespace IntoTheCode.Read.Structure
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last)
+        public override int ResolveErrorsLast(TextElement last, int level)
         {
-            int rc = ChildNodes[0].ResolveErrorsLast(last);
+            int rc = ChildNodes[0].ResolveErrorsLast(last, level);
             if (rc < 2)
-                rc = ChildNodes[1].ResolveErrorsLast(last);
+                rc = ChildNodes[1].ResolveErrorsLast(last, level);
 
             return rc;
         }

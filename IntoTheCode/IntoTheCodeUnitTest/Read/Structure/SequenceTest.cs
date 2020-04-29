@@ -29,7 +29,7 @@ namespace Read.Structure
 <identifier>b</identifier>
 <string>b2</string>
 ";
-            Util.ParserElementLoad("  a1 a 'a2' a1 b 'b2'  ", markup, elements);
+            Util.ParserLoadElement(elements, "  a1 a 'a2' a1 b 'b2'  ", markup);
         }
     }
 }

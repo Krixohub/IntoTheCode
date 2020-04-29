@@ -70,8 +70,8 @@ namespace IntoTheCode.Read
         /// The Buffer.Status.UnambiguousPointer is a point of no return.
         /// If the buffer pointer is set back before 'UnambiguousPointer'. Errors must be resolved.
         /// </summary>
-        /// <param name="proces"></param>
         /// <param name="outElements">Read elements.</param>
+        /// <param name="level">Level of rules.</param>
         /// <returns>True = succes.</returns>
         public abstract bool Load(List<TextElement> outElements, int level);
 
@@ -86,8 +86,9 @@ namespace IntoTheCode.Read
         /// From that point errors is tracked with the LoadTrackError function.
         /// </summary>
         /// <param name="last">Not null, not empty.</param>
+        /// <param name="level">Level of rules.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public abstract int ResolveErrorsLast(TextElement last);
+        public abstract int ResolveErrorsLast(TextElement last, int level);
 
         /// <summary>Find errors in following syntax.
         /// </summary>
@@ -96,7 +97,7 @@ namespace IntoTheCode.Read
 
         /// <summary>Find which RuleLinks are recursive.
         /// Called by the ParserFactory after Initializing grammar.
-        /// Each path though the grammar must be followed, and have an ending.</summary>
+        /// Each path though the grammar must be followed, and each rule must have an ending.</summary>
         /// <param name="elem">The element to analyse.</param>
         /// <param name="path">The path to the element; only rules and RuleLinks.</param>
         /// <param name="status"></param>

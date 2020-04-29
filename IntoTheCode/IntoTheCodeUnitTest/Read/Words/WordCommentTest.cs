@@ -1,5 +1,8 @@
-﻿using IntoTheCodeUnitTest.Read;
+﻿using IntoTheCode.Read;
+using IntoTheCode.Read.Words;
+using IntoTheCodeUnitTest.Read;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace Read.Words
 {
@@ -7,18 +10,6 @@ namespace Read.Words
     public class WordCommentTest
     {
         // todo flyt til read.
-
-        [TestMethod]
-        public void ITC11Load()
-        {
-            //// load string
-            //var word = new WordComment();
-            //Util.WordLoad(" // cmmnt ", word, " cmmnt ", "comment", 3, 10, 10);
-            ////            "12345678901  
-
-            //Util.WordLoad(" // cmmnt \r\n  ", word, " cmmnt ", "comment", 3, 10, 12);
-            ////            "12345678901 2 345  
-        }
 
         [TestMethod]
         public void ITC11LoadDoc()
@@ -30,26 +21,83 @@ namespace Read.Words
             // Set grammar
             grammar = @"stx = { line }; line = a b; a = 'a'; b = 'b';";
 
-            // --------------------------------- expression comment ---------------------------------
+            // --------------------------------- expression "just comment" ---------------------------------
             code = " // comment \r\n ";
             markup = @"<stx>
   <!-- comment --!>
 </stx>
 ";
             //markup = "";
-            markup = Util.ParserLoad("just comment", grammar, code, markup);
+            markup = Util.ParserLoad(grammar, code, markup);
 
-            code = "a // comment \r\n b";
+            code = " // comment \r\na b";
+            markup = @"<stx>
+  <!-- comment --!>
+  <line>
+    <a/>
+    <b/>
+  </line>
+</stx>
+";
+            //markup = "";
+            markup = Util.ParserLoad(grammar, code, markup);
+
+            code = "a // comment\r\n b";
             markup = @"<stx>
   <line>
     <a/>
     <b/>
   </line>
-  <!-- comment --!>
+  <!-- comment--!>
+</stx>
+";
+            //"inside comment"
+            //markup = "";
+            markup = Util.ParserLoad(grammar, code, markup);
+
+            code = "a  b// comment\r\n";
+            //"end comment"
+            //markup = "";
+            markup = Util.ParserLoad(grammar, code, markup);
+
+            code = "a  b// comment";
+            //"end comment"
+            //markup = "";
+            markup = Util.ParserLoad(grammar, code, markup);
+
+            grammar = @"stx = { line }; line = 'a' 'b'; settings line comment;";
+            code = "a // comment\r\n b";
+            markup = @"<stx>
+  <!-- comment--!>
+  <line/>
 </stx>
 ";
             //markup = "";
-            markup = Util.ParserLoad("inside comment", grammar, code, markup);
+            markup = Util.ParserLoad(grammar, code, markup);
+            
+            code = "a b // comment1\r\n  // comment2";
+            markup = @"<stx>
+  <line/>
+  <!-- comment1--!>
+  <!-- comment2--!>
+</stx>
+";
+            //markup = "";
+            markup = Util.ParserLoad(grammar, code, markup);
+
+
+            grammar = @"stx = { line }; line = a b; a = 'a'; b = 'b'; settings a comment;";
+            code = "a // comment\r\n b";
+            markup = @"<stx>
+  <line>
+    <a/>
+    <!-- comment--!>
+    <b/>
+  </line>
+</stx>
+";
+            //markup = "";
+            markup = Util.ParserLoad(grammar, code, markup);
 
         }
     }

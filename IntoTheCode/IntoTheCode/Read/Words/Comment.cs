@@ -17,7 +17,7 @@ namespace IntoTheCode.Read.Words
         internal TextBuffer TextBuffer;
 
         public List<CommentElement> CommentBuffer { get; private set; }
-        public  bool Load(List<TextElement> outElements, bool lineEnd)
+        public  bool Load(IList<TextElement> outElements, bool lineEnd)
         {
             // Read comments on form '// rest of line cr nl'
             const string nl = "\r\n";

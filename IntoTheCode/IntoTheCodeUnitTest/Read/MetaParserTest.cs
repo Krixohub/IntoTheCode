@@ -137,23 +137,6 @@ settings    collapse;";
                         new HardElement("identifier", MetaParser.Or_________)),
                     new HardElement("identifier", MetaParser.Element____))));
 
-            //// element    = identifier | symbol | block; Husk ny block
-            //grammar.AddElement(new HardElement("rule", string.Empty,
-            //    new HardElement("identifier", MetaParser.Element____),
-            //    new HardElement("identifier", "identifier"),
-            //    new HardElement(MetaParser.Or_________, string.Empty),
-            //    new HardElement("identifier", "symbol"),
-            //    new HardElement(MetaParser.Or_________, string.Empty),
-            //    new HardElement("identifier", MetaParser.Block______)));
-
-            //// block      = sequence | optional | parentheses);
-            //grammar.AddElement(new HardElement("rule", string.Empty,
-            //    new HardElement("identifier", MetaParser.Block______),
-            //    new HardElement("identifier", "sequence"),
-            //    new HardElement(MetaParser.Or_________, string.Empty),
-            //    new HardElement("identifier", "optional"),
-            //    new HardElement("or", string.Empty),
-            //    new HardElement("identifier", "parentheses")));
             // element    = identifier | symbol | block; Husk ny block
             grammar.Add(new HardElement("rule", string.Empty,
                 new HardElement("identifier", MetaParser.Element____),
