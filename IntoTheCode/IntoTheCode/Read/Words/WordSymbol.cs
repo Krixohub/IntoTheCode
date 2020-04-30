@@ -82,7 +82,7 @@ namespace IntoTheCode.Read.Words
             return true;
         }
 
-        public override bool ResolveErrorsForward()
+        public override bool ResolveErrorsForward(int level)
         {
             TextBuffer.FindNextWord(null, false);
             int from = TextBuffer.PointerNextChar;
@@ -109,13 +109,12 @@ namespace IntoTheCode.Read.Words
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last, int level)
+        public override int ResolveErrorsLast(CodeElement last, int level)
         {
-            CodeElement code = last as CodeElement;
-            if (code != null && code.WordParser == this)
+            if (last.WordParser == this)
             {
                 // found!
-                TextBuffer.PointerNextChar = code.SubString.To + a;
+                TextBuffer.PointerNextChar = last.SubString.To + a;
                 return 2;
             }
             return 0;

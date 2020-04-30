@@ -36,7 +36,8 @@ namespace IntoTheCode.Read.Structure
             var elements = new List<TextElement>();
             foreach (var item in ChildNodes)
                 if (!item.Load(elements, level))
-                    return SetPointerBackSet(from, item, outElements, level);
+                    //return SetPointerBackSet(from, item, outElements, level);
+                    return SetPointerBackSet(from, item, elements, level);
 
             foreach (var item in elements)
                 outElements.Add(item);
@@ -48,22 +49,27 @@ namespace IntoTheCode.Read.Structure
         {
             int ptrFail = TextBuffer.PointerNextChar;
 
-            // todo: Is the error fatal?
             if (from < TextBuffer.Status.UnambiguousPointer && TextBuffer.Status.Error == null)
             {
                 int failIndex = ChildNodes.IndexOf(failItem);
 
-                TextElement last = outElements.LastOrDefault();
+                CodeElement last = outElements.OfType<CodeElement>().LastOrDefault();
                 if (last != null)
                     for (int i = failIndex - 1; i > -1; i--)
-                        if (ChildNodes[i].ResolveErrorsLast(last, level) != 0)
+                    {
+                        TextBuffer.GetLoopLast(null);
+                        if (ChildNodes[i].ResolveErrorsLast(last, 0) != 0)
                             break;
+                    }
 
                 TextBuffer.PointerNextChar = ptrFail;
 
                 for (int i = failIndex; i < ChildNodes.Count; i++)
-                    if (!ChildNodes[i].ResolveErrorsForward())
+                {
+                    TextBuffer.GetLoopForward(null);
+                    if (!ChildNodes[i].ResolveErrorsForward(0))
                         break;
+                }
             }
 
             TextBuffer.PointerNextChar = from;
@@ -76,7 +82,7 @@ namespace IntoTheCode.Read.Structure
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        protected internal int ResolveSetErrorsLast(TextElement last, int level)
+        protected internal int ResolveSetErrorsLast(CodeElement last, int level)
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
@@ -87,21 +93,24 @@ namespace IntoTheCode.Read.Structure
                     rc = item.ResolveErrorsLast(last, level);
 
                 // if 'Found-read ok' then track errors further.
-                else if (rc == 2 &&
-                    !item.ResolveErrorsForward())
-                    //!item.LoadTrackError(ref wordCount))
-                    return 1;
+                else
+                {
+                    TextBuffer.GetLoopForward(null);
+                    if (rc == 2 && !item.ResolveErrorsForward(0))
+                        //!item.LoadTrackError(ref wordCount))
+                        return 1;
+                }
             }
 
             return rc;
         }
 
-        public bool ResolveSetErrorsForward()
+        public bool ResolveSetErrorsForward(int level)
         {
             int from = TextBuffer.PointerNextChar;
 
-            foreach (var item in ChildNodes.OfType<ParserElementBase>())
-                if (!item.ResolveErrorsForward())
+            foreach (var item in ChildNodes)
+                if (!item.ResolveErrorsForward(level))
                     return SetPointerBack(from);
             return true;
         }
@@ -109,7 +118,7 @@ namespace IntoTheCode.Read.Structure
         public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         {
             bool ok = true;
-            foreach (ParserElementBase item in this.ChildNodes.OfType<ParserElementBase>())
+            foreach (ParserElementBase item in this.ChildNodes)
                 ok = ok & item.InitializeLoop(rules, path, status);
             return ok;
         }
@@ -131,7 +140,7 @@ namespace IntoTheCode.Read.Structure
 
         public override string GetGrammar()
         {
-            string Grammar = string.Join(" ", ChildNodes.OfType<ParserElementBase>().Select(s => s.GetGrammar()).ToArray());
+            string Grammar = string.Join(" ", ChildNodes.Select(s => s.GetGrammar()).ToArray());
             return Grammar;
         }
     }

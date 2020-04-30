@@ -46,22 +46,22 @@ namespace IntoTheCode.Read.Structure
             return true;
         }
 
-        public override bool ResolveErrorsForward()
-        {
-            bool ok = ChildNodes[0].ResolveErrorsForward();
-            ok = ok || ChildNodes[1].ResolveErrorsForward();
-
-            return ok;
-        }
-
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last, int level)
+        public override int ResolveErrorsLast(CodeElement last, int level)
         {
             int rc = ChildNodes[0].ResolveErrorsLast(last, level);
             if (rc < 2)
                 rc = ChildNodes[1].ResolveErrorsLast(last, level);
 
             return rc;
+        }
+
+        public override bool ResolveErrorsForward(int level)
+        {
+            bool ok = ChildNodes[0].ResolveErrorsForward(level);
+            ok = ok || ChildNodes[1].ResolveErrorsForward(level);
+
+            return ok;
         }
 
         public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)

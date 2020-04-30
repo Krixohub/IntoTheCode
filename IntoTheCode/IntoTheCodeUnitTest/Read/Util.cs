@@ -118,7 +118,7 @@ namespace IntoTheCodeUnitTest.Read
             var outNo = new List<TextElement>();
             //var idn = new WordIdent("kurt") { TextBuffer = textBuffer };
             Assert.AreEqual(false, word.Load(outNo, 0), "No read error");
-            Assert.AreEqual(false, word.ResolveErrorsForward(), "No read error");
+            Assert.AreEqual(false, word.ResolveErrorsForward(0), "No read error");
             Assert.IsNotNull(textBuffer.Status.Error, testName + " No error object");
 
             string actual = textBuffer.Status.Error.Message;
@@ -173,7 +173,7 @@ namespace IntoTheCodeUnitTest.Read
             }
             else
             {
-                Assert.IsTrue(errors.Count() > 0, " Parsing error");
+                Assert.IsTrue(errors.Count() > 0, " Parsing error: " + buf.Status.Error.Message);
 
                 Assert.IsTrue(buf.Status.AllErrors.Count >= errors.Length, " Load missing error 1");
                 buf.Status.AllErrors.Sort(ParserError.Compare);

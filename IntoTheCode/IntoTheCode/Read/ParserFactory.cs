@@ -74,7 +74,7 @@ namespace IntoTheCode.Read
                         if (pos == 1)
                             el1 = elements[0];
                         else
-                            el1 = new Parentheses(elements.ToArray());
+                            el1 = new SetOfElements(elements.ToArray());
 
                         var elementElements2 = new List<CodeElement>();
                         for (int i = pos + 1; i < orNodes.Count(); i++)
@@ -84,7 +84,7 @@ namespace IntoTheCode.Read
                         if (elements2.Count() == 1)
                             el2 = elements2[0];
                         else
-                            el2 = new Parentheses(elements2.ToArray());
+                            el2 = new SetOfElements(elements2.ToArray());
                         return new List<ParserElementBase> { new Or(el1, el2) };
 
                     case MetaParser.WordIdent__:

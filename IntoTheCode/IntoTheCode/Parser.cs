@@ -145,8 +145,9 @@ namespace IntoTheCode
             {
                 if (elements != null && elements.Count() > 0)
                 {
-                    TextElement last = elements.Last();
+                    CodeElement last = elements.OfType<CodeElement>().Last();
                     string debug = last.ToMarkupProtected(string.Empty);
+                    buffer.GetLoopLast(null);
                     procesRules[0].ResolveErrorsLast(last, 0);
                 }
                 buffer.Status.AddSyntaxErrorEof(() => MessageRes.p05);

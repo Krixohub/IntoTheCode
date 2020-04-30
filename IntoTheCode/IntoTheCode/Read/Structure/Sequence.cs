@@ -39,7 +39,7 @@ namespace IntoTheCode.Read.Structure
         }
 
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last, int level)
+        public override int ResolveErrorsLast(CodeElement last, int level)
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
@@ -47,15 +47,18 @@ namespace IntoTheCode.Read.Structure
 
             // If read ok, try to read further.
             if (rc == 2)
-                return ResolveErrorsForward() ? 2 : 1;
+            {
+                TextBuffer.GetLoopForward(null);
+                return ResolveErrorsForward(0) ? 2 : 1;
+            }
 
             return rc;
         }
 
-        public override bool ResolveErrorsForward()
+        public override bool ResolveErrorsForward(int level)
         {
             int p = TextBuffer.PointerNextChar;
-            while (ResolveSetErrorsForward() && TextBuffer.PointerNextChar > p)
+            while (ResolveSetErrorsForward(level) && TextBuffer.PointerNextChar > p)
                 p = TextBuffer.PointerNextChar;
 
             return true;

@@ -39,28 +39,8 @@ namespace IntoTheCode.Read.Words
             return true;
         }
 
-        public override bool ResolveErrorsForward()
-        {
-            TextBuffer.FindNextWord(null, false);
-            if (TextBuffer.IsEnd(1))
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe03);
-
-            if (TextBuffer.GetChar() != '\'')
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar, 0, () => MessageRes.pe10, "\'", TextBuffer.GetChar());
-
-
-            int to = TextBuffer.GetIndexAfter("'", TextBuffer.PointerNextChar + 1);
-            if (to <= TextBuffer.PointerNextChar) 
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar + 1, 0, () => MessageRes.pe05);
-
-            TextBuffer.PointerNextChar = to;
-            //TextBuffer.FindNextWord(null, true);
-
-            return true;
-        }
-
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last, int level)
+        public override int ResolveErrorsLast(CodeElement last, int level)
         {
             CodeElement code = last as CodeElement;
             if (code != null && code.WordParser == this)
@@ -72,6 +52,24 @@ namespace IntoTheCode.Read.Words
             return 0;
         }
 
+        public override bool ResolveErrorsForward(int level)
+        {
+            TextBuffer.FindNextWord(null, false);
+            if (TextBuffer.IsEnd(1))
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe03);
 
+            if (TextBuffer.GetChar() != '\'')
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar, 0, () => MessageRes.pe10, "\'", TextBuffer.GetChar());
+
+
+            int to = TextBuffer.GetIndexAfter("'", TextBuffer.PointerNextChar + 1);
+            if (to <= TextBuffer.PointerNextChar)
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar + 1, 0, () => MessageRes.pe05);
+
+            TextBuffer.PointerNextChar = to;
+            //TextBuffer.FindNextWord(null, true);
+
+            return true;
+        }
     }
 }

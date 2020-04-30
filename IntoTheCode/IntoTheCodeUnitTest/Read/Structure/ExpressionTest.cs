@@ -31,7 +31,7 @@ namespace Read.Structure
             // "expr = expr * expr | plus | identifyer;"
             var ruleE = new Rule(exprName,
                 new Or(
-                    new Parentheses(
+                    new SetOfElements(
                         link3,
                         new WordSymbol("*") { Precedence = 2 },
                         link4),
@@ -279,7 +279,7 @@ exp collapse;
             //exp collapse;
             //";
 
-            grammar = @"aaa = exp;exp = mul | sum | div | sub | gt | '(' exp ')' | identifier;
+            grammar = @"aaa = exp;exp = mul | sum | div | sub | gt | '(' exp ')' | int | identifier;
 mul = exp '*' exp;
 sum = exp '+' exp;
 div = exp '/' exp;
@@ -300,23 +300,53 @@ exp collapse;
                 Util.BuildMsg(1, 23, () => MessageRes.pe08, "exp"));
 
             code = "a + b &";
-            // pe07: Grammar error (exp). Expecting symbol ')', found '&' Line 1, colomn 7
+            // pe07: Grammar error (mul). Expecting symbol '*', found '&' Line 1, colomn 7
             Util.ParserLoad(grammar, code, markup,
-                Util.BuildMsg(1, 7, () => MessageRes.pe07, "exp", ")", "&"));
+                Util.BuildMsg(1, 7, () => MessageRes.pe07, "mul", "*", "&"));
 
             code = "a + b * c - d  > e &  + f";
             //p05: End of input not reached. Line 1, colomn 20
-            //pe07: Grammar error (exp). Expecting symbol ')', found '&' Line 1, colomn 20
+            //pe07: Grammar error (mul). Expecting symbol '*', found '&' Line 1, colomn 20
             Util.ParserLoad(grammar, code, markup,
-                Util.BuildMsg(1, 20, () => MessageRes.pe07, "exp", ")", "&"));
+                Util.BuildMsg(1, 20, () => MessageRes.pe07, "mul", "*", "&"));
 
             code = "a + (b ) ";
             Util.ParserLoad(grammar, code, markup);
 
-            code = "a + ( b ";
-            // pe07: Grammar error (exp). Expecting symbol ')', found '&' Line 1, colomn 7
-            Util.ParserLoad(grammar, code, markup);
+            code = " ( b ";
+            // pe10: Syntax error (exp). Expecting symbol ')', found EOF. Line 1, colomn 6
+            Util.ParserLoad(grammar, code, markup,
+                Util.BuildMsg(1, 6, () => MessageRes.pe10, "exp", "symbol ')'", "EOF"));
 
+            code = "a + ( b ";
+            markup = "";
+            // pe10: Syntax error (exp). Expecting symbol ')', found EOF. Line 1, colomn 6
+            Util.ParserLoad(grammar, code, markup,
+                Util.BuildMsg(1, 9, () => MessageRes.pe10, "exp", "symbol ')'", "EOF"));
+
+            code = "a + b) ";
+            markup = "";
+            // pe07: Grammar error (mul). Expecting symbol '*', found ')' Line 1, colomn 6
+            Util.ParserLoad(grammar, code, markup,                
+                Util.BuildMsg(1, 6, () => MessageRes.pe07, "mul", "*", ")"));
+
+            code = "a + 2 * (c + 4)";
+            markup = @"<aaa>
+  <mul>
+    <sum>
+      <identifier>a</identifier>
+      <identifier>b</identifier>
+    </sum>
+    <sum>
+      <identifier>c</identifier>
+      <identifier>d</identifier>
+    </sum>
+  </mul>
+</aaa>
+";
+            // todo test this: wrong precedence
+            markup = "";
+            //markup = Util.ParserLoad(grammar, code, markup);
         }
 
     }

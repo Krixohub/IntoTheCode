@@ -10,7 +10,9 @@ namespace IntoTheCode.Buffer
     {
         public const int NotValidPtr = -1;
 
-        private Dictionary<RuleLink, LoopLevel> _recursiveCalls = new Dictionary<RuleLink, LoopLevel>();
+        private Dictionary<RuleLink, LoopLevel> _recursiveLoad = new Dictionary<RuleLink, LoopLevel>();
+        private Dictionary<RuleLink, LoopLevel> _recursiveForward = new Dictionary<RuleLink, LoopLevel>();
+        private Dictionary<RuleLink, LoopLevel> _recursiveLast = new Dictionary<RuleLink, LoopLevel>();
 
         public TextBuffer()
         {
@@ -37,13 +39,47 @@ namespace IntoTheCode.Buffer
         /// <summary>Each RuleLink has a level of recursive calls to stop infite loops.</summary>
         /// <param name="link">The RuleLink.</param>
         /// <returns>Loop level.</returns>
-        internal LoopLevel GetLoopLevel(RuleLink link)
+        internal LoopLevel GetLoopLoad(RuleLink link)
         {
             LoopLevel level;
-            if (!_recursiveCalls.TryGetValue(link, out level))
+            if (!_recursiveLoad.TryGetValue(link, out level))
             {
                 level = new LoopLevel() { LastInvokePos = NotValidPtr };
-                _recursiveCalls.Add(link, level);
+                _recursiveLoad.Add(link, level);
+            }
+            return level;
+        }
+
+        internal LoopLevel GetLoopForward(RuleLink link)
+        {
+            if (link == null)
+            {
+                _recursiveForward.Clear();
+                return null;
+            }
+
+            LoopLevel level;
+            if (!_recursiveForward.TryGetValue(link, out level))
+            {
+                level = new LoopLevel() { LastInvokePos = NotValidPtr };
+                _recursiveForward.Add(link, level);
+            }
+            return level;
+        }
+
+        internal LoopLevel GetLoopLast(RuleLink link)
+        {
+            if (link == null)
+            {
+                _recursiveLast.Clear();
+                return null;
+            }
+
+            LoopLevel level;
+            if (!_recursiveLast.TryGetValue(link, out level))
+            {
+                level = new LoopLevel() { LastInvokePos = NotValidPtr };
+                _recursiveLast.Add(link, level);
             }
             return level;
         }

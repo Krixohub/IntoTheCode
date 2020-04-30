@@ -7,14 +7,13 @@ using System.Linq;
 
 namespace IntoTheCode.Read.Structure
 {
-    /// <remarks>Inherids <see cref="SetOfElementsBase"/></remarks>
-    internal class Parentheses : SetOfElementsBase
+    /// <remarks>Inherids <see cref="SetOfElements"/></remarks>
+    internal class Parentheses : SetOfElements
     {
         /// <summary>Creator for <see cref="Parentheses"/>.</summary>
         internal Parentheses(params ParserElementBase[] elements)
             : base(elements)
         {
-            //Attributter = new ObservableCollection<Attribute>();
         }
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)
@@ -25,20 +24,20 @@ namespace IntoTheCode.Read.Structure
         public override string GetGrammar() { return "(" + base.GetGrammar() + ")"; }
         //internal override string Read(int begin, ITextBuffer buffer) { return ""; }
 
-        public override bool Load(List<TextElement> outElements, int level)
-        {
-            return LoadSet(outElements, level);
-        }
+        //public override bool Load(List<TextElement> outElements, int level)
+        //{
+        //    return LoadSet(outElements, level);
+        //}
 
-        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last, int level)
-        {
-            return ResolveSetErrorsLast(last, level);
-        }
+        ///// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
+        //public override int ResolveErrorsLast(TextElement last, int level)
+        //{
+        //    return ResolveSetErrorsLast(last, level);
+        //}
 
-        public override bool ResolveErrorsForward()
-        {
-            return ResolveSetErrorsForward();
-        }
+        //public override bool ResolveErrorsForward(int level)
+        //{
+        //    return ResolveSetErrorsForward(level);
+        //}
     }
 }

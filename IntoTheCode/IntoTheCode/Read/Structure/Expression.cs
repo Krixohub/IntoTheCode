@@ -83,7 +83,14 @@ namespace IntoTheCode.Read.Structure
             WordSymbol symbol = null;
             Rule rule = null;
             if (IsBinaryAlternative(ExprRule, alternative, out symbol, out rule))
-                _binaryOperators.Add(new WordBinaryOperator(symbol, rule != null ? rule.Name : symbol.Value, TextBuffer));
+            {
+                var wordOp = new WordBinaryOperator(symbol, rule != null ? rule.Name : symbol.Value, TextBuffer);
+                _binaryOperators.Add(wordOp);
+                if (rule != null)
+                    rule.ReplaceSubElement(symbol, wordOp);
+                else
+                    Add(wordOp);
+            }
 
             // Other forms
             else
@@ -160,7 +167,7 @@ namespace IntoTheCode.Read.Structure
                 rule = null;
 
             // find symbol for inline binary operators
-            if (alternative is Parentheses)
+            if (alternative is SetOfElements)
                 binaryOperation = alternative;
 
             // Is it a binary operation ?
@@ -326,7 +333,7 @@ namespace IntoTheCode.Read.Structure
 
             // Read a value 
             foreach (var item in _otherForms)
-                if (item.Load(operations, level + 1))
+                if (item.Load(operations, level))
                     return true;
 
             if (!first)
@@ -336,8 +343,10 @@ namespace IntoTheCode.Read.Structure
 
                 // Read a value 
                 foreach (var item in _otherForms)
-                    item.ResolveErrorsForward();
-
+                {
+                    TextBuffer.GetLoopForward(null);
+                    item.ResolveErrorsForward(0);
+                }
             }
 
             return false;
@@ -351,50 +360,131 @@ namespace IntoTheCode.Read.Structure
         {
             // Read a value 
             foreach (var item in _binaryOperators)
-                if (item.Load(outElements, level + 1))
+                if (item.Load(outElements, level))
                     return true;
             return false;
         }
 
-
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last, int level)
+        public override int ResolveErrorsLast(CodeElement last, int level)
         {
-
-            last = ResolveErrorsLastFind((CodeElement)last);
-            // The 'last' element will always be a value. 
-            // Search for the value reader.
-
-            //string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
-
-            int rc = 0;
-            foreach (var item in _otherForms)
-            {
-                if (rc == 0)
-                    rc = item.ResolveErrorsLast(last, level);
-                else if (rc == 2 &&
-                    !item.ResolveErrorsForward())
-                    return 1;
-            }
-
-            // 
-            if (rc == 2)
-                TextBuffer.Status.AddParseError(() => MessageRes.pe09, GetRule(this).Name);
-
-
-            return rc;
-        }
-
-        private TextElement ResolveErrorsLastFind(CodeElement last)
-        {
-            // if the element is a operator get the right value to find the last
+            //todo last as (CodeElement) in ancestor
             bool isOp = _binaryOperators.Any(op => last.WordParser == op);
 
             if (isOp)
-                return ResolveErrorsLastFind(last.ChildNodes[1] as CodeElement);
-            else
-                return last;
+            {
+                TextBuffer.GetLoopForward(null);
+                if (!ResolveErrorsForwardBinaryOperator(0))
+                    return 1;
+            }
+
+            return 0;
+
+            //last = ResolveErrorsLastFind((CodeElement)last);
+            //// The 'last' element will always be a value. 
+            //// Search for the value reader.
+
+            ////string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
+
+            //int rc = 0;
+            //foreach (var item in _otherForms)
+            //{
+            //    if (rc == 0)
+            //        rc = item.ResolveErrorsLast(last, level);
+            //    else
+            //    {
+            //        TextBuffer.GetLoopForward(null);
+            //        if (rc == 2 && !item.ResolveErrorsForward(0))
+            //            return 1;
+            //    }
+            //}
+
+            //// 
+            //if (rc == 2)
+            //    TextBuffer.Status.AddParseError(() => MessageRes.pe09, GetRule(this).Name);
+
+
+            //return rc;
         }
+
+        //private TextElement ResolveErrorsLastFind(CodeElement last)
+        //{
+        //    // if the element is a operator get the right value to find the last
+        //    bool isOp = _binaryOperators.Any(op => last.WordParser == op);
+
+        //    if (isOp)
+        //        return ResolveErrorsLastFind(last.ChildNodes[1] as CodeElement);
+        //    else
+        //        return last;
+        //}
+
+        public override bool ResolveErrorsForward(int level)
+        {
+            int from = TextBuffer.PointerNextChar;
+
+            // Read a value first
+            if (!ResolveErrorsForwardValue(level, true))
+                // if the expression does'nt start with a value; the intire expression fails.
+                // todo: a value can be complex with an unambigous point.
+                return SetPointerBack(from);
+
+            // Read following operations as alternately binary operators and values.
+            from = TextBuffer.PointerNextChar;
+            while (ResolveErrorsForwardBinaryOperator(level) && ResolveErrorsForwardValue(level, false))
+                from = TextBuffer.PointerNextChar;
+
+            // Set pointer back
+            TextBuffer.PointerNextChar = from;
+
+            return true;
+
+        }
+
+        /// <summary>ResolveErrorsForward a value. Inclusive const, variables and unary operators.</summary>
+        /// <param name="operations">The value is added to this list.</param>
+        /// <param name="level">Level of rule links.</param>
+        /// <returns>True if succes.</returns>
+        private bool ResolveErrorsForwardValue(int level, bool first)
+        {
+
+            // Read a value 
+            foreach (var item in _otherForms)
+                if (item.ResolveErrorsForward(level))
+                    return true;
+
+            if (!first)
+            {
+                // Expects a value
+                TextBuffer.Status.AddParseError(() => MessageRes.pe08, GetRule(this).Name);
+
+                // Read a value 
+                foreach (var item in _otherForms)
+                {
+                    TextBuffer.GetLoopForward(null);
+                    item.ResolveErrorsForward(0);
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>ResolveErrorsForward a binary operator.</summary>
+        /// <param name="outElements">The value is added to this list.</param>
+        /// <param name="level">Level of rule links.</param>
+        /// <returns>True if succes.</returns>
+        private bool ResolveErrorsForwardBinaryOperator(int level)
+        {
+            // Read a value 
+            foreach (var item in _binaryOperators)
+                if (item.ResolveErrorsForward(level))
+                    return true;
+
+            // Expects a operator
+            TextBuffer.Status.AddParseError(() => MessageRes.pe09, GetRule(this).Name);
+
+            return false;
+        }
+
 
         public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         {

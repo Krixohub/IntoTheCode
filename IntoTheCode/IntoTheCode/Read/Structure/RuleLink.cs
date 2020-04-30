@@ -39,7 +39,7 @@ namespace IntoTheCode.Read.Structure
             {
                 string name = Value;
 
-                LoopLevel loop = TextBuffer.GetLoopLevel(this);
+                LoopLevel loop = TextBuffer.GetLoopLoad(this);
                 if (loop.LastInvokePos == TextBuffer.PointerNextChar &&
                     level > loop.LastInvokeLevel) return false;
                 loop.LastInvokePos = TextBuffer.PointerNextChar;
@@ -49,20 +49,32 @@ namespace IntoTheCode.Read.Structure
             return RuleElement.Load(outElements, level + 1);
         }
 
-        public override bool ResolveErrorsForward()
-        {
-            return RuleElement.ResolveErrorsForward();
-        }
-
-        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last, int level)
+        public override bool ResolveErrorsForward(int level)
         {
             // End too many recursive calls
             if (Recursive)
             {
                 string name = Value;
 
-                LoopLevel loop = TextBuffer.GetLoopLevel(this);
+                LoopLevel loop = TextBuffer.GetLoopForward(this);
+                if (loop.LastInvokePos == TextBuffer.PointerNextChar &&
+                    level > loop.LastInvokeLevel) return false;
+                loop.LastInvokePos = TextBuffer.PointerNextChar;
+                loop.LastInvokeLevel = level;
+            }
+
+            return RuleElement.ResolveErrorsForward(level + 1);
+        }
+
+        /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
+        public override int ResolveErrorsLast(CodeElement last, int level)
+        {
+            // End too many recursive calls
+            if (Recursive)
+            {
+                string name = Value;
+
+                LoopLevel loop = TextBuffer.GetLoopLast(this);
                 if (loop.LastInvokePos == TextBuffer.PointerNextChar &&
                     level > loop.LastInvokeLevel) return 0;
                 loop.LastInvokePos = TextBuffer.PointerNextChar;

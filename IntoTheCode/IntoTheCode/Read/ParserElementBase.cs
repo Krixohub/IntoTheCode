@@ -43,7 +43,10 @@ namespace IntoTheCode.Read
 
             // Is the error fatal?
             if (txtPtr < TextBuffer.Status.UnambiguousPointer && TextBuffer.Status.Error == null)
-                ResolveErrorsForward();
+            {
+                TextBuffer.GetLoopForward(null);
+                ResolveErrorsForward(0);
+            }
 
             return false;
         }
@@ -88,12 +91,12 @@ namespace IntoTheCode.Read
         /// <param name="last">Not null, not empty.</param>
         /// <param name="level">Level of rules.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public abstract int ResolveErrorsLast(TextElement last, int level);
+        public abstract int ResolveErrorsLast(CodeElement last, int level);
 
         /// <summary>Find errors in following syntax.
         /// </summary>
         /// <returns>True = no error.</returns>
-        public abstract bool ResolveErrorsForward();
+        public abstract bool ResolveErrorsForward(int level);
 
         /// <summary>Find which RuleLinks are recursive.
         /// Called by the ParserFactory after Initializing grammar.

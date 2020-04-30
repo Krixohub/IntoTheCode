@@ -29,7 +29,7 @@ namespace IntoTheCode.Read.Structure
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
-            var element = new Rule(Name, ChildNodes.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray())
+            var element = new Rule(Name, CloneSubElementsForParse(buffer))
             {
                 DefinitionCodeElement = DefinitionCodeElement,
                 TextBuffer = buffer,
@@ -139,7 +139,7 @@ namespace IntoTheCode.Read.Structure
         /// If no error, try to read further.</summary>
         /// <param name="last">Not null, not empty.</param>
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
-        public override int ResolveErrorsLast(TextElement last, int level)
+        public override int ResolveErrorsLast(CodeElement last, int level)
         {
             string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
 
@@ -149,31 +149,35 @@ namespace IntoTheCode.Read.Structure
             int rc = 0;
             if (last.Name != Name) return 0;
 
-            
+
             if (_simplify)
-                rc = ((ParserElementBase)ChildNodes[0]).ResolveErrorsLast(last, level);
+                rc = ChildNodes[0].ResolveErrorsLast(last, level);
             else if (last.ChildNodes != null && last.ChildNodes.Count() > 0)
                 // if succes finding a deeper element, return true.
-                rc = ResolveSetErrorsLast(last.ChildNodes.Last() as CodeElement, level);
-            else if (!ResolveErrorsForward())
-                return 1;
+                rc = ResolveSetErrorsLast(last.ChildNodes.OfType<CodeElement>().Last(), level);
+            else
+            {
+                TextBuffer.GetLoopForward(null);
+                if (!ResolveErrorsForward(0))
+                    return 1;
+            }
 
             return 2;
         }
 
-        public override bool ResolveErrorsForward()
+        public override bool ResolveErrorsForward(int level)
         {
             int from = TextBuffer.PointerNextChar;
 
             if (Collapse)
-                return ResolveSetErrorsForward();
+                return ResolveSetErrorsForward(level);
 
             if (_simplify &&
-                !ChildNodes[0].ResolveErrorsForward())
+                !ChildNodes[0].ResolveErrorsForward(level))
                 return SetPointerBack(from);
 
             else if (!_simplify &&
-                !ResolveSetErrorsForward())
+                !ResolveSetErrorsForward(level))
                 return SetPointerBack(from);
 
             return true;
