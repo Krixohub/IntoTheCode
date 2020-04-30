@@ -16,7 +16,7 @@ namespace IntoTheCode.Read.Words
             RightAssociative = symbol.RightAssociative;
         }
 
-        public bool Complete { get; set; }
+        //public bool Complete { get; set; }
 
         protected internal override string GetWord(TextSubString ptr) { return string.Empty; }
 

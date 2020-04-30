@@ -49,6 +49,8 @@ namespace IntoTheCode.Read.Structure
         //private List<ParserElementBase> _variables = new List<ParserElementBase>();
         //private List<ParserElementBase> _values = new List<ParserElementBase>();
 
+        internal List<CodeElement> _completeOperations = new List<CodeElement>();
+
         /// <summary>Creator for <see cref="Expression"/>.</summary>
         internal Expression(Rule ExprRule, Or or) :
             base(or.ChildNodes[0], or.ChildNodes[1])
@@ -247,7 +249,7 @@ namespace IntoTheCode.Read.Structure
 
             while (nextValueIndex < operations.Count - 1)
             {
-
+                // todo move commente out (coments belong to rules)
                 int opIndex = nextValueIndex++;
 
                 while (nextValueIndex < operations.Count - 1 && operations[nextValueIndex] is CommentElement)
@@ -262,9 +264,7 @@ namespace IntoTheCode.Read.Structure
                 comments.Clear();
             }
 
-            WordBinaryOperator op = ((CodeElement)parent.ChildNodes[0]).WordParser as WordBinaryOperator;
-            if (op != null)
-                op.Complete = true;
+            _completeOperations.Insert(0, (CodeElement)parent.ChildNodes[0]);
 
             outElements[0] = parent.ChildNodes[0];
             return true;
@@ -273,12 +273,13 @@ namespace IntoTheCode.Read.Structure
         private void AddOperationToTree(CodeElement leftExprCode, CodeElement rightOpCode, CodeElement rightExprCode, List<TextElement> comments)
         {
             // todo check for operators belonging to expression
-            WordBinaryOperator leftOperator = ((CodeElement)leftExprCode).WordParser as WordBinaryOperator;
+            WordBinaryOperator leftOperator = leftExprCode.WordParser as WordBinaryOperator;
             WordBinaryOperator rightOpSymbol = rightOpCode.WordParser as WordBinaryOperator;
 
             // is the insertpoint a value
-            //            if (!IsBinaryOperator(leftExprCode))
-            if (leftOperator == null || leftOperator.Complete)
+            // Or the insertPoint is a completed expression (eg parentheses)
+            if (leftOperator == null || 
+                (_binaryOperators.Contains(leftOperator) && _completeOperations.Contains(leftExprCode)))
             {
                 // insert 
                 TextElement parent = leftExprCode.Parent;

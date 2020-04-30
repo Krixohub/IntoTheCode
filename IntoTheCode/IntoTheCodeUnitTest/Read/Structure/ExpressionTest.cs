@@ -209,7 +209,7 @@ sub Precedence = '1';
             string markup;
             // ------------------------ 5 operator, nested expression ----------------------------
             // Set grammar
-            grammar = @"aaa = exp;exp = mul | sum | div | sub | gt | '(' exp ')' | identifier;
+            grammar = @"aaa = exp;exp = mul | sum | div | sub | gt | '(' exp ')' | int | identifier;
 mul = exp '*' exp;
 sum = exp '+' exp;
 div = exp '/' exp;
@@ -263,36 +263,6 @@ exp collapse;
 
             // --------------------------------- Expression Error ---------------------------------
 
-            //            // --------------------------------- ---------------------------------
-            //            // Set grammar
-            //            grammar = @"exp = mul | sum | div | sub | gt | '(' exp ')' | identifier;
-            //mul = exp '*' exp;
-            //sum = exp '+' exp;
-            //div = exp '/' exp;
-            //sub = exp '-' exp;
-            //gt  = exp '>' exp;
-            //settings
-            //mul Precedence = '2';
-            //div Precedence = '2';
-            //sum Precedence = '1';
-            //sub Precedence = '1';
-            //exp collapse;
-            //";
-
-            grammar = @"aaa = exp;exp = mul | sum | div | sub | gt | '(' exp ')' | int | identifier;
-mul = exp '*' exp;
-sum = exp '+' exp;
-div = exp '/' exp;
-sub = exp '-' exp;
-gt  = exp '>' exp;
-settings
-mul Precedence = '2';
-div Precedence = '2';
-sum Precedence = '1';
-sub Precedence = '1';
-exp collapse;
-";
-
             code = "a + b * c - d  > e /  + f";
             //pe08: Syntax error (exp). Expecting value for expression. Line 1, colomn 23
             markup = "";
@@ -327,26 +297,47 @@ exp collapse;
             code = "a + b) ";
             markup = "";
             // pe07: Grammar error (mul). Expecting symbol '*', found ')' Line 1, colomn 6
-            Util.ParserLoad(grammar, code, markup,                
+            Util.ParserLoad(grammar, code, markup,
                 Util.BuildMsg(1, 6, () => MessageRes.pe07, "mul", "*", ")"));
 
             code = "a + 2 * (c + 4)";
             markup = @"<aaa>
+  <sum>
+    <identifier>a</identifier>
+    <mul>
+      <int>2</int>
+      <sum>
+        <identifier>c</identifier>
+        <int>4</int>
+      </sum>
+    </mul>
+  </sum>
+</aaa>
+";
+            //markup = "";
+            markup = Util.ParserLoad(grammar, code, markup);
+            code = "(a + 2) * (c + (2>1 ) * 4)";
+            markup = @"<aaa>
   <mul>
     <sum>
       <identifier>a</identifier>
-      <identifier>b</identifier>
+      <int>2</int>
     </sum>
     <sum>
       <identifier>c</identifier>
-      <identifier>d</identifier>
+      <mul>
+        <gt>
+          <int>2</int>
+          <int>1</int>
+        </gt>
+        <int>4</int>
+      </mul>
     </sum>
   </mul>
 </aaa>
 ";
-            // todo test this: wrong precedence
             markup = "";
-            //markup = Util.ParserLoad(grammar, code, markup);
+            markup = Util.ParserLoad(grammar, code, markup);
         }
 
     }
