@@ -123,56 +123,47 @@
   <data name="LineAndCol" xml:space="preserve">
     <value>Line {0}, colomn {1}</value>
   </data>
-  <data name="p01" xml:space="preserve">
+  <data name="itc20" xml:space="preserve">
     <value>First rule '{0} must represent all document and have Tag=true</value>
   </data>
-  <data name="p02" xml:space="preserve">
+  <data name="itc12" xml:space="preserve">
     <value>Can't read '{0}'</value>
   </data>
-  <data name="p03" xml:space="preserve">
-    <value>IntoTheCode developer error: {0}</value>
+  <data name="itc22" xml:space="preserve">
+    <value>No syntax rules</value>
   </data>
-  <data name="p04" xml:space="preserve">
-    <value>No Grammar rules</value>
-  </data>
-  <data name="p05" xml:space="preserve">
+  <data name="itc13" xml:space="preserve">
     <value>End of input not reached.</value>
   </data>
-  <data name="pb02" xml:space="preserve">
-    <value>{0}: An expression element can't be siebling with other elements</value>
+  <data name="itc29" xml:space="preserve">
+    <value>An expression element can't be siebling with other elements in grammar {0}</value>
   </data>
-  <data name="pb03" xml:space="preserve">
-    <value>{0}: The 'or' symbol is misplaced in expression</value>
+  <data name="itc30" xml:space="preserve">
+    <value>The 'or' symbol is misplaced in expression in grammar {0}</value>
   </data>
-  <data name="pb04" xml:space="preserve">
-    <value>Parser factory: No read element for '{0}'</value>
+  <data name="itc31" xml:space="preserve">
+    <value>Parser factory: No read element for '{0}' (MetaParser)</value>
   </data>
-  <data name="pb05" xml:space="preserve">
-    <value>Link grammar {1}. Identifier {0} is defined twice</value>
+  <data name="itc23" xml:space="preserve">
+    <value>The rule {0} is defined twice in grammar {1}.</value>
   </data>
-  <data name="pb06" xml:space="preserve">
+  <data name="itc24" xml:space="preserve">
     <value>Identifier '{0}' not found in Grammar</value>
   </data>
-  <data name="pb07" xml:space="preserve">
+  <data name="itc26" xml:space="preserve">
     <value>Settings: Identifier '{0}' cant be resolved</value>
   </data>
-  <data name="pb08" xml:space="preserve">
+  <data name="itc27" xml:space="preserve">
     <value>Settings: Identifier '{0}' Property '{1}' cant be resolved</value>
   </data>
-  <data name="pb09" xml:space="preserve">
+  <data name="itc21" xml:space="preserve">
     <value>First rule '{0}' must have Collapse=false</value>
   </data>
   <data name="itc01" xml:space="preserve">
     <value>Syntax error ({0}). Expecting identifier, found EOF.</value>
   </data>
-  <data name="pe02" xml:space="preserve">
-    <value>Syntax error ({0}). First charactor is not allowed.</value>
-  </data>
   <data name="itc03" xml:space="preserve">
     <value>Syntax error ({0}). Expecting string, found EOF.</value>
-  </data>
-  <data name="pe04" xml:space="preserve">
-    <value>Syntax error ({0}). Expecting string.</value>
   </data>
   <data name="itc05" xml:space="preserve">
     <value>Syntax error ({0}). Expecting string ending.</value>
@@ -180,25 +171,25 @@
   <data name="itc07" xml:space="preserve">
     <value>Syntax error ({0}). Expecting symbol '{1}', found '{2}'</value>
   </data>
-  <data name="pb10" xml:space="preserve">
+  <data name="itc33" xml:space="preserve">
     <value>The value of property '{0}' must be a positive integer</value>
   </data>
   <data name="itc08" xml:space="preserve">
     <value>Syntax error ({0}). Expecting value for expression.</value>
   </data>
-  <data name="pe09" xml:space="preserve">
+  <data name="itc09" xml:space="preserve">
     <value>Syntax error ({0}). Expecting operator for expression.</value>
   </data>
   <data name="itc10" xml:space="preserve">
     <value>Syntax error ({0}). Expecting {1}, found {2}.</value>
   </data>
-  <data name="pe11" xml:space="preserve">
+  <data name="itc11" xml:space="preserve">
     <value>Can't parse '{0}' to integer (too long).</value>
   </data>
-  <data name="pb11" xml:space="preserve">
+  <data name="itc25" xml:space="preserve">
     <value>The rule '{0}' must have a non recursive path.</value>
   </data>
-  <data name="p06" xml:space="preserve">
+  <data name="itc14" xml:space="preserve">
     <value>The input is null.</value>
   </data>
 </root>

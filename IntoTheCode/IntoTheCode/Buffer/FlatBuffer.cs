@@ -13,7 +13,7 @@ namespace IntoTheCode.Buffer
         {
             if (text == null)
             {
-                Status.AddFlatError(() => MessageRes.p06);
+                Status.AddFlatError(() => MessageRes.itc14);
                 return;
             }
 

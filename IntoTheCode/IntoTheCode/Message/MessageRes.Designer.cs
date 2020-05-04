@@ -106,6 +106,15 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting operator for expression..
+        /// </summary>
+        public static string itc09 {
+            get {
+                return ResourceManager.GetString("itc09", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Syntax error ({0}). Expecting {1}, found {2}..
         /// </summary>
         public static string itc10 {
@@ -115,191 +124,155 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Line {0}, colomn {1}.
+        ///   Looks up a localized string similar to Can&apos;t parse &apos;{0}&apos; to integer (too long)..
         /// </summary>
-        public static string LineAndCol {
+        public static string itc11 {
             get {
-                return ResourceManager.GetString("LineAndCol", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to First rule &apos;{0} must represent all document and have Tag=true.
-        /// </summary>
-        public static string p01 {
-            get {
-                return ResourceManager.GetString("p01", resourceCulture);
+                return ResourceManager.GetString("itc11", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t read &apos;{0}&apos;.
         /// </summary>
-        public static string p02 {
+        public static string itc12 {
             get {
-                return ResourceManager.GetString("p02", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to IntoTheCode developer error: {0}.
-        /// </summary>
-        public static string p03 {
-            get {
-                return ResourceManager.GetString("p03", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No Grammar rules.
-        /// </summary>
-        public static string p04 {
-            get {
-                return ResourceManager.GetString("p04", resourceCulture);
+                return ResourceManager.GetString("itc12", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to End of input not reached..
         /// </summary>
-        public static string p05 {
+        public static string itc13 {
             get {
-                return ResourceManager.GetString("p05", resourceCulture);
+                return ResourceManager.GetString("itc13", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The input is null..
         /// </summary>
-        public static string p06 {
+        public static string itc14 {
             get {
-                return ResourceManager.GetString("p06", resourceCulture);
+                return ResourceManager.GetString("itc14", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: An expression element can&apos;t be siebling with other elements.
+        ///   Looks up a localized string similar to First rule &apos;{0} must represent all document and have Tag=true.
         /// </summary>
-        public static string pb02 {
+        public static string itc20 {
             get {
-                return ResourceManager.GetString("pb02", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0}: The &apos;or&apos; symbol is misplaced in expression.
-        /// </summary>
-        public static string pb03 {
-            get {
-                return ResourceManager.GetString("pb03", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parser factory: No read element for &apos;{0}&apos;.
-        /// </summary>
-        public static string pb04 {
-            get {
-                return ResourceManager.GetString("pb04", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Link grammar {1}. Identifier {0} is defined twice.
-        /// </summary>
-        public static string pb05 {
-            get {
-                return ResourceManager.GetString("pb05", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Identifier &apos;{0}&apos; not found in Grammar.
-        /// </summary>
-        public static string pb06 {
-            get {
-                return ResourceManager.GetString("pb06", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Settings: Identifier &apos;{0}&apos; cant be resolved.
-        /// </summary>
-        public static string pb07 {
-            get {
-                return ResourceManager.GetString("pb07", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Settings: Identifier &apos;{0}&apos; Property &apos;{1}&apos; cant be resolved.
-        /// </summary>
-        public static string pb08 {
-            get {
-                return ResourceManager.GetString("pb08", resourceCulture);
+                return ResourceManager.GetString("itc20", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to First rule &apos;{0}&apos; must have Collapse=false.
         /// </summary>
-        public static string pb09 {
+        public static string itc21 {
             get {
-                return ResourceManager.GetString("pb09", resourceCulture);
+                return ResourceManager.GetString("itc21", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value of property &apos;{0}&apos; must be a positive integer.
+        ///   Looks up a localized string similar to No syntax rules.
         /// </summary>
-        public static string pb10 {
+        public static string itc22 {
             get {
-                return ResourceManager.GetString("pb10", resourceCulture);
+                return ResourceManager.GetString("itc22", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The rule {0} is defined twice in grammar {1}..
+        /// </summary>
+        public static string itc23 {
+            get {
+                return ResourceManager.GetString("itc23", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identifier &apos;{0}&apos; not found in Grammar.
+        /// </summary>
+        public static string itc24 {
+            get {
+                return ResourceManager.GetString("itc24", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The rule &apos;{0}&apos; must have a non recursive path..
         /// </summary>
-        public static string pb11 {
+        public static string itc25 {
             get {
-                return ResourceManager.GetString("pb11", resourceCulture);
+                return ResourceManager.GetString("itc25", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax error ({0}). First charactor is not allowed..
+        ///   Looks up a localized string similar to Settings: Identifier &apos;{0}&apos; cant be resolved.
         /// </summary>
-        public static string pe02 {
+        public static string itc26 {
             get {
-                return ResourceManager.GetString("pe02", resourceCulture);
+                return ResourceManager.GetString("itc26", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax error ({0}). Expecting string..
+        ///   Looks up a localized string similar to Settings: Identifier &apos;{0}&apos; Property &apos;{1}&apos; cant be resolved.
         /// </summary>
-        public static string pe04 {
+        public static string itc27 {
             get {
-                return ResourceManager.GetString("pe04", resourceCulture);
+                return ResourceManager.GetString("itc27", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax error ({0}). Expecting operator for expression..
+        ///   Looks up a localized string similar to An expression element can&apos;t be siebling with other elements in grammar {0}.
         /// </summary>
-        public static string pe09 {
+        public static string itc29 {
             get {
-                return ResourceManager.GetString("pe09", resourceCulture);
+                return ResourceManager.GetString("itc29", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t parse &apos;{0}&apos; to integer (too long)..
+        ///   Looks up a localized string similar to The &apos;or&apos; symbol is misplaced in expression in grammar {0}.
         /// </summary>
-        public static string pe11 {
+        public static string itc30 {
             get {
-                return ResourceManager.GetString("pe11", resourceCulture);
+                return ResourceManager.GetString("itc30", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parser factory: No read element for &apos;{0}&apos; (MetaParser).
+        /// </summary>
+        public static string itc31 {
+            get {
+                return ResourceManager.GetString("itc31", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value of property &apos;{0}&apos; must be a positive integer.
+        /// </summary>
+        public static string itc33 {
+            get {
+                return ResourceManager.GetString("itc33", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0}, colomn {1}.
+        /// </summary>
+        public static string LineAndCol {
+            get {
+                return ResourceManager.GetString("LineAndCol", resourceCulture);
             }
         }
         

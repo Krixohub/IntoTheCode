@@ -83,7 +83,7 @@ namespace IntoTheCode.Read.Words
 
             if (!int.TryParse(TextBuffer.GetSubString(TextBuffer.PointerNextChar, to), out _))
                 return TextBuffer.Status.AddSyntaxError(this,
-                    to, 0, () => MessageRes.pe11, TextBuffer.GetSubString(TextBuffer.PointerNextChar, to));
+                    to, 0, () => MessageRes.itc11, TextBuffer.GetSubString(TextBuffer.PointerNextChar, to));
 
             TextBuffer.PointerNextChar += to;
             TextBuffer.FindNextWord(null, true);

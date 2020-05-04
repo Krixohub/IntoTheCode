@@ -45,7 +45,7 @@ namespace IntoTheCode
 
         private string GetSyntax()
         {
-            if (Rules == null || Rules.Count == 0) return MessageRes.p04;
+            if (Rules == null || Rules.Count == 0) return MessageRes.itc22;
             SymbolFixWidth = Rules.Max(eq => eq.Name.Length);
             return Rules.Aggregate(string.Empty, (ud, r) => (ud.Length == 0 ? ud : ud + "\r\n") + r.GetGrammar());
         }
@@ -133,14 +133,14 @@ namespace IntoTheCode
             }
             catch (Exception e)
             {
-                buffer.Status.AddException(e, () => MessageRes.p02, e.Message);
+                buffer.Status.AddException(e, () => MessageRes.itc12, e.Message);
                 return null;
             }
 
             if (buffer.Status.Error != null) return null;
 
             if (!ok)
-                buffer.Status.AddParseError(() => MessageRes.p02, procesRules[0].Name);
+                buffer.Status.AddParseError(() => MessageRes.itc12, procesRules[0].Name);
             else if (!buffer.IsEnd())
             {
                 if (elements != null && elements.Count() > 0)
@@ -150,7 +150,7 @@ namespace IntoTheCode
                     buffer.GetLoopLast(null);
                     procesRules[0].ResolveErrorsLast(last, 0);
                 }
-                buffer.Status.AddSyntaxErrorEof(() => MessageRes.p05);
+                buffer.Status.AddSyntaxErrorEof(() => MessageRes.itc13);
             }
             else if (elements.OfType<CodeElement>().Count() == 1)
             {
@@ -159,7 +159,7 @@ namespace IntoTheCode
                 return resultDoc;
             }
             else
-                buffer.Status.AddParseError(() => MessageRes.p01, procesRules[0].Name);
+                buffer.Status.AddParseError(() => MessageRes.itc20, procesRules[0].Name);
 
             return null;
         }

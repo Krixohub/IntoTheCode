@@ -402,7 +402,7 @@ namespace IntoTheCode.Read.Structure
 
             //// 
             //if (rc == 2)
-            //    TextBuffer.Status.AddParseError(() => MessageRes.pe09, GetRule(this).Name);
+            //    TextBuffer.Status.AddParseError(() => MessageRes.itc09, GetRule(this).Name);
 
 
             //return rc;
@@ -481,7 +481,7 @@ namespace IntoTheCode.Read.Structure
                     return true;
 
             // Expects a operator
-            TextBuffer.Status.AddParseError(() => MessageRes.pe09, GetRule(this).Name);
+            TextBuffer.Status.AddParseError(() => MessageRes.itc09, GetRule(this).Name);
 
             return false;
         }

@@ -58,7 +58,7 @@ namespace IntoTheCode.Read
                 {
                     case MetaParser.Expression_:
                         if (docNodes.Count() > 1)
-                            status.AddBuildError(() => MessageRes.pb02, element, parser.Name);
+                            status.AddBuildError(() => MessageRes.itc29, element, parser.Name);
 
                         return BuildExpression(parser, element.Codes(), status);
 
@@ -69,7 +69,7 @@ namespace IntoTheCode.Read
                         int pos = 0;
                         while (pos + 2 < orNodes.Count() && orNodes[++pos] != element) { }
                         if (pos < 1 || pos + 2 > orNodes.Count())
-                            status.AddBuildError(() => MessageRes.pb03, element, parser.Name);
+                            status.AddBuildError(() => MessageRes.itc30, element, parser.Name);
 
                         if (pos == 1)
                             el1 = elements[0];
@@ -123,7 +123,7 @@ namespace IntoTheCode.Read
                     case MetaParser.Comment____:
                         break;
                     default:
-                        status.AddBuildError(() => MessageRes.pb04, element, element.Name);
+                        status.AddBuildError(() => MessageRes.itc31, element, element.Name);
                         break;
                 }
             }
@@ -145,7 +145,7 @@ namespace IntoTheCode.Read
                 //    rule.ToMarkupProtected(string.Empty);
 
                 if (rules.Any(r => r != rule && r.Name.ToLower() == rule.Name.ToLower()))
-                    status.AddBuildError(() => MessageRes.pb05, rule.DefinitionCodeElement, 
+                    status.AddBuildError(() => MessageRes.itc23, rule.DefinitionCodeElement, 
                         rule.Name, 
                         parser.Name);
             }
@@ -174,7 +174,7 @@ namespace IntoTheCode.Read
 
                 foreach (Rule rule in effectiveRules)
                     if (!rule.LoopHasEnd)
-                        status.AddBuildError(() => MessageRes.pb11, rule.DefinitionCodeElement, rule.Name);
+                        status.AddBuildError(() => MessageRes.itc25, rule.DefinitionCodeElement, rule.Name);
             }
             return status.Error == null;
         }
@@ -203,7 +203,7 @@ namespace IntoTheCode.Read
         {
             Rule rule = rules.FirstOrDefault(r => r.Name == link.Value);
             if (rule == null)
-                status.AddBuildError(() => MessageRes.pb06, link.DefinitionCodeElement, link.Value);
+                status.AddBuildError(() => MessageRes.itc24, link.DefinitionCodeElement, link.Value);
             return rule;
         }
 
@@ -219,7 +219,7 @@ namespace IntoTheCode.Read
                 Rule rule = parser.Rules.FirstOrDefault(r => r.Name == elementId.Value);
                 if (rule == null)
                 {
-                    status.AddBuildError(() => MessageRes.pb07, elementId, elementId.Value);
+                    status.AddBuildError(() => MessageRes.itc26, elementId, elementId.Value);
                     ok = false;
                     continue;
                 }
@@ -246,7 +246,7 @@ namespace IntoTheCode.Read
 
                             // todo alter message to reflect above.
                             if (!ok)
-                                status.AddBuildError(() => MessageRes.pb08, propName, elementId.Value, propName.Value);
+                                status.AddBuildError(() => MessageRes.itc27, propName, elementId.Value, propName.Value);
                             break;
                     }
                 }
@@ -262,7 +262,7 @@ namespace IntoTheCode.Read
             bool ok = true;
             if (parser.Rules[0].Collapse)
             {
-                status.AddBuildError(() => MessageRes.pb09, parser.Rules[0].DefinitionCodeElement, parser.Rules[0].Name);
+                status.AddBuildError(() => MessageRes.itc21, parser.Rules[0].DefinitionCodeElement, parser.Rules[0].Name);
                 ok = false;
             }
 

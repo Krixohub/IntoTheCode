@@ -37,7 +37,7 @@ namespace Read.Words
 
             //                 "1234567890123456
             Util.WordLoadError("  12345678901  ", word, "Int too long",
-                "pe11: Can't parse 'testRule' to integer (too long). Line 1, colomn 12");
+                "itc11: Can't parse 'testRule' to integer (too long). Line 1, colomn 12");
 
         }
     }

@@ -35,13 +35,13 @@ namespace Read
             Util.ParserLoad(grammar, "", markup);
 
             grammar = "sntx = identifier;";
-            // code = "";  // p02: Can't read 'sntx' Line 1, colomn 1
+            // code = "";  // itc12: Can't read 'sntx' Line 1, colomn 1
             Util.ParserLoad(grammar, "", "grammar ok",
-                Util.BuildMsg(1, 1, () => MessageRes.p02, "sntx"));
+                Util.BuildMsg(1, 1, () => MessageRes.itc12, "sntx"));
 
-            // code = null;  // p06: The input is null.
+            // code = null;  // itc14: The input is null.
             Util.ParserLoad(grammar, null, "grammar ok",
-                Util.BuildMsg(0, 0, () => MessageRes.p06));
+                Util.BuildMsg(0, 0, () => MessageRes.itc14));
 
 
         }
@@ -72,7 +72,7 @@ settings fid trust; fstr trust; fsym trust;";
             markup = "<stx>\r\n  <seq>\r\n    <o/>\r\n    <o/>\r\n    <o/>\r\n  </seq>\r\n</stx>\r\n";
             Util.ParserLoad(grammar, code, markup);
 
-            // p05: End of input not reached. Line 1, colomn 3
+            // itc13: End of input not reached. Line 1, colomn 3
             // itc07: Syntax error (o). Expecting symbol 'o', found 'p' Line 1, colomn 3
             Util.ParserLoad(grammar, "oop", null,
                 Util.BuildMsg(1, 3, () => MessageRes.itc07, "o", "o", "p"));

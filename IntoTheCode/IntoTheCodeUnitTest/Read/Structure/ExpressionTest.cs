@@ -275,7 +275,7 @@ exp collapse;
                 Util.BuildMsg(1, 7, () => MessageRes.itc07, "mul", "*", "&"));
 
             code = "a + b * c - d  > e &  + f";
-            //p05: End of input not reached. Line 1, colomn 20
+            //itc13: End of input not reached. Line 1, colomn 20
             //itc07: Syntax error (mul). Expecting symbol '*', found '&' Line 1, colomn 20
             Util.ParserLoad(grammar, code, markup,
                 Util.BuildMsg(1, 20, () => MessageRes.itc07, "mul", "*", "&"));
