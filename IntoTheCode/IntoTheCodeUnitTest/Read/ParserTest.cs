@@ -73,9 +73,9 @@ settings fid trust; fstr trust; fsym trust;";
             Util.ParserLoad(grammar, code, markup);
 
             // p05: End of input not reached. Line 1, colomn 3
-            // pe07: Grammar error (o). Expecting symbol 'o', found 'p' Line 1, colomn 3
+            // itc07: Syntax error (o). Expecting symbol 'o', found 'p' Line 1, colomn 3
             Util.ParserLoad(grammar, "oop", null,
-                Util.BuildMsg(1, 3, () => MessageRes.pe07, "o", "o", "p"));
+                Util.BuildMsg(1, 3, () => MessageRes.itc07, "o", "o", "p"));
 
         }
 
@@ -97,16 +97,16 @@ type = 'string'; ";
             Util.ParserLoad(grammar, code, markup);
 
             // "missing seperator, EOF error"
-            // pe10: Syntax error (cmd). Expecting symbol ';', found EOF. Line 1, colomn 10
+            // itc10: Syntax error (cmd). Expecting symbol ';', found EOF. Line 1, colomn 10
             code = "string s ";
             Util.ParserLoad(grammar, code, markup,
-                Util.BuildMsg(1, 10, () => MessageRes.pe10, "cmd", "symbol ';'", "EOF"));
+                Util.BuildMsg(1, 10, () => MessageRes.itc10, "cmd", "symbol ';'", "EOF"));
 
             // "missing seperator", 
-            // pe07: Grammar error (cmd). Expecting symbol ';', found 'd' Line 1, colomn 10
+            // itc07: Syntax error (cmd). Expecting symbol ';', found 'd' Line 1, colomn 10
             code = "string s dfgsd";
             Util.ParserLoad(grammar, code, markup,
-                Util.BuildMsg(1, 10, () => MessageRes.pe07, "cmd", ";", "d"));
+                Util.BuildMsg(1, 10, () => MessageRes.itc07, "cmd", ";", "d"));
         }
 
     }

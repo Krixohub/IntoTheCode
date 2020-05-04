@@ -63,18 +63,18 @@ namespace IntoTheCode.Read.Words
             TextBuffer.FindNextWord(null, false);
             int to = 0;
             if (TextBuffer.IsEnd(1))
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe10, GetGrammar(), "EOF");
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.itc10, GetGrammar(), "EOF");
 
             //if (Sign == TextBuffer.GetChar()) to++;
             if (Sign == TextBuffer.GetChar())
             {
                 to++;
                 if (TextBuffer.IsEnd(to))
-                    return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe10, GetGrammar(), "EOF");
+                    return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.itc10, GetGrammar(), "EOF");
             }
 
             if (!AllowedChars.Contains(TextBuffer.GetChar(to)))
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar + to, 0, () => MessageRes.pe10, GetGrammar(), TextBuffer.GetChar(to));
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar + to, 0, () => MessageRes.itc10, GetGrammar(), TextBuffer.GetChar(to));
 
             to++;
 

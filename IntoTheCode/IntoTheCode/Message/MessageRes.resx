@@ -117,38 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="base0001" xml:space="preserve">
-    <value>Error. Resource is not the right type. Modifiers must be public</value>
-  </data>
-  <data name="base0002" xml:space="preserve">
-    <value>Can't open windows event log for writing</value>
-  </data>
-  <data name="base0003" xml:space="preserve">
-    <value>The resource can't be found: {0}. Add resource file to Post</value>
-  </data>
-  <data name="base0004" xml:space="preserve">
-    <value>Test message</value>
-  </data>
-  <data name="MsgChannelError" xml:space="preserve">
-    <value>Text channel '{0}' not working</value>
-  </data>
-  <data name="MsgUnhandledException" xml:space="preserve">
-    <value>An unhandled exception happened</value>
-  </data>
   <data name="SomeError" xml:space="preserve">
     <value>Something terrible with {0} has happened</value>
-  </data>
-  <data name="base0005" xml:space="preserve">
-    <value>Value must be a UnaryExpression or a MemberExpression</value>
-  </data>
-  <data name="base0006" xml:space="preserve">
-    <value>Lambda expression is null</value>
-  </data>
-  <data name="base0007" xml:space="preserve">
-    <value>Deeper error</value>
-  </data>
-  <data name="DevelOnly" xml:space="preserve">
-    <value>Devel. only: </value>
   </data>
   <data name="LineAndCol" xml:space="preserve">
     <value>Line {0}, colomn {1}</value>
@@ -192,34 +162,34 @@
   <data name="pb09" xml:space="preserve">
     <value>First rule '{0}' must have Collapse=false</value>
   </data>
-  <data name="pe01" xml:space="preserve">
-    <value>Grammar error ({0}). Expecting identifier, found EOF.</value>
+  <data name="itc01" xml:space="preserve">
+    <value>Syntax error ({0}). Expecting identifier, found EOF.</value>
   </data>
   <data name="pe02" xml:space="preserve">
-    <value>Grammar error ({0}). First charactor is not allowed.</value>
+    <value>Syntax error ({0}). First charactor is not allowed.</value>
   </data>
-  <data name="pe03" xml:space="preserve">
-    <value>Grammar error ({0}). Expecting string, found EOF.</value>
+  <data name="itc03" xml:space="preserve">
+    <value>Syntax error ({0}). Expecting string, found EOF.</value>
   </data>
   <data name="pe04" xml:space="preserve">
-    <value>Grammar error ({0}). Expecting string.</value>
+    <value>Syntax error ({0}). Expecting string.</value>
   </data>
-  <data name="pe05" xml:space="preserve">
-    <value>Grammar error ({0}). Expecting string ending.</value>
+  <data name="itc05" xml:space="preserve">
+    <value>Syntax error ({0}). Expecting string ending.</value>
   </data>
-  <data name="pe07" xml:space="preserve">
-    <value>Grammar error ({0}). Expecting symbol '{1}', found '{2}'</value>
+  <data name="itc07" xml:space="preserve">
+    <value>Syntax error ({0}). Expecting symbol '{1}', found '{2}'</value>
   </data>
   <data name="pb10" xml:space="preserve">
     <value>The value of property '{0}' must be a positive integer</value>
   </data>
-  <data name="pe08" xml:space="preserve">
+  <data name="itc08" xml:space="preserve">
     <value>Syntax error ({0}). Expecting value for expression.</value>
   </data>
   <data name="pe09" xml:space="preserve">
     <value>Syntax error ({0}). Expecting operator for expression.</value>
   </data>
-  <data name="pe10" xml:space="preserve">
+  <data name="itc10" xml:space="preserve">
     <value>Syntax error ({0}). Expecting {1}, found {2}.</value>
   </data>
   <data name="pe11" xml:space="preserve">

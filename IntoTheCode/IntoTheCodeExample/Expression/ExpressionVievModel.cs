@@ -33,7 +33,7 @@ div Precedence = '2';
 sum Precedence = '1';
 sub Precedence = '1';
 exp collapse;
-par collapse;";
+//par collapse;";
 
         public ExpressionVievModel ()
         {
@@ -184,7 +184,7 @@ par collapse;";
             }
             catch (Exception e)
             {
-                Output = "Expression does not compile. \r\n" + e.Message;
+                Output = "Expression does not compile.\r\n(The processing of parser output fails)\r\n" + e.Message;
                 return;
             }
 

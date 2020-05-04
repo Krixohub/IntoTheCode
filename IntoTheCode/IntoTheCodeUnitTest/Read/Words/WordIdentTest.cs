@@ -25,11 +25,11 @@ namespace Read.Words
 
             //                 "1234   Read 'identifier', EOF error.
             Util.WordLoadError("   ", word, testName,
-                "pe01: Grammar error (testRule). Expecting identifier, found EOF. Line 1, colomn 4");
+                "itc01: Syntax error (testRule). Expecting identifier, found EOF. Line 1, colomn 4");
 
             //                 "123456  Read 'identifier', not allowed first letter.
             Util.WordLoadError(" 2r  ", word, testName,
-                "pe10: Syntax error (testRule). Expecting identifier, found 2. Line 1, colomn 2");
+                "itc10: Syntax error (testRule). Expecting identifier, found 2. Line 1, colomn 2");
         }
     }
 }

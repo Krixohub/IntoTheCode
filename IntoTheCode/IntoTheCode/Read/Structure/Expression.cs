@@ -340,7 +340,7 @@ namespace IntoTheCode.Read.Structure
             if (!first)
             {
                 // Expects a value
-                TextBuffer.Status.AddParseError(() => MessageRes.pe08, GetRule(this).Name);
+                TextBuffer.Status.AddParseError(() => MessageRes.itc08, GetRule(this).Name);
 
                 // Read a value 
                 foreach (var item in _otherForms)
@@ -456,7 +456,7 @@ namespace IntoTheCode.Read.Structure
             if (!first)
             {
                 // Expects a value
-                TextBuffer.Status.AddParseError(() => MessageRes.pe08, GetRule(this).Name);
+                TextBuffer.Status.AddParseError(() => MessageRes.itc08, GetRule(this).Name);
 
                 // Read a value 
                 foreach (var item in _otherForms)

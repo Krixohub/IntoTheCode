@@ -26,15 +26,15 @@ namespace Read.Words
 
             //                 "1234  Read 'symbol', EOF error.
             Util.WordLoadError("   ", word, testName,
-                "pe10: Syntax error (testRule). Expecting symbol 'loop', found EOF. Line 1, colomn 4");
+                "itc10: Syntax error (testRule). Expecting symbol 'loop', found EOF. Line 1, colomn 4");
 
             //                 "1234  Read 'symbol', EOF error.
             Util.WordLoadError(" lo", word, testName,
-                "pe10: Syntax error (testRule). Expecting symbol 'loop', found EOF. Line 1, colomn 4");
+                "itc10: Syntax error (testRule). Expecting symbol 'loop', found EOF. Line 1, colomn 4");
 
             //                 "12345678  Read 'symbol',  error.
             Util.WordLoadError(" looP  ", word, testName,
-                "pe07: Grammar error (testRule). Expecting symbol 'loop', found 'looP' Line 1, colomn 2");
+                "itc07: Syntax error (testRule). Expecting symbol 'loop', found 'looP' Line 1, colomn 2");
          }
     }
 }

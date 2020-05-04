@@ -30,10 +30,10 @@ namespace Read.Words
 
             //                 "1234567890123456
             Util.WordLoadError("  a234567  ", word, "Int no ciffer",
-                "pe10: Syntax error (testRule). Expecting int, found a. Line 1, colomn 3");
+                "itc10: Syntax error (testRule). Expecting int, found a. Line 1, colomn 3");
 
             Util.WordLoadError("  -a23456  ", word, "Int no ciffer",
-                "pe10: Syntax error (testRule). Expecting int, found a. Line 1, colomn 4");
+                "itc10: Syntax error (testRule). Expecting int, found a. Line 1, colomn 4");
 
             //                 "1234567890123456
             Util.WordLoadError("  12345678901  ", word, "Int too long",

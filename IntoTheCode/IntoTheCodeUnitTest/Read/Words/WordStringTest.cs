@@ -23,17 +23,20 @@ namespace Read.Words
             string testName = "String";
             var word = new WordString();
 
+            //"itc03: Syntax error (testRule). Expecting string, found EOF. Line 1, colomn 4");
             //                 "1234  Read 'string', EOF error.
             Util.WordLoadError("   ", word, testName,
-                "pe03: Grammar error (testRule). Expecting string, found EOF. Line 1, colomn 4");
+                Util.BuildMsg(1, 4, () => MessageRes.itc03, "testRule"));
 
-            //                 "12345678  Read 'string', Expecting string (starting ' not found).
+            //"itc10: Syntax error (testRule). Expecting ', found f. Line 1, colomn 4");
+            //                 "12345678  
             Util.WordLoadError("   fail", word, testName,
-                "pe10: Syntax error (testRule). Expecting ', found f. Line 1, colomn 4");
+                Util.BuildMsg(1, 4, () => MessageRes.itc10, "testRule", "'", "f"));
 
+            //"itc05: Syntax error (testRule). Expecting string ending. Line 1, colomn 5");
             //                 "123456789  Read 'string', ending ' not found.
             Util.WordLoadError("   'fail", word, testName,
-                "pe05: Grammar error (testRule). Expecting string ending. Line 1, colomn 5");
+                Util.BuildMsg(1, 5, () => MessageRes.itc05, "testRule"));
 
 
         }

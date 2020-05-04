@@ -56,15 +56,15 @@ namespace IntoTheCode.Read.Words
         {
             TextBuffer.FindNextWord(null, false);
             if (TextBuffer.IsEnd(1))
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe03);
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.itc03);
 
             if (TextBuffer.GetChar() != '\'')
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar, 0, () => MessageRes.pe10, "\'", TextBuffer.GetChar());
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar, 0, () => MessageRes.itc10, "\'", TextBuffer.GetChar());
 
 
             int to = TextBuffer.GetIndexAfter("'", TextBuffer.PointerNextChar + 1);
             if (to <= TextBuffer.PointerNextChar)
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar + 1, 0, () => MessageRes.pe05);
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar + 1, 0, () => MessageRes.itc05);
 
             TextBuffer.PointerNextChar = to;
             //TextBuffer.FindNextWord(null, true);

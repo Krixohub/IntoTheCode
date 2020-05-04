@@ -29,7 +29,7 @@ namespace IntoTheCodeExample.Expression.Executers
                 case "par":
                     return Factory(elem.ChildNodes.OfType<CodeElement>().FirstOrDefault());
                 default:
-                    throw new Exception("Unknown expression element");
+                    throw new Exception(string.Format("Unknown expression element: '{0}'", elem.Name));
             }
         }
     }

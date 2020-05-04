@@ -264,41 +264,41 @@ exp collapse;
             // --------------------------------- Expression Error ---------------------------------
 
             code = "a + b * c - d  > e /  + f";
-            //pe08: Syntax error (exp). Expecting value for expression. Line 1, colomn 23
+            //itc08: Syntax error (exp). Expecting value for expression. Line 1, colomn 23
             markup = "";
             Util.ParserLoad(grammar, code, markup,
-                Util.BuildMsg(1, 23, () => MessageRes.pe08, "exp"));
+                Util.BuildMsg(1, 23, () => MessageRes.itc08, "exp"));
 
             code = "a + b &";
-            // pe07: Grammar error (mul). Expecting symbol '*', found '&' Line 1, colomn 7
+            // itc07: Syntax error (mul). Expecting symbol '*', found '&' Line 1, colomn 7
             Util.ParserLoad(grammar, code, markup,
-                Util.BuildMsg(1, 7, () => MessageRes.pe07, "mul", "*", "&"));
+                Util.BuildMsg(1, 7, () => MessageRes.itc07, "mul", "*", "&"));
 
             code = "a + b * c - d  > e &  + f";
             //p05: End of input not reached. Line 1, colomn 20
-            //pe07: Grammar error (mul). Expecting symbol '*', found '&' Line 1, colomn 20
+            //itc07: Syntax error (mul). Expecting symbol '*', found '&' Line 1, colomn 20
             Util.ParserLoad(grammar, code, markup,
-                Util.BuildMsg(1, 20, () => MessageRes.pe07, "mul", "*", "&"));
+                Util.BuildMsg(1, 20, () => MessageRes.itc07, "mul", "*", "&"));
 
             code = "a + (b ) ";
             Util.ParserLoad(grammar, code, markup);
 
             code = " ( b ";
-            // pe10: Syntax error (exp). Expecting symbol ')', found EOF. Line 1, colomn 6
+            // itc10: Syntax error (exp). Expecting symbol ')', found EOF. Line 1, colomn 6
             Util.ParserLoad(grammar, code, markup,
-                Util.BuildMsg(1, 6, () => MessageRes.pe10, "exp", "symbol ')'", "EOF"));
+                Util.BuildMsg(1, 6, () => MessageRes.itc10, "exp", "symbol ')'", "EOF"));
 
             code = "a + ( b ";
             markup = "";
-            // pe10: Syntax error (exp). Expecting symbol ')', found EOF. Line 1, colomn 6
+            // itc10: Syntax error (exp). Expecting symbol ')', found EOF. Line 1, colomn 6
             Util.ParserLoad(grammar, code, markup,
-                Util.BuildMsg(1, 9, () => MessageRes.pe10, "exp", "symbol ')'", "EOF"));
+                Util.BuildMsg(1, 9, () => MessageRes.itc10, "exp", "symbol ')'", "EOF"));
 
             code = "a + b) ";
             markup = "";
-            // pe07: Grammar error (mul). Expecting symbol '*', found ')' Line 1, colomn 6
+            // itc07: Syntax error (mul). Expecting symbol '*', found ')' Line 1, colomn 6
             Util.ParserLoad(grammar, code, markup,
-                Util.BuildMsg(1, 6, () => MessageRes.pe07, "mul", "*", ")"));
+                Util.BuildMsg(1, 6, () => MessageRes.itc07, "mul", "*", ")"));
 
             code = "a + 2 * (c + 4)";
             markup = @"<aaa>

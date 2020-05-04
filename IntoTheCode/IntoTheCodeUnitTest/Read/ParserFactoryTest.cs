@@ -51,10 +51,10 @@ namespace Read
             Util.ParserLoad("stx = ':'; \r\n settings stx collapse; ", string.Empty, string.Empty,
                 Util.BuildMsg(1, 1, () => MessageRes.pb09, "stx"));
 
-            // pe10: Syntax error (value). Expecting ', found f. Line 2, colomn 26
+            // itc10: Syntax error (value). Expecting ', found f. Line 2, colomn 26
             //                    "12345678901234\12345678901234567890123456
             Util.ParserLoad("stx = ':'; \r\n settings stx collapse = false; ", string.Empty, string.Empty,
-                Util.BuildMsg(2, 26, () => MessageRes.pe10, "value", "'", "f"));
+                Util.BuildMsg(2, 26, () => MessageRes.itc10, "value", "'", "f"));
 
             // pb11: The rule 'sty' must have a non recursive path. Line 1, colomn 12
             Util.ParserLoad("stx = sty; sty = stx;", string.Empty, string.Empty,

@@ -55,10 +55,10 @@ namespace IntoTheCode.Read.Words
             int from = TextBuffer.PointerNextChar;
 
             if (TextBuffer.IsEnd(1))
-                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe01);
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.itc01);
 
             if (!AllowedCharsFirst.Contains(TextBuffer.GetChar().ToString().ToLower()))
-                return TextBuffer.Status.AddSyntaxError(this, from, 0, () => MessageRes.pe10, GetGrammar(), TextBuffer.GetChar());
+                return TextBuffer.Status.AddSyntaxError(this, from, 0, () => MessageRes.itc10, GetGrammar(), TextBuffer.GetChar());
             else
                 TextBuffer.IncPointer();
 

@@ -79,7 +79,7 @@ namespace IntoTheCode.Read
         {
             get
             {
-                string grammar = @"MetaGrammar = {rule} [settings];
+                string grammar = @"Grammar     = {rule} [settings];
 rule        = identifier '=' expression ';';
 expression  = element {[or] element};
 element     = identifier | symbol | sequence | optional | parentheses;
@@ -99,7 +99,7 @@ value       = string;";
 
         // property    = 'collapse' | 'trust';
 
-        /// <summary>The shapin grammar.</summary>
+        /// <summary>The settings of meta grammar.</summary>
         internal static string MetaSettings
         {
             get
@@ -110,13 +110,6 @@ rule        comment;
 expression  collapse;
 element     collapse;
 settings    collapse;";
-                //    return "";
-                //                string grammar = @"
-                //settings
-                //expression collapse;
-                //element    collapse;
-                //block      collapse;
-                //settings   collapse;";
                 return grammar;
             }
         }
@@ -125,9 +118,9 @@ settings    collapse;";
         {
             List<Rule> list = new List<Rule>();
 
-            // Build Mo Backus Naur Form in code.
+            // Build Parser in code.
             // grammar   = {rule} [settings];
-            list.Add(new Rule(HardGrammar_,
+            list.Add(new Rule(MetaGrammar_,
                 new Sequence(new RuleLink(Rule_______)),
                 new Optional(new RuleLink(Settings___)))
                 { Comment = true });

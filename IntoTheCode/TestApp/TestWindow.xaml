@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:IntoTheCodeExample.Expression;assembly=IntoTheCodeExample"
         mc:Ignorable="d"
-        Title="TestWindow" Height="450" Width="800">
+        Title="TestWindow" Height="800" Width="1200">
     <Grid>
         <TabControl x:Name="Tabs" >
             <TabItem Header="Menu" HorizontalAlignment="Left" Height="20" Margin="0" VerticalAlignment="Top" Width="54">

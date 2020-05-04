@@ -90,7 +90,7 @@ namespace IntoTheCode.Read.Words
 
             if (TextBuffer.IsEnd(Value.Length -1))
             {
-                TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.pe10, MetaParser.WordSymbol_ +  " " + GetGrammar(), "EOF");
+                TextBuffer.Status.AddSyntaxError(this, TextBuffer.Length, 0, () => MessageRes.itc10, MetaParser.WordSymbol_ +  " " + GetGrammar(), "EOF");
                 return SetPointerBack(subStr.From);
             }
 
@@ -100,7 +100,7 @@ namespace IntoTheCode.Read.Words
                 else
                 {
                     subStr.To = subStr.From + Value.Length;
-                    TextBuffer.Status.AddSyntaxError(this, subStr.From, 0, () => MessageRes.pe07, Value, TextBuffer.GetSubString(subStr));
+                    TextBuffer.Status.AddSyntaxError(this, subStr.From, 0, () => MessageRes.itc07, Value, TextBuffer.GetSubString(subStr));
                     return SetPointerBack(subStr.From);
                 }
 

@@ -61,74 +61,56 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error. Resource is not the right type. Modifiers must be public.
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting identifier, found EOF..
         /// </summary>
-        public static string base0001 {
+        public static string itc01 {
             get {
-                return ResourceManager.GetString("base0001", resourceCulture);
+                return ResourceManager.GetString("itc01", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t open windows event log for writing.
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting string, found EOF..
         /// </summary>
-        public static string base0002 {
+        public static string itc03 {
             get {
-                return ResourceManager.GetString("base0002", resourceCulture);
+                return ResourceManager.GetString("itc03", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The resource can&apos;t be found: {0}. Add resource file to Post.
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting string ending..
         /// </summary>
-        public static string base0003 {
+        public static string itc05 {
             get {
-                return ResourceManager.GetString("base0003", resourceCulture);
+                return ResourceManager.GetString("itc05", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test message.
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting symbol &apos;{1}&apos;, found &apos;{2}&apos;.
         /// </summary>
-        public static string base0004 {
+        public static string itc07 {
             get {
-                return ResourceManager.GetString("base0004", resourceCulture);
+                return ResourceManager.GetString("itc07", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Value must be a UnaryExpression or a MemberExpression.
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting value for expression..
         /// </summary>
-        public static string base0005 {
+        public static string itc08 {
             get {
-                return ResourceManager.GetString("base0005", resourceCulture);
+                return ResourceManager.GetString("itc08", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lambda expression is null.
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting {1}, found {2}..
         /// </summary>
-        public static string base0006 {
+        public static string itc10 {
             get {
-                return ResourceManager.GetString("base0006", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deeper error.
-        /// </summary>
-        public static string base0007 {
-            get {
-                return ResourceManager.GetString("base0007", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Devel. only: .
-        /// </summary>
-        public static string DevelOnly {
-            get {
-                return ResourceManager.GetString("DevelOnly", resourceCulture);
+                return ResourceManager.GetString("itc10", resourceCulture);
             }
         }
         
@@ -138,24 +120,6 @@ namespace IntoTheCode.Message {
         public static string LineAndCol {
             get {
                 return ResourceManager.GetString("LineAndCol", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Text channel &apos;{0}&apos; not working.
-        /// </summary>
-        public static string MsgChannelError {
-            get {
-                return ResourceManager.GetString("MsgChannelError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An unhandled exception happened.
-        /// </summary>
-        public static string MsgUnhandledException {
-            get {
-                return ResourceManager.GetString("MsgUnhandledException", resourceCulture);
             }
         }
         
@@ -304,16 +268,7 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Grammar error ({0}). Expecting identifier, found EOF..
-        /// </summary>
-        public static string pe01 {
-            get {
-                return ResourceManager.GetString("pe01", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Grammar error ({0}). First charactor is not allowed..
+        ///   Looks up a localized string similar to Syntax error ({0}). First charactor is not allowed..
         /// </summary>
         public static string pe02 {
             get {
@@ -322,47 +277,11 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Grammar error ({0}). Expecting string, found EOF..
-        /// </summary>
-        public static string pe03 {
-            get {
-                return ResourceManager.GetString("pe03", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Grammar error ({0}). Expecting string..
+        ///   Looks up a localized string similar to Syntax error ({0}). Expecting string..
         /// </summary>
         public static string pe04 {
             get {
                 return ResourceManager.GetString("pe04", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Grammar error ({0}). Expecting string ending..
-        /// </summary>
-        public static string pe05 {
-            get {
-                return ResourceManager.GetString("pe05", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Grammar error ({0}). Expecting symbol &apos;{1}&apos;, found &apos;{2}&apos;.
-        /// </summary>
-        public static string pe07 {
-            get {
-                return ResourceManager.GetString("pe07", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Syntax error ({0}). Expecting value for expression..
-        /// </summary>
-        public static string pe08 {
-            get {
-                return ResourceManager.GetString("pe08", resourceCulture);
             }
         }
         
@@ -372,15 +291,6 @@ namespace IntoTheCode.Message {
         public static string pe09 {
             get {
                 return ResourceManager.GetString("pe09", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Syntax error ({0}). Expecting {1}, found {2}..
-        /// </summary>
-        public static string pe10 {
-            get {
-                return ResourceManager.GetString("pe10", resourceCulture);
             }
         }
         

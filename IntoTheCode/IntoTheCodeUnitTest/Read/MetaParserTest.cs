@@ -83,7 +83,7 @@ namespace Read
         {
             return
          @"
-HardGrammar = {rule} [settings];
+MetaGrammar = {rule} [settings];
 rule        = identifier '=' expression ';';
 expression  = element {[or] element};
 element     = identifier | symbol | block;
@@ -110,11 +110,11 @@ settings    collapse;";
         /// <summary>To test changes to the meta grammar.</summary>
         private static TextDocument TestMetaGrammarDoc()
         {
-            TextDocument grammar = new TextDocument(new List<CodeElement>(), MetaParser.MetaGrammar_);
+            TextDocument grammar = new TextDocument(new List<CodeElement>(), MetaParser.Grammar);
 
             // grammar   = {rule}
             grammar.Add(new HardElement("rule", string.Empty,
-                new HardElement("identifier", "MetaGrammar"),
+                new HardElement("identifier", "Grammar"),
                 new HardElement("sequence", string.Empty,
                     new HardElement("identifier", "rule")),
                 new HardElement("optional", string.Empty,
