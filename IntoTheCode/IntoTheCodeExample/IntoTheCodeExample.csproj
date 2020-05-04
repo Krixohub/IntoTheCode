@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CsvData\CsvDataVievModel.cs" />
+    <Compile Include="ExampleVievModelBase.cs" />
     <Compile Include="Expression\Executers\Divide.cs" />
     <Compile Include="Expression\Executers\ExpressionBase.cs" />
     <Compile Include="Expression\Executers\Minus.cs" />

@@ -1,7 +1,8 @@
-﻿using System;
+﻿using IntoTheCode.Read;
+using System;
 using System.Collections.Generic;
 
-namespace IntoTheCode.Read
+namespace IntoTheCode
 {
     /// <summary>Error when the input doesn't match the Grammar.</summary>
     public class ParserException : Exception

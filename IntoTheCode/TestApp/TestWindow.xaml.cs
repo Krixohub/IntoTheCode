@@ -16,10 +16,16 @@ namespace TestApp
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btnExpression_Click(object sender, RoutedEventArgs e)
         {
             ShowTab("Expression", typeof(ExpressionTab));
         }
+
+        private void btnCsvData_Click(object sender, RoutedEventArgs e)
+        {
+            ShowTab("CsvData", typeof(CsvDataTab));
+        }
+
 
         private void ShowTab(string name, Type controlType)
         {

@@ -26,12 +26,12 @@ namespace Read
                 Util.BuildMsg(1, 7, () => MessageRes.itc24, "hans"));
 
             // itc26: Settings: Identifier 'hans' cant be resolved Line 1, colomn 21
-            //                    "123456789012345678901
+            //              "123456789012345678901
             Util.ParserLoad("stx = ':'; settings hans collapse;", string.Empty, string.Empty,
                 Util.BuildMsg(1, 21, () => MessageRes.itc26, "hans"));
 
             // itc27: Settings: Identifier 'stx' Property 'flip' cant be resolved Line 1, colomn 25
-            //                    "1234567890123456789012345
+            //              "1234567890123456789012345
             Util.ParserLoad("stx = ':'; settings stx flip;", string.Empty, string.Empty,
                 Util.BuildMsg(1, 25, () => MessageRes.itc27, "stx", "flip"));
 

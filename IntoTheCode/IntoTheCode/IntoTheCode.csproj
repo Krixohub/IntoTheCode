@@ -68,7 +68,7 @@
     <Compile Include="CommentElement.cs" />
     <Compile Include="Read\HardElement.cs" />
     <Compile Include="CodeElement.cs" />
-    <Compile Include="Read\ParserException.cs" />
+    <Compile Include="ParserException.cs" />
     <Compile Include="Read\MetaParser.cs" />
     <Compile Include="Read\Structure\SetOfElementsBase.cs" />
     <Compile Include="Read\Structure\ElementStringEscapeStyle.cs" />
