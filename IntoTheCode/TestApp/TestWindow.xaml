@@ -10,9 +10,10 @@
         <TabControl x:Name="Tabs" >
             <TabItem Header="Menu" HorizontalAlignment="Left" Height="20" Margin="0" VerticalAlignment="Top" Width="54">
                 <Grid Background="#FFE5E5E5">
-                    <StackPanel HorizontalAlignment="Left" Margin="35,40,0,0" VerticalAlignment="Top">
-                        <Button Content="csv data"  Width="75" Click="btnCsvData_Click" Margin="5" />
-                        <Button Content="Expression" Width="75" Click="btnExpression_Click" Margin="5" />
+                    <StackPanel HorizontalAlignment="Left" Margin="35,40,0,0" VerticalAlignment="Top" Width="133">
+                        <Button Content="csv data" Click="btnCsvData_Click" Margin="5" />
+                        <Button Content="Expression" Click="btnExpression_Click" Margin="5" />
+                        <Button Content="Domain language" Click="btnDomLan_Click" Margin="5" />
                     </StackPanel>
                 </Grid>
             </TabItem>

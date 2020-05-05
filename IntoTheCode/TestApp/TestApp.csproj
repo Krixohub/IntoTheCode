@@ -63,43 +63,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ComponentAdministration.xaml.cs">
-      <DependentUpon>ComponentAdministration.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Grammar\GrammarEdit.xaml.cs">
-      <DependentUpon>GrammarEdit.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TestWindow.xaml.cs">
       <DependentUpon>TestWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\SyntaxAnalyzerVm.cs" />
-    <Compile Include="ViewModel\GrammarEditVm.cs" />
     <Compile Include="View\CsvDataTab.xaml.cs">
       <DependentUpon>CsvDataTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\BasicTestUserControl.xaml.cs">
       <DependentUpon>BasicTestUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\DomainLanguageTab.xaml.cs">
+      <DependentUpon>DomainLanguageTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ExpressionTab.xaml.cs">
       <DependentUpon>ExpressionTab.xaml</DependentUpon>
     </Compile>
-    <Page Include="ComponentAdministration.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ResourcesMerged.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ClientWpf\Resources\GeneralXamlStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ResourceWindowStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Grammar\SyntaxAnalyzer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -107,14 +90,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Grammar\SyntaxAnalyzer.xaml.cs">
-      <DependentUpon>SyntaxAnalyzer.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="Grammar\GrammarEdit.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="TestWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -124,6 +99,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\BasicTestUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\DomainLanguageTab.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -169,6 +148,7 @@
       <Name>IntoTheCode</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

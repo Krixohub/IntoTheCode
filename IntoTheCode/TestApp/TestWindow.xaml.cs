@@ -26,6 +26,10 @@ namespace TestApp
             ShowTab("CsvData", typeof(CsvDataTab));
         }
 
+        private void btnDomLan_Click(object sender, RoutedEventArgs e)
+        {
+            ShowTab("Domain language", typeof(DomainLanguageTab));
+        }
 
         private void ShowTab(string name, Type controlType)
         {

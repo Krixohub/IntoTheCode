@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CsvData\CsvDataVievModel.cs" />
+    <Compile Include="DomainLanguage\DomainLanguageVievModel.cs" />
     <Compile Include="ExampleVievModelBase.cs" />
     <Compile Include="Expression\Executers\Divide.cs" />
     <Compile Include="Expression\Executers\ExpressionBase.cs" />
@@ -59,5 +60,6 @@
       <Name>IntoTheCode</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

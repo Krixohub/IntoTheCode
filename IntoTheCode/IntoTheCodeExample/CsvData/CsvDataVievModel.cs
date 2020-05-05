@@ -7,25 +7,39 @@ namespace IntoTheCodeExample.CsvData
 {
     public class CsvDataVievModel : ExampleVievModelBase
     {
-        private string _initialInput = @"col1,col2,col3
-main d45,hej,d4
-main d22,dav,d7
-sub rt,d4,'hg'
-sub er,d5,'hj'";
+        private string _initialInput = @"animal,gestation,longevity
+Ass,365,19
+Bear,220,22
+Cat,61,11
+Chicken,22,7
+Cow,280,11
+Deer,249,13
+Dog,63,11
+Elephant,624,35
+Fox,57,9
+Goat,151,12
+Groundhog,31,7
+Hippopotamus,240,30
+Horse,336,23
+Kangaroo,35,5
+Lion,108,10
+Monkey,205,14
+Pig,115,10
+Rabbit,31,7
+Sheep,151,12
+Squirrel,44,8
+Wolf,62,11";
 
         private string _initialGrammar = @"syntax     = headerline {valueline};
-headerline = headerA ',' headerA ',' headerA;
-valueline  = 'main' valueA ',' valueB ',' valueC {subLine};
-subLine    = 'sub' value0 ',' value1 ',' value2;
+headerline = headerA ',' headerB ',' headerC;
+valueline  = valueA ',' valueB ',' valueC;
 headerA    = identifier;
 headerB    = identifier;
 headerC    = identifier;
 valueA     = identifier;
-valueB     = identifier;
-valueC     = identifier;
-value0     = identifier;
-value1     = identifier;
-value2     = string;";
+valueB     = int;
+valueC     = int;
+";
 
         public CsvDataVievModel()
         {
@@ -39,7 +53,12 @@ value2     = string;";
             string result;
             try
             {
-                result = "fine"; // doc.ChildNodes.OfType<CodeElement>().FirstOrDefault();
+                result = "ok\r\n"; // doc.ChildNodes.OfType<CodeElement>().FirstOrDefault();
+                int animalCount = doc.Nodes("valueline").Count();
+                result += "Number of animals: " + animalCount + "\r\n";
+                float longlivitySum = doc.Nodes("valueline").Sum(node => int.Parse(node.Nodes("valueC").First().Value));
+                if (animalCount > 0)
+                result += "Average longevity: " + longlivitySum / animalCount ;
             }
             catch (Exception e)
             {

@@ -9,7 +9,6 @@
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="FontFamily" Value="Lucida Console"/>
-        <!--Courier New IsReadOnly="True"-->
         <Setter Property="Margin" Value="0"/>
         <Setter Property="IsReadOnly" Value="True"/>
     </Style>
@@ -35,20 +34,8 @@
         <Setter Property="Height" Value="5"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
     </Style>
-    <Style TargetType="DataGrid"><!--x:Key="DtoDataGrid"-->
+    <Style TargetType="DataGrid">
         <Setter Property="CanUserAddRows" Value="False"/>
         <Setter Property="CanUserDeleteRows" Value="False"/>
     </Style>
-
-    <!--<Style  TargetType="{x:Type colorEditor:ColorTextBox}">-->
-        <!-- put setters here -->
-        <!--<Setter Property="FontSize" Value="13"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="VerticalAlignment" Value="Stretch"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
-        <Setter Property="FontFamily" Value="Lucida Console"/>
-        --><!--Courier New--><!--
-        <Setter Property="Margin" Value="0"/>
-        <Setter Property="AcceptsReturn" Value="True"/>-->
-    <!--</Style>-->
 </ResourceDictionary>

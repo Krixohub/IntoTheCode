@@ -31,6 +31,7 @@
             <DockPanel Grid.Column="0" >
                 <Label Content="Input Editor" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                    <Button Content="Load" Click="btnCodeLoad_Click"  />
                     <TextBlock FlowDirection="LeftToRight" Text="Fontsize:" />
                     <TextBox Text="14" x:Name="tbFontSize1" Style="{StaticResource ToolBarText}"/>
                 </StackPanel>
