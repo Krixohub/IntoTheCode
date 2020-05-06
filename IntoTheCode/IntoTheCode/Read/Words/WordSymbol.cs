@@ -36,7 +36,7 @@ namespace IntoTheCode.Read.Words
                     return true;
                 }
                 else
-                    status.AddBuildError(() => MessageRes.itc33, property);
+                    status.AddBuildError(() => MessageRes.itc33, property, property.Value);
             }
             if (property.Value == nameof(RightAssociative))
             {

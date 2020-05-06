@@ -19,11 +19,18 @@ namespace TestApp.View
         }
 
 
-        private void btnCodeLoad_Click(object sender, RoutedEventArgs e)
+        private void btnCodeOpen_Click(object sender, RoutedEventArgs e)
         {
             vm = DataContext as ExampleVievModelBase;
             OpenFileDialog(s => vm.Input = s);
         }
+
+        private void btnGrammarOpen_Click(object sender, RoutedEventArgs e)
+        {
+            vm = DataContext as ExampleVievModelBase;
+            OpenFileDialog(s => vm.Grammar = s);
+        }
+
         /// <summary>Show FileDialog to open file.</summary>
         private void OpenFileDialog(Action<string> set) //object sender, RoutedEventArgs e)
         {

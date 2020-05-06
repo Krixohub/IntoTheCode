@@ -1,5 +1,4 @@
 ﻿using IntoTheCode;
-using IntoTheCodeExample.Expression.Executers;
 using System;
 using System.Linq;
 
@@ -32,10 +31,11 @@ Wolf,62,11";
 
         private string _initialGrammar = @"syntax     = headerline {valueline};
 headerline = headerA ',' headerB ',' headerC;
-valueline  = valueA ',' valueB ',' valueC;
 headerA    = identifier;
 headerB    = identifier;
 headerC    = identifier;
+
+valueline  = valueA ',' valueB ',' valueC;
 valueA     = identifier;
 valueB     = int;
 valueC     = int;
@@ -51,22 +51,32 @@ valueC     = int;
         {
             // Compile expression
             string result;
+            int animalCount = 0;
             try
             {
                 result = "ok\r\n"; // doc.ChildNodes.OfType<CodeElement>().FirstOrDefault();
-                int animalCount = doc.Nodes("valueline").Count();
+                animalCount = doc.Nodes("valueline").Count();
                 result += "Number of animals: " + animalCount + "\r\n";
-                float longlivitySum = doc.Nodes("valueline").Sum(node => int.Parse(node.Nodes("valueC").First().Value));
-                if (animalCount > 0)
-                result += "Average longevity: " + longlivitySum / animalCount ;
+                
             }
             catch (Exception e)
             {
-                Output = "Output cant be read.\r\n" + e.Message;
+                Output = "Output cant be read.\r\n" + e.Message + "\r\n";
                 return;
             }
 
-          
+            try
+            {
+                float longlivitySum = doc.Nodes("valueline").Sum(node => int.Parse(node.Nodes("valueC").FirstOrDefault()?.Value ?? "0"));
+                if (animalCount > 0)
+                    result += "Average longevity: " + longlivitySum / animalCount;
+            }
+            catch (Exception e)
+            {
+                result += "longevity cant be read.\r\n" + e.Message + "\r\n";
+            }
+
+
             Output = "Csv data: " + result;
         }
 

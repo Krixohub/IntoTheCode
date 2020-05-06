@@ -10,6 +10,11 @@
              xmlns:vm="clr-namespace:IntoTheCodeExample.Expression;assembly=IntoTheCodeExample"
         <vm:ExpressionVievModel/>
     </UserControl.DataContext>-->
+    <!--<UserControl.Resources>
+        <Style TargetType="DockPanel">
+
+        </Style>
+    </UserControl.Resources>-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="3"/>
@@ -29,10 +34,10 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <DockPanel Grid.Column="0" >
-                <Label Content="Input Editor" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                    <Button Content="Load" Click="btnCodeLoad_Click"  />
-                    <TextBlock FlowDirection="LeftToRight" Text="Fontsize:" />
+                <Label Content="Input Editor" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top"/>
+                <StackPanel Style="{StaticResource BoxPanel}" DockPanel.Dock="Top">
+                    <Button Content="File open" Click="btnCodeOpen_Click"  />
+                    <TextBlock Text="Fontsize:" Style="{StaticResource BoxLabel}" />
                     <TextBox Text="14" x:Name="tbFontSize1" Style="{StaticResource ToolBarText}"/>
                 </StackPanel>
                 <TextBox Text="{Binding Path=Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -40,9 +45,9 @@
                          FontSize="{Binding ElementName=tbFontSize1, Path=Text}" />
             </DockPanel>
             <DockPanel Grid.Column="2" >
-                <Label Content="Result" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                    <TextBlock FlowDirection="LeftToRight" Text="Fontsize:" />
+                <Label Content="Result" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top"/>
+                <StackPanel Style="{StaticResource BoxPanel}" DockPanel.Dock="Top">
+                    <TextBlock Text="Fontsize:" Style="{StaticResource BoxLabel}"/>
                     <TextBox Text="12" x:Name="tbFontSize2" Style="{StaticResource ToolBarText}"/>
                 </StackPanel>
                 <TextBox DockPanel.Dock="Top" Text="{Binding Path=Output, Mode=OneWay}"
@@ -50,9 +55,9 @@
                          FontSize="{Binding ElementName=tbFontSize2, Path=Text, Mode=TwoWay}"/>
             </DockPanel>
             <DockPanel Grid.Column="4" >
-                <Label Content="Input as tree data" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                    <TextBlock FlowDirection="LeftToRight" Text="Fontsize:" />
+                <Label Content="Input as tree data" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top"/>
+                <StackPanel Style="{StaticResource BoxPanel}" DockPanel.Dock="Top">
+                    <TextBlock Text="Fontsize:" Style="{StaticResource BoxLabel}"/>
                     <TextBox Text="12" x:Name="tbFontSize3" Style="{StaticResource ToolBarText}"/>
                 </StackPanel>
                 <TextBox Text="{Binding Path=Markup, Mode=OneWay}"
@@ -72,19 +77,22 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <DockPanel Grid.Column="0" >
-                <Label Content="Grammar Editor" HorizontalAlignment="Center" DockPanel.Dock="Top" />
+                <Label Content="Grammar Editor" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top" />
+                <StackPanel Style="{StaticResource BoxPanel}" DockPanel.Dock="Top">
+                    <Button Content="File open" Click="btnGrammarOpen_Click"  />
+                </StackPanel>
                 <TextBox Text="{Binding Path=Grammar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          Style="{StaticResource ResourceKey=EditorTextBox}"
                          FontSize="{Binding ElementName=tbFontSize1, Path=Text}" />
             </DockPanel>
             <DockPanel Grid.Column="2" >
-                <Label Content="Grammar result" HorizontalAlignment="Center" DockPanel.Dock="Top" />
+                <Label Content="Grammar result" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top" />
                 <TextBox Text="{Binding Path=GrammarOutput, Mode=OneWay}" 
                          Style="{StaticResource ResourceKey=CodeTextBox}"
                          FontSize="{Binding ElementName=tbFontSize3, Path=Text}"/>
             </DockPanel>
             <DockPanel Grid.Column="4" >
-                <Label Content="Grammar tree data" HorizontalAlignment="Center" DockPanel.Dock="Top" />
+                <Label Content="Grammar tree data" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top" />
                 <TextBox Text="{Binding Path=GrammarMarkup, Mode=OneWay}" 
                          Style="{StaticResource ResourceKey=CodeTextBox}"
                          FontSize="{Binding ElementName=tbFontSize3, Path=Text}"/>

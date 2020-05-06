@@ -26,6 +26,30 @@
                 </Style>
             </Style.Resources>-->
     </Style>
+
+    <SolidColorBrush x:Key="BoxTitleBackground" Color="#228888" />
+    <SolidColorBrush x:Key="BoxTitleColor" Color="#ffffff" />
+
+    <Style x:Key="BoxTitle" TargetType="{x:Type Label}">
+        <Setter Property="Foreground" Value="{StaticResource BoxTitleColor}"/>
+        <Setter Property="Background" Value="{StaticResource BoxTitleBackground}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="BoxLabel" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource BoxTitleColor}"/>
+        <Setter Property="Background" Value="{StaticResource BoxTitleBackground}"/>
+        <Setter Property="FlowDirection" Value="LeftToRight"/>
+        <Setter Property="Margin" Value="2,0,2,0"/>
+    </Style>
+    <Style x:Key="BoxPanel" TargetType="{x:Type StackPanel}">
+        <Setter Property="Background" Value="{StaticResource BoxTitleBackground}"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
+    </Style>
+
+
+
     <Style x:Key="SplitV" TargetType="GridSplitter">
         <Setter Property="Width" Value="5"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
