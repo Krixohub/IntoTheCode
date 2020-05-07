@@ -23,6 +23,7 @@ namespace IntoTheCodeExample.Expression.Executers
                 case "sub":
                     return new Minus(elem);
                 case "number":
+                case "int":
                     return new Number(elem);
                 case "exp":
                     return Factory(elem.ChildNodes.OfType<CodeElement>().FirstOrDefault());

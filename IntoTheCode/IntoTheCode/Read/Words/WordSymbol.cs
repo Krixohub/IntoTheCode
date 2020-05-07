@@ -111,7 +111,7 @@ namespace IntoTheCode.Read.Words
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int ResolveErrorsLast(CodeElement last, int level)
         {
-            if (last.WordParser == this)
+            if (last.ParserElement == this)
             {
                 // found!
                 TextBuffer.PointerNextChar = last.SubString.To + a;

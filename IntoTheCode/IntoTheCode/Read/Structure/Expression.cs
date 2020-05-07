@@ -273,8 +273,8 @@ namespace IntoTheCode.Read.Structure
         private void AddOperationToTree(CodeElement leftExprCode, CodeElement rightOpCode, CodeElement rightExprCode, List<TextElement> comments)
         {
             // todo check for operators belonging to expression
-            WordBinaryOperator leftOperator = leftExprCode.WordParser as WordBinaryOperator;
-            WordBinaryOperator rightOpSymbol = rightOpCode.WordParser as WordBinaryOperator;
+            WordBinaryOperator leftOperator = leftExprCode.ParserElement as WordBinaryOperator;
+            WordBinaryOperator rightOpSymbol = rightOpCode.ParserElement as WordBinaryOperator;
 
             // is the insertpoint a value
             // Or the insertPoint is a completed expression (eg parentheses)
@@ -370,7 +370,7 @@ namespace IntoTheCode.Read.Structure
         public override int ResolveErrorsLast(CodeElement last, int level)
         {
             //todo last as (CodeElement) in ancestor
-            bool isOp = _binaryOperators.Any(op => last.WordParser == op);
+            bool isOp = _binaryOperators.Any(op => last.ParserElement == op);
 
             if (isOp)
             {

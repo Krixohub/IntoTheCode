@@ -48,8 +48,9 @@ namespace IntoTheCode.Read.Structure
         private bool GetTrustAuto()
         {
             // Set 'trust' property if this is the last of many elements
-            return (ChildNodes.Count > 2 && ChildNodes[ChildNodes.Count - 1] is WordSymbol) ||
-                AnyNested(elem => elem is WordSymbol && ((WordSymbol)elem).Value.Length > 2);
+            return (ChildNodes.Count > 6 && ChildNodes[ChildNodes.Count - 1] is WordSymbol);
+                //||
+                //AnyNested(elem => elem is WordSymbol && ((WordSymbol)elem).Value.Length > 2);
 
         }
 

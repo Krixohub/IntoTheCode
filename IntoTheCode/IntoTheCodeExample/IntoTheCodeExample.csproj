@@ -43,6 +43,14 @@
   <ItemGroup>
     <Compile Include="CsvData\CsvDataVievModel.cs" />
     <Compile Include="DomainLanguage\DomainLanguageVievModel.cs" />
+    <Compile Include="DomainLanguage\Executers\ExpDivide.cs" />
+    <Compile Include="DomainLanguage\Executers\ExpBase.cs" />
+    <Compile Include="DomainLanguage\Executers\ExpType.cs" />
+    <Compile Include="DomainLanguage\Executers\ExpMinus.cs" />
+    <Compile Include="DomainLanguage\Executers\ExpMultiply.cs" />
+    <Compile Include="DomainLanguage\Executers\ExpInt.cs" />
+    <Compile Include="DomainLanguage\Executers\ExpSum.cs" />
+    <Compile Include="DomainLanguage\Executers\Values.cs" />
     <Compile Include="ExampleVievModelBase.cs" />
     <Compile Include="Expression\Executers\Divide.cs" />
     <Compile Include="Expression\Executers\ExpressionBase.cs" />

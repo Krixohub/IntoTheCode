@@ -24,6 +24,7 @@ div Precedence = '2';
 sum Precedence = '1';
 sub Precedence = '1';
 exp collapse;
+//number collapse;
 //par collapse;";
 
         public ExpressionVievModel ()

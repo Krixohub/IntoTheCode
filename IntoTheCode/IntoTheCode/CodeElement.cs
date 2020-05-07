@@ -15,13 +15,23 @@ namespace IntoTheCode
             if (element != null)
                 Name = element.Name;
             SubString = pointer;
-            WordParser = element as WordBase;
+            ParserElement = element;
         }
 
         internal TextSubString SubString { get; private set; }
-        internal WordBase WordParser { get; set; }
+        internal ParserElementBase ParserElement { get; set; }
 
-        protected override string GetValue() {
-            return WordParser == null ? string.Empty : WordParser.GetWord(SubString); }
+        protected override string GetValue()
+        {
+            var _wordParser = ParserElement as WordBase;
+            return _wordParser == null ? string.Empty : _wordParser.GetWord(SubString);
+        }
+
+        public string GetLineAndColumn()
+        {
+            int line;
+            int col;
+            return ParserElement.TextBuffer.GetLineAndColumn(out line, out col, SubString.From);
+        }
     }
 }

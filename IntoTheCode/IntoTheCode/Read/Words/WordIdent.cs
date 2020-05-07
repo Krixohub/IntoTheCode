@@ -73,7 +73,7 @@ namespace IntoTheCode.Read.Words
         public override int ResolveErrorsLast(CodeElement last, int level)
         {
             CodeElement code = last as CodeElement;
-            if (code != null && code.WordParser == this)
+            if (code != null && code.ParserElement == this)
             {
                 // found!
                 TextBuffer.PointerNextChar = code.SubString.To + a;
