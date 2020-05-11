@@ -1,6 +1,6 @@
 ﻿namespace IntoTheCodeExample.DomainLanguage.Executers
 {
-    public enum ExpType
+    public enum DefType
     {
         Void,
         Int,

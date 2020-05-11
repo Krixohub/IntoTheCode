@@ -26,9 +26,9 @@ namespace IntoTheCodeExample.Expression.Executers
                 case "int":
                     return new Number(elem);
                 case "exp":
-                    return Factory(elem.ChildNodes.OfType<CodeElement>().FirstOrDefault());
+                    return Factory(elem.Codes().FirstOrDefault());
                 case "par":
-                    return Factory(elem.ChildNodes.OfType<CodeElement>().FirstOrDefault());
+                    return Factory(elem.Codes().FirstOrDefault());
                 default:
                     throw new Exception(string.Format("Unknown expression element: '{0}'", elem.Name));
             }

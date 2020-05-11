@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IntoTheCodeExample.DomainLanguage.Executers
+namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 {
     public abstract class ValueBase
     {

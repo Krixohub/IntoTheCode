@@ -24,17 +24,14 @@ statement = varDef | funcDef | assign | if | loop | (func ';') | return ;
 
 varDef    = declareId '=' exp ';';
 funcDef   = declareId '(' [declareId {',' declareId} ]')' body;
-declareId = type identifier;
+declareId = defType identifier;
+defType   = 'bool' | 'string' | 'int' | 'real' | 'void';
 
 assign    = identifier '=' exp ';';
-func      = identifier '(' [identifier {',' identifier} ]')';
+func      = identifier '(' [exp {',' exp} ]')';
 return    = 'return' exp ';';
 if        = 'if' '(' exp ')' block ['else' block];
 loop      = 'while' '(' exp ')' block;
-type      = tbool | tstring | tint;
-tbool     = 'bool';
-tstring   = 'string';
-tint      = 'int';
 
 exp       = mul | div | sum | sub | gt | lt | eq | value | '(' exp ')';
 mul       = exp '*' exp;
@@ -44,8 +41,9 @@ sub       = exp '-' exp;
 gt        = exp '>' exp;
 lt        = exp '<' exp;
 eq        = exp '==' exp;
-value     = int | real | string | func | identifier;
+value     = int | real | string | func | var;
 real      = int;
+var       = identifier;
 
 settings
 exp       collapse;
