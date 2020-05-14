@@ -23,7 +23,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                 bodyContext.DeclareVariable(parm.TheType, parm.TheName, item);
             }
 
-            FunctionBody = new Body(FuncType, elem.Codes("body").First(), bodyContext, parentFunctions);
+            FunctionBody = new LocalScope(FuncType, elem.Codes("body").First(), bodyContext, parentFunctions);
 
             //compileContext.DeclareFunction(VarType, Name, elem);
         }
@@ -34,7 +34,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public List<TypeAndId> Parameters;
         
-        public Body FunctionBody;
+        public LocalScope FunctionBody;
 
         public override bool Run(Context runtime)
         {

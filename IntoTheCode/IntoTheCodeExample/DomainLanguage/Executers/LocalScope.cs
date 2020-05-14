@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers
 {
-    public class Body : ProgramBase
+    public class LocalScope : ProgramBase
     {
         public FunctionContext _functions;
 
         private List<ProgramBase> _commands;
 
 
-        public Body(DefType resultType, CodeElement elem, Context compileContext, FunctionContext parentFunctions) : base(resultType)
+        public LocalScope(DefType resultType, CodeElement elem, Context compileContext, FunctionContext parentFunctions) : base(resultType)
         {
             _functions = new FunctionContext(parentFunctions);
 
