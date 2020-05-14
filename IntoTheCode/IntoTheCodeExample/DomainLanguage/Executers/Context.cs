@@ -16,6 +16,8 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public Dictionary<string, ValueBase> Variables { get; private set; }
 
+        public LocalScope FunctionScope { get; set; }
+
         public void SetVariable(string name, ExpBase exp)
         {
             ValueBase variable;
@@ -45,15 +47,15 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             Variables.Add(name, variable);
         }
 
-        public bool ExistsVariable(string name)
+        public DefType ExistsVariable(string name, CodeElement elem)
         {
             ValueBase variable;
             if (Variables.TryGetValue(name, out variable))
-                return true;
+                return variable.ResultType;
             else if (_parent != null)
-                return _parent.ExistsVariable(name);
-            else 
-                return false;
+                return _parent.ExistsVariable(name, elem);
+            else
+                throw new Exception(string.Format("A variable called '{0}', {1}, does not exists", name, elem.GetLineAndColumn()));
         }
 
         private ValueBase GetVariable(string name)

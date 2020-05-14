@@ -8,9 +8,9 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         private ExpTyped<bool> _expression;
         private ProgramBase _statement;
 
-        public While(DefType resultType, CodeElement elem) : base(resultType)
+        public While(CodeElement elem, Context compileContext) : base()
         {
-
+            //DefType resultType = compileContext.FunctionScope.ResultType;
         }
 
         public override bool Run(Context runtime)

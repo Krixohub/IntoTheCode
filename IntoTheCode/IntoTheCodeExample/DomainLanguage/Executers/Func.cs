@@ -7,7 +7,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public string Name;
 
 
-        public Func(DefType resultType, CodeElement elem) : base(resultType)
+        public Func(CodeElement elem, Context compileContext) : base()
         {
 
         }

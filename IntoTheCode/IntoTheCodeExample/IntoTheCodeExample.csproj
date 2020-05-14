@@ -52,7 +52,7 @@
     <Compile Include="DomainLanguage\Executers\TypeAndId.cs" />
     <Compile Include="DomainLanguage\Executers\ProgramBase.cs" />
     <Compile Include="DomainLanguage\Executers\Factory.cs" />
-    <Compile Include="DomainLanguage\Executers\Body.cs" />
+    <Compile Include="DomainLanguage\Executers\LocalScope.cs" />
     <Compile Include="DomainLanguage\Executers\Expression\ExpTyped.cs" />
     <Compile Include="DomainLanguage\Executers\Expression\ExpDivide.cs" />
     <Compile Include="DomainLanguage\Executers\ExpBase.cs" />

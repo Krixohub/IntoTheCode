@@ -9,8 +9,9 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         private ProgramBase _trueStatement;
         private ProgramBase _elseStatement;
 
-        public If(DefType resultType, CodeElement elem) : base(resultType)
+        public If(CodeElement elem, Context compileContext) : base()
         {
+            //DefType resultType = compileContext.FunctionScope.ResultType;
 
         }
 

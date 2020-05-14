@@ -2,6 +2,7 @@
 {
     public abstract class ProgramBase
     {
+        public const string WordLocalScope = "localScope";
         public const string WordFunctionDef = "functionDef";
         public const string WordVariableDef = "variableDef";
         public const string WordTypeAndId = "typeAndId";
@@ -15,18 +16,19 @@
         public const string WordTypeReal = "tReal";
         public const string WordTypeBool = "tBool";
         public const string WordTypeVoid = "tVoid";
+        public const string WordIdentifier = "identifier";
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="resultType">If the statement is part of a function, this is the return type.</param>
-        public ProgramBase(DefType resultType)
-        {
-            ResultType = resultType;
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="resultType">If the statement is part of a function, this is the return type.</param>
+        //public ProgramBase(DefType resultType)
+        //{
+        //    ResultType = resultType;
+        //}
 
-        /// <summary>If the statement is part of a function, this is the return type.</summary>
-        public readonly DefType ResultType;
+        ///// <summary>If the statement is part of a function, this is the return type.</summary>
+        //public readonly DefType ResultType;
 
         /// <summary>Runtime execution of statement.</summary>
         /// <param name="runtime">The context.</param>

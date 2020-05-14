@@ -17,13 +17,13 @@ int n2(int n)
 }
 ";
 
-        private string _initialGrammar = @"program     = body;
-block       = command | '{' body '}';
-body        = {variableDef | functionDef | command};
+        private string _initialGrammar = @"program     = localScope;
+body        = command | '{' localScope '}';
+localScope  = {variableDef | functionDef | command};
 command     = assign | if | loop | func ';' | return;
 
 variableDef = typeAndId '=' exp ';';
-functionDef = typeAndId '(' [typeAndId {',' typeAndId}] ')' '{' body '}';
+functionDef = typeAndId '(' [typeAndId {',' typeAndId}] ')' '{' localScope '}';
 
 typeAndId   = (defInt | defString | defReal | defBool | defVoid) identifier;
 defInt      = 'int';
@@ -35,8 +35,8 @@ defVoid     = 'void';
 assign      = identifier '=' exp ';';
 func        = identifier '(' [exp {',' exp}] ')';
 return      = 'return' [exp] ';';
-if          = 'if' '(' exp ')' block ['else' block];
-loop        = 'while' '(' exp ')' block;
+if          = 'if' '(' exp ')' body ['else' body];
+loop        = 'while' '(' exp ')' body;
 
 exp         = mul | div | sum | sub | gt | lt | eq | value | '(' exp ')';
 mul         = exp '*' exp;

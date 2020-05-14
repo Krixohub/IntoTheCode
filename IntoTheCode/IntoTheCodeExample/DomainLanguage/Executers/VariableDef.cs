@@ -6,40 +6,43 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 {
     public class VariableDef : ProgramBase
     {
-        public VariableDef(CodeElement elem, Context compileContext, FunctionContext functionContext) : base(DefType.Void)
+        public VariableDef(CodeElement elem, Context compileContext) : base()
         {
-            var def = new TypeAndId(elem.Codes(WordTypeAndId).FirstOrDefault(), true);
+            // variableDef = typeAndId '=' exp ';';
 
-            VarType = def.TheType;
+            var def = new TypeAndId(elem.Codes(WordTypeAndId).First(), true);
+
+            VariableType = def.TheType;
             Name = def.TheName;
             if (elem.Codes().Count() == 3)
             {
                 CodeElement expCode = elem.Codes().Last();
                 Expression = Factory.Expression(expCode, compileContext);
-                if (Expression.ExpressionType != VarType)
+                if (Expression.ExpressionType != VariableType)
                 {
-                    if (VarType == DefType.Bool)
+                    if (VariableType == DefType.Bool)
                         throw new Exception(string.Format("The expression must be a bool'. {0}", expCode.GetLineAndColumn()));
-                    if (VarType == DefType.Int)
+                    if (VariableType == DefType.Int)
                         throw new Exception(string.Format("The expression must be an integer'. {0}", expCode.GetLineAndColumn()));
-                    if (VarType == DefType.Float && Expression.ExpressionType != DefType.Int)
+                    if (VariableType == DefType.Float && Expression.ExpressionType != DefType.Int)
                         throw new Exception(string.Format("The expression must be a number'. {0}", expCode.GetLineAndColumn()));
                 }
             }
-            if (functionContext.ExistsFunction(Name))
+            if (compileContext.FunctionScope.ExistsFunction(Name))
                 throw new Exception(string.Format("A Function called '{0}', {1}, is declared", Name, elem.GetLineAndColumn()));
-            compileContext.DeclareVariable(VarType, Name, elem);
+
+            compileContext.DeclareVariable(VariableType, Name, elem);
         }
 
         public string Name;
 
-        public DefType VarType;
+        public DefType VariableType;
 
         public ExpBase Expression;
 
         public override bool Run(Context runtime)
         {
-            runtime.DeclareVariable(VarType, Name, Expression);
+            runtime.DeclareVariable(VariableType, Name, Expression);
             return false;
         }
     }

@@ -7,6 +7,21 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 {
     public static class Factory
     {
+        public const string WordExp = "exp";
+        public const string WordPar = "par";
+        public const string WordMul = "mul";
+        public const string WordDiv = "div";
+        public const string WordSum = "sum";
+        public const string WordSub = "sub";
+        public const string WordGt = "gt";
+        public const string WordLt = "lt";
+        public const string WordEq = "eq";
+        public const string WordValue = "value";
+        public const string WordReal = "real";
+        public const string WordVar = "var";
+        public const string WordInt = "int";
+
+
         public static ExpBase Expression(CodeElement elem, Context compileContext)
         {
             if (elem == null) throw new Exception("Missing expression element");
@@ -14,11 +29,11 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             // First non operator values
             switch (elem.Name)
             {
-                case "int":
+                case WordInt:
                     return new ExpInt(elem);
-                case "exp":
+                case WordExp:
                     return Expression(elem.Codes().FirstOrDefault(), compileContext);
-                case "par":
+                case WordPar:
                     return Expression(elem.Codes().FirstOrDefault(), compileContext);
             }
 
@@ -29,7 +44,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             ExpBase op2 = Expression(next, compileContext);
 
             // For multiplication, division, subtraction, greaterThan and lowerThan the operants must be numbers.
-            if (elem.Name == "mul" || elem.Name == "div" || elem.Name == "sub" || elem.Name == "gt" || elem.Name == "lt") 
+            if (elem.Name == WordMul || elem.Name == WordDiv || elem.Name == WordSub || elem.Name == WordGt || elem.Name == WordLt) 
             { 
                 // check type
                 if (!IsNumber(op1))
@@ -40,17 +55,17 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
             switch (elem.Name)
             {
-                case "gt": return new ExpGt(op1, op2);
-                case "lt": return new ExpLt(op1, op2);
-                case "eq": return new ExpEquals(op1, op2);
-                case "div": return new ExpDivide(op1, op2);
-                case "mul":
+                case WordGt: return new ExpGt(op1, op2);
+                case WordLt: return new ExpLt(op1, op2);
+                case WordEq: return new ExpEquals(op1, op2);
+                case WordDiv: return new ExpDivide(op1, op2);
+                case WordMul:
                     if (IsInt(op1, op2)) return new ExpMultiplyInt(op1, op2);
                     else return new ExpMultiplyFloat(op1, op2);
-                case "sub":
+                case WordSub:
                     if (IsInt(op1, op2)) return new ExpMinusInt(op1, op2);
                     else return new ExpMinusFloat(op1, op2);
-                case "sum":
+                case WordSum:
                     if (IsInt(op1, op2)) return new ExpSumInt(op1, op2);
                     else if (IsNumber(op1, op2)) return new ExpSumFloat(op1, op2);
                     else return new ExpSumString(op1, op2);

@@ -6,7 +6,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 {
     public class FunctionDef : ProgramBase
     {
-        public FunctionDef(CodeElement elem, Context compileContext, FunctionContext parentFunctions) : base(DefType.Void)
+        public FunctionDef(CodeElement elem, Context compileContext) : base()
         {
             CodeElement defElem = elem.Codes(WordTypeAndId).First();
             var def = new TypeAndId(defElem, false);
@@ -23,7 +23,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                 bodyContext.DeclareVariable(parm.TheType, parm.TheName, item);
             }
 
-            FunctionBody = new LocalScope(FuncType, elem.Codes("body").First(), bodyContext, parentFunctions);
+            FunctionBody = new LocalScope(FuncType, elem.Codes("body").First(), bodyContext, compileContext.FunctionScope);
 
             //compileContext.DeclareFunction(VarType, Name, elem);
         }
