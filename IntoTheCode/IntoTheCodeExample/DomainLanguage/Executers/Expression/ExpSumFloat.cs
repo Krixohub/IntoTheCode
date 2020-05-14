@@ -1,19 +1,19 @@
-﻿namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
+﻿using System;
+
+namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 {
-    public class ExpSumFloat : ExpBaseTyped<float>
+    public class ExpSumFloat : ExpTyped<float>
     {
-        private ExpBaseTyped<float> _op1;
-        private ExpBaseTyped<float> _op2;
+        private Func<Context, float> _run;
 
         public ExpSumFloat(ExpBase op1, ExpBase op2)
         {
-            _op1 = GetFloatOperant(op1);
-            _op2 = GetFloatOperant(op2);
+            _run = (runtime) => op1.RunAsFloat(runtime) + op2.RunAsFloat(runtime);
         }
 
-        public override float Calculate()
+        public override float Run(Context runtime)
         {
-            return _op1.Calculate() + _op2.Calculate();
+            return _run(runtime);
         }
     }
 }

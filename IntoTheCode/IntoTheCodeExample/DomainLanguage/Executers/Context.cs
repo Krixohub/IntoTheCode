@@ -1,5 +1,4 @@
 ﻿using IntoTheCode;
-using IntoTheCodeExample.DomainLanguage.Executers.Expression;
 using System;
 using System.Collections.Generic;
 
@@ -10,69 +9,62 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         private Context _parent;
 
-        public Context(Context parent) //Declarations
+        public Context(Context parent)
         {
             _parent = parent;
         }
 
-        public Dictionary<string, VariableBase> Variables { get; private set; }
-
-        public Dictionary<string, FunctionBase> Functions { get; private set; }
+        public Dictionary<string, ValueBase> Variables { get; private set; }
 
         public void SetVariable(string name, ExpBase exp)
         {
-            switch (exp.ExpressionType)
-            {
-                case DefType.Int:
-                    int i = ((ExpBaseTyped<int>)exp).Calculate();
-                    break;
-                case DefType.String:
-                    break;
-                case DefType.Float:
-                    break;
-                case DefType.Bool:
-                    break;
-                case DefType.Void:
-                    break;
-                default:
-                    break;
-            }
+            ValueBase variable;
+            if (Variables.TryGetValue(name, out variable))
+                variable.SetValue(this, exp);
+            else if (_parent != null)
+                _parent.SetVariable(name, exp);
+            else
+                throw new Exception(string.Format("A variable called '{0}' is not declared", name));
+
+            //return true;
+//            throw new Exception(string.Format("A variable called '{0}', {1}, is not declared", name, elem.GetLineAndColumn()));
         }
 
-        public void DeclareVariable(CodeElement elem, string name, VariableBase var)
+        public void DeclareVariable(DefType theType, string name, CodeElement elem)
         {
             if (Variables.ContainsKey(name))
                 throw new Exception(string.Format("A variable called '{0}', {1}, is allready declared", name, elem.GetLineAndColumn()));
-            if (Functions.ContainsKey(name))
-                throw new Exception(string.Format("A function called '{0}', {1}, is allready declared", name, elem.GetLineAndColumn()));
 
-            Variables.Add(name, var);
+            ValueBase variable = ValueBase.Create(theType, null, null);
+            Variables.Add(name, variable);
         }
 
-        public void AddVariables(Dictionary<string, VariableBase> variables)
+        public void DeclareVariable(DefType theType, string name, ExpBase exp)
         {
-            foreach (KeyValuePair<string, VariableBase> item in variables)
-                if (!Variables.ContainsKey(item.Key))
-                    Variables.Add(item.Key, item.Value);
+            ValueBase variable = ValueBase.Create(theType, this, exp);
+            Variables.Add(name, variable);
         }
 
-        public void DeclareFunction(CodeElement elem, string name, FunctionBase fun)
+        public bool ExistsVariable(string name)
         {
-            if (Variables.ContainsKey(name))
-                throw new Exception(string.Format("A variable called '{0}', {1}, is allready declared", name, elem.GetLineAndColumn()));
-            if (Functions.ContainsKey(name))
-                throw new Exception(string.Format("A function called '{0}', {1}, is allready declared", name, elem.GetLineAndColumn()));
-
-            Functions.Add(name, fun);
+            ValueBase variable;
+            if (Variables.TryGetValue(name, out variable))
+                return true;
+            else if (_parent != null)
+                return _parent.ExistsVariable(name);
+            else 
+                return false;
         }
 
-        private VariableBase GetVariable(string name)
+        private ValueBase GetVariable(string name)
         {
-            if (Variables.ContainsKey(name))
-                return Variables[name];
-            //if (_parent != null)
-            //    return _parent.GetVariable(name);
-            throw new Exception(string.Format("This variable is not declared '{0}'", name, elem.GetLineAndColumn()));
+            ValueBase variable;
+            if (Variables.TryGetValue(name, out variable))
+                return variable;
+            else if (_parent != null)
+                return _parent.GetVariable(name);
+            else
+                throw new Exception(string.Format("This variable is not declared '{0}'", name));
         }
     }
 }

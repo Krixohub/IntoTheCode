@@ -17,42 +17,47 @@ int n2(int n)
 }
 ";
 
-        private string _initialGrammar = @"program   = {statement};
-block     = statement | '{' {statement} '}';
-body      = '{' {statement} '}';
-statement = varDef | funcDef | assign | if | loop | (func ';') | return ;
+        private string _initialGrammar = @"program     = body;
+block       = command | '{' body '}';
+body        = {variableDef | functionDef | command};
+command     = assign | if | loop | func ';' | return;
 
-varDef    = declareId '=' exp ';';
-funcDef   = declareId '(' [declareId {',' declareId} ]')' body;
-declareId = defType identifier;
-defType   = 'bool' | 'string' | 'int' | 'real' | 'void';
+variableDef = typeAndId '=' exp ';';
+functionDef = typeAndId '(' [typeAndId {',' typeAndId}] ')' '{' body '}';
 
-assign    = identifier '=' exp ';';
-func      = identifier '(' [exp {',' exp} ]')';
-return    = 'return' exp ';';
-if        = 'if' '(' exp ')' block ['else' block];
-loop      = 'while' '(' exp ')' block;
+typeAndId   = (defInt | defString | defReal | defBool | defVoid) identifier;
+defInt      = 'int';
+defString   = 'string';
+defReal     = 'real';
+defBool     = 'bool';
+defVoid     = 'void';
 
-exp       = mul | div | sum | sub | gt | lt | eq | value | '(' exp ')';
-mul       = exp '*' exp;
-div       = exp '/' exp;
-sum       = exp '+' exp;
-sub       = exp '-' exp;
-gt        = exp '>' exp;
-lt        = exp '<' exp;
-eq        = exp '==' exp;
-value     = int | real | string | func | var;
-real      = int;
-var       = identifier;
+assign      = identifier '=' exp ';';
+func        = identifier '(' [exp {',' exp}] ')';
+return      = 'return' [exp] ';';
+if          = 'if' '(' exp ')' block ['else' block];
+loop        = 'while' '(' exp ')' block;
+
+exp         = mul | div | sum | sub | gt | lt | eq | value | '(' exp ')';
+mul         = exp '*' exp;
+div         = exp '/' exp;
+sum         = exp '+' exp;
+sub         = exp '-' exp;
+gt          = exp '>' exp;
+lt          = exp '<' exp;
+eq          = exp '==' exp;
+value       = int | real | string | func | var;
+real        = int;
+var         = identifier;
 
 settings
-exp       collapse;
-declareId collapse;
-value     collapse;
-mul       Precedence = '2';
-div       Precedence = '2';
-sum       Precedence = '1';
-sub       Precedence = '1';";
+command     collapse;
+exp         collapse;
+mul         Precedence = '7';
+div         Precedence = '7';
+sum         Precedence = '6';
+sub         Precedence = '6';
+value       collapse;";
 
         public DomainLanguageVievModel()
         {

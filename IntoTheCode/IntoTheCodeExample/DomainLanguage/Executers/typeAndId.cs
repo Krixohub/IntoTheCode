@@ -4,24 +4,28 @@ using System.Linq;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers
 {
-    public class DeclareId
+    public class TypeAndId
     {
-        public DeclareId(CodeElement elem)
+
+        public TypeAndId(CodeElement elem, bool isVariable)
         {
-            CodeElement defType = elem.Codes("defType").FirstOrDefault();
+            CodeElement defType = elem.Codes().FirstOrDefault();
             CodeElement identifier = elem.Codes("identifier").FirstOrDefault();
 
-            switch (defType.Value)
+            switch (defType.Name)
             {
-                case "int": TheType = DefType.Int; break;
-                case "string":
+                case ProgramBase.WordTypeInt: TheType = DefType.Int; break;
+                case ProgramBase.WordTypeStr:
                     TheType = DefType.String; break;
-                case "real":
+                case ProgramBase.WordTypeReal:
                     TheType = DefType.Float; break;
-                case "bool":
+                case ProgramBase.WordTypeBool:
                     TheType = DefType.Bool; break;
-                case "void":
-                    TheType = DefType.Void; break;
+                case ProgramBase.WordTypeVoid:
+                    if (isVariable)
+                        throw new Exception(string.Format("Only functions can be 'void'. {0}", defType.GetLineAndColumn()));
+                    TheType = DefType.Void; 
+                    break;
                 default: throw new Exception(string.Format("The type '{0}' is not defined. {1}", defType.Value, defType.GetLineAndColumn()));
             }
 

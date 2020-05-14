@@ -7,7 +7,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Zzz
 {
-    [TestClass]
+    public class MyElement : XElement
+    {
+        /// <summary>
+        /// Can XElement be used for TextElements?
+        /// </summary>
+        public MyElement() : base("MyElem")
+        {
+        }
+    }
+
+   [TestClass]
     public class DivTest
     {
         [TestMethod]

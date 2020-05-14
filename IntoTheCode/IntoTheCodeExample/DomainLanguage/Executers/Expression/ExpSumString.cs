@@ -2,20 +2,18 @@
 
 namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 {
-    public class ExpSumString : ExpBaseTyped<string>
+    public class ExpSumString : ExpTyped<string>
     {
-        private ExpBaseTyped<string> _op1;
-        private ExpBaseTyped<string> _op2;
+        private Func<Context, string> _run;
 
         public ExpSumString(ExpBase op1, ExpBase op2)
         {
-            _op1 = GetStringOperant(op1);
-            _op2 = GetStringOperant(op2);
+            _run = (runtime) => op1.RunAsString(runtime) + op2.RunAsString(runtime);
         }
 
-        public override string Calculate()
+        public override string Run(Context runtime)
         {
-            return _op1.Calculate() + _op2.Calculate();
+            return _run(runtime);
         }
     }
 }

@@ -1,19 +1,19 @@
-﻿namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
+﻿using System;
+
+namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 {
-    public class ExpMinusInt : ExpBaseTyped<int>
+    public class ExpMinusInt : ExpTyped<int>
     {
-        private ExpBaseTyped<int> _op1;
-        private ExpBaseTyped<int> _op2;
+        private Func<Context, int> _run;
 
         public ExpMinusInt(ExpBase op1, ExpBase op2)
         {
-            _op1 = (ExpBaseTyped<int>)op1;
-            _op2 = (ExpBaseTyped<int>)op2;
+            _run = (runtime) => op1.RunAsInt(runtime) - op2.RunAsInt(runtime);
         }
 
-        public override int Calculate()
+        public override int Run(Context runtime)
         {
-            return _op1.Calculate() - _op2.Calculate();
+            return _run(runtime);
         }
     }
 }

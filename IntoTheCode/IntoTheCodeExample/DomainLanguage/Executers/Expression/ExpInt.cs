@@ -2,7 +2,7 @@
 
 namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 {
-    public class ExpInt : ExpBaseTyped<int>
+    public class ExpInt : ExpTyped<int>
     {
         private int _value;
 
@@ -11,7 +11,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
             int.TryParse(elem.Value, out _value);
         }
 
-        public override int Calculate()
+        public override int Run(Context runtime)
         {
             return _value;
         }
