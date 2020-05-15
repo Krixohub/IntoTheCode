@@ -2,21 +2,6 @@
 {
     public abstract class ProgramBase
     {
-        public const string WordLocalScope = "localScope";
-        public const string WordFunctionDef = "functionDef";
-        public const string WordVariableDef = "variableDef";
-        public const string WordTypeAndId = "typeAndId";
-        public const string WordFunc = "func";
-        public const string WordAssign = "assign";
-        public const string WordReturn = "return";
-        public const string WordLoop = "loop";
-        public const string WordIf = "if";
-        public const string WordTypeInt = "tInt";
-        public const string WordTypeStr = "tString";
-        public const string WordTypeReal = "tReal";
-        public const string WordTypeBool = "tBool";
-        public const string WordTypeVoid = "tVoid";
-        public const string WordIdentifier = "identifier";
 
         ///// <summary>
         ///// 

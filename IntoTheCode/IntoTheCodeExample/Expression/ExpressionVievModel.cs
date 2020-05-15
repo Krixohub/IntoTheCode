@@ -53,7 +53,7 @@ exp collapse;
             {
                 result = expression.execute();
             }
-            catch (ParserException e)
+            catch (Exception e)
             {
                 Output = "Expression cant execute.\r\n" + e.Message;
                 return;

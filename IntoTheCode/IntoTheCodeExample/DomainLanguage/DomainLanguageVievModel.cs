@@ -1,4 +1,8 @@
 ﻿using IntoTheCode;
+using IntoTheCodeExample.DomainLanguage.Executers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace IntoTheCodeExample.DomainLanguage
 {
@@ -13,19 +17,28 @@ while (3 > 2 *1)
 
 int n2(int n)
 {
-  int d = n * n;
+  int a = n * n;
+  return 4;
+}
+";
+
+        private string _initialInput2 = @"int a = 4;
+int b = 6;
+while (3 > 2 *1)
+{ 
+   int a = 1;
 }
 ";
 
         private string _initialGrammar = @"program     = localScope;
 body        = command | '{' localScope '}';
-localScope  = {variableDef | functionDef | command};
-command     = assign | if | loop | func ';' | return;
+localScope  = {functionDef | variableDef | command};
+command     = assign | if | loop | funcCall ';' | return;
 
-variableDef = typeAndId '=' exp ';';
-functionDef = typeAndId '(' [typeAndId {',' typeAndId}] ')' '{' localScope '}';
+functionDef = declare '(' [declare {',' declare}] ')' '{' localScope '}';
+variableDef = declare '=' exp ';';
 
-typeAndId   = (defInt | defString | defReal | defBool | defVoid) identifier;
+declare   = (defInt | defString | defReal | defBool | defVoid) identifier;
 defInt      = 'int';
 defString   = 'string';
 defReal     = 'real';
@@ -33,7 +46,7 @@ defBool     = 'bool';
 defVoid     = 'void';
 
 assign      = identifier '=' exp ';';
-func        = identifier '(' [exp {',' exp}] ')';
+funcCall    = identifier '(' [exp {',' exp}] ')';
 return      = 'return' [exp] ';';
 if          = 'if' '(' exp ')' body ['else' body];
 loop        = 'while' '(' exp ')' body;
@@ -46,7 +59,7 @@ sub         = exp '-' exp;
 gt          = exp '>' exp;
 lt          = exp '<' exp;
 eq          = exp '==' exp;
-value       = int | real | string | func | var;
+value       = int | real | string | funcCall | var;
 real        = int;
 var         = identifier;
 
@@ -67,6 +80,32 @@ value       collapse;";
 
         protected override void ProcessOutput(TextDocument doc)
         {
+            Output = string.Empty;
+
+            // Compile expression
+            Program program;
+            Dictionary<string, Function> functions = null;
+            Dictionary<string, ValueBase> parameters = null;
+            try
+            {
+                program = Compiler.CreateProgram(doc, functions, parameters);
+            }
+            catch (Exception e)
+            {
+                Output = "Program does not compile.\r\n(Compiling the parser output fails)\r\n" + e.Message;
+                return;
+            }
+
+            //// execute program
+            //try
+            //{
+            //    program.RunProgram(parameters);
+            //}
+            //catch (Exception e)
+            //{
+            //    Output = "Program cant execute.\r\n" + e.Message;
+            //    return;
+            //}
 
             Output = "Expression result: brae" ;
         }

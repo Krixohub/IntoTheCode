@@ -44,14 +44,14 @@
     <Compile Include="CsvData\CsvDataVievModel.cs" />
     <Compile Include="DomainLanguage\DomainLanguageVievModel.cs" />
     <Compile Include="DomainLanguage\Executers\Assign.cs" />
-    <Compile Include="DomainLanguage\Executers\FunctionContext.cs" />
-    <Compile Include="DomainLanguage\Executers\Func.cs" />
+    <Compile Include="DomainLanguage\Executers\FuncCall.cs" />
+    <Compile Include="DomainLanguage\Executers\Program.cs" />
     <Compile Include="DomainLanguage\Executers\Return.cs" />
     <Compile Include="DomainLanguage\Executers\While.cs" />
     <Compile Include="DomainLanguage\Executers\If.cs" />
-    <Compile Include="DomainLanguage\Executers\TypeAndId.cs" />
+    <Compile Include="DomainLanguage\Executers\Declare.cs" />
     <Compile Include="DomainLanguage\Executers\ProgramBase.cs" />
-    <Compile Include="DomainLanguage\Executers\Factory.cs" />
+    <Compile Include="DomainLanguage\Executers\Compiler.cs" />
     <Compile Include="DomainLanguage\Executers\LocalScope.cs" />
     <Compile Include="DomainLanguage\Executers\Expression\ExpTyped.cs" />
     <Compile Include="DomainLanguage\Executers\Expression\ExpDivide.cs" />
@@ -70,7 +70,7 @@
     <Compile Include="DomainLanguage\Executers\Expression\ExpSumInt.cs" />
     <Compile Include="DomainLanguage\Executers\Expression\Values.cs" />
     <Compile Include="DomainLanguage\Executers\Context.cs" />
-    <Compile Include="DomainLanguage\Executers\FunctionDef.cs" />
+    <Compile Include="DomainLanguage\Executers\Function.cs" />
     <Compile Include="DomainLanguage\Executers\VariableDef.cs" />
     <Compile Include="DomainLanguage\Executers\ValueBase.cs" />
     <Compile Include="DomainLanguage\Executers\ValueTyped.cs" />

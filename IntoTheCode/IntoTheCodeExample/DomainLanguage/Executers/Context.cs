@@ -9,14 +9,19 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         private Context _parent;
 
-        public Context(Context parent)
+        public Context(Context parent, Dictionary<string, ValueBase> variables, LocalScope functionScope)
         {
             _parent = parent;
+            Variables = variables == null ? new Dictionary<string, ValueBase>() : variables;
+            if (functionScope != null)
+                FunctionScope = functionScope;
+            else
+                FunctionScope = parent?.FunctionScope;
         }
 
         public Dictionary<string, ValueBase> Variables { get; private set; }
 
-        public LocalScope FunctionScope { get; set; }
+        public LocalScope FunctionScope { get; private set; }
 
         public void SetVariable(string name, ExpBase exp)
         {
@@ -32,12 +37,12 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 //            throw new Exception(string.Format("A variable called '{0}', {1}, is not declared", name, elem.GetLineAndColumn()));
         }
 
-        public void DeclareVariable(DefType theType, string name, CodeElement elem)
+        public void BuildVariable(DefType theType, string name, CodeElement elem)
         {
             if (Variables.ContainsKey(name))
                 throw new Exception(string.Format("A variable called '{0}', {1}, is allready declared", name, elem.GetLineAndColumn()));
 
-            ValueBase variable = ValueBase.Create(theType, null, null);
+            ValueBase variable = ValueBase.Compile(theType, this, null);
             Variables.Add(name, variable);
         }
 

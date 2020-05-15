@@ -5,27 +5,16 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 {
     public class If : ProgramBase
     {
-        private ExpTyped<bool> _expression;
-        private ProgramBase _trueStatement;
-        private ProgramBase _elseStatement;
-
-        public If(CodeElement elem, Context compileContext) : base()
-        {
-            //DefType resultType = compileContext.FunctionScope.ResultType;
-
-        }
-
-        //public override bool AlwaysReturnsValue()
-        //{
-        //    return _ifStatement.AlwaysReturnsValue() && _elseStatement.AlwaysReturnsValue();
-        //}
+        public ExpTyped<bool> Expression;
+        public ProgramBase TrueStatement;
+        public ProgramBase ElseStatement;
 
         public override bool Run(Context runtime)
         {
-            if (_expression.Run(runtime))
-                return _trueStatement.Run(runtime);
+            if (Expression.Run(runtime))
+                return TrueStatement.Run(runtime);
             else
-                return _elseStatement.Run(runtime);
+                return ElseStatement.Run(runtime);
         }
     }
 }
