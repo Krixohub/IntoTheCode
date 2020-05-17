@@ -13,7 +13,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public TType Value { get; set; }
 
-        public override void SetValue(Context runtime, ExpBase exp)
+        public override void SetValue(Variables runtime, ExpBase exp)
         {
             if (typeof(TType) == typeof(int)) (this as ValueTyped<int>).Value = exp.RunAsInt(runtime);
             if (typeof(TType) == typeof(float)) (this as ValueTyped<float>).Value = exp.RunAsFloat(runtime);

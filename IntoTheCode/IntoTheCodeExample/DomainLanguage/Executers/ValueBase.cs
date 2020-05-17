@@ -6,7 +6,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
     {
         //public string Name;
 
-        public abstract void SetValue(Context runtime, ExpBase exp);
+        public abstract void SetValue(Variables runtime, ExpBase exp);
 
         public virtual DefType ResultType
         {
@@ -20,7 +20,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             }
         }
 
-        public static ValueBase Compile(DefType theType, Context runtime, ExpBase exp)
+        public static ValueBase Compile(DefType theType, Variables runtime, ExpBase exp)
         {
             ValueBase variable;
             switch (theType)
@@ -38,7 +38,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             return variable;
         }
 
-        public static ValueBase Create(DefType theType, Context runtime, ExpBase exp)
+        public static ValueBase Create(DefType theType, Variables runtime, ExpBase exp)
         {
             ValueBase variable;
             switch (theType)

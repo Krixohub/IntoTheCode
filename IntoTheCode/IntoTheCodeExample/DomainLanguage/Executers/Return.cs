@@ -10,7 +10,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public ExpBase Expression;
 
-        public override bool Run(Context runtime)
+        public override bool Run(Variables runtime)
         {
             runtime.SetVariable("return", Expression);
             return true;

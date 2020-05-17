@@ -9,7 +9,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public ProgramBase Body;
 
 
-        public override bool Run(Context runtime)
+        public override bool Run(Variables runtime)
         {
             while (Expression.Run(runtime))
                 if (Body.Run(runtime)) return true;

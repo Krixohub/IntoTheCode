@@ -4,7 +4,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 {
     public class ExpEquals : ExpTyped<bool>
     {
-        private Func<Context, bool> _run;
+        private Func<Variables, bool> _run;
 
         public ExpEquals(ExpBase op1, ExpBase op2)
         {
@@ -16,7 +16,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
                 _run = (runtime) => op1.RunAsString(runtime) == op2.RunAsString(runtime);
         }
 
-        public override bool Run(Context runtime)
+        public override bool Run(Variables runtime)
         {
             return _run(runtime);
         }

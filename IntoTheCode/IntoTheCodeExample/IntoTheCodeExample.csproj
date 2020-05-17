@@ -51,8 +51,8 @@
     <Compile Include="DomainLanguage\Executers\If.cs" />
     <Compile Include="DomainLanguage\Executers\Declare.cs" />
     <Compile Include="DomainLanguage\Executers\ProgramBase.cs" />
-    <Compile Include="DomainLanguage\Executers\Compiler.cs" />
-    <Compile Include="DomainLanguage\Executers\LocalScope.cs" />
+    <Compile Include="DomainLanguage\Executers\ProgramCompiler.cs" />
+    <Compile Include="DomainLanguage\Executers\Scope.cs" />
     <Compile Include="DomainLanguage\Executers\Expression\ExpTyped.cs" />
     <Compile Include="DomainLanguage\Executers\Expression\ExpDivide.cs" />
     <Compile Include="DomainLanguage\Executers\ExpBase.cs" />
@@ -69,7 +69,7 @@
     <Compile Include="DomainLanguage\Executers\Expression\ExpInt.cs" />
     <Compile Include="DomainLanguage\Executers\Expression\ExpSumInt.cs" />
     <Compile Include="DomainLanguage\Executers\Expression\Values.cs" />
-    <Compile Include="DomainLanguage\Executers\Context.cs" />
+    <Compile Include="DomainLanguage\Executers\Variables.cs" />
     <Compile Include="DomainLanguage\Executers\Function.cs" />
     <Compile Include="DomainLanguage\Executers\VariableDef.cs" />
     <Compile Include="DomainLanguage\Executers\ValueBase.cs" />

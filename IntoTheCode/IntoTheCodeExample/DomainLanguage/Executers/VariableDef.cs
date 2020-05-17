@@ -21,7 +21,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public ExpBase Expression;
 
-        public override bool Run(Context runtime)
+        public override bool Run(Variables runtime)
         {
             runtime.DeclareVariable(VariableType, Name, Expression);
             return false;

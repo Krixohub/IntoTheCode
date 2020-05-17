@@ -30,15 +30,15 @@ while (3 > 2 *1)
 }
 ";
 
-        private string _initialGrammar = @"program     = localScope;
-body        = command | '{' localScope '}';
-localScope  = {functionDef | variableDef | command};
+        private string _initialGrammar = @"program     = scope;
+body        = command | '{' scope '}';
+scope       = {functionDef | variableDef | command};
 command     = assign | if | loop | funcCall ';' | return;
 
-functionDef = declare '(' [declare {',' declare}] ')' '{' localScope '}';
+functionDef = declare '(' [declare {',' declare}] ')' '{' scope '}';
 variableDef = declare '=' exp ';';
 
-declare   = (defInt | defString | defReal | defBool | defVoid) identifier;
+declare     = (defInt | defString | defReal | defBool | defVoid) identifier;
 defInt      = 'int';
 defString   = 'string';
 defReal     = 'real';
@@ -88,7 +88,7 @@ value       collapse;";
             Dictionary<string, ValueBase> parameters = null;
             try
             {
-                program = Compiler.CreateProgram(doc, functions, parameters);
+                program = ProgramCompiler.CreateProgram(doc, functions, parameters);
             }
             catch (Exception e)
             {

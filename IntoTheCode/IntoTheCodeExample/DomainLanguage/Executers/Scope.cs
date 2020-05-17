@@ -4,21 +4,22 @@ using System.Collections.Generic;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers
 {
-    public class LocalScope : ProgramBase
+    public class Scope : ProgramBase
     {
-
-
-        public LocalScope(LocalScope parentScope, Dictionary<string, Function> functions = null)
+        public Scope(Scope parentScope, Variables vars, Dictionary<string, Function> functions = null)
         {
             ParentScope = parentScope;
             Functions = functions == null ? new Dictionary<string, Function>() : functions ;
+
+            Vars = vars == null ? new Variables(null, null) : vars;
         }
 
         public List<ProgramBase> Commands;
-        public LocalScope ParentScope;
+        public Scope ParentScope;
+        public Variables Vars { get; private set; }
         public Dictionary<string, Function> Functions { get; private set; }
 
-        public override bool Run(Context runtime)
+        public override bool Run(Variables runtime)
         {
             foreach (ProgramBase item in Commands)
                 if (item.Run(runtime)) return true;
@@ -26,7 +27,18 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             return false;
         }
 
-        #region Function context
+        #region Compiletime resolving Function and variables
+
+        public DefType ExistsVariable(string name, CodeElement elem)
+        {
+            ValueBase variable;
+            if (Vars.Vars.TryGetValue(name, out variable))
+                return variable.ResultType;
+            else if (ParentScope != null)
+                return ParentScope.ExistsVariable(name, elem);
+            else
+                throw new Exception(string.Format("A variable called '{0}', {1}, does not exists", name, elem.GetLineAndColumn()));
+        }
 
         public bool ExistsFunction(string name)
         {

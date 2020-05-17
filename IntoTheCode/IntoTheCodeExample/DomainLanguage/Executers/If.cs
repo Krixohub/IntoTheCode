@@ -9,7 +9,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public ProgramBase TrueStatement;
         public ProgramBase ElseStatement;
 
-        public override bool Run(Context runtime)
+        public override bool Run(Variables runtime)
         {
             if (Expression.Run(runtime))
                 return TrueStatement.Run(runtime);

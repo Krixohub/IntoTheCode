@@ -22,20 +22,20 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         }
 
 
-        public LocalScope RootScope;
+        public Scope RootScope;
 
         public void RunProgram(Dictionary<string, ValueBase> parameters)
         {
             // todo add parameters to Context (test for existing names);
 
-            Context context = new Context(null, parameters, RootScope);
-            Run(context);
+            Variables vars = new Variables(null, parameters);
+            Run(vars);
         }
 
         /// <summary>Runtime execution of statement.</summary>
         /// <param name="runtime">The context.</param>
         /// <returns>True: the statement or body has executed a 'return' statement.</returns>
-        public override bool Run(Context runtime)
+        public override bool Run(Variables runtime)
         {
             RootScope.Run(runtime);
 

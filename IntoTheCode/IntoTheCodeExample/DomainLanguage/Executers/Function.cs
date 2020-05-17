@@ -19,9 +19,9 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public List<Declare> Parameters;
         
-        public LocalScope FunctionScope;
+        public Scope FunctionScope;
 
-        public override bool Run(Context runtime)
+        public override bool Run(Variables runtime)
         {
             throw new System.NotImplementedException();
         }

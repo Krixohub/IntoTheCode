@@ -6,10 +6,10 @@ using System.Linq;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers
 {
-    public static class Compiler
+    public static class ProgramCompiler
     {
         // program rules
-        public const string WordLocalScope = "localScope";
+        public const string WordScope = "scope";
         public const string WordFunctionDef = "functionDef";
         public const string WordVariableDef = "variableDef";
         public const string WordDeclare = "declare";
@@ -32,76 +32,72 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             var prog = new Program();
 
 
-            LocalScope externalScope = functions == null ? null : new LocalScope(null, functions);
-            Context externalContext = new Context(null, parameters, externalScope);
-            prog.RootScope = CreateLocalScope(doc.Codes(WordLocalScope).First(), externalContext, DefType.Void, out bool alwaysReturn);
+            Scope externalScope = functions == null ? null : new Scope(null, null, functions);
+            Variables variables = new Variables(null, parameters); //, externalScope);
+            prog.RootScope = CreateScope(doc.Codes(WordScope).First(), variables, externalScope, DefType.Void, out bool alwaysReturn);
 
             return prog;
         }
 
 
-        public static LocalScope CreateLocalScope(CodeElement elem, Context parentContextCompiletime, DefType resultType, out bool alwaysReturnValue) //, bool mustReturn, LocalScope parentScope
+        public static Scope CreateScope(CodeElement elem, Variables innerVariables, Scope parentScope, DefType resultType, out bool alwaysReturnValue) //, bool mustReturn
         {
             //bool mustReturn = false;
             alwaysReturnValue = false;
 
-            var scope = new LocalScope(parentContextCompiletime.FunctionScope); //, resultType, parentScope, mustReturn
-            Context compileContext = new Context(parentContextCompiletime, null, scope);
+            var scope = new Scope(parentScope, innerVariables); //, resultType, parentScope, mustReturn
+
+            //Variables variables = new Variables(localVariables, null);
 
             foreach (CodeElement item in elem.Codes(WordFunctionDef))
-            {
-                Function func = CreateFunctionDef(item, compileContext);
-                scope.Functions.Add(func.Name, func);
-            }
+                CreateFunctionDef(item, scope);
 
             List<ProgramBase> commands = new List<ProgramBase>();
             foreach (CodeElement item in elem.Codes(c => c.Name != WordFunctionDef))
-            {
                 if (alwaysReturnValue)
                     throw new Exception(string.Format("The statement can not be reached, {0}, {1}", item.Name, item.GetLineAndColumn()));
-
-                commands.Add(CreateVariableOrCommand(item, compileContext, resultType, out alwaysReturnValue));
-            }
+                else
+                    commands.Add(CreateVariableOrCommand(item, scope, resultType, out alwaysReturnValue));
 
             scope.Commands = commands;
 
             return scope;
         }
 
-        public static Function CreateFunctionDef(CodeElement elem, Context compileContext)
+        public static Function CreateFunctionDef(CodeElement elem, Scope scope)
         {
-            // functionDef = typeAndId '(' [typeAndId {',' typeAndId}] ')' '{' localScope '}';
+            // functionDef = typeAndId '(' [typeAndId {',' typeAndId}] ')' '{' scope '}';
 
             CodeElement defElem = elem.Codes(WordDeclare).First();
             var def = CreateDeclare(defElem, false);
 
-            if (compileContext.FunctionScope.Functions.ContainsKey(def.TheName))
+            if (scope.Functions.ContainsKey(def.TheName))
                 // todo check type and parameters
                 throw new Exception(string.Format("A function called '{0}', {1}, is allready declared", def.TheName, elem.GetLineAndColumn()));
 
 
             var parms = new List<Declare>();
-            Context bodyContext = new Context(compileContext, null, null);
+            Variables innerVariables = new Variables(null, null);
 
             if (def.TheType != DefType.Void)
-                bodyContext.BuildVariable(def.TheType, "returnValue", elem);
+                innerVariables.BuildVariable(def.TheType, "returnValue", elem);
 
             foreach (CodeElement item in elem.Codes(WordDeclare).Where(e => e != defElem))
             {
                 var parm = CreateDeclare(item, true);
                 parms.Add(parm);
-                bodyContext.BuildVariable(parm.TheType, parm.TheName, item);
+                innerVariables.BuildVariable(parm.TheType, parm.TheName, item);
             }
 
             Function funcDef = new Function() { FuncType = def.TheType, Name = def.TheName, Parameters = parms };
 
-            compileContext.FunctionScope.Functions.Add(def.TheName, funcDef);
+            scope.Functions.Add(def.TheName, funcDef);
 
-            CodeElement scopeElem = elem.Codes(WordLocalScope).First();
+            CodeElement scopeElem = elem.Codes(WordScope).First();
 
 
             bool alwaysReturns;
-            funcDef.FunctionScope = CreateLocalScope(scopeElem, bodyContext, def.TheType, out alwaysReturns); //, compileContext.FunctionScope
+            funcDef.FunctionScope = CreateScope(scopeElem, innerVariables, scope, def.TheType, out alwaysReturns); //, scope.FunctionScope
 
             if (def.TheType != DefType.Void && !alwaysReturns)
                 throw new Exception(string.Format("The function '{0}' must return a value, {1}", def.TheName, elem.GetLineAndColumn()));
@@ -109,7 +105,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             return funcDef;
         }
 
-        public static ProgramBase CreateVariableOrCommand(CodeElement elem, Context compileContext, DefType resultType, out bool alwaysReturnValue)
+        public static ProgramBase CreateVariableOrCommand(CodeElement elem, Scope scope, DefType resultType, out bool alwaysReturnValue)
         {
             alwaysReturnValue = false;
             ProgramBase stm;
@@ -117,24 +113,24 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             switch (elem.Name)
             {
                 case WordVariableDef:
-                    stm = CreateVariableDef(elem, compileContext);
+                    stm = CreateVariableDef(elem, scope);
                     break;
                 case WordAssign:
-                    stm = CreateAssign(elem, compileContext);
+                    stm = CreateAssign(elem, scope);
                     break;
                 case WordIf:
-                    stm = CreateIf(elem, compileContext, resultType, out alwaysReturnValue);
+                    stm = CreateIf(elem, scope, resultType, out alwaysReturnValue);
                     // todo check always returns
                     break;
                 case WordLoop:
-                    stm = CreateWhile(elem, compileContext, resultType);
+                    stm = CreateWhile(elem, scope, resultType);
                     // todo check always returns
                     break;
                 case WordFunc:
-                    stm = CreateFuncCall(elem, compileContext);
+                    stm = CreateFuncCall(elem, scope);
                     break;
                 case WordReturn:
-                    stm = CreateReturn(elem, compileContext, resultType);
+                    stm = CreateReturn(elem, scope, resultType);
                     alwaysReturnValue = true;
                     break;
                 default:
@@ -145,7 +141,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         }
 
 
-        public static VariableDef CreateVariableDef(CodeElement elem, Context compileContext)
+        public static VariableDef CreateVariableDef(CodeElement elem, Scope scope)
         {
             // variableDef = typeAndId '=' exp ';';
             var def = CreateDeclare(elem.Codes(WordDeclare).First(), true);
@@ -154,7 +150,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             if (elem.Codes().Count() == 3)
             {
                 CodeElement expCode = elem.Codes().Last();
-                exp = Compiler.Expression(expCode, compileContext);
+                exp = ProgramCompiler.Expression(expCode, scope);
                 if (exp.ExpressionType != def.TheType)
                 {
                     if (def.TheType == DefType.Bool)
@@ -165,25 +161,25 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                         throw new Exception(string.Format("The expression must be a number'. {0}", expCode.GetLineAndColumn()));
                 }
             }
-            if (compileContext.FunctionScope.ExistsFunction(def.TheName))
+            if (scope.ExistsFunction(def.TheName))
                 throw new Exception(string.Format("A Function called '{0}', {1}, is declared", def.TheName, elem.GetLineAndColumn()));
 
             var varDef = new VariableDef() { Name = def.TheName, VariableType = def.TheType, Expression = exp };
 
-            compileContext.BuildVariable(def.TheType, def.TheName, elem);
+            scope.Vars.BuildVariable(def.TheType, def.TheName, elem);
             return varDef;
         }
 
-        public static Assign CreateAssign(CodeElement elem, Context compileContext)
+        public static Assign CreateAssign(CodeElement elem, Scope scope)
         {
             // assign      = identifier '=' exp ';';
             var cmd = new Assign();
             CodeElement idElem = elem.Codes(WordIdentifier).First();
             cmd.VariableName = idElem.Value;
-            cmd.VariableType = compileContext.ExistsVariable(cmd.VariableName, idElem);
+            cmd.VariableType = scope.ExistsVariable(cmd.VariableName, idElem);
 
             CodeElement expCode = elem.Codes().Last();
-            cmd.Expression = Expression(expCode, compileContext);
+            cmd.Expression = Expression(expCode, scope);
             if (cmd.Expression.ExpressionType != cmd.VariableType)
             {
                 if (cmd.VariableType == DefType.Bool)
@@ -197,38 +193,36 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             return cmd;
         }
 
-        public static ProgramBase CreateBody(CodeElement elem, Context compileContext, DefType resultType, out bool alwaysReturnValue)
+        public static ProgramBase CreateBody(CodeElement elem, Scope scope, DefType resultType, out bool alwaysReturnValue)
         {
-            ProgramBase cmd = null;
             CodeElement innerCode = elem.Codes().First();
-            if (innerCode.Name == WordLocalScope)
-            {
-                cmd = CreateLocalScope(innerCode, compileContext, resultType, out alwaysReturnValue);
-            }
+            ProgramBase cmd;
+            if (innerCode.Name == WordScope)
+                cmd = CreateScope(innerCode, null, scope, resultType, out alwaysReturnValue);
             else
-                cmd = CreateVariableOrCommand(innerCode, compileContext, resultType, out alwaysReturnValue);
+                cmd = CreateVariableOrCommand(innerCode, scope, resultType, out alwaysReturnValue);
 
             return cmd;
         }
 
-        public static If CreateIf(CodeElement elem, Context compileContext, DefType resultType, out bool alwaysReturnValue)
+        public static If CreateIf(CodeElement elem, Scope scope, DefType resultType, out bool alwaysReturnValue)
         {
             // if          = 'if' '(' exp ')' body ['else' body];
-            ExpBase expbase = Expression(elem.Codes().First(), compileContext);
+            ExpBase expbase = Expression(elem.Codes().First(), scope);
             if (expbase.ExpressionType != DefType.Bool)
                 throw new Exception(string.Format("The expression type must be a boolean, {0}", elem.GetLineAndColumn()));
 
             var cmd = new If();
             cmd.Expression = expbase as ExpTyped<bool>;
             bool trueReturn;
-            cmd.TrueStatement = CreateBody(elem.Codes(WordBody).First(), compileContext, resultType, out trueReturn);
+            cmd.TrueStatement = CreateBody(elem.Codes(WordBody).First(), scope, resultType, out trueReturn);
             bool elseReturn;
-            cmd.ElseStatement = CreateBody(elem.Codes(WordBody).Last(), compileContext, resultType, out elseReturn);
+            cmd.ElseStatement = CreateBody(elem.Codes(WordBody).Last(), scope, resultType, out elseReturn);
             alwaysReturnValue = trueReturn && elseReturn;
             return cmd;
         }
 
-        public static Return CreateReturn(CodeElement elem, Context compileContext, DefType resultType)
+        public static Return CreateReturn(CodeElement elem, Scope scope, DefType resultType)
         {
             // return      = 'return' [exp] ';';
 
@@ -237,7 +231,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             CodeElement expCode = elem.Codes().FirstOrDefault();
             if (expCode != null)
             {
-                cmd.Expression = Compiler.Expression(expCode, compileContext);
+                cmd.Expression = ProgramCompiler.Expression(expCode, scope);
 
                 // Check resulttype of command
                 if (resultType != cmd.Expression.ExpressionType)
@@ -257,20 +251,20 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             return cmd;
         }
 
-        public static While CreateWhile(CodeElement elem, Context compileContext, DefType resultType)
+        public static While CreateWhile(CodeElement elem, Scope scope, DefType resultType)
         {
             // loop        = 'while' '(' exp ')' body;
-            ExpBase expbase = Expression(elem.Codes().First(), compileContext);
+            ExpBase expbase = Expression(elem.Codes().First(), scope);
             if (expbase.ExpressionType != DefType.Bool)
                 throw new Exception(string.Format("The expression type must be a boolean, {0}", elem.GetLineAndColumn()));
 
             var cmd = new While();
             cmd.Expression = expbase as ExpTyped<bool>;
-            cmd.Body = CreateBody(elem.Codes(WordBody).First(), compileContext, resultType, out bool ret);
+            cmd.Body = CreateBody(elem.Codes(WordBody).First(), scope, resultType, out bool ret);
             return cmd;
         }
 
-        public static FuncCall CreateFuncCall(CodeElement elem, Context compileContext)
+        public static FuncCall CreateFuncCall(CodeElement elem, Scope scope)
         {
 
             return new FuncCall();
@@ -319,7 +313,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public const string WordInt = "int";
 
 
-        public static ExpBase Expression(CodeElement elem, Context compileContext)
+        public static ExpBase Expression(CodeElement elem, Scope scope)
         {
             if (elem == null) throw new Exception("Missing expression element");
 
@@ -329,16 +323,16 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                 case WordInt:
                     return new ExpInt(elem);
                 case WordExp:
-                    return Expression(elem.Codes().FirstOrDefault(), compileContext);
+                    return Expression(elem.Codes().FirstOrDefault(), scope);
                 case WordPar:
-                    return Expression(elem.Codes().FirstOrDefault(), compileContext);
+                    return Expression(elem.Codes().FirstOrDefault(), scope);
             }
 
             // Then binary operator values. All binary operators has two operants.
             CodeElement first = elem.Codes().FirstOrDefault();
             CodeElement next = elem.Codes().FirstOrDefault(c => c != first);
-            ExpBase op1 = Expression(first, compileContext);
-            ExpBase op2 = Expression(next, compileContext);
+            ExpBase op1 = Expression(first, scope);
+            ExpBase op2 = Expression(next, scope);
 
             // For multiplication, division, subtraction, greaterThan and lowerThan the operants must be numbers.
             if (elem.Name == WordMul || elem.Name == WordDiv || elem.Name == WordSub || elem.Name == WordGt || elem.Name == WordLt)
@@ -392,7 +386,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             return true;
         }
 
-        public static int RunAsInt(this ExpBase op, Context runtime)
+        public static int RunAsInt(this ExpBase op, Variables runtime)
         {
             switch (op.ExpressionType)
             {
@@ -401,7 +395,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             }
         }
 
-        public static float RunAsFloat(this ExpBase op, Context runtime)
+        public static float RunAsFloat(this ExpBase op, Variables runtime)
         {
             switch (op.ExpressionType)
             {
@@ -411,7 +405,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             }
         }
 
-        public static string RunAsString(this ExpBase op, Context runtime)
+        public static string RunAsString(this ExpBase op, Variables runtime)
         {
             switch (op.ExpressionType)
             {
@@ -423,7 +417,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             }
         }
 
-        public static bool RunAsBool(this ExpBase op, Context runtime)
+        public static bool RunAsBool(this ExpBase op, Variables runtime)
         {
             switch (op.ExpressionType)
             {
@@ -432,7 +426,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             }
         }
 
-        public static void RunAsVoid(this ExpBase op, Context runtime)
+        public static void RunAsVoid(this ExpBase op, Variables runtime)
         {
             switch (op.ExpressionType)
             {

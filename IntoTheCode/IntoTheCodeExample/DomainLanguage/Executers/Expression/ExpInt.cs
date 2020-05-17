@@ -11,7 +11,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
             int.TryParse(elem.Value, out _value);
         }
 
-        public override int Run(Context runtime)
+        public override int Run(Variables runtime)
         {
             return _value;
         }

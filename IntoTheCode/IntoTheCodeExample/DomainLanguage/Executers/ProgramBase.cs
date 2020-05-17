@@ -18,6 +18,6 @@
         /// <summary>Runtime execution of statement.</summary>
         /// <param name="runtime">The context.</param>
         /// <returns>True: the statement or body has executed a 'return' statement.</returns>
-        public abstract bool Run(Context runtime);
+        public abstract bool Run(Variables runtime);
     }
 }

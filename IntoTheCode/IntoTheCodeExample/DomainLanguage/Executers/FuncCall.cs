@@ -5,7 +5,7 @@
         public string Name;
 
 
-        public override bool Run(Context runtime)
+        public override bool Run(Variables runtime)
         {
             throw new System.NotImplementedException();
         }

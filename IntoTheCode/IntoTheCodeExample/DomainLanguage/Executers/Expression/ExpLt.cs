@@ -4,7 +4,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 {
     public class ExpLt : ExpTyped<bool>
     {
-        private Func<Context, bool> _run;
+        private Func<Variables, bool> _run;
 
         public ExpLt(ExpBase op1, ExpBase op2)
         {
@@ -14,7 +14,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
                 _run = (runtime) => op1.RunAsFloat(runtime) < op2.RunAsFloat(runtime);
         }
 
-        public override bool Run(Context runtime)
+        public override bool Run(Variables runtime)
         {
             return _run(runtime);
         }
