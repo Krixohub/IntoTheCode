@@ -147,7 +147,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             var def = CreateDeclare(elem.Codes(WordDeclare).First(), true);
 
             ExpBase exp = null;
-            if (elem.Codes().Count() == 3)
+            if (elem.Codes().Count() == 2)
             {
                 CodeElement expCode = elem.Codes().Last();
                 exp = ProgramCompiler.Expression(expCode, scope);
@@ -309,7 +309,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public const string WordEq = "eq";
         public const string WordValue = "value";
         public const string WordReal = "real";
-        public const string WordVar = "var";
+        public const string WordVar = "variable";
         public const string WordInt = "int";
 
 
@@ -326,6 +326,8 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                     return Expression(elem.Codes().FirstOrDefault(), scope);
                 case WordPar:
                     return Expression(elem.Codes().FirstOrDefault(), scope);
+                case WordVar:
+                    return CreateExpVariable(elem, scope);
             }
 
             // Then binary operator values. All binary operators has two operants.
@@ -363,6 +365,28 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                 default:
                     throw new Exception(string.Format("Unknown expression element: '{0}'", elem.Name));
             }
+        }
+
+        private static ExpBase CreateExpVariable(CodeElement elem, Scope scope)
+        {
+            //CodeElement identifier = elem.Codes("identifier").FirstOrDefault();
+
+            string name = elem.Value;
+
+            DefType theType = scope.ExistsVariable(name, elem);
+            ExpBase ExpVar = null;
+            switch (theType)
+            {
+                case DefType.Int: ExpVar = new ExpVariable<int>(name); break;
+                case DefType.String: ExpVar = new ExpVariable<string>(name); break;
+                case DefType.Float: ExpVar = new ExpVariable<float>(name); break;
+                case DefType.Bool: ExpVar = new ExpVariable<bool>(name); break;
+                default:
+                    throw new Exception("Unknown variable type.");
+            }
+            
+
+            return ExpVar;
         }
 
         public static bool IsInt(params ExpBase[] operants)

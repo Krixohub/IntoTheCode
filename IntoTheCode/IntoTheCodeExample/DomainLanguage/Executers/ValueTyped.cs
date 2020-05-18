@@ -13,6 +13,11 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public TType Value { get; set; }
 
+        //public override TType Run(Variables runtime)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
         public override void SetValue(Variables runtime, ExpBase exp)
         {
             if (typeof(TType) == typeof(int)) (this as ValueTyped<int>).Value = exp.RunAsInt(runtime);

@@ -59,17 +59,17 @@ sub         = exp '-' exp;
 gt          = exp '>' exp;
 lt          = exp '<' exp;
 eq          = exp '==' exp;
-value       = int | real | string | funcCall | var;
+value       = int | real | string | funcCall | variable;
 real        = int;
-var         = identifier;
+variable    = identifier;
 
 settings
 command     collapse;
 exp         collapse;
-mul         Precedence = '7';
-div         Precedence = '7';
-sum         Precedence = '6';
-sub         Precedence = '6';
+mul         Precedence = '2';
+div         Precedence = '2';
+sum         Precedence = '1';
+sub         Precedence = '1';
 value       collapse;";
 
         public DomainLanguageVievModel()

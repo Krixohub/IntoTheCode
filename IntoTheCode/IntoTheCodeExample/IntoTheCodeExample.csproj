@@ -44,6 +44,7 @@
     <Compile Include="CsvData\CsvDataVievModel.cs" />
     <Compile Include="DomainLanguage\DomainLanguageVievModel.cs" />
     <Compile Include="DomainLanguage\Executers\Assign.cs" />
+    <Compile Include="DomainLanguage\Executers\Expression\ExpVariable.cs" />
     <Compile Include="DomainLanguage\Executers\FuncCall.cs" />
     <Compile Include="DomainLanguage\Executers\Program.cs" />
     <Compile Include="DomainLanguage\Executers\Return.cs" />
