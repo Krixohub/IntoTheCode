@@ -42,17 +42,17 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public bool ExistsFunction(string name)
         {
-            return Functions.ContainsKey(name) || (ParentScope != null && ParentScope.Functions.ContainsKey(name));
+            return Functions.ContainsKey(name) || (ParentScope != null && ParentScope.ExistsFunction(name));
         }
 
-        private Function GetFunction(string name, List<DefType> types)
+        public Function GetFunction(string name)
         {
             Function function;
             if (Functions.TryGetValue(name, out function))
                 // todo check type and parameters
                 return function;
             else if (ParentScope != null)
-                return ParentScope.GetFunction(name, types);
+                return ParentScope.GetFunction(name);
             else
                 throw new Exception(string.Format("This function is not declared '{0}'", name));
         }

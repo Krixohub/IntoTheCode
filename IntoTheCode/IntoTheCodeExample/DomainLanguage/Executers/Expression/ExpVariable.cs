@@ -12,7 +12,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 
         public string Name;
 
-        public override TType Run(Variables runtime)
+        public override TType Compute(Variables runtime)
         {
             ValueTyped<TType> value = runtime.Vars[Name] as ValueTyped<TType>;
             return value.Value;

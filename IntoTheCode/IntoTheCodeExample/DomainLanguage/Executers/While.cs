@@ -11,7 +11,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public override bool Run(Variables runtime)
         {
-            while (Expression.Run(runtime))
+            while (Expression.Compute(runtime))
                 if (Body.Run(runtime)) return true;
 
             return false;

@@ -13,7 +13,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public const string WordFunctionDef = "functionDef";
         public const string WordVariableDef = "variableDef";
         public const string WordDeclare = "declare";
-        public const string WordFunc = "func";
+        public const string WordFuncCall = "funcCall";
         public const string WordBody = "body";
         public const string WordAssign = "assign";
         public const string WordReturn = "return";
@@ -26,6 +26,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public const string WordTypeVoid = "defVoid";
         public const string WordIdentifier = "identifier";
 
+        public const string VariableReturn = "returnValue";
         public static Program CreateProgram(TextDocument doc, Dictionary<string, Function> functions, Dictionary<string, ValueBase> parameters)
         {
             // todo add functions to rootScope;
@@ -126,7 +127,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                     stm = CreateWhile(elem, scope, resultType);
                     // todo check always returns
                     break;
-                case WordFunc:
+                case WordFuncCall:
                     stm = CreateFuncCall(elem, scope);
                     break;
                 case WordReturn:
@@ -264,12 +265,6 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             return cmd;
         }
 
-        public static FuncCall CreateFuncCall(CodeElement elem, Scope scope)
-        {
-
-            return new FuncCall();
-        }
-
         public static Declare CreateDeclare(CodeElement elem, bool isVariable)
         {
             CodeElement defType = elem.Codes().FirstOrDefault();
@@ -328,6 +323,8 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                     return Expression(elem.Codes().FirstOrDefault(), scope);
                 case WordVar:
                     return CreateExpVariable(elem, scope);
+                case WordFuncCall:
+                    return CreateExpFunc(elem, scope);
             }
 
             // Then binary operator values. All binary operators has two operants.
@@ -369,8 +366,6 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         private static ExpBase CreateExpVariable(CodeElement elem, Scope scope)
         {
-            //CodeElement identifier = elem.Codes("identifier").FirstOrDefault();
-
             string name = elem.Value;
 
             DefType theType = scope.ExistsVariable(name, elem);
@@ -384,9 +379,106 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                 default:
                     throw new Exception("Unknown variable type.");
             }
-            
 
             return ExpVar;
+        }
+
+        public static FuncCall CreateFuncCall(CodeElement elem, Scope scope)
+        {
+
+            return new FuncCall();
+        }
+
+        public static Function CreateFunctionDef_Slettes(CodeElement elem, Scope scope)
+        {
+            // functionDef = typeAndId '(' [typeAndId {',' typeAndId}] ')' '{' scope '}';
+
+            CodeElement defElem = elem.Codes(WordDeclare).First();
+            var def = CreateDeclare(defElem, false);
+
+            if (scope.Functions.ContainsKey(def.TheName))
+                // todo check type and parameters
+                throw new Exception(string.Format("A function called '{0}', {1}, is allready declared", def.TheName, elem.GetLineAndColumn()));
+
+
+
+
+
+
+
+            var parms = new List<Declare>();
+            Variables innerVariables = new Variables(null, null);
+
+            if (def.TheType != DefType.Void)
+                innerVariables.BuildVariable(def.TheType, "returnValue", elem);
+
+            foreach (CodeElement item in elem.Codes(WordDeclare).Where(e => e != defElem))
+            {
+                var parm = CreateDeclare(item, true);
+                parms.Add(parm);
+                innerVariables.BuildVariable(parm.TheType, parm.TheName, item);
+            }
+
+
+
+
+            Function funcDef = new Function() { FuncType = def.TheType, Name = def.TheName, Parameters = parms };
+
+            scope.Functions.Add(def.TheName, funcDef);
+
+            CodeElement scopeElem = elem.Codes(WordScope).First();
+
+
+            bool alwaysReturns;
+            funcDef.FunctionScope = CreateScope(scopeElem, innerVariables, scope, def.TheType, out alwaysReturns); //, scope.FunctionScope
+
+            if (def.TheType != DefType.Void && !alwaysReturns)
+                throw new Exception(string.Format("The function '{0}' must return a value, {1}", def.TheName, elem.GetLineAndColumn()));
+
+            return funcDef;
+        }
+
+        private static ExpBase CreateExpFunc(CodeElement elem, Scope scope)
+        {
+            // funcCall    = identifier '(' [exp {',' exp}] ')';
+
+
+            CodeElement idElem = elem.Codes("identifier").First();
+            string name = idElem.Value;
+
+            Function theFunc = scope.GetFunction(name);
+
+            var parameters = new List<ExpBase>();
+            int i = -1;
+            foreach (CodeElement item in elem.Codes().Where(e => e != idElem))
+            {
+                var parm = Expression(item, scope);
+                if (++i == theFunc.Parameters.Count)
+                    throw new Exception(string.Format("Too many parameters for function '{0}', {1}", name, item.GetLineAndColumn()));
+                if (theFunc.Parameters[i].TheType == DefType.Int && !IsInt(parm))
+                    throw new Exception(string.Format("The parameter for function '{0}' must be an integer, {1}", name, item.GetLineAndColumn()));
+                if (theFunc.Parameters[i].TheType == DefType.Bool && !IsBool(parm))
+                    throw new Exception(string.Format("The parameter for function '{0}' must be a boolean, {1}", name, item.GetLineAndColumn()));
+                if (theFunc.Parameters[i].TheType == DefType.Bool && !IsNumber(parm))
+                    throw new Exception(string.Format("The parameter for function '{0}' must be a number, {1}", name, item.GetLineAndColumn()));
+
+                parameters.Add(parm);
+            }
+            if (i + 1 != theFunc.Parameters.Count)
+                throw new Exception(string.Format("Too few parameters for function '{0}', {1}", name, elem.GetLineAndColumn()));
+
+            ExpBase expFunc = null;
+            switch (theFunc.FuncType)
+            {
+                case DefType.Int: expFunc = new ExpFunc<int>(name, theFunc, parameters); break;
+                case DefType.String: expFunc = new ExpFunc<string>(name, theFunc, parameters); break;
+                case DefType.Float: expFunc = new ExpFunc<float>(name, theFunc, parameters); break;
+                case DefType.Bool: expFunc = new ExpFunc<bool>(name, theFunc, parameters); break;
+                default:
+                    throw new Exception("Unknown variable type.");
+            }
+
+            return expFunc;
         }
 
         public static bool IsInt(params ExpBase[] operants)
@@ -414,7 +506,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         {
             switch (op.ExpressionType)
             {
-                case DefType.Int: return ((ExpTyped<int>)op).Run(runtime);
+                case DefType.Int: return ((ExpTyped<int>)op).Compute(runtime);
                 default: throw new Exception(string.Format("Expression is not an integer: '{0}'", op.ExpressionType));
             }
         }
@@ -423,8 +515,8 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         {
             switch (op.ExpressionType)
             {
-                case DefType.Int: return ((ExpTyped<int>)op).Run(runtime);
-                case DefType.Float: return ((ExpTyped<float>)op).Run(runtime);
+                case DefType.Int: return ((ExpTyped<int>)op).Compute(runtime);
+                case DefType.Float: return ((ExpTyped<float>)op).Compute(runtime);
                 default: throw new Exception(string.Format("Expression is not a number: '{0}'", op.ExpressionType));
             }
         }
@@ -433,10 +525,10 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         {
             switch (op.ExpressionType)
             {
-                case DefType.Int: return ((ExpTyped<int>)op).Run(runtime).ToString();
-                case DefType.Float: return ((ExpTyped<float>)op).Run(runtime).ToString();
-                case DefType.Bool: return ((ExpTyped<bool>)op).Run(runtime).ToString();
-                case DefType.String: return ((ExpTyped<string>)op).Run(runtime);
+                case DefType.Int: return ((ExpTyped<int>)op).Compute(runtime).ToString();
+                case DefType.Float: return ((ExpTyped<float>)op).Compute(runtime).ToString();
+                case DefType.Bool: return ((ExpTyped<bool>)op).Compute(runtime).ToString();
+                case DefType.String: return ((ExpTyped<string>)op).Compute(runtime);
                 default: throw new Exception(string.Format("Unknown expression type: '{0}'", op.ExpressionType));
             }
         }
@@ -445,7 +537,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         {
             switch (op.ExpressionType)
             {
-                case DefType.Bool: return ((ExpTyped<bool>)op).Run(runtime);
+                case DefType.Bool: return ((ExpTyped<bool>)op).Compute(runtime);
                 default: throw new Exception(string.Format("Expression is not an integer: '{0}'", op.ExpressionType));
             }
         }
@@ -454,10 +546,10 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         {
             switch (op.ExpressionType)
             {
-                case DefType.Int: ((ExpTyped<int>)op).Run(runtime); break;
-                case DefType.Float: ((ExpTyped<float>)op).Run(runtime); break;
-                case DefType.Bool: ((ExpTyped<bool>)op).Run(runtime); break;
-                case DefType.String: ((ExpTyped<string>)op).Run(runtime); break;
+                case DefType.Int: ((ExpTyped<int>)op).Compute(runtime); break;
+                case DefType.Float: ((ExpTyped<float>)op).Compute(runtime); break;
+                case DefType.Bool: ((ExpTyped<bool>)op).Compute(runtime); break;
+                case DefType.String: ((ExpTyped<string>)op).Compute(runtime); break;
                 default: throw new Exception(string.Format("Unknown expression type: '{0}'", op.ExpressionType));
             }
         }

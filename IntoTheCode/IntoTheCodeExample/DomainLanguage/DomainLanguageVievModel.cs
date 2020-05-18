@@ -46,10 +46,10 @@ defBool     = 'bool';
 defVoid     = 'void';
 
 assign      = identifier '=' exp ';';
-funcCall    = identifier '(' [exp {',' exp}] ')';
 return      = 'return' [exp] ';';
 if          = 'if' '(' exp ')' body ['else' body];
 loop        = 'while' '(' exp ')' body;
+funcCall    = identifier '(' [exp {',' exp}] ')';
 
 exp         = mul | div | sum | sub | gt | lt | eq | value | '(' exp ')';
 mul         = exp '*' exp;

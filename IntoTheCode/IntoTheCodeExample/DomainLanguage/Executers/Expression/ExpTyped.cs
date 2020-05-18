@@ -4,7 +4,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 {
     public abstract class ExpTyped<TResult> : ExpBase
     {
-        public abstract TResult Run(Variables runtime);
+        public abstract TResult Compute(Variables runtime);
 
         protected override DefType GetResultType()
         {

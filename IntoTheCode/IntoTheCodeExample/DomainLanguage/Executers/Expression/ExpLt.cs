@@ -14,7 +14,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
                 _run = (runtime) => op1.RunAsFloat(runtime) < op2.RunAsFloat(runtime);
         }
 
-        public override bool Run(Variables runtime)
+        public override bool Compute(Variables runtime)
         {
             return _run(runtime);
         }

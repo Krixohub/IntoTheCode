@@ -12,7 +12,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public override bool Run(Variables runtime)
         {
-            runtime.SetVariable("return", Expression);
+            runtime.SetVariable(ProgramCompiler.VariableReturn, Expression);
             return true;
         }
     }

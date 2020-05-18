@@ -11,7 +11,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
             _run = (runtime) => op1.RunAsInt(runtime) - op2.RunAsInt(runtime);
         }
 
-        public override int Run(Variables runtime)
+        public override int Compute(Variables runtime)
         {
             return _run(runtime);
         }

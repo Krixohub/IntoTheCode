@@ -22,6 +22,9 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public Scope FunctionScope;
 
+        /// <summary>
+        /// For functions added to the program.
+        /// </summary>
         public Action<String> ExternalFunction;
 
         public override bool Run(Variables runtime)
