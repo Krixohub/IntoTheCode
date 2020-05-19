@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers
 {
-    public class Scope : ProgramBase
+    public class Scope : OperationBase
     {
         public Scope(Scope parentScope, Variables vars, Dictionary<string, Function> functions = null)
         {
@@ -14,15 +14,16 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             Vars = vars == null ? new Variables(null, null) : vars;
         }
 
-        public List<ProgramBase> Commands;
+        public List<OperationBase> Commands;
         public Scope ParentScope;
         public Variables Vars { get; private set; }
         public Dictionary<string, Function> Functions { get; private set; }
 
         public override bool Run(Variables runtime)
         {
-            foreach (ProgramBase item in Commands)
-                if (item.Run(runtime)) return true;
+            Variables localRuntime = new Variables(runtime, null);
+            foreach (OperationBase item in Commands)
+                if (item.Run(localRuntime)) return true;
             
             return false;
         }
@@ -31,9 +32,8 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public DefType ExistsVariable(string name, CodeElement elem)
         {
-            ValueBase variable;
-            if (Vars.Vars.TryGetValue(name, out variable))
-                return variable.ResultType;
+            if (Vars.ExistsVariable(name))
+                return Vars.GetVariable(name).ResultType;
             else if (ParentScope != null)
                 return ParentScope.ExistsVariable(name, elem);
             else

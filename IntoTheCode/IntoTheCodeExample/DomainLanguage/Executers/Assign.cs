@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers
 {
-    public class Assign : ProgramBase
+    public class Assign : OperationBase
     {
 
         public string VariableName;
@@ -16,7 +16,8 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public override bool Run(Variables runtime)
         {
-            throw new NotImplementedException("lige her");
+            runtime.SetVariable(VariableName, Expression);
+            return false;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             Vars = variables == null ? new Dictionary<string, ValueBase>() : variables;
         }
 
-        public Dictionary<string, ValueBase> Vars { get; private set; }
+        private Dictionary<string, ValueBase> Vars { get; set; }
 
         public void SetVariable(string name, ExpBase exp)
         {
@@ -46,7 +46,17 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             Vars.Add(name, variable);
         }
 
-        private ValueBase GetVariable(string name)
+        public bool ExistsVariable(string name)
+        {
+            return Vars.ContainsKey(name);
+            //    return variable;
+            //else if (_runtimeParent != null)
+            //    return _runtimeParent.GetVariable(name);
+            //else
+
+        }
+
+        public ValueBase GetVariable(string name)
         {
             ValueBase variable;
             if (Vars.TryGetValue(name, out variable))

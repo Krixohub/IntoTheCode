@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers
 {
-    public class VariableDef : ProgramBase
+    public class VariableDef : OperationBase
     {
         //public VariableDef(string name, DefType variableType, ExpBase exp) : base()
         //{

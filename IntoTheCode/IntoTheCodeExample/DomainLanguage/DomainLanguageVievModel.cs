@@ -8,17 +8,23 @@ namespace IntoTheCodeExample.DomainLanguage
 {
     public class DomainLanguageVievModel : ExampleVievModelBase
     {
-        private string _initialInput = @"int a = 4;
+        private string _initialInput = @"int a = 3;
 int b = 6;
-while (3 > 2 *1)
+Write(a);
+
+while (b > 4)
 { 
-   int a = 1;
+   int a = 2;
+   Write(a);
+   Write(b);
+   b = n2(2);
 }
 
 int n2(int n)
 {
   int a = n * n;
-  return 4;
+  Write(a);
+  return a;
 }
 ";
 
@@ -33,7 +39,7 @@ while (3 > 2 *1)
         private string _initialGrammar = @"program     = scope;
 body        = command | '{' scope '}';
 scope       = {functionDef | variableDef | command};
-command     = assign | if | loop | funcCall ';' | return;
+command     = assign | if | while | funcCall ';' | return;
 
 functionDef = declare '(' [declare {',' declare}] ')' '{' scope '}';
 variableDef = declare '=' exp ';';
@@ -48,7 +54,7 @@ defVoid     = 'void';
 assign      = identifier '=' exp ';';
 return      = 'return' [exp] ';';
 if          = 'if' '(' exp ')' body ['else' body];
-loop        = 'while' '(' exp ')' body;
+while       = 'while' '(' exp ')' body;
 funcCall    = identifier '(' [exp {',' exp}] ')';
 
 exp         = mul | div | sum | sub | gt | lt | eq | value | '(' exp ')';
@@ -84,7 +90,7 @@ value       collapse;";
 
             // Compile expression
             Program program;
-            Dictionary<string, Function> functions = null;
+            Dictionary<string, Function> functions = Program.AddFunction(null, "Write", WriteLine, "str");
             Dictionary<string, ValueBase> parameters = null;
             try
             {
@@ -96,19 +102,24 @@ value       collapse;";
                 return;
             }
 
-            //// execute program
-            //try
-            //{
-            //    program.RunProgram(parameters);
-            //}
-            //catch (Exception e)
-            //{
-            //    Output = "Program cant execute.\r\n" + e.Message;
-            //    return;
-            //}
+            // execute program
+            try
+            {
+                program.RunProgram(parameters);
+            }
+            catch (Exception e)
+            {
+                Output = "Program cant execute.\r\n" + e.Message;
+                return;
+            }
 
-            Output = "Expression result: brae" ;
+            Output += "Program has executed!" ;
         }
 
-    }
+        private void WriteLine(string line)
+        {
+            Output += line + "\r\n";
+        }
+
+}
 }

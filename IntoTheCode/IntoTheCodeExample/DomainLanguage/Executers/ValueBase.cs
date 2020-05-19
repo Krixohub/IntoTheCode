@@ -38,6 +38,24 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             return variable;
         }
 
+        public static ValueBase Create(DefType theType)
+        {
+            ValueBase variable;
+            switch (theType)
+            {
+                case DefType.Int: variable = new ValueTyped<int>(); break;
+                case DefType.String: variable = new ValueTyped<string>(); break;
+                case DefType.Float: variable = new ValueTyped<float>(); break;
+                case DefType.Bool: variable = new ValueTyped<bool>(); break;
+                case DefType.Void:
+                    throw new Exception("Can't create a variable of type void.");
+                default:
+                    throw new Exception("Unknown variable type.");
+            }
+
+            return variable;
+        }
+
         public static ValueBase Create(DefType theType, Variables runtime, ExpBase exp)
         {
             ValueBase variable;

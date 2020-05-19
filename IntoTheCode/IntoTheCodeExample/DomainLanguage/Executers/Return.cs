@@ -1,13 +1,7 @@
-﻿using IntoTheCode;
-using System;
-using System.Linq;
-
-namespace IntoTheCodeExample.DomainLanguage.Executers
+﻿namespace IntoTheCodeExample.DomainLanguage.Executers
 {
-    public class Return : ProgramBase
+    public class Return : OperationBase
     {
-
-
         public ExpBase Expression;
 
         public override bool Run(Variables runtime)

@@ -14,7 +14,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 
         public override TType Compute(Variables runtime)
         {
-            ValueTyped<TType> value = runtime.Vars[Name] as ValueTyped<TType>;
+            ValueTyped<TType> value = runtime.GetVariable(Name) as ValueTyped<TType>;
             return value.Value;
         }
 

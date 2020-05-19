@@ -1,13 +1,11 @@
-﻿using IntoTheCode;
-using IntoTheCodeExample.DomainLanguage.Executers.Expression;
+﻿using IntoTheCodeExample.DomainLanguage.Executers.Expression;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers
 {
-    public class While : ProgramBase
+    public class While : OperationBase
     {
         public ExpTyped<bool> Expression;
-        public ProgramBase Body;
-
+        public OperationBase Body;
 
         public override bool Run(Variables runtime)
         {

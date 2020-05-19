@@ -17,7 +17,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public const string WordBody = "body";
         public const string WordAssign = "assign";
         public const string WordReturn = "return";
-        public const string WordLoop = "loop";
+        public const string WordWhile = "while";
         public const string WordIf = "if";
         public const string WordTypeInt = "defInt";
         public const string WordTypeStr = "defString";
@@ -53,7 +53,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             foreach (CodeElement item in elem.Codes(WordFunctionDef))
                 CreateFunctionDef(item, scope);
 
-            List<ProgramBase> commands = new List<ProgramBase>();
+            List<OperationBase> commands = new List<OperationBase>();
             foreach (CodeElement item in elem.Codes(c => c.Name != WordFunctionDef))
                 if (alwaysReturnValue)
                     throw new Exception(string.Format("The statement can not be reached, {0}, {1}", item.Name, item.GetLineAndColumn()));
@@ -106,10 +106,10 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             return funcDef;
         }
 
-        public static ProgramBase CreateVariableOrCommand(CodeElement elem, Scope scope, DefType resultType, out bool alwaysReturnValue)
+        public static OperationBase CreateVariableOrCommand(CodeElement elem, Scope scope, DefType resultType, out bool alwaysReturnValue)
         {
             alwaysReturnValue = false;
-            ProgramBase stm;
+            OperationBase stm;
 
             switch (elem.Name)
             {
@@ -123,12 +123,12 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                     stm = CreateIf(elem, scope, resultType, out alwaysReturnValue);
                     // todo check always returns
                     break;
-                case WordLoop:
+                case WordWhile:
                     stm = CreateWhile(elem, scope, resultType);
                     // todo check always returns
                     break;
                 case WordFuncCall:
-                    stm = CreateFuncCall(elem, scope);
+                    stm = CreateCmdFuncCall(elem, scope);
                     break;
                 case WordReturn:
                     stm = CreateReturn(elem, scope, resultType);
@@ -194,10 +194,10 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             return cmd;
         }
 
-        public static ProgramBase CreateBody(CodeElement elem, Scope scope, DefType resultType, out bool alwaysReturnValue)
+        public static OperationBase CreateBody(CodeElement elem, Scope scope, DefType resultType, out bool alwaysReturnValue)
         {
             CodeElement innerCode = elem.Codes().First();
-            ProgramBase cmd;
+            OperationBase cmd;
             if (innerCode.Name == WordScope)
                 cmd = CreateScope(innerCode, null, scope, resultType, out alwaysReturnValue);
             else
@@ -324,7 +324,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                 case WordVar:
                     return CreateExpVariable(elem, scope);
                 case WordFuncCall:
-                    return CreateExpFunc(elem, scope);
+                    return CreateExpFuncCall(elem, scope);
             }
 
             // Then binary operator values. All binary operators has two operants.
@@ -383,65 +383,9 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             return ExpVar;
         }
 
-        public static FuncCall CreateFuncCall(CodeElement elem, Scope scope)
-        {
-
-            return new FuncCall();
-        }
-
-        public static Function CreateFunctionDef_Slettes(CodeElement elem, Scope scope)
-        {
-            // functionDef = typeAndId '(' [typeAndId {',' typeAndId}] ')' '{' scope '}';
-
-            CodeElement defElem = elem.Codes(WordDeclare).First();
-            var def = CreateDeclare(defElem, false);
-
-            if (scope.Functions.ContainsKey(def.TheName))
-                // todo check type and parameters
-                throw new Exception(string.Format("A function called '{0}', {1}, is allready declared", def.TheName, elem.GetLineAndColumn()));
-
-
-
-
-
-
-
-            var parms = new List<Declare>();
-            Variables innerVariables = new Variables(null, null);
-
-            if (def.TheType != DefType.Void)
-                innerVariables.BuildVariable(def.TheType, "returnValue", elem);
-
-            foreach (CodeElement item in elem.Codes(WordDeclare).Where(e => e != defElem))
-            {
-                var parm = CreateDeclare(item, true);
-                parms.Add(parm);
-                innerVariables.BuildVariable(parm.TheType, parm.TheName, item);
-            }
-
-
-
-
-            Function funcDef = new Function() { FuncType = def.TheType, Name = def.TheName, Parameters = parms };
-
-            scope.Functions.Add(def.TheName, funcDef);
-
-            CodeElement scopeElem = elem.Codes(WordScope).First();
-
-
-            bool alwaysReturns;
-            funcDef.FunctionScope = CreateScope(scopeElem, innerVariables, scope, def.TheType, out alwaysReturns); //, scope.FunctionScope
-
-            if (def.TheType != DefType.Void && !alwaysReturns)
-                throw new Exception(string.Format("The function '{0}' must return a value, {1}", def.TheName, elem.GetLineAndColumn()));
-
-            return funcDef;
-        }
-
-        private static ExpBase CreateExpFunc(CodeElement elem, Scope scope)
+        private static FuncCall CreateFuncCall(CodeElement elem, Scope scope)
         {
             // funcCall    = identifier '(' [exp {',' exp}] ')';
-
 
             CodeElement idElem = elem.Codes("identifier").First();
             string name = idElem.Value;
@@ -467,13 +411,29 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             if (i + 1 != theFunc.Parameters.Count)
                 throw new Exception(string.Format("Too few parameters for function '{0}', {1}", name, elem.GetLineAndColumn()));
 
+            var call = new FuncCall(theFunc, parameters);
+
+            return call;
+        }
+
+        public static CmdFuncCall CreateCmdFuncCall(CodeElement elem, Scope scope)
+        {
+            FuncCall call = CreateFuncCall(elem, scope);
+            return new CmdFuncCall { Call = call };
+        }
+
+        private static ExpBase CreateExpFuncCall(CodeElement elem, Scope scope)
+        {
+            // funcCall    = identifier '(' [exp {',' exp}] ')';
+            FuncCall call = CreateFuncCall(elem, scope);
+
             ExpBase expFunc = null;
-            switch (theFunc.FuncType)
+            switch (call.Func.FuncType)
             {
-                case DefType.Int: expFunc = new ExpFunc<int>(name, theFunc, parameters); break;
-                case DefType.String: expFunc = new ExpFunc<string>(name, theFunc, parameters); break;
-                case DefType.Float: expFunc = new ExpFunc<float>(name, theFunc, parameters); break;
-                case DefType.Bool: expFunc = new ExpFunc<bool>(name, theFunc, parameters); break;
+                case DefType.Int: expFunc = new ExpFuncCall<int>(call); break;
+                case DefType.String: expFunc = new ExpFuncCall<string>(call); break;
+                case DefType.Float: expFunc = new ExpFuncCall<float>(call); break;
+                case DefType.Bool: expFunc = new ExpFuncCall<bool>(call); break;
                 default:
                     throw new Exception("Unknown variable type.");
             }

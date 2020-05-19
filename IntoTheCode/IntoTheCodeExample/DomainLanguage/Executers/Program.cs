@@ -1,14 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers
 {
-    public class Program : ProgramBase
+    public class Program : OperationBase
     {
 
-        public static Dictionary<string, Function> AddFunction(Dictionary<string, Function> functions, string name, int value)
+        public static Dictionary<string, Function> AddFunction(Dictionary<string, Function> functions, string name, Action<string> fun, params string[] parmName)
         {
             if (functions == null) functions = new Dictionary<string, Function>();
-            // todo add functions to rootScope;
+            
+            var function = new Function() { Name = name, ExternalFunction = fun, Parameters = new List<Declare>() };
+            function.Parameters.Add(new Declare { TheName = parmName[0], TheType = DefType.String });
+            functions.Add(name, function);
 
             return functions;
         }
@@ -20,7 +24,6 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
             return parameters;
         }
-
 
         public Scope RootScope;
 

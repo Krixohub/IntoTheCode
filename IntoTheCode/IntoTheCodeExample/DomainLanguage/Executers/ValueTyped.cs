@@ -21,10 +21,10 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public override void SetValue(Variables runtime, ExpBase exp)
         {
             if (typeof(TType) == typeof(int)) (this as ValueTyped<int>).Value = exp.RunAsInt(runtime);
-            if (typeof(TType) == typeof(float)) (this as ValueTyped<float>).Value = exp.RunAsFloat(runtime);
-            if (typeof(TType) == typeof(string)) (this as ValueTyped<string>).Value = exp.RunAsString(runtime);
-            if (typeof(TType) == typeof(bool)) (this as ValueTyped<bool>).Value = exp.RunAsBool(runtime);
-            throw new Exception("Unknown variable type.");
+            else if (typeof(TType) == typeof(float)) (this as ValueTyped<float>).Value = exp.RunAsFloat(runtime);
+            else if (typeof(TType) == typeof(string)) (this as ValueTyped<string>).Value = exp.RunAsString(runtime);
+            else if (typeof(TType) == typeof(bool)) (this as ValueTyped<bool>).Value = exp.RunAsBool(runtime);
+            else throw new Exception("Unknown variable type.");
         }
     }
 
