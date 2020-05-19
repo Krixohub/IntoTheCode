@@ -30,10 +30,9 @@ int n2(int n)
 
         private string _initialInput2 = @"int a = 4;
 int b = 6;
-while (3 > 2 *1)
-{ 
-   int a = 1;
-}
+Write(a);
+a = 3;
+Write(a);
 ";
 
         private string _initialGrammar = @"program     = scope;
@@ -86,7 +85,7 @@ value       collapse;";
 
         protected override void ProcessOutput(TextDocument doc)
         {
-            Output = string.Empty;
+            Output = "Compile\r\n";
 
             // Compile expression
             Program program;
@@ -98,18 +97,19 @@ value       collapse;";
             }
             catch (Exception e)
             {
-                Output = "Program does not compile.\r\n(Compiling the parser output fails)\r\n" + e.Message;
+                Output += "Program does not compile.\r\n(Compiling the parser output fails)\r\n" + e.Message;
                 return;
             }
 
             // execute program
             try
             {
+                Output = "Run\r\n";
                 program.RunProgram(parameters);
             }
             catch (Exception e)
             {
-                Output = "Program cant execute.\r\n" + e.Message;
+                Output += "Program cant execute.\r\n" + e.Message;
                 return;
             }
 

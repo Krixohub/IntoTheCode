@@ -17,13 +17,13 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         private Dictionary<string, ValueBase> Vars { get; set; }
 
-        public void SetVariable(string name, ExpBase exp)
+        public void SetVariable(string name, ExpBase exp, Variables expVariables = null)
         {
             ValueBase variable;
             if (Vars.TryGetValue(name, out variable))
-                variable.SetValue(this, exp);
+                variable.SetValue(expVariables??this, exp);
             else if (_runtimeParent != null)
-                _runtimeParent.SetVariable(name, exp);
+                _runtimeParent.SetVariable(name, exp, this);
             else
                 throw new Exception(string.Format("A variable called '{0}' is not declared", name));
 

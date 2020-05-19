@@ -32,14 +32,12 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             // todo add functions to rootScope;
             var prog = new Program();
 
-
             Scope externalScope = functions == null ? null : new Scope(null, null, functions);
             Variables variables = new Variables(null, parameters); //, externalScope);
             prog.RootScope = CreateScope(doc.Codes(WordScope).First(), variables, externalScope, DefType.Void, out bool alwaysReturn);
 
             return prog;
         }
-
 
         public static Scope CreateScope(CodeElement elem, Variables innerVariables, Scope parentScope, DefType resultType, out bool alwaysReturnValue) //, bool mustReturn
         {

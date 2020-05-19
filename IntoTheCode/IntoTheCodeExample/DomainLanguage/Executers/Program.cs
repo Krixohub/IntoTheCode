@@ -27,10 +27,13 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public Scope RootScope;
 
+        public static int MaxIterations { get; internal set; }
+
         public void RunProgram(Dictionary<string, ValueBase> parameters)
         {
-            // todo add parameters to Context (test for existing names);
+            MaxIterations = 5;
 
+            // todo add parameters to Context (test for existing names);
             Variables vars = new Variables(null, parameters);
             Run(vars);
         }

@@ -7,12 +7,8 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 {
     public class Function : OperationBase
     {
-        //public FunctionDef(string name, DefType theType, List<TypeAndId> parm)
-        //{
-        //    FuncType = theType;
-        //    Name = name;
-        //    Parameters = parm;
-        //}
+
+        private int _iterations;
 
         public string Name;
 
@@ -29,6 +25,9 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public override bool Run(Variables runtime)
         {
+            if (++_iterations > Program.MaxIterations)
+                throw new Exception(string.Format("Stackoverflow. Max iterations is {0}", Program.MaxIterations)); ;
+
             if (ExternalFunction == null)
                 FunctionScope.Run(runtime);
             else
@@ -41,6 +40,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
                 ExternalFunction(parm0s.Value);
             }
+            _iterations--;
             return false;
         }
     }
