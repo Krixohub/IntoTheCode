@@ -5,26 +5,30 @@ using IntoTheCode.Basic;
 using IntoTheCode.Message;
 using System.Linq;
 using IntoTheCode.Read.Structure;
+using System.Globalization;
 
 namespace IntoTheCode.Read.Words
 {
     /// <remarks>Inherids <see cref="WordBase"/></remarks>
-    internal class WordInt : WordBase
+    internal class WordFloat : WordBase
     {
-        internal WordInt()
+        internal WordFloat()
         {
-            Name = "int";
+            Name = "float";
+            _culture = new CultureInfo("en-US");
         }
 
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
-            return new WordInt() { Name = Name, TextBuffer = buffer };
+            return new WordFloat() { Name = Name, TextBuffer = buffer };
         }
 
-        public override string GetGrammar() { return MetaParser.WordInt____; }
+        public override string GetGrammar() { return MetaParser.WordFloat__; }
 
         private const char Sign = '-';
+        private const char Comma = '.';
         private const string AllowedChars = "0123456789";
+        private CultureInfo _culture;
 
         public override bool Load(List<TextElement> outElements, int level)
         {
@@ -37,15 +41,22 @@ namespace IntoTheCode.Read.Words
                 if (TextBuffer.IsEnd(to))
                     return false;
             }
-            if (!AllowedChars.Contains(TextBuffer.GetChar(to)))
+            if (!AllowedChars.Contains(TextBuffer.GetChar(to++)))
                 return false;
-
-            to++;
 
             while (!TextBuffer.IsEnd(to) && AllowedChars.Contains(TextBuffer.GetChar(to)))
             { to++; }
 
-            if (to > 9 && !int.TryParse(TextBuffer.GetSubString(TextBuffer.PointerNextChar, to), out _))
+            if (TextBuffer.IsEnd(to + 1) || Comma != TextBuffer.GetChar(to++))
+                return false;
+
+            if (!AllowedChars.Contains(TextBuffer.GetChar(to++)))
+                return false;
+
+            while (!TextBuffer.IsEnd(to) && AllowedChars.Contains(TextBuffer.GetChar(to)))
+            { to++; }
+
+            if (to > 9 && !float.TryParse(TextBuffer.GetSubString(TextBuffer.PointerNextChar, to), NumberStyles.Float, _culture, out _))
                     return false;
 
             //TextBuffer.InsertComments(outElements);
@@ -80,8 +91,18 @@ namespace IntoTheCode.Read.Words
 
             while (!TextBuffer.IsEnd(to) && AllowedChars.Contains(TextBuffer.GetChar(to)))
             { to++; }
+           
+            if (TextBuffer.IsEnd(to + 1) || Comma != TextBuffer.GetChar(to++))
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar + to, 0, () => MessageRes.itc10, "'" + Comma + "'", "'" + TextBuffer.GetChar(to) + "'");
 
-            if (!int.TryParse(TextBuffer.GetSubString(TextBuffer.PointerNextChar, to), out _))
+            if (!AllowedChars.Contains(TextBuffer.GetChar(to)))
+                return TextBuffer.Status.AddSyntaxError(this, TextBuffer.PointerNextChar + to, 0, () => MessageRes.itc10, "digit", "'" + TextBuffer.GetChar(to) + "'");
+            to++;
+            
+            while (!TextBuffer.IsEnd(to) && AllowedChars.Contains(TextBuffer.GetChar(to)))
+            { to++; }
+
+            if (!float.TryParse(TextBuffer.GetSubString(TextBuffer.PointerNextChar, to), NumberStyles.Float, _culture, out _))
                 return TextBuffer.Status.AddSyntaxError(this,
                     to, 0, () => MessageRes.itc11, TextBuffer.GetSubString(TextBuffer.PointerNextChar, to));
 
@@ -93,10 +114,11 @@ namespace IntoTheCode.Read.Words
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int ResolveErrorsLast(CodeElement last, int level)
         {
-            if (last != null && last.ParserElement == this)
+            CodeElement code = last as CodeElement;
+            if (code != null && code.ParserElement == this)
             {
                 // found!
-                TextBuffer.PointerNextChar = last.SubString.To + a + 1;
+                TextBuffer.PointerNextChar = code.SubString.To + a + 1;
                 return 2;
             }
             return 0;

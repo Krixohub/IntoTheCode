@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers
 {
@@ -28,10 +29,12 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public Scope RootScope;
 
         public static int MaxIterations { get; internal set; }
+        public static CultureInfo Culture { get; internal set; }
 
         public void RunProgram(Dictionary<string, ValueBase> parameters)
         {
             MaxIterations = 5;
+            Culture = new CultureInfo("en-US");
 
             // todo add parameters to Context (test for existing names);
             Variables vars = new Variables(null, parameters);

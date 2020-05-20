@@ -302,9 +302,10 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public const string WordEq = "eq";
         public const string WordValue = "value"; // collapsed
         public const string WordString = "string";
-        public const string WordTrue = "true";
-        public const string WordFalse = "false";
-        public const string WordReal = "real";
+        public const string WordBool = "bool";
+        //public const string WordTrue = "true";
+        //public const string WordFalse = "false";
+        public const string WordReal = "float";
         public const string WordVar = "variable";
         public const string WordInt = "int";
 
@@ -322,16 +323,16 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                     return new ExpString(elem);
                 case WordReal:
                     return new ExpFloat(elem);
-                case WordTrue:
-                    return new ExpBool(true);
-                case WordFalse:
-                    return new ExpBool(false);
+                case WordBool:
+                    return new ExpBool(elem);
                 case WordExp:
                     return Expression(elem.Codes().FirstOrDefault(), scope);
                 case WordPar:
                     return Expression(elem.Codes().FirstOrDefault(), scope);
-                case WordVar:
+                case "identifier":
                     return CreateExpVariable(elem, scope);
+                //case WordVar:
+                //    return CreateExpVariable(elem, scope);
                 case WordFuncCall:
                     return CreateExpFuncCall(elem, scope);
             }
@@ -378,7 +379,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             string name = elem.Value;
 
             DefType theType = scope.ExistsVariable(name, elem);
-            ExpBase ExpVar = null;
+            ExpBase ExpVar;
             switch (theType)
             {
                 case DefType.Int: ExpVar = new ExpVariable<int>(name); break;

@@ -65,11 +65,7 @@ sub         = exp '-' exp;
 gt          = exp '>' exp;
 lt          = exp '<' exp;
 eq          = exp '==' exp;
-value       = int | real | string | true | false | funcCall | variable;
-real        = int;
-true        = 'true';
-false       = 'false';
-variable    = identifier;
+value       = float | int | string | bool | funcCall | identifier;
 
 settings
 command     collapse;
@@ -112,7 +108,7 @@ value       collapse;";
             }
             catch (Exception e)
             {
-                Output += "Program cant execute.\r\n" + e.Message;
+                Output += "Program failed: " + e.Message;
                 return;
             }
 

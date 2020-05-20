@@ -1,4 +1,5 @@
 ﻿using IntoTheCode;
+using System.Globalization;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 {
@@ -8,7 +9,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 
         public ExpFloat(CodeElement elem)
         {
-            float.TryParse(elem.Value, out _value);
+            float.TryParse(elem.Value, NumberStyles.Float, Program.Culture, out _value);
         }
 
         public override float Compute(Variables runtime)

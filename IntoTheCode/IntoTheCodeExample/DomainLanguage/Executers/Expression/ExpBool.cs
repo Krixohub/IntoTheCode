@@ -1,4 +1,5 @@
 ﻿using IntoTheCode;
+using IntoTheCode.Read.Words;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 {
@@ -6,9 +7,9 @@ namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
     {
         private bool _value;
 
-        public ExpBool(bool val)
+        public ExpBool(CodeElement elem)
         {
-            _value = val;
+            bool.TryParse(elem.Value, out _value);
         }
 
         public override bool Compute(Variables runtime)

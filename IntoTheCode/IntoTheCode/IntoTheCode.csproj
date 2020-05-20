@@ -53,6 +53,7 @@
     <Compile Include="Read\Structure\Expression.cs" />
     <Compile Include="Read\Structure\SetOfElements.cs" />
     <Compile Include="Read\Words\WordBinaryOperator.cs" />
+    <Compile Include="Read\Words\WordFloat.cs" />
     <Compile Include="Read\Words\WordInt.cs" />
     <Compile Include="Read\Words\Comment.cs" />
     <Compile Include="Read\ParserError.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Buffer\TextBuffer.cs" />
     <Compile Include="Buffer\TextSubString.cs" />
     <Compile Include="Read\Words\WordBase.cs" />
+    <Compile Include="Read\Words\WordBool.cs" />
     <Compile Include="TextElement.cs" />
     <Compile Include="CommentElement.cs" />
     <Compile Include="Read\HardElement.cs" />

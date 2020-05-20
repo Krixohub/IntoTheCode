@@ -62,6 +62,8 @@
     <Compile Include="Read\Structure\RuleTest.cs" />
     <Compile Include="Read\Words\WordCommentTest.cs" />
     <Compile Include="Read\MetaParserTest.cs" />
+    <Compile Include="Read\Words\WordFloatTest.cs" />
+    <Compile Include="Read\Words\WordBoolTest.cs" />
     <Compile Include="Read\Words\WordMixTest.cs" />
     <Compile Include="Read\Words\WordSymbolTest.cs" />
     <Compile Include="Read\Words\WordStringTest.cs" />

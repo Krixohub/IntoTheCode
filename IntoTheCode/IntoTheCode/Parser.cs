@@ -14,7 +14,7 @@ namespace IntoTheCode
     /// The parser holds the parser elements to read a code.
     /// Parser = a program that reads code, acording to a grammar.
     /// ParserElement = an element of a program that reads code elements, acording to a syntax element.</summary>
-    public partial class Parser
+    public class Parser
     {
         internal int SymbolFixWidth;
 

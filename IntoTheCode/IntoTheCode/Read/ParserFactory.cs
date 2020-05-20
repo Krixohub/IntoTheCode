@@ -97,8 +97,14 @@ namespace IntoTheCode.Read
                             case MetaParser.WordInt____:
                                 elem = new WordInt();
                                 break;
+                            case MetaParser.WordFloat__:
+                                elem = new WordFloat();
+                                break;
                             case MetaParser.WordIdent__:
                                 elem = new WordIdent();
+                                break;
+                            case MetaParser.WordBool___:
+                                elem = new WordBool();
                                 break;
                             default:
                                 elem = new RuleLink(element.Value);
