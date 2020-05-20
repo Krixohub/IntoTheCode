@@ -9,7 +9,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         private Variables _runtimeParent;
 
-        public Variables(Variables runtimeParent, Dictionary<string, ValueBase> variables) //, LocalScope functionScope)
+        public Variables(Variables runtimeParent, Dictionary<string, ValueBase> variables)
         {
             _runtimeParent = runtimeParent;
             Vars = variables == null ? new Dictionary<string, ValueBase>() : variables;
@@ -17,18 +17,20 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         private Dictionary<string, ValueBase> Vars { get; set; }
 
-        public void SetVariable(string name, ExpBase exp, Variables expVariables = null)
+        public void SetVariable(string name, ExpBase exp)
+        {
+            SetVariable(name, exp, this);
+        }
+
+        private void SetVariable(string name, ExpBase exp, Variables expVariables)
         {
             ValueBase variable;
             if (Vars.TryGetValue(name, out variable))
-                variable.SetValue(expVariables??this, exp);
+                variable.SetValue(expVariables, exp);
             else if (_runtimeParent != null)
-                _runtimeParent.SetVariable(name, exp, this);
+                _runtimeParent.SetVariable(name, exp, expVariables);
             else
                 throw new Exception(string.Format("A variable called '{0}' is not declared", name));
-
-            //return true;
-//            throw new Exception(string.Format("A variable called '{0}', {1}, is not declared", name, elem.GetLineAndColumn()));
         }
 
         public void BuildVariable(DefType theType, string name, CodeElement elem)

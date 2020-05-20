@@ -300,7 +300,10 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public const string WordGt = "gt";
         public const string WordLt = "lt";
         public const string WordEq = "eq";
-        public const string WordValue = "value";
+        public const string WordValue = "value"; // collapsed
+        public const string WordString = "string";
+        public const string WordTrue = "true";
+        public const string WordFalse = "false";
         public const string WordReal = "real";
         public const string WordVar = "variable";
         public const string WordInt = "int";
@@ -315,6 +318,14 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             {
                 case WordInt:
                     return new ExpInt(elem);
+                case WordString:
+                    return new ExpString(elem);
+                case WordReal:
+                    return new ExpFloat(elem);
+                case WordTrue:
+                    return new ExpBool(true);
+                case WordFalse:
+                    return new ExpBool(false);
                 case WordExp:
                     return Expression(elem.Codes().FirstOrDefault(), scope);
                 case WordPar:

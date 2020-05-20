@@ -10,20 +10,21 @@ namespace IntoTheCodeExample.DomainLanguage
     {
         private string _initialInput = @"int a = 3;
 int b = 6;
-Write(a);
+Write('a1=' + a);
 
 while (b > 4)
 { 
    int a = 2;
-   Write(a);
+   Write('a2=' + a);
    Write(b);
    b = n2(2);
 }
+Write('Hello world');
 
 int n2(int n)
 {
   int a = n * n;
-  Write(a);
+  Write('a3=' + a);
   return a;
 }
 ";
@@ -64,8 +65,10 @@ sub         = exp '-' exp;
 gt          = exp '>' exp;
 lt          = exp '<' exp;
 eq          = exp '==' exp;
-value       = int | real | string | funcCall | variable;
+value       = int | real | string | true | false | funcCall | variable;
 real        = int;
+true        = 'true';
+false       = 'false';
 variable    = identifier;
 
 settings
