@@ -7,8 +7,8 @@
 
         public override bool Run(Variables runtime)
         {
-            Variables local = Call.InitiateVariables(runtime);
-            Call.Func.Run(local);
+            Variables localRuntime = Call.InitiateVariables(runtime);
+            Call.Func.Run(localRuntime);
             return false;
         }
     }

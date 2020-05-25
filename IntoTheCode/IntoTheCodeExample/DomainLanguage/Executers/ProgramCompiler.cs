@@ -51,14 +51,14 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             foreach (CodeElement item in elem.Codes(WordFunctionDef))
                 CreateFunctionDef(item, scope);
 
-            List<OperationBase> commands = new List<OperationBase>();
+            List<OperationBase> operations = new List<OperationBase>();
             foreach (CodeElement item in elem.Codes(c => c.Name != WordFunctionDef))
                 if (alwaysReturnValue)
                     throw new Exception(string.Format("The statement can not be reached, {0}, {1}", item.Name, item.GetLineAndColumn()));
                 else
-                    commands.Add(CreateVariableOrCommand(item, scope, resultType, out alwaysReturnValue));
+                    operations.Add(CreateVariableOrOperation(item, scope, resultType, out alwaysReturnValue));
 
-            scope.Commands = commands;
+            scope.Operations = operations;
 
             return scope;
         }
@@ -104,7 +104,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             return funcDef;
         }
 
-        public static OperationBase CreateVariableOrCommand(CodeElement elem, Scope scope, DefType resultType, out bool alwaysReturnValue)
+        public static OperationBase CreateVariableOrOperation(CodeElement elem, Scope scope, DefType resultType, out bool alwaysReturnValue)
         {
             alwaysReturnValue = false;
             OperationBase stm;
@@ -126,14 +126,14 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                     // todo check always returns
                     break;
                 case WordFuncCall:
-                    stm = CreateCmdFuncCall(elem, scope);
+                    stm = CreateOperationFuncCall(elem, scope);
                     break;
                 case WordReturn:
                     stm = CreateReturn(elem, scope, resultType);
                     alwaysReturnValue = true;
                     break;
                 default:
-                    throw new Exception(string.Format("The command type '{0}' is not allowed, {1}", elem.Name, elem.GetLineAndColumn()));
+                    throw new Exception(string.Format("The operation type '{0}' is not allowed, {1}", elem.Name, elem.GetLineAndColumn()));
             }
 
             return stm;
@@ -199,7 +199,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             if (innerCode.Name == WordScope)
                 cmd = CreateScope(innerCode, null, scope, resultType, out alwaysReturnValue);
             else
-                cmd = CreateVariableOrCommand(innerCode, scope, resultType, out alwaysReturnValue);
+                cmd = CreateVariableOrOperation(innerCode, scope, resultType, out alwaysReturnValue);
 
             return cmd;
         }
@@ -232,7 +232,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             {
                 cmd.Expression = ProgramCompiler.Expression(expCode, scope);
 
-                // Check resulttype of command
+                // Check resulttype of operation
                 if (resultType != cmd.Expression.ExpressionType)
                 {
                     if (resultType == DefType.Bool)
@@ -426,7 +426,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             return call;
         }
 
-        public static CmdFuncCall CreateCmdFuncCall(CodeElement elem, Scope scope)
+        public static CmdFuncCall CreateOperationFuncCall(CodeElement elem, Scope scope)
         {
             FuncCall call = CreateFuncCall(elem, scope);
             return new CmdFuncCall { Call = call };

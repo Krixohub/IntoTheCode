@@ -10,36 +10,31 @@ namespace IntoTheCodeExample.DomainLanguage
     {
         private string _initialInput = @"int a = 3;
 int b = 6;
-Write('a1=' + a);
+Write('root scope a=' + a);
 
 while (b > 4)
 { 
    int a = 2;
-   Write('a2=' + a);
+   Write('loop scope a=' + a);
    Write(b);
    b = n2(2);
 }
+Write('');
 Write('Hello world');
+Write('');
 
 int n2(int n)
 {
   int a = n * n;
-  Write('a3=' + a);
+  Write('func scope a=' + a);
   return a;
 }
 ";
 
-        private string _initialInput2 = @"int a = 4;
-int b = 6;
-Write(a);
-a = 3;
-Write(a);
-";
-
         private string _initialGrammar = @"program     = scope;
-body        = command | '{' scope '}';
-scope       = {functionDef | variableDef | command};
-command     = assign | if | while | funcCall ';' | return;
+body        = operation | '{' scope '}';
+scope       = {functionDef | variableDef | operation};
+operation   = assign | if | while | funcCall ';' | return;
 
 functionDef = declare '(' [declare {',' declare}] ')' '{' scope '}';
 variableDef = declare '=' exp ';';
@@ -68,7 +63,7 @@ eq          = exp '==' exp;
 value       = float | int | string | bool | funcCall | identifier;
 
 settings
-command     collapse;
+operation     collapse;
 exp         collapse;
 mul         Precedence = '2';
 div         Precedence = '2';

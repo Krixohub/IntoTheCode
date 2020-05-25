@@ -6,23 +6,26 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 {
     public class Scope : OperationBase
     {
+        private bool _createRuntimeVariables;
         public Scope(Scope parentScope, Variables vars, Dictionary<string, Function> functions = null)
         {
             ParentScope = parentScope;
             Functions = functions == null ? new Dictionary<string, Function>() : functions ;
 
+            _createRuntimeVariables = vars == null;
             Vars = vars == null ? new Variables(null, null) : vars;
         }
 
-        public List<OperationBase> Commands;
+        public List<OperationBase> Operations;
         public Scope ParentScope;
         public Variables Vars { get; private set; }
         public Dictionary<string, Function> Functions { get; private set; }
 
         public override bool Run(Variables runtime)
         {
-            Variables localRuntime = new Variables(runtime, null);
-            foreach (OperationBase item in Commands)
+            // It isn't nessesary to create a nested scope of variables if this scope is inside a 'Function'.
+            Variables localRuntime = _createRuntimeVariables ? new Variables(runtime, null) : runtime;
+            foreach (OperationBase item in Operations)
                 if (item.Run(localRuntime)) return true;
             
             return false;
