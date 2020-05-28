@@ -8,6 +8,7 @@ namespace IntoTheCodeExample.DomainLanguage
 {
     public class DomainLanguageVievModel : ExampleVievModelBase
     {
+
         private string _initialInput = @"int a = 3;
 int b = 6;
 Write('root scope a=' + a);

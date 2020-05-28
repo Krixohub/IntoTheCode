@@ -21,7 +21,7 @@ namespace IntoTheCode.Read.Words
         public override string GetGrammar() { return MetaParser.WordIdent__; }
 
         private const string AllowedCharsFirst = "abcdefghijklmnopqrstuvwxyz";
-        private const string AllowedCharsNext = "abcdefghijklmn+<&opqrstuvwxyz0123456789";
+        private const string AllowedCharsNext = "abcdefghijklmnopqrstuvwxyz0123456789";
 
         //protected override string Read(int begin, ITextBuffer buffer) { return ""; }
 

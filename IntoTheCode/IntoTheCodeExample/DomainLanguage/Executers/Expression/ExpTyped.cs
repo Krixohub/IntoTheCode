@@ -6,13 +6,13 @@ namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
     {
         public abstract TResult Compute(Variables runtime);
 
-        protected override DefType GetResultType()
-        {
-            if (typeof(TResult) == typeof(int)) return DefType.Int;
-            if (typeof(TResult) == typeof(float)) return DefType.Float;
-            if (typeof(TResult) == typeof(string)) return DefType.String;
-            if (typeof(TResult) == typeof(bool)) return DefType.Bool;
-            throw new Exception("Unknown expression type.");
-        }
+        //protected override DefType GetResultType()
+        //{
+        //    if (typeof(TResult) == typeof(int)) return DefType.Int;
+        //    if (typeof(TResult) == typeof(float)) return DefType.Float;
+        //    if (typeof(TResult) == typeof(string)) return DefType.String;
+        //    if (typeof(TResult) == typeof(bool)) return DefType.Bool;
+        //    throw new Exception("Unknown expression type.");
+        //}
     }
 }

@@ -6,15 +6,6 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 {
     public class VariableDef : OperationBase
     {
-        //public VariableDef(string name, DefType variableType, ExpBase exp) : base()
-        //{
-        //    // variableDef = typeAndId '=' exp ';';
-
-        //    VariableType = variableType;
-        //    Name = name;
-        //    Expression = exp;
-        //}
-
         public string Name;
 
         public DefType VariableType;

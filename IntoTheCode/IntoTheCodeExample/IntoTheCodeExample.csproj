@@ -52,6 +52,7 @@
     <Compile Include="DomainLanguage\Executers\CmdFuncCall.cs" />
     <Compile Include="DomainLanguage\Executers\FuncCall.cs" />
     <Compile Include="DomainLanguage\Executers\Program.cs" />
+    <Compile Include="DomainLanguage\Executers\Expression\ExpressionBuilder.cs" />
     <Compile Include="DomainLanguage\Executers\Return.cs" />
     <Compile Include="DomainLanguage\Executers\While.cs" />
     <Compile Include="DomainLanguage\Executers\If.cs" />

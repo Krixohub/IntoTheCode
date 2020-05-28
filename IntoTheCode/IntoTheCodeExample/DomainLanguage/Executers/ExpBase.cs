@@ -5,37 +5,37 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 {
     public abstract class ExpBase
     {
-        protected abstract DefType GetResultType();
+        //protected abstract DefType GetResultType();
 
-        public DefType ExpressionType { get { return GetResultType(); } }
+        //public DefType ExpressionType { get { return GetResultType(); } }
 
         #region Check expression type 
 
         public static bool IsInt(params ExpBase[] operants)
         {
             foreach (ExpBase op in operants)
-                if (op.ExpressionType != DefType.Int) return false;
+                if (!(op is ExpTyped<int>)) return false;
             return true;
         }
 
         public static bool IsNumber(params ExpBase[] operants)
         {
             foreach (ExpBase op in operants)
-                if (op.ExpressionType != DefType.Int && op.ExpressionType != DefType.Float) return false;
+                if (!(op is ExpTyped<int>) && !(op is ExpTyped<float>)) return false;
             return true;
         }
 
         public static bool IsBool(params ExpBase[] operants)
         {
             foreach (ExpBase op in operants)
-                if (op.ExpressionType != DefType.Bool) return false;
+                if (!(op is ExpTyped<bool>)) return false;
             return true;
         }
 
         public static bool IsString(params ExpBase[] operants)
         {
             foreach (ExpBase op in operants)
-                if (op.ExpressionType != DefType.String) return false;
+                if (!(op is ExpTyped<string>)) return false;
             return true;
         }
 
@@ -47,12 +47,9 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         {
             get
             {
-                switch (ExpressionType)
-                {
-                    case DefType.Int: return v => ((ExpTyped<int>)this).Compute(v);
-                    case DefType.Float: return ((ExpTyped<float>)this).Compute;
-                    default: throw new Exception(string.Format("Expression is not a number: '{0}'", ExpressionType));
-                }
+                if (this is ExpTyped<int>) return v => ((ExpTyped<int>)this).Compute(v);
+                if (this is ExpTyped<float>) return v => ((ExpTyped<float>)this).Compute(v);
+                throw new Exception(string.Format("Expression is not a float"));
             }
         }
 
@@ -60,14 +57,11 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         {
             get
             {
-                switch (ExpressionType)
-                {
-                    case DefType.Int: return v => ((ExpTyped<int>)this).Compute(v).ToString();
-                    case DefType.Float: return v => ((ExpTyped<float>)this).Compute(v).ToString();
-                    case DefType.Bool: return v => ((ExpTyped<bool>)this).Compute(v).ToString();
-                    case DefType.String: return ((ExpTyped<string>)this).Compute;
-                    default: throw new Exception(string.Format("Unknown expression type: '{0}'", ExpressionType));
-                }
+                if (this is ExpTyped<int>) return v => ((ExpTyped<int>)this).Compute(v).ToString();
+                if (this is ExpTyped<float>) return v => ((ExpTyped<float>)this).Compute(v).ToString();
+                if (this is ExpTyped<bool>) return v => ((ExpTyped<bool>)this).Compute(v).ToString();
+                if (this is ExpTyped<string>) return v => ((ExpTyped<string>)this).Compute(v);
+                throw new Exception(string.Format("Unknown expression type: '{0}'", GetType().Name));
             }
         }
 
