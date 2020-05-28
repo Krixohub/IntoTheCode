@@ -221,7 +221,7 @@ settings    collapse;";
             Parser parser = new Parser() { Level = 1 }; // { Name = HardGrammar_ };
             parser.Rules = list;
             //foreach (var eq in list) eq.Parser = parser;
-            ParserFactory.InitializeGrammar(parser, parser.Rules, status);
+            ParserBuilder.InitializeGrammar(parser, parser.Rules, status);
 
             return parser;
         }
@@ -251,7 +251,7 @@ settings    collapse;";
                 if (buffer.Status.Error == null)
                 {
                     _instance = new Parser() { Level = 2 };
-                    ParserFactory.BuildRules(_instance, metaGrammarDoc, buffer.Status);
+                    ParserBuilder.BuildRules(_instance, metaGrammarDoc, buffer.Status);
                 }
             }
             catch (Exception e)

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers
 {
-    public static class ProgramCompiler
+    public static class ProgramBuilder
     {
         // program rules
         public const string WordScope = "scope";
@@ -18,6 +18,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public const string WordAssign = "assign";
         public const string WordReturn = "return";
         public const string WordWhile = "while";
+        public const string WordLoop = "myloop";
         public const string WordIf = "if";
         public const string WordTypeInt = "defInt";
         public const string WordTypeStr = "defString";
@@ -27,6 +28,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public const string WordIdentifier = "identifier";
 
         public const string VariableReturn = "returnValue";
+
         public static Program CreateProgram(TextDocument doc, Dictionary<string, Function> functions, Dictionary<string, ValueBase> parameters)
         {
             // todo add functions to rootScope;
@@ -122,6 +124,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                     // todo check always returns
                     break;
                 case WordWhile:
+                case WordLoop:
                     stm = CreateWhile(elem, scope, resultType);
                     // todo check always returns
                     break;
@@ -149,7 +152,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             if (elem.Codes().Count() == 2)
             {
                 CodeElement expCode = elem.Codes().Last();
-                exp = ProgramCompiler.Expression(expCode, scope);
+                exp = ProgramBuilder.Expression(expCode, scope);
                 if (exp.ExpressionType != def.TheType)
                 {
                     if (def.TheType == DefType.Bool)
@@ -230,7 +233,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             CodeElement expCode = elem.Codes().FirstOrDefault();
             if (expCode != null)
             {
-                cmd.Expression = ProgramCompiler.Expression(expCode, scope);
+                cmd.Expression = ProgramBuilder.Expression(expCode, scope);
 
                 // Check resulttype of operation
                 if (resultType != cmd.Expression.ExpressionType)
@@ -347,10 +350,17 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             if (elem.Name == WordMul || elem.Name == WordDiv || elem.Name == WordSub || elem.Name == WordGt || elem.Name == WordLt)
             {
                 // check type
-                if (!IsNumber(op1))
-                    throw new Exception(string.Format("The left operator of '{0}', {1}, is not a number", elem.Name, elem.GetLineAndColumn()));
-                if (!IsNumber(op2))
-                    throw new Exception(string.Format("The right operator of '{0}', {1}, is not a number", elem.Name, elem.GetLineAndColumn()));
+                if (!ExpBase.IsNumber(op1))
+                    throw new Exception(string.Format("The left operant of '{0}', {1}, is not a number", elem.Name, elem.GetLineAndColumn()));
+                if (!ExpBase.IsNumber(op2))
+                    throw new Exception(string.Format("The right operant of '{0}', {1}, is not a number", elem.Name, elem.GetLineAndColumn()));
+            }
+
+            // For 'equals' the operants must both be numbers or both be strings.
+            if (elem.Name == WordEq)
+            {
+                if (!(ExpBase.IsNumber(op1, op2) || ExpBase.IsString(op1, op2)))
+                    throw new Exception(string.Format("Operants must both be numbers or both be strings: '{0}', {1}", elem.Name, elem.GetLineAndColumn()));
             }
 
             switch (elem.Name)
@@ -360,14 +370,14 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                 case WordEq: return new ExpEquals(op1, op2);
                 case WordDiv: return new ExpDivide(op1, op2);
                 case WordMul:
-                    if (IsInt(op1, op2)) return new ExpMultiplyInt(op1, op2);
+                    if (ExpBase.IsInt(op1, op2)) return new ExpMultiplyInt(op1, op2);
                     else return new ExpMultiplyFloat(op1, op2);
                 case WordSub:
-                    if (IsInt(op1, op2)) return new ExpMinusInt(op1, op2);
+                    if (ExpBase.IsInt(op1, op2)) return new ExpMinusInt(op1, op2);
                     else return new ExpMinusFloat(op1, op2);
                 case WordSum:
-                    if (IsInt(op1, op2)) return new ExpSumInt(op1, op2);
-                    else if (IsNumber(op1, op2)) return new ExpSumFloat(op1, op2);
+                    if (ExpBase.IsInt(op1, op2)) return new ExpSumInt(op1, op2);
+                    else if (ExpBase.IsNumber(op1, op2)) return new ExpSumFloat(op1, op2);
                     else return new ExpSumString(op1, op2);
                 default:
                     throw new Exception(string.Format("Unknown expression element: '{0}'", elem.Name));
@@ -409,11 +419,11 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                 var parm = Expression(item, scope);
                 if (++i == theFunc.Parameters.Count)
                     throw new Exception(string.Format("Too many parameters for function '{0}', {1}", name, item.GetLineAndColumn()));
-                if (theFunc.Parameters[i].TheType == DefType.Int && !IsInt(parm))
+                if (theFunc.Parameters[i].TheType == DefType.Int && !ExpBase.IsInt(parm))
                     throw new Exception(string.Format("The parameter for function '{0}' must be an integer, {1}", name, item.GetLineAndColumn()));
-                if (theFunc.Parameters[i].TheType == DefType.Bool && !IsBool(parm))
+                if (theFunc.Parameters[i].TheType == DefType.Bool && !ExpBase.IsBool(parm))
                     throw new Exception(string.Format("The parameter for function '{0}' must be a boolean, {1}", name, item.GetLineAndColumn()));
-                if (theFunc.Parameters[i].TheType == DefType.Bool && !IsNumber(parm))
+                if (theFunc.Parameters[i].TheType == DefType.Bool && !ExpBase.IsNumber(parm))
                     throw new Exception(string.Format("The parameter for function '{0}' must be a number, {1}", name, item.GetLineAndColumn()));
 
                 parameters.Add(parm);
@@ -450,80 +460,5 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
             return expFunc;
         }
-
-        public static bool IsInt(params ExpBase[] operants)
-        {
-            foreach (ExpBase op in operants)
-                if (op.ExpressionType != DefType.Int) return false;
-            return true;
-        }
-
-        public static bool IsNumber(params ExpBase[] operants)
-        {
-            foreach (ExpBase op in operants)
-                if (op.ExpressionType != DefType.Int && op.ExpressionType != DefType.Float) return false;
-            return true;
-        }
-
-        public static bool IsBool(params ExpBase[] operants)
-        {
-            foreach (ExpBase op in operants)
-                if (op.ExpressionType != DefType.Bool) return false;
-            return true;
-        }
-
-        public static int RunAsInt(this ExpBase op, Variables runtime)
-        {
-            switch (op.ExpressionType)
-            {
-                case DefType.Int: return ((ExpTyped<int>)op).Compute(runtime);
-                default: throw new Exception(string.Format("Expression is not an integer: '{0}'", op.ExpressionType));
-            }
-        }
-
-        public static float RunAsFloat(this ExpBase op, Variables runtime)
-        {
-            switch (op.ExpressionType)
-            {
-                case DefType.Int: return ((ExpTyped<int>)op).Compute(runtime);
-                case DefType.Float: return ((ExpTyped<float>)op).Compute(runtime);
-                default: throw new Exception(string.Format("Expression is not a number: '{0}'", op.ExpressionType));
-            }
-        }
-
-        public static string RunAsString(this ExpBase op, Variables runtime)
-        {
-            switch (op.ExpressionType)
-            {
-                case DefType.Int: return ((ExpTyped<int>)op).Compute(runtime).ToString();
-                case DefType.Float: return ((ExpTyped<float>)op).Compute(runtime).ToString();
-                case DefType.Bool: return ((ExpTyped<bool>)op).Compute(runtime).ToString();
-                case DefType.String: return ((ExpTyped<string>)op).Compute(runtime);
-                default: throw new Exception(string.Format("Unknown expression type: '{0}'", op.ExpressionType));
-            }
-        }
-
-        public static bool RunAsBool(this ExpBase op, Variables runtime)
-        {
-            switch (op.ExpressionType)
-            {
-                case DefType.Bool: return ((ExpTyped<bool>)op).Compute(runtime);
-                default: throw new Exception(string.Format("Expression is not an integer: '{0}'", op.ExpressionType));
-            }
-        }
-
-        public static void RunAsVoid(this ExpBase op, Variables runtime)
-        {
-            switch (op.ExpressionType)
-            {
-                case DefType.Int: ((ExpTyped<int>)op).Compute(runtime); break;
-                case DefType.Float: ((ExpTyped<float>)op).Compute(runtime); break;
-                case DefType.Bool: ((ExpTyped<bool>)op).Compute(runtime); break;
-                case DefType.String: ((ExpTyped<string>)op).Compute(runtime); break;
-                default: throw new Exception(string.Format("Unknown expression type: '{0}'", op.ExpressionType));
-            }
-        }
-
-
     }
 }

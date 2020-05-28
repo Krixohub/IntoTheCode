@@ -1,5 +1,4 @@
 ﻿using IntoTheCode;
-using IntoTheCode.Read.Words;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 {

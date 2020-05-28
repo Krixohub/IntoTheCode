@@ -94,7 +94,7 @@ namespace IntoTheCode
             TextBuffer buffer = new FlatBuffer(Grammar);
             grammarDoc = MetaParser.Instance.ParseString(buffer);
 
-            if (buffer.Status.Error != null || !ParserFactory.BuildRules(this, grammarDoc, buffer.Status))
+            if (buffer.Status.Error != null || !ParserBuilder.BuildRules(this, grammarDoc, buffer.Status))
             {
                 // only place to throw exception is CodeDocument.Load and Parser.SetGrammar (and MetaGrammar)
                 var error = new ParserException(buffer.Status.Error.Message);
@@ -113,7 +113,7 @@ namespace IntoTheCode
             if (buffer.Status.Error != null) return null;
 
             List<Rule> procesRules = Rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
-            if (!ParserFactory.InitializeGrammar(this, procesRules, buffer.Status))
+            if (!ParserBuilder.InitializeGrammar(this, procesRules, buffer.Status))
                 return null;
             var elements = new List<TextElement>();
             bool ok;

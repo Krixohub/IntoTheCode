@@ -10,7 +10,7 @@ namespace IntoTheCodeExample.Expression.Executers
         public Parenthese(TextElement elem)
         {
             CodeElement first = elem.ChildNodes.OfType<CodeElement>().FirstOrDefault();
-            _op = Factory(first);
+            _op = ExpressionBuilder.BuildExp(first);
         }
 
         public override float execute()

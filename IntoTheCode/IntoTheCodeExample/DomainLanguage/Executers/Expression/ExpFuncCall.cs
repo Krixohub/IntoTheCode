@@ -14,7 +14,7 @@
             Variables local = Call.InitiateVariables(runtime);
             Call.Func.Run(local);
 
-            ValueTyped<TType> value = local.GetVariable(ProgramCompiler.VariableReturn) as ValueTyped<TType>;
+            ValueTyped<TType> value = local.GetVariable(ProgramBuilder.VariableReturn) as ValueTyped<TType>;
             return value.Value;
         }
 

@@ -39,7 +39,7 @@ exp collapse;
             ExpressionBase expression;
             try
             {
-                expression = ExpressionBase.Factory(doc.ChildNodes.OfType<CodeElement>().FirstOrDefault());
+                expression = ExpressionBuilder.BuildExp(doc.ChildNodes.OfType<CodeElement>().FirstOrDefault());
             }
             catch (Exception e)
             {

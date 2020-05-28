@@ -6,7 +6,7 @@
 
         public override bool Run(Variables runtime)
         {
-            runtime.SetVariable(ProgramCompiler.VariableReturn, Expression);
+            runtime.SetVariable(ProgramBuilder.VariableReturn, Expression);
             return true;
         }
     }

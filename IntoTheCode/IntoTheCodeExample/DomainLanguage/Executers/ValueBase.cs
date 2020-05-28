@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IntoTheCodeExample.DomainLanguage.Executers.Expression;
+using System;
 
 namespace IntoTheCodeExample.DomainLanguage.Executers
 {
@@ -61,10 +62,10 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             ValueBase variable;
             switch (theType)
             {
-                case DefType.Int: variable = new ValueTyped<int>() { Value = exp.RunAsInt(runtime) }; break;
+                case DefType.Int: variable = new ValueTyped<int>() { Value = ((ExpTyped<int>)exp).Compute(runtime) }; break;
                 case DefType.String: variable = new ValueTyped<string>() { Value = exp.RunAsString(runtime) }; break;
                 case DefType.Float: variable = new ValueTyped<float>() { Value = exp.RunAsFloat(runtime) }; break;
-                case DefType.Bool: variable = new ValueTyped<bool>() { Value = exp.RunAsBool(runtime) }; break;
+                case DefType.Bool: variable = new ValueTyped<bool>() { Value = ((ExpTyped<bool>)exp).Compute(runtime) }; break;
                 case DefType.Void:
                     throw new Exception("Can't create a variable of type void.");
                 default:

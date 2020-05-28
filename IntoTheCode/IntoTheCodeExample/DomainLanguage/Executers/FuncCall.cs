@@ -20,7 +20,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                 parm.Add(Func.Parameters[i].TheName, ValueBase.Create(Func.Parameters[i].TheType, runtime, Parameters[i]));
 
             if (Func.FuncType != DefType.Void)
-                parm.Add(ProgramCompiler.VariableReturn, ValueBase.Create(Func.FuncType));
+                parm.Add(ProgramBuilder.VariableReturn, ValueBase.Create(Func.FuncType));
 
             return new Variables(runtime, parm);
         }

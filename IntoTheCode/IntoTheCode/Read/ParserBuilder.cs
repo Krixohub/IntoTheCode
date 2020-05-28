@@ -11,7 +11,7 @@ using IntoTheCode.Message;
 namespace IntoTheCode.Read
 {
     /// <summary>Build Grammar elements for a parser from dokument</summary>
-    internal class ParserFactory
+    internal class ParserBuilder
     {
         ///
         internal static bool BuildRules(Parser parser, TextDocument doc, ParserStatus status)

@@ -1,9 +1,6 @@
-﻿using IntoTheCodeExample.DomainLanguage.Executers.Expression;
-using System;
-
-namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
+﻿namespace IntoTheCodeExample.DomainLanguage.Executers.Expression
 {
-    public class ExpVariable<TType> : ExpTyped<TType> // : ValueBase
+    public class ExpVariable<TType> : ExpTyped<TType>
     {
         public ExpVariable(string name)
         {

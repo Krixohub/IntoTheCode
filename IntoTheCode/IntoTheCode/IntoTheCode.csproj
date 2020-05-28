@@ -58,7 +58,7 @@
     <Compile Include="Read\Words\Comment.cs" />
     <Compile Include="Read\ParserError.cs" />
     <Compile Include="Read\ParserStatus.cs" />
-    <Compile Include="Read\ParserFactory.cs" />
+    <Compile Include="Read\ParserBuilder.cs" />
     <Compile Include="Read\Words\WordIdent.cs" />
     <Compile Include="Read\Words\WordString.cs" />
     <Compile Include="Buffer\FlatBuffer.cs" />

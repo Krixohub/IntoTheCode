@@ -12,8 +12,8 @@ namespace IntoTheCodeExample.Expression.Executers
         {
             CodeElement first = elem.ChildNodes.OfType<CodeElement>().FirstOrDefault();
             CodeElement next = elem.ChildNodes.OfType<CodeElement>().FirstOrDefault(c => c != first);
-            _op1 = Factory(first);
-            _op2 = Factory(next);
+            _op1 = ExpressionBuilder.BuildExp(first);
+            _op2 = ExpressionBuilder.BuildExp(next);
         }
 
         public override float execute()

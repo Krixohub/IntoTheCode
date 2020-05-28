@@ -87,7 +87,7 @@ value       collapse;";
             Dictionary<string, ValueBase> parameters = null;
             try
             {
-                program = ProgramCompiler.CreateProgram(doc, functions, parameters);
+                program = ProgramBuilder.CreateProgram(doc, functions, parameters);
             }
             catch (Exception e)
             {
