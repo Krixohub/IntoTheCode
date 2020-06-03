@@ -62,7 +62,7 @@
                          FontSize="{Binding ElementName=tbFontSize2, Path=Text, Mode=TwoWay}"/>
             </DockPanel>
             <DockPanel Grid.Column="4" >
-                <Label Content="Input as tree data" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top"/>
+                <Label Content="Output tree" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top"/>
                 <StackPanel Style="{StaticResource BoxPanel}" DockPanel.Dock="Top">
                     <TextBlock Text="Fontsize:" Style="{StaticResource BoxLabel}"/>
                     <TextBox Text="12" x:Name="tbFontSize3" Style="{StaticResource ToolBarText}"/>
@@ -104,7 +104,7 @@
                          FontSize="{Binding ElementName=tbFontSize3, Path=Text}"/>
             </DockPanel>
             <DockPanel Grid.Column="4" >
-                <Label Content="Grammar tree data" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top" />
+                <Label Content="Grammar tree" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top" />
                 <TextBox Text="{Binding Path=GrammarMarkup, Mode=OneWay}" 
                          Style="{StaticResource ResourceKey=CodeTextBox}"
                          FontSize="{Binding ElementName=tbFontSize3, Path=Text}"/>

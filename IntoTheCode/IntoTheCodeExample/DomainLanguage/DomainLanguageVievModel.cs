@@ -64,7 +64,7 @@ eq          = exp '==' exp;
 value       = float | int | string | bool | funcCall | identifier;
 
 settings
-operation     collapse;
+operation   collapse;
 exp         collapse;
 mul         Precedence = '2';
 div         Precedence = '2';
