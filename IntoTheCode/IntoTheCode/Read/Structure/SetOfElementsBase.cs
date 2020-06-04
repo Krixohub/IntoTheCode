@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using IntoTheCode.Buffer;
-using IntoTheCode.Basic;
-using IntoTheCode.Read;
-using IntoTheCode.Read.Words;
 using IntoTheCode.Basic.Util;
 
 namespace IntoTheCode.Read.Structure
@@ -121,21 +118,6 @@ namespace IntoTheCode.Read.Structure
             foreach (ParserElementBase item in this.ChildNodes)
                 ok = ok & item.InitializeLoop(rules, path, status);
             return ok;
-        }
-
-        public /*override*/ bool GetFirstList(ParserElementBase org, List<ParserElementBase> firstList, List<ParserElementBase> followingList)
-        {
-            // this set is optional if alle elements are optional.
-            bool isOption = true;
-
-            for (int i = ChildNodes.Count - 1; i >= 0; i--)
-            {
-               // isOption = isOption && ((ParserElementBase)SubElements[i]).GetFirstList(org, firstList, followingList);
-
-                // todo
-            }
-
-            return isOption;
         }
 
         public override string GetGrammar()

@@ -31,11 +31,10 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public static Program CreateProgram(TextDocument doc, Dictionary<string, Function> functions, Dictionary<string, ValueBase> parameters)
         {
-            // todo add functions to rootScope;
             var prog = new Program();
 
             Scope externalScope = functions == null ? null : new Scope(null, null, functions);
-            Variables variables = new Variables(null, parameters); //, externalScope);
+            Variables variables = new Variables(null, parameters);
             prog.RootScope = CreateScope(doc.Codes(WordScope).First(), variables, externalScope, DefType.Void, out bool alwaysReturn);
 
             return prog;
@@ -43,16 +42,16 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public static Scope CreateScope(CodeElement elem, Variables innerVariables, Scope parentScope, DefType resultType, out bool alwaysReturnValue) //, bool mustReturn
         {
-            //bool mustReturn = false;
+            // scope       = {functionDef | variableDef | operation};
             alwaysReturnValue = false;
 
-            var scope = new Scope(parentScope, innerVariables); //, resultType, parentScope, mustReturn
+            var scope = new Scope(parentScope, innerVariables);
 
-            //Create function declarations.
+            //Create all function declarations before funtion-scopes.
             foreach (CodeElement item in elem.Codes(WordFunctionDef))
                 CreateFunctionDef(item, scope);
 
-            // Create function body (that may make calls to other functions in same scope)
+            // Create function-scopes (that may make calls to other functions in same scope)
             foreach (CodeElement item in elem.Codes(WordFunctionDef))
                 CreateFunctionInnerScope(item, scope);
 
@@ -76,7 +75,6 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             Function funcDef = new Function() { FuncType = def2.TheType, Name = def2.TheName };
 
             if (scope.Functions.ContainsKey(funcDef.Name))
-                // todo check type and parameters
                 throw new Exception(string.Format("A function called '{0}', {1}, is allready declared", funcDef.Name, elem.GetLineAndColumn()));
 
             funcDef.Parameters = new List<Declare>();
@@ -129,12 +127,10 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
                     break;
                 case WordIf:
                     stm = CreateIf(elem, scope, resultType, out alwaysReturnValue);
-                    // todo check always returns
                     break;
                 case WordWhile:
                 case WordLoop:
                     stm = CreateWhile(elem, scope, resultType);
-                    // todo check always returns
                     break;
                 case WordFuncCall:
                     stm = CreateOperationFuncCall(elem, scope);

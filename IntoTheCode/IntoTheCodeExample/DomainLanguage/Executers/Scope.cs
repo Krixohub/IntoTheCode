@@ -52,7 +52,6 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         {
             Function function;
             if (Functions.TryGetValue(name, out function))
-                // todo check type and parameters
                 return function;
             else if (ParentScope != null)
                 return ParentScope.GetFunction(name);

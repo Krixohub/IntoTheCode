@@ -87,13 +87,9 @@ namespace IntoTheCode.Buffer
         /// <summary>Function for skipping white spaces and reading comments.</summary>
         public void FindNextWord(IList<TextElement> outElements, bool inline)
         {
-             
-
-            // todo comments can be inserted multiple times
             do
             {
                 // Skip whitespaces.
-                //                ReaderWhitespace.Load(outElements, level);
                 //string ws = " \r\n\t";
                 string ws = inline ? " \t" : " \r\n\t";
 
@@ -101,7 +97,6 @@ namespace IntoTheCode.Buffer
                 while (!IsEnd() && ws.Contains(GetChar()))
                     IncPointer();
 
-                // todo: Read comments
             } while (ReaderComment.Load(outElements, inline) && !inline);
 
             if (outElements != null) InsertComments(outElements);

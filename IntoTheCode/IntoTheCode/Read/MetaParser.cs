@@ -176,11 +176,6 @@ settings    collapse;";
             list.Add(new Rule(Or_________,
                 new WordSymbol("|")));
 
-            //// ruleId     = identifier;
-            //// todo eliminate ruleIds with identifier or string
-            //list.Add(new Rule(RuleId_____,
-            //    new WordName(WordName___)));
-
             // symbol       = string;
             list.Add(new Rule(WordSymbol_,
                 new WordString()));
@@ -191,7 +186,6 @@ settings    collapse;";
                 new Sequence(
                     new RuleLink(Setter_____)))
             { Collapse = true });
-
 
             // setter     > identifier assignment {',' assignment} ';';
             list.Add(new Rule("setter",

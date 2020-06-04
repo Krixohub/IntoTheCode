@@ -55,7 +55,6 @@ namespace Read
             TextDocument docExpect = TestMetaGrammarDoc();
 
             //var metaParser = _metaparser;
-            // todo MetaParser has not the settings.
             TextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaGrammarAndSettings);
             TextDocument docActual1 = parser.ParseString(buffer);
             buffer = new FlatBuffer(MetaParser.SoftMetaGrammarAndSettings);

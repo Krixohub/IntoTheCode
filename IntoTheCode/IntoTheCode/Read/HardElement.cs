@@ -10,13 +10,10 @@ namespace IntoTheCode.Read
         public HardElement(string name, string value, params HardElement[] elements)
         {
             Name = name;
-            //GrammarElement = element;
-
-            // todo addrange
             _value = value;
-            if (elements != null)
-                foreach (var element in elements)
-                    ChildNodes.Add(element);
+
+            if (elements == null) return;
+            AddRange(elements);
         }
 
         protected override string GetValue() { return _value; }

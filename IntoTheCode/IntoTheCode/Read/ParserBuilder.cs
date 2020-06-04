@@ -250,7 +250,6 @@ namespace IntoTheCode.Read
                             // set the property on rule or sub elements.
                             ok = rule.SetProperty(propName, propValue, status);
 
-                            // todo alter message to reflect above.
                             if (!ok)
                                 status.AddBuildError(() => MessageRes.itc27, propName, elementId.Value, propName.Value);
                             break;

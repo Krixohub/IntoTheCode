@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-
-using IntoTheCode.Read;
-using IntoTheCode.Basic;
 using System.Linq;
 using IntoTheCode.Buffer;
 
@@ -48,12 +45,6 @@ namespace IntoTheCode.Read.Structure
         public override bool ResolveErrorsForward(int level)
         {
             ResolveSetErrorsForward(level);
-            return true;
-        }
-
-        public /*override*/ bool GetFirstList(ParserElementBase org, List<ParserElementBase> firstList, List<ParserElementBase> followingList)
-        {
-            //base.GetFirstList(org, firstList, followingList);
             return true;
         }
     }

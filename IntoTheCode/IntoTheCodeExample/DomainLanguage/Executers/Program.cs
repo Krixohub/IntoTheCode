@@ -21,7 +21,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
         public static Dictionary<string, ValueBase> AddParameter(Dictionary<string, ValueBase> parameters, string name, int value)
         {
             if (parameters == null) parameters = new Dictionary<string, ValueBase>();
-            // todo add functions to rootScope;
+            // todo add parameter;
 
             return parameters;
         }
@@ -36,7 +36,6 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
             MaxIterations = 5;
             Culture = new CultureInfo("en-US");
 
-            // todo add parameters to Context (test for existing names);
             Variables vars = new Variables(null, parameters);
             Run(vars);
         }

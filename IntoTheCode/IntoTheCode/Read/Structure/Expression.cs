@@ -8,37 +8,20 @@ using IntoTheCode.Message;
 
 namespace IntoTheCode.Read.Structure
 {
-    /// <summary>Expressions read strings like this 'a + b * - c * ( 2 + d )'. (Infix notation)
+    /// <summary>Expressions read strings like this 'a + b * - c * ( 2 + d )' (Infix notation).
     /// The expression rule must look like this "expr = mul | sum | value".
+    /// Or like this (inline) : "expr = expr '*' expr | value;".
     /// It is a list of alternatives. The first alternative must be a binary operator.
     /// At least one alternative must be something else; not recursive.
     /// The binary operator rules must have this form: "sum = expr '+' expr". Where '+' is the operator.
-    /// A binary operator can also be inline: "expr = expr '*' expr | value;".
-    /// The value rule is the last: "value = [sign] ( int | var | par )"
-    /// The unary operator rules must have this form: "sign = '-'". Where '-' is the operator.
-    /// Variables can be simple: "var = identifier"
-    /// Variables can be complex eg: "var = varRule; varRule = [incrementOp] objectIdent {'.' propIdent}"
-    /// Other forms (like parentheses: "par = '(' expr ')'" ).
     /// 
-    /// 
-    /// Precedence:
-    /// The 'Other forms' has highest precedence.
-    /// Then unary operators. Among unary oprators: first in expression has higher precedence as default.
-    /// (Then variables and values.)
-    /// Then binary operators. Among binary oprators: first in expression has higher precedence as default.
-    /// 
-    /// The binary and unary operator precedence can be changed by setting the 'precedence' rule-property
-    /// 
-    /// The binary and unary expression is read in a loop rather than in a recursive way.
-    /// Other forms (parentheses) are read recursivly as a separate expression.
+    /// The default precedence are determined by the order of the operators in the expression rule. 
+    /// First operator has highest precedence. The operator precedence can be changed by setting the 'precedence' property.
+    /// Operators are default left associative. If an operator is right associative set the 'RightAssociative' property.
     /// 
     /// Output:
-    /// The 'expression' node is eliminated. The list of values and operators are ordered in 
-    /// a tree of nodes with values as leafs and operators with subnotes. The order follows precedence rules
-    /// and association rules.
-    /// 
-    /// The expression class is not just repressenting a node in the syntax tree. It represents a part of the tree.
-    /// Thus normal recursiveness is not followed in this part of the tree for some functions.
+    /// The output tree is nested operator elements; An operator has to values elements. 
+    /// A value elements can be a new operator element or one of the other alternatives.
     /// </summary>
     /// <remarks>Inherids <see cref="Or"/></remarks>
     internal class Expression : Or
@@ -51,7 +34,7 @@ namespace IntoTheCode.Read.Structure
 
         internal List<CodeElement> _completeOperations = new List<CodeElement>();
 
-        /// <summary>Creator for <see cref="Expression"/>.</summary>
+        /// <summary>Create the Expression from the alternatives in an Or object.</summary>
         internal Expression(Rule ExprRule, Or or) :
             base(or.ChildNodes[0], or.ChildNodes[1])
         {
@@ -216,7 +199,6 @@ namespace IntoTheCode.Read.Structure
             // Read a value first
             if (!LoadValue(outElements, level, true))
                 // if the expression does'nt start with a value; the intire expression fails.
-                // todo: a value can be complex with an unambigous point.
                 return SetPointerBack(from);
 
             TextBuffer.Status.ThisIsUnambiguous(this, outElements[outElements.Count - 1]);
@@ -249,7 +231,6 @@ namespace IntoTheCode.Read.Structure
 
             while (nextValueIndex < operations.Count - 1)
             {
-                // todo move commente out (coments belong to rules)
                 int opIndex = nextValueIndex++;
 
                 while (nextValueIndex < operations.Count - 1 && operations[nextValueIndex] is CommentElement)
@@ -272,7 +253,6 @@ namespace IntoTheCode.Read.Structure
 
         private void AddOperationToTree(CodeElement leftExprCode, CodeElement rightOpCode, CodeElement rightExprCode, List<TextElement> comments)
         {
-            // todo check for operators belonging to expression
             WordBinaryOperator leftOperator = leftExprCode.ParserElement as WordBinaryOperator;
             WordBinaryOperator rightOpSymbol = rightOpCode.ParserElement as WordBinaryOperator;
 
@@ -369,7 +349,6 @@ namespace IntoTheCode.Read.Structure
         /// <returns>0: Not found, 1: Found-read error, 2: Found and read ok.</returns>
         public override int ResolveErrorsLast(CodeElement last, int level)
         {
-            //todo last as (CodeElement) in ancestor
             bool isOp = _binaryOperators.Any(op => last.ParserElement == op);
 
             if (isOp)
@@ -380,44 +359,7 @@ namespace IntoTheCode.Read.Structure
             }
 
             return 0;
-
-            //last = ResolveErrorsLastFind((CodeElement)last);
-            //// The 'last' element will always be a value. 
-            //// Search for the value reader.
-
-            ////string debug = GetGrammar().NL() + last.ToMarkupProtected(string.Empty);
-
-            //int rc = 0;
-            //foreach (var item in _otherForms)
-            //{
-            //    if (rc == 0)
-            //        rc = item.ResolveErrorsLast(last, level);
-            //    else
-            //    {
-            //        TextBuffer.GetLoopForward(null);
-            //        if (rc == 2 && !item.ResolveErrorsForward(0))
-            //            return 1;
-            //    }
-            //}
-
-            //// 
-            //if (rc == 2)
-            //    TextBuffer.Status.AddParseError(() => MessageRes.itc09, GetRule(this).Name);
-
-
-            //return rc;
         }
-
-        //private TextElement ResolveErrorsLastFind(CodeElement last)
-        //{
-        //    // if the element is a operator get the right value to find the last
-        //    bool isOp = _binaryOperators.Any(op => last.WordParser == op);
-
-        //    if (isOp)
-        //        return ResolveErrorsLastFind(last.ChildNodes[1] as CodeElement);
-        //    else
-        //        return last;
-        //}
 
         public override bool ResolveErrorsForward(int level)
         {
@@ -426,7 +368,6 @@ namespace IntoTheCode.Read.Structure
             // Read a value first
             if (!ResolveErrorsForwardValue(level, true))
                 // if the expression does'nt start with a value; the intire expression fails.
-                // todo: a value can be complex with an unambigous point.
                 return SetPointerBack(from);
 
             // Read following operations as alternately binary operators and values.

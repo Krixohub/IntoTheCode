@@ -55,7 +55,6 @@ namespace IntoTheCode.Read
 
         public abstract string GetGrammar();
 
-        // todo implement GetSettings on decendants
         public virtual void GetSettings(List<Tuple<string, string>> settings) 
         {
             if (ChildNodes == null) return;
@@ -107,22 +106,7 @@ namespace IntoTheCode.Read
         /// <returns>True: one path has an ending.</returns>
         public abstract bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status);
 
-        
-        
         public List<ParserElementBase> Next;
-
-        //public abstract void InitializeNext(List<ParserElementBase> nextList);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="org"></param>
-        /// <param name="firstList"></param>
-        /// <param name="followingList"></param>
-        /// <returns>true: The element is optional (the list must be added to the following list). False: A word is always read.</returns>
-        //public abstract bool GetFirstList(ParserElementBase org, List<ParserElementBase> firstList, List<ParserElementBase> followingList);
-
-        //public abstract void InitializeNext(ParserElementBase org, List<ParserElementBase> nextList);
 
         internal Rule GetRule(ParserElementBase e)
         {

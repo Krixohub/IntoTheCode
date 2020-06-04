@@ -6,7 +6,7 @@
   <!--<xsl:variable name="myAssembly" select="'MoehlData.Basic.AbstractModel'"/>-->
 
   <xsl:template match="doc">---
-Title: Classes
+Title: Documentaion
 ---
 <xsl:comment> This is a generated file. Dont edit! </xsl:comment>
 

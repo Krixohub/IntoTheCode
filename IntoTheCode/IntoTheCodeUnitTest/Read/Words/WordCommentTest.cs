@@ -1,16 +1,11 @@
-﻿using IntoTheCode.Read;
-using IntoTheCode.Read.Words;
-using IntoTheCodeUnitTest.Read;
+﻿using IntoTheCodeUnitTest.Read;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 
 namespace Read.Words
 {
     [TestClass]
     public class WordCommentTest
     {
-        // todo flyt til read.
-
         [TestMethod]
         public void ITC11LoadDoc()
         {
