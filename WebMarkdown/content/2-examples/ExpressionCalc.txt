@@ -1,0 +1,29 @@
+---
+Title: Examples
+---
+
+## Expression calculator
+
+This example reads math expressions like 1 + 2 * (4 - 1). It only takes integers as values. 
+
+See [Expressions](/Doc/expressions) for more documentation.
+
+~~~~
+input = [exp];
+exp   = mul | sum | div | sub | par | number;
+mul    = exp '*' exp;
+div    = exp '/' exp;
+sum    = exp '+' exp;
+sub    = exp '-' exp;
+number = int;
+par    = '(' exp ')';
+
+settings
+mul Precedence = '2';
+div Precedence = '2';
+sum Precedence = '1';
+sub Precedence = '1';
+exp collapse;
+~~~~
+
+The example also contains code to consume the expression and calculate a mathematical result.

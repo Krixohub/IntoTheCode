@@ -1,0 +1,27 @@
+---
+Title: Info
+---
+
+## Files 2020 04 17
+
+The IntoTheCode library comes as a zip file. This contains these Visual Studio projects and dll's: 
+[Download IntoTheCode 2020 04 17](/media/downloads/IntoTheCode20200417.zip)
+
+* project: IntoTheCode
+* project: IntoTheCodeMarkdown
+* project: IntoTheCodeUnitTest
+* project: TestApp
+* dll: Packages\MoehData\MoehlData.Basic.dll
+* dll: Packages\MoehData\MoehlData.ClientWpf.dll
+
+**IntoTheCode**<br/>
+IntoTheCode is everything you need to make parsers, when you know how it works.
+
+**IntoTheCodeMarkdown**<br/>
+IntoTheCodeMarkdown contains build events to produce markdown dokumentation for the [Classes](/doc/classes) page. The IntoTheCode project generates the \bin\Debug\IntoTheCode.xml documentation file; This file is filtered and translated to markdown.
+
+**IntoTheCodeUnitTest**<br/>
+Unit Tests, and some of them are nice examples of code as well.
+
+**TestApp**<br/>
+Does not work now. This project needs the two dll's (MoehlData.Basic.dll and MoehlData.ClientWpf.dll)

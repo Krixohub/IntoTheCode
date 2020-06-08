@@ -1,0 +1,107 @@
+---
+Title: Documentation
+---
+
+## Settings
+
+* [Syntax for settings](#settingsDef)
+* [Collapse](#collapse)
+* [Trust](#trust)
+
+### <a name="settingsDef">Syntax for settings</a>
+Settings is a part of the syntax definition. This part only regards the compilation of the code and should not be a concern for those writing the code. This is the rules the IntoTheCode parser uses to read settings:
+
+~~~~
+settings    = 'settings' {setter};
+setter      = identifier assignment {',' assignment} ';';
+assignment  = property ['=' value];
+property    = identifier;
+value       = string;
+~~~~
+
+The settings part is located after the rules part to make the rule more simple for those who write code.
+
+Each setter's name must correspond to a rule in the syntax. Some properties to set are: "collapse" and "trust". Other properties exists for [Expressions](expressions).
+
+### <a name="collapse">Collapse</a>
+
+This is a way to shrink the CodeDocument. 
+
+When a text is loaded with the parser, a tree of data is produced, represented by the CodeDocument class. Data can be extracted from the CodeDocument by looping through the nodes of the tree. Normally each symbol read from the code generates an element in the CodeDocument.
+
+Not all levels in the document tree may be relevant, and it can be tedious to traverse through the tree.
+It may be convenient to shape the tree by removing some levels.
+
+Each token in the syntax definition has a 'Collapse' property, that can be set false to remove the corresponding level in the output tree document.
+
+### Example of Collapse
+
+Here are an example of how to shape a CodeDocument.
+
+This is the syntax:
+
+~~~~
+program   = { statement };
+statement = command;
+command   = talk| say [parameter];
+talk      = 'talk';
+say       = 'say';
+parameter = string ;
+~~~~
+
+This is the input code:
+
+~~~~
+talk
+say 'hello'
+~~~~
+
+The output tree looks like this:  CodeDocument.ToMarkup()
+
+~~~~
+<program>
+  <statement>
+    <command>
+      <talk/>
+    </command>
+  </statement>
+  <statement>
+    <command>
+      <say/>
+      <parameter>hello</parameter>
+    </command>
+  </statement>
+</program>
+~~~~
+
+This might be too much unnecessary nesting. Some levels can be eliminated by setting the collapse property:
+
+~~~~
+program   = { statement };
+statement = command;
+command   = talk| say [parameter];
+talk      = 'talk';
+say       = 'say';
+parameter = string ;
+
+settings
+statement collapse;
+~~~~
+
+Now the output tree looks like this:
+
+~~~~
+<program>
+  <command>
+    <talk/>
+  </command>
+  <command>
+    <say/>
+    <parameter>hello</parameter>
+  </command>
+</program>
+~~~~
+
+### <a name="trust">Trust</a>
+
+"Trust" is a property for marking a division in the code. When a division is completed the parser will remember this position in the code as completed with no possibility of error. This can be used to get better error messages and optimize memory usage when a division is completed.

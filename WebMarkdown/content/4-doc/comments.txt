@@ -1,0 +1,8 @@
+---
+Title: Documentation
+---
+
+## Comments
+
+Comment handling are built into the parser. Comments are a read and inserted in the output as a CommentElement. The comment style is inline, starting with double slash and ending with newline. So at the moment comments are rather unflexible.
+

@@ -1,0 +1,111 @@
+# Yellow language file
+
+Language: fr
+LanguageDescription: Français
+LanguageAuthor: Juh Nibreh
+LanguageVersion: 0.6.8
+
+BlogBy: par
+BlogFilter: Blog:
+BlogTag: Tags:
+BlogMore: Lire la suite…
+ContactName: Nom:
+ContactEmail: Email:
+ContactMessage: Message:
+ContactButton: Envoyer
+ContactStatusNone: Dites bonjour! Vos commentaires sont les bienvenus.
+ContactStatusIncomplete: S'il vous plaît, veuillez remplir tous les champs.
+ContactStatusInvalid: S'il vous plaît, veuillez entrer une adresse email valide.
+ContactStatusDone: Votre message a bien été envoyé. Merci!
+ContactStatusError: Votre message n'a pas pu être envoyé, réessayez plus tard s'il vous plaît!
+DateMonths: janvier, février, mars, avril, mai, juin, juillet, août, septembre, octobre, novembre, décembre
+DateWeekdays: lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche
+DateFormatShort: F Y
+DateFormatMedium: d/m/Y
+DateFormatLong: d/m/Y H:i
+PaginationPrevious: ← Précédent
+PaginationNext: Suivant →
+SearchQuery: Rechercher:
+SearchResultsNone: Entrez un mot dans le champ de recherche.
+SearchResultsEmpty: Pas de résultats.
+SearchButton: Rechercher
+WebinterfaceInstallationTitle: Bonjour
+WebinterfaceInstallationFeature: Que voulez-vous faire?
+WebinterfaceInstallationHomePage: Votre site web fonctionne!\n\nVous pouvez [edit - modifier cette page] ou utiliser un éditeur de texte.
+WebinterfaceLoginTitle: Yellow
+WebinterfaceLoginEmail: Email:
+WebinterfaceLoginPassword: Mot de passe:
+WebinterfaceLoginRecover: Mot de passe oublié?
+WebinterfaceLoginSignup: Créer un compte utilisateur?
+WebinterfaceLoginButton: Se connecter
+WebinterfaceSignupTitle: Créer un compte utilisateur
+WebinterfaceSignupName: Nom:
+WebinterfaceSignupEmail: Email:
+WebinterfaceSignupPassword: Mot de passe:
+WebinterfaceSignupButton: Créer
+WebinterfaceSignupStatusNone: Ici, vous pouvez créer un nouveau compte utilisateur.
+WebinterfaceSignupStatusIncomplete: Veuillez remplir tous les champs.
+WebinterfaceSignupStatusInvalid: S'il vous plaît, veuillez entrer une adresse email valide.
+WebinterfaceSignupStatusWeak: S'il vous plaît, choisissez un mot de passe différent.
+WebinterfaceSignupStatusNext: Votre compte a été créé, vérifiez vos emails.
+WebinterfaceRecoverTitle: Mot de passe oublié
+WebinterfaceRecoverEmail: Email:
+WebinterfaceRecoverPassword: Mot de passe:
+WebinterfaceRecoverStatusNone: Pas de problème, vous pouvez créer un nouveau mot de passe.
+WebinterfaceRecoverStatusInvalid: S'il vous plaît, veuillez entrer une adresse email valide.
+WebinterfaceRecoverStatusPassword: S'il vous plaît, choisissez un nouveau mot de passe.
+WebinterfaceRecoverStatusWeak: S'il vous plaît, choisissez un mot de passe différent.
+WebinterfaceRecoverStatusNext: Votre compte est à nouveau disponible, vérifiez vos emails.
+WebinterfaceSettingsTitle: Paramètres
+WebinterfaceSettingsStatusInvalid: S'il vous plaît, veuillez entrer une adresse email valide.
+WebinterfaceSettingsStatusTaken: S'il vous plaît, veuillez entrer une adresse email différent.
+WebinterfaceSettingsStatusWeak: S'il vous plaît, choisissez un mot de passe différent.
+WebinterfaceSettingsStatusNext: Votre compte a été changé, vérifiez vos emails.
+WebinterfaceConfirmSubject: Confirmation d'un compte utilisateur
+WebinterfaceConfirmMessage: Bonjour @usershort, veuillez confirmer votre compte utilisateur. Cliquez sur le lien suivant.
+WebinterfaceConfirmStatusDone: Votre compte utilisateur est confirmé et en attente d'approbation. Merci!
+WebinterfaceConfirmStatusExpired: Le compte ne peut pas être créé. Le lien de confirmation a expiré!
+WebinterfaceApproveSubject: Approuver un nouvel utilisateur
+WebinterfaceApproveMessage: Bonjour @usershort, veuillez approuver la création d'un nouveau compte utilisateur pour @useraccount. Cliquez sur le lien suivant.
+WebinterfaceApproveStatusDone: Compte utilisateur approuvé. Merci!
+WebinterfaceApproveStatusExpired: Le compte ne peut pas être approuvé. Le lien de confirmation a expiré!
+WebinterfaceRecoverSubject: Restauration d'un compte utilisateur
+WebinterfaceRecoverMessage: Bonjour @usershort, veuillez confirmer que vous avez oublié votre mot de passe. Cliquez sur le lien suivant.
+WebinterfaceRecoverStatusDone: Compte utilisateur restauré. Merci!
+WebinterfaceRecoverStatusExpired: Le compte ne peut pas être restauré. Le lien de confirmation a expiré!
+WebinterfaceReconfirmSubject: Changement d'un compte utilisateur
+WebinterfaceReconfirmMessage: Bonjour @usershort, veuillez confirmer une nouvelle adresse email pour votre compte utilisateur. Cliquez sur le lien suivant.
+WebinterfaceReconfirmStatusDone: Votre compte utilisateur est confirmé. Merci!
+WebinterfaceReconfirmStatusExpired: Le compte ne peut pas être créé. Le lien de confirmation a expiré!
+WebinterfaceChangeSubject: Changement d'un compte utilisateur
+WebinterfaceChangeMessage: Bonjour @usershort, veuillez confirmer que vous souhaitez modifier votre compte utilisateur. Cliquez sur le lien suivant.
+WebinterfaceChangeStatusDone: Compte utilisateur changé. Merci!
+WebinterfaceChangeStatusExpired: Le compte ne peut pas être changé. Le lien de confirmation a expiré!
+WebinterfaceWelcomeSubject: Bienvenue
+WebinterfaceWelcomeMessage: Bonjour @usershort, votre compte utilisateur a bien été créé. Amusez-vous bien en éditant le site web.
+WebinterfaceInformationSubject: Bienvenue à nouveau
+WebinterfaceInformationMessage: Bonjour @usershort, votre compte utilisateur a bien été changé. Vous pouvez maintenant vous connecter.
+WebinterfaceVersionTitle: A propos de ce site
+WebinterfaceVersionStatusNone: Vérification des mises à jour…
+WebinterfaceVersionStatusLatest: Aucune mise à jour disponible.
+WebinterfaceVersionStatusUpdates: Mises à jour disponibles, s'il vous plaît contacter le webmestre.
+WebinterfaceVersionUpdate: Mettre à jour
+WebinterfaceOkButton: Ok
+WebinterfaceCancelButton: Annuler
+WebinterfaceCreateButton: Créer
+WebinterfaceEditButton: Sauvegarder
+WebinterfaceDeleteButton: Supprimer
+WebinterfaceEdit: Éditer page
+WebinterfaceCreate: +
+WebinterfaceDelete: -
+WebinterfaceCreateTitle: Créer page
+WebinterfaceDeleteTitle: Supprimer page
+WebinterfaceMarkdownHelp: Markdown
+WebinterfaceUserHelp: Aide
+WebinterfaceUserLogout: Déconnexion
+WikiFilter: Wiki:
+WikiTag: Tags:
+WikiSpecialChanges: Changements récents
+YellowUrl: https://datenstrom.se/fr/yellow/
+YellowUserHelpUrl: https://developers.datenstrom.se/help/help-fr
+YellowMarkdownHelpUrl: https://developers.datenstrom.se/help/markdown-cheat-sheet-fr
