@@ -21,11 +21,11 @@
     
     <Target Name="AfterBuild">
         <Message Text="First occurrence" />
-        <XslTransformation XslInputPath="$(ProjectDir)Transform\xml-doc-filter.xslt" XmlInputPaths="$(SolutionDir)IntoTheCode\bin\Debug\IntoTheCode.xml" OutputPaths="$(OutputPath)doc-filter.xml" />
+        <XslTransformation XslInputPath="$(ProjectDir)Transform\xml-doc-filter.xslt" XmlInputPaths="$(SolutionDir)IntoTheCode\bin\Debug\IntoTheCode.xml" OutputPaths="$(OutDir)doc-filter.xml" />
 
         <!--<XslTransformation XslInputPath="xml-doc-filter.xslt" XmlInputPaths="$(OutputPath)$(AssemblyName).xml" OutputPaths="..\DotfuscOut\$(AssemblyName).xml" />-->
-        <XslTransformation XslInputPath="$(ProjectDir)Transform\xml-doc-to-html.xslt" XmlInputPaths="$(OutputPath)doc-filter.xml" OutputPaths="$(OutputPath)doc.html" />
-        <XslTransformation XslInputPath="$(ProjectDir)Transform\xml-doc-to-md.xslt" XmlInputPaths="$(OutputPath)doc-filter.xml" OutputPaths="..\..\..\web\MarkDown\IntoTheCode\content\4-doc\classes.txt" />
-        <XslTransformation XslInputPath="$(ProjectDir)Transform\xml-doc-to-html.xslt" XmlInputPaths="$(SolutionDir)IntoTheCode\bin\Debug\IntoTheCode.xml" OutputPaths="$(OutputPath)doc-full.html" />
+        <XslTransformation XslInputPath="$(ProjectDir)Transform\xml-doc-to-html.xslt" XmlInputPaths="$(OutDir)doc-filter.xml" OutputPaths="$(OutDir)doc.html" />
+        <XslTransformation XslInputPath="$(ProjectDir)Transform\xml-doc-to-md.xslt" XmlInputPaths="$(OutDir)doc-filter.xml" OutputPaths="..\..\WebMarkdown\content\4-doc\classes.txt" />
+        <XslTransformation XslInputPath="$(ProjectDir)Transform\xml-doc-to-html.xslt" XmlInputPaths="$(SolutionDir)IntoTheCode\bin\Debug\IntoTheCode.xml" OutputPaths="$(OutDir)doc-full.html" />
     </Target>
 </Project>

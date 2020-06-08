@@ -1,0 +1,49 @@
+---
+Title: Examles
+---
+
+## csv reader
+
+This is a data file from http://www.artofstat.com/datasets.html :
+~~~~
+animal,gestation,longevity
+Ass,365,19
+Bear,220,22
+Cat,61,11
+Chicken,22,7
+Cow,280,11
+Deer,249,13
+Dog,63,11
+Elephant,624,35
+Fox,57,9
+Goat,151,12
+Groundhog,31,7
+Hippopotamus,240,30
+Horse,336,23
+Kangaroo,35,5
+Lion,108,10
+Monkey,205,14
+Pig,115,10
+Rabbit,31,7
+Sheep,151,12
+Squirrel,44,8
+Wolf,62,11
+~~~~
+
+This example is ment to show how IntoTheCode is working, rather than making a all purpose csv reader. Here is a grammar to parse the data:
+~~~~
+syntax     = headerline {valueline};
+headerline = headerA ',' headerB ',' headerC;
+headerA    = identifier;
+headerB    = identifier;
+headerC    = identifier;
+
+valueline  = valueA ',' valueB ',' valueC;
+valueA     = identifier;
+valueB     = int;
+valueC     = int;
+~~~~
+
+The grammar starts with a headerline and then comes any number of valuelines.
+
+The ViewModel count the number of valuelines and makes an averadge of the ValueC (longevity).  You can try to alter some of the symbol names and see what happens to the output tree and result

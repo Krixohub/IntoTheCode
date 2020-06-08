@@ -1,0 +1,16 @@
+---
+Title: About
+---
+IntoTheCode is a general parser class library for .NET.
+With the IntoTheCode library, making parsers is fast and flexible. Parse protocols, text formats and domain languages.
+
+### Syntax
+* Define your syntax in the well known Backus-Naur Form.
+* The form is well suited for both documentation and parsing!
+* Developers can easily review the syntax.
+
+### Input 
+Use the IntoTheCode parser to read all kind of structured text or code. The syntax (and the grammar) of the text can be verified with the IntoTheCode Parser.
+
+### Reading
+Reading code with IntoTheCode is like reading objects with the System.Xml.Linq namespace. Very similar to reading a Microsoft XDocument representation of XML.

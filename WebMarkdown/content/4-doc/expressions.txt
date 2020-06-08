@@ -1,0 +1,85 @@
+---
+Title: Documentation
+---
+
+## Expressions
+
+Expressions read strings like this 'a + b / c' (Infix notation). IntoTheCode has a special way to treat expressions with binary operators. This example defines expressions with division and addition:
+~~~~
+expression = division | addition | value;
+division   = expression '/' expression;
+addition   = expression '+' expression;
+value      = somethingElse;
+~~~~
+
+The expression rule must be a set of alternatives (the name is not significant). And the first alternative must be in the 'operator form' : expression symbol expression. In the example '/' and '+' are the operators. A binary operator can also be in-line: 
+~~~~
+expr = expr '+' expr | value;
+~~~~
+(this example yields CodeElements with the name '+' - not XML style!)
+
+When the parser is build, the alternatives are transformed to an expression with a set of binary operators. Every alternative with the operator form will be transformed to a binary operator. 
+
+At least one alternative must be something else than the operator form. And one path must be not recursive. These alternatives are regarded as values to the expression. If these values define a unary operator or parentheses, then these operations has higher precedence than the binary operators. The values are just individual peaces of syntax, and not altered by the expression logic. Examples of values:
+~~~~
+value    = number | variable | par;
+number   = int;
+variable = [sign] identifier;
+sign     = '-';
+par      = '(' exp ')'; // exp = name of expression rule
+~~~~
+
+### Precedence:
+The default precedence are determined by the order of the operators in the expression rule. First operator has highest precedence. The operator precedence can be changed by setting the 'precedence' property. 
+
+### Association
+Operators are default left associative. If an operator is right associative set the 'RightAssociative' property.
+
+### Example of precedence and association:
+~~~~
+exp    = power | mul | sum | div | sub | par | number;
+power  = exp '^' exp;
+mul    = exp '*' exp;
+div    = exp '/' exp;
+sum    = exp '+' exp;
+sub    = exp '-' exp;
+number = int;
+par    = '(' exp ')';
+settings
+mul    Precedence = '2';
+sum    Precedence = '1';
+div    Precedence = '2';
+sub    Precedence = '1';
+power  RightAssociative;
+~~~~
+The power operator has highest precedence because it is first in order.
+
+### Output tree
+The output tree is nested operator elements; An operator has to values elements. A value elements can be a new operator element or one of the other alternatives.
+
+For example if the above grammar is used to read this expression:
+~~~~
+2 ^ 3  ^ 4 * (4 - 1)
+~~~~
+It outputs this tree as markup:
+~~~~
+<exp>
+  <mul>
+    <power>
+      <number>2</number>
+      <power>
+        <number>3</number>
+        <number>4</number>
+      </power>
+    </power>
+    <par>
+      <exp>
+        <sub>
+          <number>4</number>
+          <number>1</number>
+        </sub>
+      </exp>
+    </par>
+  </mul>
+</exp>
+~~~~

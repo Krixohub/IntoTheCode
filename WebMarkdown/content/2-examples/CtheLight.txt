@@ -1,0 +1,68 @@
+---
+Title: Examples
+---
+
+## Programming language: C the Light
+
+This example implements a general programming language. It is aimed for making a domain language. This language has 
+* Variable types: int, string, real and bool. 
+* Expressions of different types.
+* Compile time type check. 
+* Recursive functions. 
+* Input parameters.
+* Custom functions.
+
+The syntax of the language is inspired from C# but rather reduced. I call the language 'C the Light'. The example both demonstrates a grammar for designing a programming language and an implementation of runtime environment (a compiler).
+
+### C the Light grammar
+~~~~
+program     = scope;
+body        = operation | '{' scope '}';
+scope       = {functionDef | variableDef | operation};
+operation   = assign | if | while | funcCall ';' | return;
+
+functionDef = declare '(' [declare {',' declare}] ')' '{' scope '}';
+variableDef = declare '=' exp ';';
+
+declare     = (defInt | defString | defReal | defBool | defVoid) identifier;
+defInt      = 'int';
+defString   = 'string';
+defReal     = 'real';
+defBool     = 'bool';
+defVoid     = 'void';
+
+assign      = identifier '=' exp ';';
+return      = 'return' [exp] ';';
+if          = 'if' '(' exp ')' body ['else' body];
+while       = 'while' '(' exp ')' body;
+funcCall    = identifier '(' [exp {',' exp}] ')';
+
+exp         = mul | div | sum | sub | gt | lt | eq | value | '(' exp ')';
+mul         = exp '*' exp;
+div         = exp '/' exp;
+sum         = exp '+' exp;
+sub         = exp '-' exp;
+gt          = exp '>' exp;
+lt          = exp '<' exp;
+eq          = exp '==' exp;
+value       = float | int | string | bool | funcCall | identifier;
+~~~~
+
+The production rules can be separated in two: Operations that can run and expressions that can be calculated. 
+The 'declare' rule is not an operation in itself, but just nice to have. It is used multiple places with the same syntax. The type symbols rules (defInt, defString,…) are necessary for IntoTheCode because symbols are not inserted in the output without a rule.
+
+The syntax for expressions 'exp' is common for all types. Naturally the 'if' operations can only take a bool expression and other operations must have certain types of expressions, but this is not handled in the grammar. The type check is left for the compiler.
+
+### The runtime environment
+As far as possible each syntax rule is compiled to a corresponding class. And basically each class has properties corresponding to the elements of the rule. The ProgramBuilder and ExpressionBuilder classes read one element from the TextDocument (parser output), create the right class and set properties with new building blocks.
+
+The operations inherit from OperationBase, and has a 'Run' function.<br/>
+The expressions inherit from ExpTyped<T>, and has a Compute function. 
+
+For example: A 'scope' is an operation, but also has the possibility to define functions and variables. The function definitions are kept with the 'Scope' class. The scope rule also has operations. These are put in the Scope.Operations property. Function calls are resolved at compile time and functions from parent scopes are accessible. The variables are created both at compile time to do type checking and at runtime to enable recursive calls.
+
+All the compilation and execution are implemented by these basic principles.
+
+### Custom functions
+You can add functions as lambda expressions to the program that allows the program to call functions from the outside (the ViewModel in this case). At the moment only void function that takes a string is implemented but new signatures can easily be added. This is how the 'Write' function can write text to the output view.
+

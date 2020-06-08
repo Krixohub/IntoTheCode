@@ -1,0 +1,7 @@
+---
+Title: Documentation
+---
+
+## Whitespace
+
+White space handling are built into the parser. White spaces are the characters to separate tokens and sometimes format the code to be more readable. The default white space characters are space, tab, newline and return. At the moment white spaces are rather unflexible.

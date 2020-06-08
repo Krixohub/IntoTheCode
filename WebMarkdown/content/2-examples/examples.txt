@@ -1,0 +1,47 @@
+---
+Title: Examples
+---
+
+Demo application for source code [DemoApp](DemoApp)
+
+**Examples from the sourcecode**
+* [csv reader](CsvData)<br/>
+* [Expression calculator](ExpressionCalc)<br/>
+* [Programming language](CtheLight)<br/>
+
+### A very simple example:
+
+This is a grammar:
+~~~~
+syntax  = {blah};
+blah    = identifier [int];
+~~~~
+
+Each line is a production rule. A syntax rule is written in a Backus-Naur Form (BNF) dialect. A rule must start with an identifier, the equal sign, then an expression of symbols and be ended with a semicolon.  The first rule represents the hole input. 
+Here the first rule defines a sequence of elements. The next rule defines an element as an identifier and an optional integer. ‘identifier’ and ‘int’ are hardcoded symbols of the parser. This syntax can be used to parse code like this:
+~~~~
+into 2
+the
+code 4
+~~~~
+
+I have one ‘element’ on each line. When IntoTheCode gets the this grammar and this input code, it will generate this output (shown in markup format)
+~~~~
+<syntax>
+  <blah>
+    <identifier>into</identifier>
+    <int>2</int>
+  </blah>
+  <blah>
+    <identifier>the</identifier>
+  </blah>
+  <blah>
+    <identifier>code</identifier>
+    <int>4</int>
+  </blah>
+</syntax>
+~~~~
+
+Notice that the root element is ‘syntax’ from the grammar.  Childs of syntax are ‘blah’ (defined by the grammar). Each ‘blah’ has an identifier and possible an integer.
+
+

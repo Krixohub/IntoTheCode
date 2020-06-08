@@ -1,0 +1,47 @@
+---
+Title: Documentation
+---
+
+## Grammar
+
+This is how to define grammar for the IntoTheCode parser. The definition is divided in two parts: A 'rules' part and a [settings part](settings). This page is about the rules part
+
+A grammar is build of syntax 'production' rules. Syntax rules is written in the Backus-Naur Form, with some extensions. The rules are both a code for the parser and human readable (with some expertise). This part should function as documentation for the people who is going to work with the grammar, though it may not stand alone.  
+
+Rules are a description of code elements the parser will try to parse when the rule is activated. If the code elements apply to the rule, the parser builds output in the form of a CodeDocument.
+
+Each rule must contain an identifier, an equation sign, an expression of elements and a semicolon:
+~~~~
+identifier '=' expression ';'
+~~~~
+
+The identifier becomes the name of the rule. The first rule must represents the whole code. The name of the first rule becomes the name of the grammar. 
+
+Expressions describe code elements and is build with syntax elements:
+
+* Many elements can be listed, separated with a space.
+* Optional elements with Square Brackets: [optional].
+* Alternatives with a vertical line: a | b.
+* A sequence of 0 to n repetitions with braces: {repeat}.
+* Parentheses: ( ).
+* A symbol with single quotation marks : 'mySymbol'.
+* A name of a rule to embed.
+* A name of a build in token (int, string, identifier).
+
+Expressions can refer to other rules by the name. A rule can be recursive, but the recursive part must be optional.
+
+This is the rules the IntoTheCode parser uses to read a grammar (without settings):
+
+~~~~
+MetaGrammar = {Rule} [settings];
+rule        = identifier '=' expression ';';
+expression  = element {[or] element};
+element     = identifier | symbol | sequence | optional | parentheses;
+sequence    = '{' expression '}';
+optional    = '[' expression ']';
+parentheses = '(' expression ')';
+or          = '|';
+symbol      = string;
+~~~~
+
+The 'identifier' and 'string'  are build in tokens. Syntax is case sensitive.
