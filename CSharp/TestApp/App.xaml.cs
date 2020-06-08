@@ -2,10 +2,6 @@
 using System.Diagnostics;
 using System.Windows;
 
-using MoehlData.Basic.Message;
-using MoehlData.ClientWpf.Util;
-using MoehlData.Basic.Util;
-
 namespace TestApp
 {
   /// <summary>
@@ -16,17 +12,10 @@ namespace TestApp
         //DispatcherUnhandledException += 
         public App()
         {
-            InitializeBasic.SetStuf(typeof(App).Assembly, new BasicResources());
-            //Post.AddResource(typeof(Basic.Message.Basic));
-            GlobalsBasic.Instance.ChannelError = new MessageChannelMessageBox();
             DispatcherUnhandledException += App_DispatcherUnhandledException;
 
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += CurrentDomain_UnhandledException; ;
-
-            //// Hvis der ikke er trust til certifikat
-            //// (Fejl: The remote certificate is invalid according to the validation procedure.)
-            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -38,7 +27,9 @@ namespace TestApp
 
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            Post.Send(() => Res1.SomeError, e.Exception, EventLogEntryType.Error, "Dispacher");
+            Exception ex = e.Exception;
+            string msg = ex != null ? ex.Message : string.Empty;
+            MessageBox.Show(String.Format("Fejl :{0}, \r\n{1}", e.Exception.GetType().Name, msg, "Unhandled"));
         }
     }
 }

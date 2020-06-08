@@ -1,0 +1,7 @@
+v16
+DesignTimeBuild
+*.dll
+/CSharp/IntoTheCode/bin/Debug/*.pdb
+/CSharp/IntoTheCode/bin/Debug/IntoTheCode.xml
+Debug
+/CSharp/IntoTheCodeDoc/obj
