@@ -1,2 +1,6 @@
+# Make this repository a C# type
 *.php linguist-detectable=false
 *.cs linguist-detectable=true
+
+# yellow.php has problems with some file line endings. Solution for Windows/wamp: let css files keep unix endings.
+*.css text eol=lf

@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+# RewriteBase: the subfolder for yellow
+# RewriteBase /yellow/
+DirectoryIndex index.html yellow.php
+RewriteRule ^(cache|content|system)/ error [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ yellow.php [L]
+</IfModule>
