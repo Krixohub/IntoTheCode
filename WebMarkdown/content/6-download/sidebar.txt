@@ -1,0 +1,5 @@
+## Contents
+
+[Current version](/download/)  
+[History](history)  
+[GitHub](https://github.com/Krixohub/IntoTheCode/)  

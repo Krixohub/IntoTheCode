@@ -10,4 +10,4 @@ Parts of documentation:
 [Expressions](expressions)<br/> 
 [Comments](comments)<br/>
 [Whitespace](whitespace)<br/>
-[Installation](/doc/files): How to install and get started.<br/>
+[Download](/download/): How to install and get started.<br/>

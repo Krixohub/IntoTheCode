@@ -13,4 +13,4 @@
 [TextDocument](classes#IntoTheCode.TextDocument)<br/>
 
 **Installation**<br/>
-[Files](/info/files)<br/>
+[Download](/download/)<br/>

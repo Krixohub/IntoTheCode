@@ -10,7 +10,7 @@ The source code contains 3 examples of programming with IntoTheCode.
 * A math expression calculator
 * A programming language
 
-The examples are all shown in the same user interface. This is an explanations of the common user interface. Here is a screen dump from the CSV data example:
+The examples are all shown in the same user interface. Here is a screen dump from the CSV data example:
 ![image](DemoAppScreendump1.png)
 
 1. Input data editor.
