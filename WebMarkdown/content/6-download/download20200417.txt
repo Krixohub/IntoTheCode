@@ -1,11 +1,11 @@
 ---
-Title: Info
+Title: Download
 ---
 
-## Files 2020 04 17
+## 2020 04 17 version 0.1.0
 
 The IntoTheCode library comes as a zip file. This contains these Visual Studio projects and dll's: 
-[Download IntoTheCode 2020 04 17](/media/downloads/IntoTheCode20200417.zip)
+[Download IntoTheCode20200417](/media/downloads/IntoTheCode20200417.zip)
 
 * project: IntoTheCode
 * project: IntoTheCodeMarkdown

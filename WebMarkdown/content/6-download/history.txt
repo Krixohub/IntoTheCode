@@ -1,10 +1,10 @@
 ---
-Title: Info
+Title: Download
 ---
 
 ## History:
 
-* 2020-06-04 [files20200604](files20200604) ver. 0.1.1. Examples working
-* 2020-04-17 [files20200417](files20200417) ver. 0.1.0. First opensource download
+* 2020-06-04 [download20200604](download20200604) ver. 0.1.1. Examples working
+* 2020-04-17 [download20200417](download20200417) ver. 0.1.0. First opensource download
 
 This website is made with [yellow]. [See information for developers](https://developers.datenstrom.se/).
