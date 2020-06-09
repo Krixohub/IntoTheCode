@@ -1,6 +1,7 @@
 ---
-Title: About
+Title: Home
 ---
+
 IntoTheCode is a general parser class library for .NET.
 With the IntoTheCode library, making parsers is fast and flexible. Parse protocols, text formats and domain languages.
 

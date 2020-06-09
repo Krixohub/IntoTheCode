@@ -2,13 +2,6 @@
 Title: Examples
 ---
 
-Demo application for source code [DemoApp](DemoApp)
-
-**Examples from the sourcecode**
-* [csv reader](CsvData)<br/>
-* [Expression calculator](ExpressionCalc)<br/>
-* [Programming language](CtheLight)<br/>
-
 ### A very simple example:
 
 This is a grammar:
