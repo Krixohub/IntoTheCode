@@ -34,7 +34,7 @@ power  RightAssociative;
             Input = _initialInput;
         }
 
-        protected override void ProcessOutput(TextDocument doc)
+        protected override void ProcessOutput(CodeDocument doc)
         {
             // Compile expression
             ExpressionBase expression;

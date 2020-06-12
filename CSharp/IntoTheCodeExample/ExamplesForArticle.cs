@@ -10,7 +10,7 @@ string grammar = ""; // Set the grammar in this string
 string input = ""; // Set the input in this string
 var parser = new Parser(grammar); // instantiate the parser
 // parse the input and get output tree
-TextDocument doc = TextDocument.Load(parser, input);
+CodeDocument doc = CodeDocument.Load(parser, input);
 
             var d = doc;
         }

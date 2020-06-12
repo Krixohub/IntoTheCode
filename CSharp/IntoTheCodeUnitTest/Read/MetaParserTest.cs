@@ -52,21 +52,21 @@ namespace Read
 
             // Compare generated CodeDocument with 'selected nodes'
             string actualTags1, actualTags2, expectTags;
-            TextDocument docExpect = TestMetaGrammarDoc();
+            CodeDocument docExpect = TestMetaGrammarDoc();
 
             //var metaParser = _metaparser;
             TextBuffer buffer = new FlatBuffer(MetaParser.SoftMetaGrammarAndSettings);
-            TextDocument docActual1 = parser.ParseString(buffer);
+            CodeDocument docActual1 = parser.ParseString(buffer);
             buffer = new FlatBuffer(MetaParser.SoftMetaGrammarAndSettings);
-            TextDocument docActual2 = MetaParser.Instance.ParseString(buffer);
+            CodeDocument docActual2 = MetaParser.Instance.ParseString(buffer);
 
             expectTags = docExpect.ToMarkup();
             actualTags1 = docActual1.ToMarkup();
             actualTags2 = docActual2.ToMarkup();
 
-            msg = TextDocument.CompareCode(docActual1, docExpect);
+            msg = CodeDocument.CompareCode(docActual1, docExpect);
             Assert.AreEqual(string.Empty, msg, "Meta grammar document diff error");
-            msg = TextDocument.CompareCode(docActual2, docExpect);
+            msg = CodeDocument.CompareCode(docActual2, docExpect);
             Assert.AreEqual(string.Empty, msg, "Meta grammar internal document diff error");
             Assert.AreEqual(docExpect.Name, docActual1.Name, "Document name diff error");
 
@@ -107,9 +107,9 @@ settings    collapse;";
         }
 
         /// <summary>To test changes to the meta grammar.</summary>
-        private static TextDocument TestMetaGrammarDoc()
+        private static CodeDocument TestMetaGrammarDoc()
         {
-            TextDocument grammar = new TextDocument(new List<CodeElement>(), MetaParser.Grammar);
+            CodeDocument grammar = new CodeDocument(new List<CodeElement>(), MetaParser.Grammar);
 
             // grammar   = {rule}
             grammar.Add(new HardElement("rule", string.Empty,

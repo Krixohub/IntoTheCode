@@ -10,7 +10,7 @@
 **Classes**<br/>
 [Parser](classes#IntoTheCode.Parser)<br/>
 [CodeElement](classes#IntoTheCode.CodeElement)<br/>
-[TextDocument](classes#IntoTheCode.TextDocument)<br/>
+[CodeDocument](classes#IntoTheCode.CodeDocument)<br/>
 
 **Installation**<br/>
 [Download](/download/)<br/>

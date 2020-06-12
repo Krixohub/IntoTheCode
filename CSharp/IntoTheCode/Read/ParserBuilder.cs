@@ -14,7 +14,7 @@ namespace IntoTheCode.Read
     internal class ParserBuilder
     {
         ///
-        internal static bool BuildRules(Parser parser, TextDocument doc, ParserStatus status)
+        internal static bool BuildRules(Parser parser, CodeDocument doc, ParserStatus status)
         {
             parser.Rules = new List<Rule>();
 
@@ -215,7 +215,7 @@ namespace IntoTheCode.Read
 
         /// <summary>Apply settings to a linked Grammar.</summary>
         /// <returns></returns>
-        private static bool ApplySettingsFromGrammar(Parser parser, TextDocument doc, ParserStatus status)
+        private static bool ApplySettingsFromGrammar(Parser parser, CodeDocument doc, ParserStatus status)
         {
             bool ok = true;
             foreach (CodeElement SetterElement in doc.Codes(MetaParser.Setter_____))
