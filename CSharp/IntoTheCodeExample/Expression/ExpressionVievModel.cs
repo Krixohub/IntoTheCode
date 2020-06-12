@@ -9,21 +9,22 @@ namespace IntoTheCodeExample.Expression
     {
         private string _initialInput = @"1 + 2 * (4 - 1)";
 
-        private string _initialGrammar = @"input = [exp];
-exp   = mul | sum | div | sub | par | number;
+        private string _initialGrammar = @"input  = [exp];
+exp    = power | mul | sum | div | sub | par | number;
 mul    = exp '*' exp;
 div    = exp '/' exp;
 sum    = exp '+' exp;
 sub    = exp '-' exp;
+power  = exp '^' exp;
 number = int;
 par    = '(' exp ')';
-
 settings
-mul Precedence = '2';
-div Precedence = '2';
-sum Precedence = '1';
-sub Precedence = '1';
-exp collapse;
+exp    collapse;
+mul    Precedence = '2';
+sum    Precedence = '1';
+div    Precedence = '2';
+sub    Precedence = '1';
+power  RightAssociative;
 //number collapse;
 //par collapse;";
 

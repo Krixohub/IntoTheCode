@@ -80,11 +80,13 @@
     <Compile Include="DomainLanguage\Executers\VariableDef.cs" />
     <Compile Include="DomainLanguage\Executers\ValueBase.cs" />
     <Compile Include="DomainLanguage\Executers\ValueTyped.cs" />
+    <Compile Include="ExamplesForArticle.cs" />
     <Compile Include="ExampleVievModelBase.cs" />
     <Compile Include="Expression\Executers\Divide.cs" />
     <Compile Include="Expression\Executers\ExpressionBuilder.cs" />
     <Compile Include="Expression\Executers\ExpressionBase.cs" />
     <Compile Include="Expression\Executers\Minus.cs" />
+    <Compile Include="Expression\Executers\Power.cs" />
     <Compile Include="Expression\Executers\Multiply.cs" />
     <Compile Include="Expression\Executers\Number.cs" />
     <Compile Include="Expression\Executers\Parenthese.cs" />
