@@ -4,13 +4,16 @@
 
   <xsl:output method="html" indent="no"/>
   <!--<xsl:variable name="myAssembly" select="'MoehlData.Basic.AbstractModel'"/>-->
-
+  <xsl:variable name='newline'><xsl:text xml:space="preserve">
+</xsl:text></xsl:variable>
+    
   <xsl:template match="doc">---
-Title: Documentaion
----
-<xsl:comment> This is a generated file. Dont edit! </xsl:comment>
+  Title: Documentaion
+  ---
+  <xsl:comment> This is a generated file. Dont edit! </xsl:comment>
+  <xsl:value-of select="$newline"/>
 
-<xsl:call-template name="findClasses"/>
+  <xsl:call-template name="findClasses"/>
 </xsl:template>
 
 <!-- //// CLASS ////////////////////////////////// -->
@@ -20,8 +23,10 @@ Title: Documentaion
   <xsl:param name="fn" />
     
     <!-- Print class name as ancor -->
-
-### <a><xsl:attribute name="name"><xsl:value-of select="$fn"/></xsl:attribute>Class: <xsl:value-of select="$cn"/></a>
+  <xsl:value-of select="$newline"/>
+<a><xsl:attribute name="name"><xsl:value-of select="$fn"/></xsl:attribute>
+### Class: <xsl:value-of select="$cn"/>
+<xsl:value-of select="$newline"/></a>
 (Namespace: <xsl:value-of select="$ns"/>)
 <xsl:apply-templates select="remarks"/>
 <xsl:apply-templates select="summary"/>

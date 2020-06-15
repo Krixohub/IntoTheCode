@@ -1,16 +1,19 @@
 ﻿---
-Title: Documentaion
----
-<!-- This is a generated file. Dont edit! -->
+  Title: Documentaion
+  ---
+  <!-- This is a generated file. Dont edit! -->
 
-### <a name="IntoTheCode.CodeElement">Class: CodeElement</a>
+<a name="IntoTheCode.CodeElement">
+### Class: CodeElement
+</a>
 (Namespace: IntoTheCode)
 
 Inherits [IntoTheCode.TextElement](#IntoTheCode.TextElement)
     <br>*The Elements that is read as part of a syntax.*
     
-
-### <a name="IntoTheCode.Parser">Class: Parser</a>
+<a name="IntoTheCode.Parser">
+### Class: Parser
+</a>
 (Namespace: IntoTheCode)
 <br>*Read text according to a grammar. The parser holds the parser elements to read a code. Parser = a program that reads code, acording to a grammar. ParserElement = an element of a program that reads code elements, acording to a syntax element.*
     
@@ -28,8 +31,9 @@ Inherits [IntoTheCode.TextElement](#IntoTheCode.TextElement)
     
 * Returns: A grammar.<br>*Get formatted grammar for this parser.*
     
-
-### <a name="IntoTheCode.TextDocument">Class: TextDocument</a>
+<a name="IntoTheCode.TextDocument">
+### Class: TextDocument
+</a>
 (Namespace: IntoTheCode)
 
 Inherits [IntoTheCode.TextElement](#IntoTheCode.TextElement)
@@ -48,8 +52,9 @@ Inherits [IntoTheCode.TextElement](#IntoTheCode.TextElement)
 * Parameter xmlEncode: Encode the values to xml.
 * Returns: A string of markup.<br>*Transform document to markup.*
     
-
-### <a name="IntoTheCode.Basic.Layer.NotifyChanges">Class: NotifyChanges</a>
+<a name="IntoTheCode.Basic.Layer.NotifyChanges">
+### Class: NotifyChanges
+</a>
 (Namespace: IntoTheCode.Basic.Layer)
 <br>*Baseclass to implement INotifyPropertyChanged.*
     
@@ -61,8 +66,9 @@ Inherits [IntoTheCode.TextElement](#IntoTheCode.TextElement)
     
 * Parameter name: Name of changed property.<br>*Raise PropertyChanged with string.*
     
-
-### <a name="IntoTheCode.Basic.TreeNode`1">Class: TreeNode`1</a>
+<a name="IntoTheCode.Basic.TreeNode`1">
+### Class: TreeNode`1
+</a>
 (Namespace: IntoTheCode.Basic)
 <br>*A Element has a parent, a string value (text) and a set of sub elements.*
     
@@ -94,14 +100,16 @@ Inherits [IntoTheCode.TextElement](#IntoTheCode.TextElement)
 * Parameter predicate: The predicate.
 * Returns: A enumerable of elements.<br>*Find sub elements with a predicate.*
     
-
-### <a name="IntoTheCode.Buffer.FlatBuffer">Class: FlatBuffer</a>
+<a name="IntoTheCode.Buffer.FlatBuffer">
+### Class: FlatBuffer
+</a>
 (Namespace: IntoTheCode.Buffer)
 
 Inherits [IntoTheCode.Buffer.TextBuffer](#IntoTheCode.Buffer.TextBuffer)
     
-
-### <a name="IntoTheCode.Read.Structure.Expression">Class: Expression</a>
+<a name="IntoTheCode.Read.Structure.Expression">
+### Class: Expression
+</a>
 (Namespace: IntoTheCode.Read.Structure)
 
 Inherits [IntoTheCode.Read.Structure.Or](#IntoTheCode.Read.Structure.Or)
@@ -144,8 +152,9 @@ Inherits [IntoTheCode.Read.Structure.Or](#IntoTheCode.Read.Structure.Or)
 * Parameter level: Level of rule links.
 * Returns: True if succes.<br>*ResolveErrorsForward a binary operator.*
     
-
-### <a name="IntoTheCode.Read.Structure.SetOfElements">Class: SetOfElements</a>
+<a name="IntoTheCode.Read.Structure.SetOfElements">
+### Class: SetOfElements
+</a>
 (Namespace: IntoTheCode.Read.Structure)
 
 Inherits [IntoTheCode.Read.Structure.SetOfElementsBase](#IntoTheCode.Read.Structure.SetOfElementsBase)
@@ -156,8 +165,9 @@ Inherits [IntoTheCode.Read.Structure.SetOfElementsBase](#IntoTheCode.Read.Struct
 **Function: ResolveErrorsLast(IntoTheCode.CodeElement,System.Int32)**
     
 * Returns: 0: Not found, 1: Found-read error, 2: Found and read ok.
-
-### <a name="IntoTheCode.Read.Structure.SetOfElementsBase">Class: SetOfElementsBase</a>
+<a name="IntoTheCode.Read.Structure.SetOfElementsBase">
+### Class: SetOfElementsBase
+</a>
 (Namespace: IntoTheCode.Read.Structure)
 
 Inherits [IntoTheCode.Read.ParserElementBase](#IntoTheCode.Read.ParserElementBase)
@@ -170,8 +180,9 @@ Inherits [IntoTheCode.Read.ParserElementBase](#IntoTheCode.Read.ParserElementBas
 * Parameter last: Not null, not empty.
 * Returns: 0: Not found, 1: Found-read error, 2: Found and read ok.<br>*Find the Rule/ 'read element', that correspond to the last CodeElement, and read it again with error resolving. If no error, try to read further.*
     
-
-### <a name="IntoTheCode.Read.Structure.Rule">Class: Rule</a>
+<a name="IntoTheCode.Read.Structure.Rule">
+### Class: Rule
+</a>
 (Namespace: IntoTheCode.Read.Structure)
 
 Inherits [IntoTheCode.Read.Structure.SetOfElementsBase](#IntoTheCode.Read.Structure.SetOfElementsBase)
@@ -186,8 +197,9 @@ Inherits [IntoTheCode.Read.Structure.SetOfElementsBase](#IntoTheCode.Read.Struct
 * Parameter last: Not null, not empty.
 * Returns: 0: Not found, 1: Found-read error, 2: Found and read ok.<br>*Find the Rule/ 'read element', that correspond to the last CodeElement, and read it again with error resolving. If no error, try to read further.*
     
-
-### <a name="IntoTheCode.Read.Structure.Optional">Class: Optional</a>
+<a name="IntoTheCode.Read.Structure.Optional">
+### Class: Optional
+</a>
 (Namespace: IntoTheCode.Read.Structure)
 
 Inherits [IntoTheCode.Read.Structure.SetOfElementsBase](#IntoTheCode.Read.Structure.SetOfElementsBase)
@@ -200,8 +212,9 @@ Inherits [IntoTheCode.Read.Structure.SetOfElementsBase](#IntoTheCode.Read.Struct
 * Parameter last: Not null, not empty.
 * Returns: 0: Not found, 1: Found-read error, 2: Found and read ok.<br>*Find the Rule/ 'read element', that correspond to the last CodeElement, and read it again with error resolving. If no error, try to read further.*
     
-
-### <a name="IntoTheCode.Read.Structure.Or">Class: Or</a>
+<a name="IntoTheCode.Read.Structure.Or">
+### Class: Or
+</a>
 (Namespace: IntoTheCode.Read.Structure)
 
 Inherits [IntoTheCode.Read.ParserElementBase](#IntoTheCode.Read.ParserElementBase)
@@ -212,8 +225,9 @@ Inherits [IntoTheCode.Read.ParserElementBase](#IntoTheCode.Read.ParserElementBas
 **Function: ResolveErrorsLast(IntoTheCode.CodeElement,System.Int32)**
     
 * Returns: 0: Not found, 1: Found-read error, 2: Found and read ok.
-
-### <a name="IntoTheCode.Read.Structure.Parentheses">Class: Parentheses</a>
+<a name="IntoTheCode.Read.Structure.Parentheses">
+### Class: Parentheses
+</a>
 (Namespace: IntoTheCode.Read.Structure)
 
 Inherits [IntoTheCode.Read.Structure.SetOfElements](#IntoTheCode.Read.Structure.SetOfElements)
@@ -221,8 +235,9 @@ Inherits [IntoTheCode.Read.Structure.SetOfElements](#IntoTheCode.Read.Structure.
 **Constructor(IntoTheCode.Read.ParserElementBase[])**
     <br>*Creator for .*
     
-
-### <a name="IntoTheCode.Read.Structure.Sequence">Class: Sequence</a>
+<a name="IntoTheCode.Read.Structure.Sequence">
+### Class: Sequence
+</a>
 (Namespace: IntoTheCode.Read.Structure)
 
 Inherits [IntoTheCode.Read.Structure.SetOfElementsBase](#IntoTheCode.Read.Structure.SetOfElementsBase)
@@ -236,8 +251,9 @@ Inherits [IntoTheCode.Read.Structure.SetOfElementsBase](#IntoTheCode.Read.Struct
 **Function: ResolveErrorsLast(IntoTheCode.CodeElement,System.Int32)**
     
 * Returns: 0: Not found, 1: Found-read error, 2: Found and read ok.
-
-### <a name="IntoTheCode.Read.Structure.RuleLink">Class: RuleLink</a>
+<a name="IntoTheCode.Read.Structure.RuleLink">
+### Class: RuleLink
+</a>
 (Namespace: IntoTheCode.Read.Structure)
 
 Inherits [IntoTheCode.Read.ParserElementBase](#IntoTheCode.Read.ParserElementBase)
@@ -249,8 +265,9 @@ Inherits [IntoTheCode.Read.ParserElementBase](#IntoTheCode.Read.ParserElementBas
 **Function: ResolveErrorsLast(IntoTheCode.CodeElement,System.Int32)**
     
 * Returns: 0: Not found, 1: Found-read error, 2: Found and read ok.
-
-### <a name="IntoTheCode.Read.Words.WordBinaryOperator">Class: WordBinaryOperator</a>
+<a name="IntoTheCode.Read.Words.WordBinaryOperator">
+### Class: WordBinaryOperator
+</a>
 (Namespace: IntoTheCode.Read.Words)
 
 Inherits [IntoTheCode.Read.Words.WordSymbol](#IntoTheCode.Read.Words.WordSymbol)
@@ -258,8 +275,9 @@ Inherits [IntoTheCode.Read.Words.WordSymbol](#IntoTheCode.Read.Words.WordSymbol)
 **Constructor(IntoTheCode.Read.Words.WordSymbol,System.String,IntoTheCode.Buffer.TextBuffer)**
     <br>*Creator for .*
     
-
-### <a name="IntoTheCode.Read.Words.WordFloat">Class: WordFloat</a>
+<a name="IntoTheCode.Read.Words.WordFloat">
+### Class: WordFloat
+</a>
 (Namespace: IntoTheCode.Read.Words)
 
 Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
@@ -267,8 +285,9 @@ Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
 **Function: ResolveErrorsLast(IntoTheCode.CodeElement,System.Int32)**
     
 * Returns: 0: Not found, 1: Found-read error, 2: Found and read ok.
-
-### <a name="IntoTheCode.Read.Words.WordInt">Class: WordInt</a>
+<a name="IntoTheCode.Read.Words.WordInt">
+### Class: WordInt
+</a>
 (Namespace: IntoTheCode.Read.Words)
 
 Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
@@ -276,8 +295,9 @@ Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
 **Function: ResolveErrorsLast(IntoTheCode.CodeElement,System.Int32)**
     
 * Returns: 0: Not found, 1: Found-read error, 2: Found and read ok.
-
-### <a name="IntoTheCode.Read.Words.WordIdent">Class: WordIdent</a>
+<a name="IntoTheCode.Read.Words.WordIdent">
+### Class: WordIdent
+</a>
 (Namespace: IntoTheCode.Read.Words)
 
 Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
@@ -285,8 +305,9 @@ Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
 **Function: ResolveErrorsLast(IntoTheCode.CodeElement,System.Int32)**
     
 * Returns: 0: Not found, 1: Found-read error, 2: Found and read ok.
-
-### <a name="IntoTheCode.Read.Words.WordString">Class: WordString</a>
+<a name="IntoTheCode.Read.Words.WordString">
+### Class: WordString
+</a>
 (Namespace: IntoTheCode.Read.Words)
 
 Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
@@ -294,8 +315,9 @@ Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
 **Function: ResolveErrorsLast(IntoTheCode.CodeElement,System.Int32)**
     
 * Returns: 0: Not found, 1: Found-read error, 2: Found and read ok.
-
-### <a name="IntoTheCode.Read.Words.WordBase">Class: WordBase</a>
+<a name="IntoTheCode.Read.Words.WordBase">
+### Class: WordBase
+</a>
 (Namespace: IntoTheCode.Read.Words)
 
 Inherits [IntoTheCode.Read.ParserElementBase](#IntoTheCode.Read.ParserElementBase)
@@ -307,8 +329,9 @@ Inherits [IntoTheCode.Read.ParserElementBase](#IntoTheCode.Read.ParserElementBas
 * Parameter ptr: 
 * Returns: <br>*Get string representation of value from buffer.*
     
-
-### <a name="IntoTheCode.Read.Words.WordBool">Class: WordBool</a>
+<a name="IntoTheCode.Read.Words.WordBool">
+### Class: WordBool
+</a>
 (Namespace: IntoTheCode.Read.Words)
 
 Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
@@ -316,8 +339,9 @@ Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
 **Function: ResolveErrorsLast(IntoTheCode.CodeElement,System.Int32)**
     
 * Returns: 0: Not found, 1: Found-read error, 2: Found and read ok.
-
-### <a name="IntoTheCode.Read.Words.WordSymbol">Class: WordSymbol</a>
+<a name="IntoTheCode.Read.Words.WordSymbol">
+### Class: WordSymbol
+</a>
 (Namespace: IntoTheCode.Read.Words)
 
 Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
@@ -338,8 +362,9 @@ Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
 **Function: ResolveErrorsLast(IntoTheCode.CodeElement,System.Int32)**
     
 * Returns: 0: Not found, 1: Found-read error, 2: Found and read ok.
-
-### <a name="IntoTheCode.Read.ParserBuilder">Class: ParserBuilder</a>
+<a name="IntoTheCode.Read.ParserBuilder">
+### Class: ParserBuilder
+</a>
 (Namespace: IntoTheCode.Read)
 <br>*Build Grammar elements for a parser from dokument*
     
@@ -373,15 +398,17 @@ Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
     
 * Returns: <br>*Apply settings to a linked Grammar.*
     
-
-### <a name="IntoTheCode.Read.HardElement">Class: HardElement</a>
+<a name="IntoTheCode.Read.HardElement">
+### Class: HardElement
+</a>
 (Namespace: IntoTheCode.Read)
 
 Inherits [IntoTheCode.TextElement](#IntoTheCode.TextElement)
     <br>*A hard coded element.*
     
-
-### <a name="IntoTheCode.Read.MetaParser">Class: MetaParser</a>
+<a name="IntoTheCode.Read.MetaParser">
+### Class: MetaParser
+</a>
 (Namespace: IntoTheCode.Read)
 <br>*The meta-grammar for proces grammar definitions. The Instance property is a singleton parser of grammares. This class contains a hard coded parser and a string MetaGrammer, to build rules of the meta parser.*
     
@@ -397,8 +424,9 @@ Inherits [IntoTheCode.TextElement](#IntoTheCode.TextElement)
 **Constructor()**
     <br>*A linked grammar for EBNF.*
     
-
-### <a name="IntoTheCode.Read.ParserElementBase">Class: ParserElementBase</a>
+<a name="IntoTheCode.Read.ParserElementBase">
+### Class: ParserElementBase
+</a>
 (Namespace: IntoTheCode.Read)
 
 Inherits [](#)
@@ -444,15 +472,9 @@ Inherits [](#)
 * Parameter status: 
 * Returns: True: one path has an ending.<br>*Find which RuleLinks are recursive. Called by the ParserFactory after Initializing grammar. Each path though the grammar must be followed, and each rule must have an ending.*
     
-**Function: GetRule(IntoTheCode.Read.ParserElementBase)**
-    
-* Parameter org: 
-* Parameter firstList: 
-* Parameter followingList: 
-* Returns: true: The element is optional (the list must be added to the following list). False: A word is always read.<br>**
-    
-
-### <a name="IntoTheCode.TextElement">Class: TextElement</a>
+<a name="IntoTheCode.TextElement">
+### Class: TextElement
+</a>
 (Namespace: IntoTheCode)
 
 Inherits [](#)
@@ -472,15 +494,17 @@ Inherits [](#)
 * Parameter predicate: The predicate to filter with.
 * Returns: A enumerable of codes.<br>*Find child code elements with a predicate.*
     
-
-### <a name="IntoTheCode.CommentElement">Class: CommentElement</a>
+<a name="IntoTheCode.CommentElement">
+### Class: CommentElement
+</a>
 (Namespace: IntoTheCode)
 
 Inherits [IntoTheCode.CodeElement](#IntoTheCode.CodeElement)
     <br>*Comments from the Text.*
     
-
-### <a name="IntoTheCode.ParserException">Class: ParserException</a>
+<a name="IntoTheCode.ParserException">
+### Class: ParserException
+</a>
 (Namespace: IntoTheCode)
 <br>*Error when the input doesn't match the Grammar.*
     
