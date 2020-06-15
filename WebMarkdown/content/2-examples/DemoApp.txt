@@ -24,5 +24,7 @@ After each change to the **input**, the parser makes a new output tree. The 'Bus
 
 After each change to the **grammar**, a new parser is created. If this succeeds, then the input is parsed with the new parser. You can change the input to match the new grammar, and then the ‘Output tree’ does work, though the ViewModel result may not work. 
 
-The demo application is based on a pragmatic Model-View-ViewModel architecture. The TestApp project contains the views. A common UserControl contains all controls, and defines bindings and some functionality to show cursor position. A UserCotrol for each example use the common control and refers to the right ViewModel
+## Architecture
+
+The demo application is based on a pragmatic Model-View-ViewModel (MVVM) architecture. The TestApp project contains the views. A common UserControl contains all controls, and defines bindings and some functionality to show cursor position. A UserCotrol for each example use the common control and refers to the right ViewModel
 The IntoTheCodeExamples project contains a ViewModel for each example. All ViewModels has the same ancestor with common properties, and functions for parsing the grammar and parsing the input. When input is parsed successfully, the function called ‘ProcessOutput’ is called on the ViewModel, with a TextDocument as parameter. This is where the output is consumed.

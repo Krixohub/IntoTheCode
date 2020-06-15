@@ -8,7 +8,8 @@ Download: [IntoTheCode](/media/downloads/IntoTheCode20200604.zip) (version 0.1.1
 News:
 
 * Rename TextDocument to CodeDokument
-* power added to expression example
+* Math power added to expression example
+* Reference to dll's removed from project TestApp
 
 The IntoTheCode library comes as a zip file. This contains Visual Studio projects: 
 
@@ -19,13 +20,13 @@ The IntoTheCode library comes as a zip file. This contains Visual Studio project
 * project: TestApp
 
 **IntoTheCode**<br/>
-IntoTheCode is everything you need to make parsers, when you know how it works.
+The IntoTheCode parser library.
 
 **IntoTheCodeDoc**<br/>
 IntoTheCodeDoc contains build events to produce markdown dokumentation for the [Classes](/doc/classes) page. The IntoTheCode project generates the \bin\Debug\IntoTheCode.xml documentation file; This file is filtered and translated to markdown.
 
-** IntoTheCodeExample
-ViewModels and logic for examples.
+**IntoTheCodeExample**<br/>
+ViewModels and example code.
 
 **IntoTheCodeUnitTest**<br/>
 Unit Tests, and some of them are nice examples of code as well.
