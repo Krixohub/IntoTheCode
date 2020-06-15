@@ -6,3 +6,5 @@ DesignTimeBuild
 Debug
 /CSharp/IntoTheCodeDoc/obj
 /WebMarkdown/system/config/user.ini
+/CSharp/IntoTheCodeDoc/bin/Doc
+/WebMarkdown/byg.bat
