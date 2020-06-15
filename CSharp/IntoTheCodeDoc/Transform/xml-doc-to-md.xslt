@@ -8,10 +8,10 @@
 </xsl:text></xsl:variable>
     
   <xsl:template match="doc">---
-  Title: Documentaion
-  ---
-  <xsl:comment> This is a generated file. Dont edit! </xsl:comment>
-  <xsl:value-of select="$newline"/>
+Title: Documentaion
+---
+<xsl:comment> This is a generated file. Dont edit! </xsl:comment>
+<xsl:value-of select="$newline"/>
 
   <xsl:call-template name="findClasses"/>
 </xsl:template>
@@ -23,7 +23,7 @@
   <xsl:param name="fn" />
     
     <!-- Print class name as ancor -->
-  <xsl:value-of select="$newline"/>
+<xsl:value-of select="$newline"/>
 <a><xsl:attribute name="name"><xsl:value-of select="$fn"/></xsl:attribute>
 ### Class: <xsl:value-of select="$cn"/>
 <xsl:value-of select="$newline"/></a>
@@ -82,17 +82,18 @@
   <!-- //// Summary ////////////////////////////////// -->
   <xsl:template match="summary">
     <xsl:if test=". != ''">
-<br/>*<xsl:value-of select="normalize-space(.)"/>*
+<br/>
+*<xsl:value-of select="normalize-space(.)"/>*
     </xsl:if>
   </xsl:template>
 
   <!-- //// REMARK, Inherids ////////////////////////////////// -->
   <xsl:template match="remarks">
-    <xsl:variable name="rem" select="."/>
-    <xsl:variable name="link" select="substring-after(see/@cref,'T:')"/>
-    <xsl:if test="contains($rem,'Inherids')">
+<xsl:variable name="rem" select="."/>
+<xsl:variable name="link" select="substring-after(see/@cref,'T:')"/>
+<xsl:if test="contains($rem,'Inherids')">
 Inherits [<xsl:value-of select="$link"/>](#<xsl:value-of select="$link"/>)
-    </xsl:if>
+</xsl:if>
 </xsl:template>
 
   <!-- //// Parameters ////////////////////////////////// -->

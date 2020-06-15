@@ -29,7 +29,7 @@ namespace IntoTheCodeExample.DomainLanguage.Executers
 
         public const string VariableReturn = "returnValue";
 
-        public static Program CreateProgram(TextDocument doc, Dictionary<string, Function> functions, Dictionary<string, ValueBase> parameters)
+        public static Program CreateProgram(CodeDocument doc, Dictionary<string, Function> functions, Dictionary<string, ValueBase> parameters)
         {
             var prog = new Program();
 

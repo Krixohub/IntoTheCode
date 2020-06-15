@@ -157,7 +157,7 @@ namespace IntoTheCodeUnitTest.Read
             string s = parser.GetGrammar();
 
             var buf = new FlatBuffer(code);
-            TextDocument doc = parser.ParseString(buf);
+            CodeDocument doc = parser.ParseString(buf);
             if (buf.Status.Error == null)
             {
                 Assert.IsTrue(errors.Count() == 0, " Expecting error");

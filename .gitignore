@@ -8,3 +8,5 @@ Debug
 /WebMarkdown/system/config/user.ini
 /CSharp/IntoTheCodeDoc/bin/Doc
 /WebMarkdown/byg.bat
+/CSharp/IntoTheCode/*.user
+*.user

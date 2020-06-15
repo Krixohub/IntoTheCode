@@ -6,11 +6,11 @@ using IntoTheCode.Read;
 
 namespace IntoTheCode
 {
-    /// <summary>Represents a text or code document.</summary>
+    /// <summary>Represents a code document.</summary>
     /// <remarks>Inherids <see cref="TextElement"/></remarks>
-    public class TextDocument : TextElement
+    public class CodeDocument : TextElement
     {
-        internal TextDocument(IEnumerable<TextElement> elements, string name)
+        internal CodeDocument(IEnumerable<TextElement> elements, string name)
         {
             Name = name;
             AddRange(elements);
@@ -22,10 +22,10 @@ namespace IntoTheCode
         /// <param name="parser"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static TextDocument Load(Parser parser, string input)
+        public static CodeDocument Load(Parser parser, string input)
         {
             TextBuffer buffer = new FlatBuffer(input);
-            TextDocument doc = parser.ParseString(buffer);
+            CodeDocument doc = parser.ParseString(buffer);
             if (doc != null) return doc;
 
             // only place to throw exception is CodeDocument.Load and Parser.SetGrammar (and MetaGrammar)
@@ -82,7 +82,7 @@ namespace IntoTheCode
         /// <summary>Compare two TextDocuments. Only elements in the 'expect' document are compared.</summary>
         /// <returns>Empty string if equal. Message with path if different.</returns>
         /// <exclude/>
-        internal static string CompareCode(TextDocument actual, TextDocument expect)
+        internal static string CompareCode(CodeDocument actual, CodeDocument expect)
         {
             string msg;
             if (expect == null && actual == null) return string.Empty;

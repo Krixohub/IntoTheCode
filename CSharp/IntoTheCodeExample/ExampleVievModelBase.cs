@@ -86,7 +86,7 @@ namespace IntoTheCodeExample
 
         #endregion properties
 
-        protected abstract void ProcessOutput(TextDocument doc);
+        protected abstract void ProcessOutput(CodeDocument doc);
 
         private void ParseInput()
         {
@@ -98,10 +98,10 @@ namespace IntoTheCodeExample
             }
 
             // Load input
-            TextDocument doc = null;
+            CodeDocument doc = null;
             try
             {
-                doc = TextDocument.Load(_parser, _input);
+                doc = CodeDocument.Load(_parser, _input);
             }
             catch (ParserException e)
             {
@@ -131,7 +131,7 @@ namespace IntoTheCodeExample
 
             try
             {
-                TextDocument doc = TextDocument.Load(new Parser(string.Empty), _grammar);
+                CodeDocument doc = CodeDocument.Load(new Parser(string.Empty), _grammar);
                 GrammarMarkup = doc.ToMarkup();
             }
             catch (ParserException e)
