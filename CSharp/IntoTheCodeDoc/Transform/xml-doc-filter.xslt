@@ -23,7 +23,7 @@
 
         <!-- Add class to this list to put the class on top. -->
         <xsl:variable name="putOnTop">
-            <a>IntoTheCode.TextDocument</a>
+            <a>IntoTheCode.CodeDocument</a>
             <a>IntoTheCode.CodeElement</a>
             <a>IntoTheCode.Parser</a>
         </xsl:variable>

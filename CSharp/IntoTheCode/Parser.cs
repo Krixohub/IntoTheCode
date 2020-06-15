@@ -89,7 +89,7 @@ namespace IntoTheCode
         /// <exclude/>
         private void SetGrammar(string Grammar)
         {
-            TextDocument grammarDoc = null;
+            CodeDocument grammarDoc = null;
 
             TextBuffer buffer = new FlatBuffer(Grammar);
             grammarDoc = MetaParser.Instance.ParseString(buffer);
@@ -107,7 +107,7 @@ namespace IntoTheCode
         /// <param name="buffer">The text buffer.</param>
         /// <returns>A text document, or null if error.</returns>
         /// <exclude/>
-        internal TextDocument ParseString(TextBuffer buffer)
+        internal CodeDocument ParseString(TextBuffer buffer)
         {
 
             if (buffer.Status.Error != null) return null;
@@ -118,7 +118,7 @@ namespace IntoTheCode
             var elements = new List<TextElement>();
             bool ok;
 
-            var resultDoc = new TextDocument(elements, procesRules[0].Name);
+            var resultDoc = new CodeDocument(elements, procesRules[0].Name);
 
             try
             {

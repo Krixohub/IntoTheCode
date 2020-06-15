@@ -29,11 +29,11 @@ Inherits [IntoTheCode.TextElement](#IntoTheCode.TextElement)
 * Returns: A grammar.<br>*Get formatted grammar for this parser.*
     
 
-### <a name="IntoTheCode.TextDocument">Class: TextDocument</a>
+### <a name="IntoTheCode.CodeDocument">Class: CodeDocument</a>
 (Namespace: IntoTheCode)
 
 Inherits [IntoTheCode.TextElement](#IntoTheCode.TextElement)
-    <br>*Represents a text or code document.*
+    <br>*Represents a code document.*
     
 **Function: Load(IntoTheCode.Parser,System.String)**
     
@@ -343,7 +343,7 @@ Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
 (Namespace: IntoTheCode.Read)
 <br>*Build Grammar elements for a parser from dokument*
     
-**Function: BuildRules(IntoTheCode.Parser,IntoTheCode.TextDocument,IntoTheCode.Read.ParserStatus)**
+**Function: BuildRules(IntoTheCode.Parser,IntoTheCode.CodeDocument,IntoTheCode.Read.ParserStatus)**
     
 **Function: InitializeGrammar(IntoTheCode.Parser,System.Collections.Generic.List{IntoTheCode.Read.Structure.Rule},IntoTheCode.Read.ParserStatus)**
     
@@ -365,7 +365,7 @@ Inherits [IntoTheCode.Read.Words.WordBase](#IntoTheCode.Read.Words.WordBase)
 * Parameter status: 
 * Returns: <br>*Find the rule to a RuleLink.*
     
-**Function: ApplySettingsFromGrammar(IntoTheCode.Parser,IntoTheCode.TextDocument,IntoTheCode.Read.ParserStatus)**
+**Function: ApplySettingsFromGrammar(IntoTheCode.Parser,IntoTheCode.CodeDocument,IntoTheCode.Read.ParserStatus)**
     
 * Returns: <br>*Apply settings to a linked Grammar.*
     
@@ -443,13 +443,6 @@ Inherits [](#)
 * Parameter path: The path to the element; only rules and RuleLinks.
 * Parameter status: 
 * Returns: True: one path has an ending.<br>*Find which RuleLinks are recursive. Called by the ParserFactory after Initializing grammar. Each path though the grammar must be followed, and each rule must have an ending.*
-    
-**Function: GetRule(IntoTheCode.Read.ParserElementBase)**
-    
-* Parameter org: 
-* Parameter firstList: 
-* Parameter followingList: 
-* Returns: true: The element is optional (the list must be added to the following list). False: A word is always read.<br>**
     
 
 ### <a name="IntoTheCode.TextElement">Class: TextElement</a>

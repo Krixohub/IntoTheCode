@@ -85,7 +85,7 @@
     <Compile Include="Read\Structure\Structure\SyntaxAttribute.cs" />
     <Compile Include="Read\Structure\RuleLink.cs" />
     <Compile Include="Read\Structure\Structure\SyntaxClass.cs" />
-    <Compile Include="TextDocument.cs" />
+    <Compile Include="CodeDocument.cs" />
     <Compile Include="Read\Structure\Structure\TextSchema.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

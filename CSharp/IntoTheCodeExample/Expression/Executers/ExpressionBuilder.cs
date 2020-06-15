@@ -12,6 +12,8 @@ namespace IntoTheCodeExample.Expression.Executers
 
             switch (elem.Name)
             {
+                case "power":
+                    return new Power(elem);
                 case "mul":
                     return new Multiply(elem);
                 case "div":
