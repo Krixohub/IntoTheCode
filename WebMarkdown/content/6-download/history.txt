@@ -4,6 +4,7 @@ Title: Download
 
 ## History:
 
+* 2020-06-15 [download20200615](download20200615) ver. 0.1.2. CodeDocument renamed
 * 2020-06-04 [download20200604](download20200604) ver. 0.1.1. Examples working
 * 2020-04-17 [download20200417](download20200417) ver. 0.1.0. First opensource download
 

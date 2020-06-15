@@ -2,7 +2,7 @@
 Title: Download
 ---
 
-## Current version 0.1.2
+## Version 0.1.2
 
 Download: [IntoTheCode](/media/downloads/IntoTheCode20200615.zip)  
 News:

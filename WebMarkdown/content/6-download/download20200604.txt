@@ -2,7 +2,7 @@
 Title: Download
 ---
 
-## 2020 06 04 version 0.1.1
+## Version 0.1.1
 
 Download: [IntoTheCode20200604](/media/downloads/IntoTheCode20200604.zip)
 
