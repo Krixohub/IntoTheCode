@@ -76,7 +76,7 @@ namespace IntoTheCode.Read.Structure
 
                 LoopLevel loop = TextBuffer.GetLoopLast(this);
                 if (loop.LastInvokePos == TextBuffer.PointerNextChar &&
-                    level > loop.LastInvokeLevel) return 0;
+                    level > loop.LastInvokeLevel) return 1;
                 loop.LastInvokePos = TextBuffer.PointerNextChar;
                 loop.LastInvokeLevel = level;
             }
@@ -86,7 +86,8 @@ namespace IntoTheCode.Read.Structure
 
         public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         {
-            bool ok = false;
+            bool LoopHasEnd = false;
+            bool LoopHasWord = false;
             path.Add(this);
             int ruleNo = path.IndexOf(RuleElement);
             if (ruleNo > -1)
@@ -95,14 +96,43 @@ namespace IntoTheCode.Read.Structure
                 for (int i = ruleNo; i < path.Count; i++)
                 {
                     if (path[i] is RuleLink) ((RuleLink)path[i]).Recursive = true;
-                    if (path[i] is Rule) ok = ok || ((Rule)path[i]).LoopHasEnd;
+                    if (path[i] is Rule)
+                    {
+                        var rule = path[i] as Rule;
+                        LoopHasEnd = LoopHasEnd || rule.LoopHasEnd;
+                        var subPath = new List<RuleLink>();
+                        bool linkFound = false;
+                        LoopHasWord = LoopHasWord || rule.InitializeLoopHasWord(((RuleLink)path[i + 1]), subPath, ref linkFound);
+                    }
                 }
+
+                if (!LoopHasWord)
+                    ((Rule)path[ruleNo]).LoopLeftRecursive = true;
             }
             else
-                ok = RuleElement.InitializeLoop(rules, path, status);
+                LoopHasEnd = RuleElement.InitializeLoop(rules, path, status);
 
             path.Remove(this);
-            return ok;
+            return LoopHasEnd;
+        }
+
+        public override bool InitializeLoopHasWord(RuleLink link, List<RuleLink> subPath, ref bool linkFound)
+        {
+            if (link != null && this == link)
+            {
+                linkFound = true;
+                return false;
+            }
+
+            int linkNo = subPath.IndexOf(this);
+            if (linkNo > -1)
+                return false; // no words, just recursive
+           
+            subPath.Add(this);
+            bool hasWord = RuleElement.InitializeLoopHasWord(null, subPath, ref linkFound);
+            subPath.Remove(this);
+
+            return hasWord;
         }
     }
 }

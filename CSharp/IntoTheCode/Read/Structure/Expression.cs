@@ -432,5 +432,16 @@ namespace IntoTheCode.Read.Structure
         {
             return _otherForms.Aggregate(false, (ok, item) => ok | item.InitializeLoop(rules, path, status));
         }
+
+        public override bool InitializeLoopHasWord(RuleLink link, List<RuleLink> subPath, ref bool linkFound)
+        {
+            foreach (ParserElementBase item in _otherForms)
+                if (item.InitializeLoopHasWord(link, subPath, ref linkFound))
+                    return true;
+                else if (linkFound)
+                    return false;
+
+            return false;
+        }
     }
 }

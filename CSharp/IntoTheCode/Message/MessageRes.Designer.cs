@@ -232,6 +232,15 @@ namespace IntoTheCode.Message {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The rule &apos;{0}&apos; must have a mandatory word in recursive path..
+        /// </summary>
+        public static string itc28 {
+            get {
+                return ResourceManager.GetString("itc28", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An expression element can&apos;t be siebling with other elements in grammar {0}.
         /// </summary>
         public static string itc29 {
@@ -264,6 +273,15 @@ namespace IntoTheCode.Message {
         public static string itc33 {
             get {
                 return ResourceManager.GetString("itc33", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax error ({0}). A recursive loop with no pregress.
+        /// </summary>
+        public static string itc34 {
+            get {
+                return ResourceManager.GetString("itc34", resourceCulture);
             }
         }
         

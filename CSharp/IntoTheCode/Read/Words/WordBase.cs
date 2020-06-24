@@ -26,5 +26,9 @@ namespace IntoTheCode.Read.Words
             return true;
         }
 
+        public override bool InitializeLoopHasWord(RuleLink link, List<RuleLink> subPath, ref bool linkFound)
+        {
+            return true;
+        }
     }
 }

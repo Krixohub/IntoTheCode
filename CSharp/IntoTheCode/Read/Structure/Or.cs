@@ -66,8 +66,19 @@ namespace IntoTheCode.Read.Structure
 
         public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         {
-            return ((ParserElementBase)ChildNodes[0]).InitializeLoop(rules, path, status) |
-                    ((ParserElementBase)ChildNodes[1]).InitializeLoop(rules, path, status);
+            return ChildNodes[0].InitializeLoop(rules, path, status) |
+                    ChildNodes[1].InitializeLoop(rules, path, status);
+        }
+
+        public override bool InitializeLoopHasWord(RuleLink link, List<RuleLink> subPath, ref bool linkFound)
+        {
+            bool hasWord0 = ChildNodes[0].InitializeLoopHasWord(link, subPath, ref linkFound);
+            if (linkFound) return hasWord0;
+
+            bool hasWord1 = ChildNodes[1].InitializeLoopHasWord(link, subPath, ref linkFound);
+            if (linkFound) return hasWord1;
+
+            return hasWord0 && hasWord1;
         }
     }
 }

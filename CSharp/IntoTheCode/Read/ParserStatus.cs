@@ -36,7 +36,7 @@ namespace IntoTheCode.Read
         /// <param name="resourceExpression"></param>
         /// <param name="parm"></param>
         /// <returns>Always false.</returns>
-        public bool AddSyntaxError(WordBase element, int errorPoint, int wordCount, Expression<Func<string>> resourceExpression, params object[] parm)
+        public bool AddSyntaxError(ParserElementBase element, int errorPoint, int wordCount, Expression<Func<string>> resourceExpression, params object[] parm)
         {
             string error = DotNetUtil.Msg(resourceExpression, parm.Insert(element.GetRule(element).Name));
             //            AddSyntaxError( element,  errorPoint,  wordCount,  error);

@@ -64,6 +64,20 @@ namespace IntoTheCode.Read.Structure
             return true;
         }
 
+        public override bool InitializeLoopHasWord(RuleLink link, List<RuleLink> subPath, ref bool linkFound)
+        {
+            bool hasWord = false;
+            foreach (ParserElementBase item in this.ChildNodes)
+            {
+                if (item.InitializeLoopHasWord(link, subPath, ref linkFound))
+                    hasWord = true;
+
+                if (linkFound)
+                    return hasWord;
+            }
+
+            return false;
+        }
 
         public override string GetGrammar() { return "{" + base.GetGrammar() + "}"; }
     }

@@ -185,6 +185,7 @@ namespace IntoTheCode.Read.Structure
         }
 
         public bool LoopHasEnd;
+        public bool LoopLeftRecursive;
 
         public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
         {

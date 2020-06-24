@@ -181,6 +181,10 @@ namespace IntoTheCode.Read
                 foreach (Rule rule in effectiveRules)
                     if (!rule.LoopHasEnd)
                         status.AddBuildError(() => MessageRes.itc25, rule.DefinitionCodeElement, rule.Name);
+
+                foreach (Rule rule in effectiveRules)
+                    if (rule.LoopLeftRecursive)
+                        status.AddBuildError(() => MessageRes.itc28, rule.DefinitionCodeElement, rule.Name);
             }
             return status.Error == null;
         }

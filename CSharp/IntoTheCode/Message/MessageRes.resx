@@ -192,4 +192,10 @@
   <data name="itc14" xml:space="preserve">
     <value>The input is null.</value>
   </data>
+  <data name="itc34" xml:space="preserve">
+    <value>Syntax error ({0}). A recursive loop with no pregress</value>
+  </data>
+  <data name="itc28" xml:space="preserve">
+    <value>The rule '{0}' must have a mandatory word in recursive path.</value>
+  </data>
 </root>

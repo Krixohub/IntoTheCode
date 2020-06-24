@@ -100,11 +100,16 @@ namespace IntoTheCode.Read
         /// <summary>Find which RuleLinks are recursive.
         /// Called by the ParserFactory after Initializing grammar.
         /// Each path though the grammar must be followed, and each rule must have an ending.</summary>
-        /// <param name="elem">The element to analyse.</param>
-        /// <param name="path">The path to the element; only rules and RuleLinks.</param>
+        /// <param name="rules">Build list of analysed rules.</param>
+        /// <param name="path">The path to the current element; only rules and RuleLinks.</param>
         /// <param name="status"></param>
         /// <returns>True: one path has an ending.</returns>
         public abstract bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status);
+
+        /// <summary>Find out if there is a mandatory word before a RuleLink.</summary>
+        /// <param name="link">The RuleLink.</param>
+        /// <returns>0: Link found (No words). 1: Mandatory word before link. 2: No words, no link. </returns>
+        public abstract bool InitializeLoopHasWord(RuleLink link, List<RuleLink> subPath, ref bool linkFound);
 
         public List<ParserElementBase> Next;
 

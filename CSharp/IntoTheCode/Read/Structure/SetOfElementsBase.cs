@@ -120,6 +120,17 @@ namespace IntoTheCode.Read.Structure
             return ok;
         }
 
+        public override bool InitializeLoopHasWord(RuleLink link, List<RuleLink> subPath, ref bool linkFound)
+        {
+            foreach (ParserElementBase item in this.ChildNodes)
+                if (item.InitializeLoopHasWord(link, subPath, ref linkFound))
+                    return true;
+                else if (linkFound)
+                    return false;
+
+            return false;
+        }
+
         public override string GetGrammar()
         {
             string Grammar = string.Join(" ", ChildNodes.Select(s => s.GetGrammar()).ToArray());
