@@ -49,29 +49,39 @@ namespace Read
                 Util.BuildMsg(1, 12, () => MessageRes.itc25, "sty"));
 
             // no itc25 error
-            Util.ParserLoad("aa = ab; ab = aa | identifier;", string.Empty, string.Empty);
-            Util.ParserLoad("aa = ab; ab = identifier | aa;", string.Empty, string.Empty);
+            Util.ParserLoad("aa = ab; ab = int aa | identifier;", string.Empty, string.Empty);
+            Util.ParserLoad("aa = ab; ab = identifier | int aa;", string.Empty, string.Empty);
 
             // no error
             grammar = @"
 aa = ab;
-ab = aa | ba;
-ba = ba | ca;
+ab = int aa | ba;
+ba = int ba | ca;
 ca = cb;
-cb = ca | identifier ;";
+cb = int ca | identifier ;";
             Util.ParserLoad(grammar, string.Empty, string.Empty);
 
             // itc25: The rule 'cb' must have a non recursive path. Line 6, colomn 1
             grammar = @"
 aa = ab;
-ab = aa | ba;
-ba = ba | ca;
+ab = int aa | ba;
+ba = int ba | ca;
 ca = cb;
-cb = ca ;";
+cb = int ca ;";
             Util.ParserLoad(grammar, string.Empty, string.Empty,
                 Util.BuildMsg(6, 1, () => MessageRes.itc25, "cb"));
 
+            // itc28: The rule 'a' must have a mandatory word in recursive path Line 1, colomn 1
+            Util.ParserLoad("a = b; b = a | identifier;", string.Empty, string.Empty,
+                Util.BuildMsg(1, 1, () => MessageRes.itc28, "a"));
 
+            // itc28: The rule 'a' must have a mandatory word in recursive path Line 1, colomn 1
+            Util.ParserLoad("a = b; b = int | a;", string.Empty, string.Empty,
+                Util.BuildMsg(1, 1, () => MessageRes.itc28, "a"));
+
+            // itc28: The rule 'a' must have a mandatory word in recursive path Line 1, colomn 1
+            Util.ParserLoad("a = b | int; b = [int] c; c= {int} a;", string.Empty, string.Empty,
+                Util.BuildMsg(1, 1, () => MessageRes.itc28, "a"));
         }
 
         #region utillity functions

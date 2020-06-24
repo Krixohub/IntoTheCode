@@ -47,5 +47,27 @@ namespace IntoTheCode.Read.Structure
             ResolveSetErrorsForward(level);
             return true;
         }
+
+        public override bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status)
+        {
+            base.InitializeLoop(rules, path, status);
+            return true;
+        }
+
+        public override bool InitializeLoopHasWord(RuleLink link, List<RuleLink> subPath, ref bool linkFound)
+        {
+            bool hasWord = false;
+            foreach (ParserElementBase item in this.ChildNodes)
+            {
+                if (item.InitializeLoopHasWord(link, subPath, ref linkFound))
+                    hasWord = true;
+                    
+                if (linkFound)
+                    return hasWord;
+            }
+
+            return false;
+        }
+
     }
 }
