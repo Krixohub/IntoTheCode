@@ -2,9 +2,9 @@
 Title: Documentation
 ---
 
-## Expressions
+## Calculator expressions
 
-Expressions read strings like this 'a + b / c' (Infix notation). IntoTheCode has a special way to treat expressions with binary operators. This example defines expressions with division and addition:
+Calculator expressions read strings like this 'a + b / c' (Infix notation). IntoTheCode has a special way to treat expressions with binary operators. This example defines expressions with division and addition:
 ~~~~
 expression = division | addition | value;
 division   = expression '/' expression;
