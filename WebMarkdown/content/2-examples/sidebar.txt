@@ -5,5 +5,5 @@
 
 **Examples from the sourcecode**<br/>
 [csv reader](CsvData)<br/>
-[Expression calculator](ExpressionCalc)<br/>
+[Calculator expressions](ExpressionCalc)<br/>
 [Programming language](CtheLight)<br/>

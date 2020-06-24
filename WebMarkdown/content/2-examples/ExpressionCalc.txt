@@ -2,11 +2,11 @@
 Title: Examples
 ---
 
-## Expression calculator
+## Calculator expressions
 
 This example reads math expressions like 1 + 2 * (4 - 1). It only takes integers as values. 
 
-See [Expressions](/Doc/expressions) for more documentation.
+See [Calculator expressions](/Doc/expressions) for more documentation.
 
 ~~~~
 input = [exp];

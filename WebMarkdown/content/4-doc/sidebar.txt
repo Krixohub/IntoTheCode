@@ -3,7 +3,7 @@
 **Grammar**<br/>
 [Grammar](grammar)<br/>
 [Parser settings](settings)<br/>
-[Expressions](expressions)<br/>
+[Calculator expressions](expressions)<br/>
 [Comments](comments)<br/>
 [Whitespace](whitespace)<br/>
 

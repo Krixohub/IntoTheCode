@@ -4,7 +4,8 @@ Title: Examples
 
 ## Programming language: C the Light
 
-This example implements a general programming language. It is aimed for making a domain language. This language has 
+This example implements a general programming language. It is aimed for making a domain language. This language has:
+ 
 * Variable types: int, string, real and bool. 
 * Expressions of different types.
 * Compile time type check. 
