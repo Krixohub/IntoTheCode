@@ -14,6 +14,7 @@
                         <Button Content="csv data" Click="btnCsvData_Click" Margin="5" />
                         <Button Content="Expression" Click="btnExpression_Click" Margin="5" />
                         <Button Content="Domain language" Click="btnDomLan_Click" Margin="5" />
+                        <Button Content="Start from blank" Click="btnEmpty_Click" Margin="5" />
                     </StackPanel>
                 </Grid>
             </TabItem>

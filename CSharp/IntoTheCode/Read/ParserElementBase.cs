@@ -106,7 +106,7 @@ namespace IntoTheCode.Read
         /// <returns>True: one path has an ending.</returns>
         public abstract bool InitializeLoop(List<Rule> rules, List<ParserElementBase> path, ParserStatus status);
 
-        /// <summary>Find out if there is a mandatory word before a RuleLink.</summary>
+        /// <summary>Find out if there is a mandatory word before a recursive RuleLink.</summary>
         /// <param name="link">The RuleLink.</param>
         /// <returns>0: Link found (No words). 1: Mandatory word before link. 2: No words, no link. </returns>
         public abstract bool InitializeLoopHasWord(RuleLink link, List<RuleLink> subPath, ref bool linkFound);

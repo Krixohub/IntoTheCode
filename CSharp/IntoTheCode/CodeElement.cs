@@ -10,6 +10,8 @@ namespace IntoTheCode
     /// <remarks>Inherids <see cref="TextElement"/></remarks>
     public class CodeElement : TextElement
     {
+        public string name;
+
         internal CodeElement(ParserElementBase element, TextSubString pointer)
         {
             if (element != null)

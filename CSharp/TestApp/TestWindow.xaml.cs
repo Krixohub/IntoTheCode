@@ -31,6 +31,11 @@ namespace TestApp
             ShowTab("Domain language", typeof(DomainLanguageTab));
         }
 
+        private void btnEmpty_Click(object sender, RoutedEventArgs e)
+        {
+            ShowTab("Blank", typeof(BlankTab));
+        }
+
         private void ShowTab(string name, Type controlType)
         {
             TabItem tab = Tabs.Items.OfType<TabItem>().SingleOrDefault(n => n.Header.ToString() == name);

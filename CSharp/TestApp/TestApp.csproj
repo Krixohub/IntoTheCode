@@ -58,6 +58,9 @@
     <Compile Include="TestWindow.xaml.cs">
       <DependentUpon>TestWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\BlankTab.xaml.cs">
+      <DependentUpon>BlankTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\CsvDataTab.xaml.cs">
       <DependentUpon>CsvDataTab.xaml</DependentUpon>
     </Compile>
@@ -85,6 +88,10 @@
     <Page Include="TestWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BlankTab.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\CsvDataTab.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -80,6 +80,7 @@
     <Compile Include="DomainLanguage\Executers\VariableDef.cs" />
     <Compile Include="DomainLanguage\Executers\ValueBase.cs" />
     <Compile Include="DomainLanguage\Executers\ValueTyped.cs" />
+    <Compile Include="Blank\BlankVievModel.cs" />
     <Compile Include="ExamplesForArticle.cs" />
     <Compile Include="ExampleVievModelBase.cs" />
     <Compile Include="Expression\Executers\Divide.cs" />
