@@ -1,0 +1,151 @@
+﻿<UserControl x:Class="TestApp.View.PerformanceTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:IntoTheCodeExample.Performance;assembly=IntoTheCodeExample"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" >
+    <UserControl.DataContext>
+        <vm:PerformanceVievModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <Style x:Key="FrontLabel" TargetType="TextBlock">
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="20"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="20"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3"/>
+            <!--<RowDefinition Height="20"/>-->
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <DockPanel >
+                <Label Content="Input here" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top"/>
+                <TextBox DockPanel.Dock="Top" 
+                         Style="{StaticResource ResourceKey=HelpTextBox}"
+                         FontSize="{Binding ElementName=tbFontSize2, Path=Text, Mode=TwoWay}">
+                    This view can generate an input string with many levels of data. In the levels
+                    TextBox each level is entered with an integer (separated by spaces). The values
+                    indicates the number of generated elements to each parent element in a level. 
+                    Thus the number of combinations are the multiply of all level numbers.
+                </TextBox>
+                <Grid Grid.Column="0" >
+
+                <!--<Label Content="Input" Style="{StaticResource BoxTitle}" />-->
+                <Button  Content="Prepare Data" Command="{Binding Path=PrepareTest}" Margin="10,92,0,0"   Width="113" HorizontalAlignment="Left" Height="29" VerticalAlignment="Top" />
+                <Button Content="Run Test" Command="{Binding Path=RunTest}" Margin="128,92,0,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Left" Width="106"/>
+                <TextBlock Text="Levels:" Style="{StaticResource FrontLabel}" Margin="10,17,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                <TextBox Text="{Binding Path=Levels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="91,17,0,0" HorizontalAlignment="Left" Width="129" VerticalAlignment="Top"/>
+                <TextBlock Text="TestCode:" Style="{StaticResource FrontLabel}" Margin="10,41,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                <TextBox Text="{Binding Path=Benchmark.TestCode, Mode=OneWay}" IsEnabled="False" Margin="91,41,0,0" HorizontalAlignment="Left" Width="129" VerticalAlignment="Top" />
+
+                <TextBlock Text="Tag:" Style="{StaticResource FrontLabel}" Margin="10,67,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <TextBox Text="{Binding Path=Benchmark.Tag, Mode=TwoWay}" Margin="91,67,0,0" HorizontalAlignment="Left" Width="52" VerticalAlignment="Top" 
+                         ToolTip="A name for test conditions"/>
+                <TextBlock Text="Version:" Style="{StaticResource FrontLabel}" Margin="150,67,0,0" Width="45" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                <TextBox Text="{Binding Path=Benchmark.TestVersion, Mode=OneWay}" IsEnabled="False" Margin="199,67,0,0" HorizontalAlignment="Left" Width="21" VerticalAlignment="Top" />
+                <TextBlock Text="Test runs:" Style="{StaticResource FrontLabel}" Margin="10,143,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                <TextBox Text="{Binding Path=Benchmark.TestRuns, Mode=OneWay}" IsEnabled="False" Margin="91,141,0,0" HorizontalAlignment="Left" Width="129" VerticalAlignment="Top" />
+                <TextBlock Text="Input size:" Style="{StaticResource FrontLabel}" Margin="10,168,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  />
+                <TextBox Text="{Binding Path=Benchmark.InputSize, Mode=OneWay}" IsEnabled="False" Margin="91,166,0,0" HorizontalAlignment="Left" Width="129" VerticalAlignment="Top" />
+                <TextBlock Text="Combinations:" Style="{StaticResource FrontLabel}" Margin="10,193,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" />
+                <TextBox Text="{Binding Path=Benchmark.Combi, Mode=OneWay}" IsEnabled="False" Margin="91,192,0,0" HorizontalAlignment="Left" Width="129" VerticalAlignment="Top" />
+                
+            </Grid>
+
+
+            </DockPanel>
+            <DockPanel Grid.Column="2" >
+                <Label Content="Result" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top"/>
+                <StackPanel Style="{StaticResource BoxPanel}" DockPanel.Dock="Top">
+                    <TextBlock Text="Fontsize:" Style="{StaticResource BoxLabel}"/>
+                    <TextBox Text="12" x:Name="tbFontSize2" Style="{StaticResource ToolBarText}"/>
+                </StackPanel>
+                <TextBox DockPanel.Dock="Top" 
+                         Style="{StaticResource ResourceKey=HelpTextBox}"
+                         FontSize="{Binding ElementName=tbFontSize2, Path=Text, Mode=TwoWay}">
+                    The test messures how long time is used to parse the input. 
+                    And time used to query the resulting CodeDocument. If the test 
+                    is runned again with the same parameters the results are averaged.
+                    The result is compared to the top result from result file.
+                </TextBox>
+                <TextBox DockPanel.Dock="Top" Text="{Binding Path=Result, Mode=OneWay}"
+                         Style="{StaticResource ResourceKey=CodeTextBox}"
+                         FontSize="{Binding ElementName=tbFontSize2, Path=Text, Mode=TwoWay}"/>
+            </DockPanel>
+            <DockPanel Grid.Column="4" >
+                <Label Content="Generated input data" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top"/>
+                <TextBox Text="{Binding Path=GeneratedInput, Mode=OneWay}"
+                         Style="{StaticResource ResourceKey=CodeTextBox}"
+                         FontSize="{Binding ElementName=tbFontSize2, Path=Text}"/>
+            </DockPanel>
+            <GridSplitter Grid.Column="1" Style="{StaticResource SplitV}" />
+            <GridSplitter Grid.Column="3" Style="{StaticResource SplitV}"  />
+        </Grid>
+
+        <Grid Grid.Row="3" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0" >
+                <Label Content="Prepared data" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top" />
+                <TextBox Text="{Binding Path=PreparedData, Mode=TwoWay}" 
+                         Style="{StaticResource ResourceKey=CodeTextBox}"
+                         FontSize="{Binding ElementName=tbFontSize2, Path=Text}" />
+            </DockPanel>
+            <DockPanel Grid.Column="2" >
+                <Label Content="Benchmark file" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top" />
+                <StackPanel Style="{StaticResource BoxPanel}" DockPanel.Dock="Top">
+                    <Button Content="Insert new result" Command="{Binding BenchmarkInsert}"  />
+                    <Button Content="Save file" Command="{Binding BenchmarkSave}"  />
+                    <TextBlock Text="Filename:" Style="{StaticResource BoxLabel}" />
+                    <TextBox Text="{Binding Path=BenchmarkFilename, Mode=OneWay}" Style="{StaticResource ToolBarText}"/>
+                </StackPanel>
+                <TextBox DockPanel.Dock="Top" 
+                         Style="{StaticResource ResourceKey=HelpTextBox}"
+                         FontSize="{Binding ElementName=tbFontSize2, Path=Text, Mode=TwoWay}">
+                    A result file can be saved. The files is shown here. The file can be edited 
+                    or the current result can be inserted as a line with the button. (Remember to 
+                    click save button)
+                </TextBox>
+                <TextBox Text="{Binding Path=BenchmarkFileText, Mode=TwoWay}" 
+                         Style="{StaticResource ResourceKey=EditorTextBox}"
+                         FontSize="{Binding ElementName=tbFontSize2, Path=Text}"/>
+            </DockPanel>
+            <DockPanel Grid.Column="4" >
+                <Label Content="Generated input as markup" Style="{StaticResource BoxTitle}" DockPanel.Dock="Top" />
+                <TextBox Text="{Binding Path=GeneratedInputAsMarkup, Mode=OneWay}" 
+                         Style="{StaticResource ResourceKey=CodeTextBox}"
+                         FontSize="{Binding ElementName=tbFontSize2, Path=Text}"/>
+            </DockPanel>
+            <GridSplitter Grid.Column="1" Style="{StaticResource SplitV}"  />
+            <GridSplitter Grid.Column="3" Style="{StaticResource SplitV}"/>
+        </Grid>
+
+        <Rectangle Grid.Row="0" Stroke ="DarkGray" Height="3"/>
+        <Rectangle Grid.Row="4" Stroke ="LightGray" Height="3"/>
+        <GridSplitter Grid.Row="2" Style="{StaticResource SplitH}"/>
+    </Grid>
+</UserControl>

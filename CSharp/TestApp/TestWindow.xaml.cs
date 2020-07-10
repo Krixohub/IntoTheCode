@@ -36,6 +36,11 @@ namespace TestApp
             ShowTab("Blank", typeof(BlankTab));
         }
 
+        private void btnPerformance_Click(object sender, RoutedEventArgs e)
+        {
+            ShowTab("Performance", typeof(PerformanceTab));
+        }
+
         private void ShowTab(string name, Type controlType)
         {
             TabItem tab = Tabs.Items.OfType<TabItem>().SingleOrDefault(n => n.Header.ToString() == name);

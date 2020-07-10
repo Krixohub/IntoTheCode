@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Basic\CommandInformation.cs" />
+    <Compile Include="Basic\DelegateCommand.cs" />
     <Compile Include="CsvData\CsvDataVievModel.cs" />
     <Compile Include="DomainLanguage\DomainLanguageVievModel.cs" />
     <Compile Include="DomainLanguage\Executers\Assign.cs" />
@@ -93,6 +95,8 @@
     <Compile Include="Expression\Executers\Parenthese.cs" />
     <Compile Include="Expression\Executers\Sum.cs" />
     <Compile Include="Expression\ExpressionVievModel.cs" />
+    <Compile Include="Performance\BenchmarkResult.cs" />
+    <Compile Include="Performance\PerformanceVievModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

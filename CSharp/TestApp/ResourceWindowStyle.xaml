@@ -4,7 +4,7 @@
 
     <Style x:Key="CodeTextBox" TargetType="{x:Type TextBox}">
         <!-- put setters here -->
-        <Setter Property="FontSize" Value="13"/>
+        <!--<Setter Property="FontSize" Value="13"/>-->
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
@@ -18,6 +18,11 @@
         <Setter Property="AcceptsReturn" Value="True"/>
         <Setter Property="IsReadOnly" Value="False" />
     </Style>
+    <Style x:Key="HelpTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource CodeTextBox}">
+        <!-- put setters here -->
+        <Setter Property="Background" Value="#eeeeee"/>
+    </Style>
+
     <Style  x:Key="ToolBarText" TargetType="{x:Type TextBox}">
         <Setter Property="Padding" Value="0,1,0,0"/>
         <!--<Style.Resources>

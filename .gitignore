@@ -11,3 +11,7 @@ Debug
 /CSharp/IntoTheCode/*.user
 *.user
 /WebMarkdown/content/4-doc/classes.txt
+/CSharp/IntoTheCode/obj/Release
+/CSharp/IntoTheCodeExample/obj/Release
+/CSharp/IntoTheCodeUnitTest/obj/Release
+/CSharp/TestApp/obj/Release
