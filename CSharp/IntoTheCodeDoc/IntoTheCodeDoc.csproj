@@ -13,7 +13,7 @@
     </PropertyGroup>
     
     <PropertyGroup>
-        <TargetFramework>net452</TargetFramework>
+        <TargetFramework>net48</TargetFramework>
     </PropertyGroup>
 
     <!-- This Import is present to make the AfterBuild work -->
@@ -28,4 +28,8 @@
         <XslTransformation XslInputPath="$(ProjectDir)Transform\xml-doc-to-md.xslt" XmlInputPaths="$(OutDir)doc-filter.xml" OutputPaths="..\..\WebMarkdown\content\4-doc\classes.txt" />
         <XslTransformation XslInputPath="$(ProjectDir)Transform\xml-doc-to-html.xslt" XmlInputPaths="$(SolutionDir)IntoTheCode\bin\Debug\IntoTheCode.xml" OutputPaths="$(OutDir)doc-full.html" />
     </Target>
+    
+    <ItemGroup>
+      <Compile Include="BuildMe.cs" />
+    </ItemGroup>
 </Project>
