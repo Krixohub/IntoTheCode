@@ -8,6 +8,7 @@ using IntoTheCode.Read.Structure;
 using System.Linq;
 using IntoTheCode.Basic.Util;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("IntoTheCodeUnitTest")]
 namespace IntoTheCode
 {
     /// <summary>Read text according to a grammar.

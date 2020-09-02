@@ -29,7 +29,4 @@
         <XslTransformation XslInputPath="$(ProjectDir)Transform\xml-doc-to-html.xslt" XmlInputPaths="$(SolutionDir)IntoTheCode\bin\Debug\IntoTheCode.xml" OutputPaths="$(OutDir)doc-full.html" />
     </Target>
     
-    <ItemGroup>
-      <Compile Include="BuildMe.cs" />
-    </ItemGroup>
 </Project>

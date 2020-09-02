@@ -76,13 +76,13 @@
     <Compile Include="Read\ParserTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IntoTheCode\IntoTheCode.csproj">
-      <Project>{a1618ac6-53f4-4f1d-99b3-84a5ca81706e}</Project>
-      <Name>IntoTheCode</Name>
-    </ProjectReference>
+    <Folder Include="MetaSyntax\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MetaSyntax\" />
+    <ProjectReference Include="..\IntoTheCode\IntoTheCode.csproj">
+      <Project>{a447dba4-a164-4cea-8385-0f1dde5c046e}</Project>
+      <Name>IntoTheCode</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
