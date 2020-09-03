@@ -1,0 +1,60 @@
+@page "/expression"
+@using IntoTheCodeExample.Expression
+@inject HttpClient Http
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Input</th>
+            <th>Output</th>
+            <th>Markup</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@expressionVM.Input</td>
+            <td>@expressionVM.Output</td>
+            <td>@expressionVM.Markup</td>
+        </tr>
+    </tbody>
+    <thead>
+        <tr>
+            <th>Grammar</th>
+            <th>Grammar Output</th>
+            <th>Grammar Markup</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@expressionVM.Grammar</td>
+            <td>@expressionVM.GrammarOutput</td>
+            <td>@expressionVM.GrammarMarkup</td>
+        </tr>
+    </tbody>
+</table>
+
+@code {
+    //private WeatherForecast[] forecasts;
+    private ExpressionVievModel expressionVM;
+
+    protected override async Task OnInitializedAsync()
+    {
+        expressionVM = new ExpressionVievModel();
+        //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+    }
+
+    //public class WeatherForecast
+    //{
+    //    public DateTime Date { get; set; }
+
+    //    public int TemperatureC { get; set; }
+
+    //    public string Summary { get; set; }
+
+    //    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    //}
+}
