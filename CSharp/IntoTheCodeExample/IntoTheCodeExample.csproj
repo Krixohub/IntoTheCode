@@ -1,110 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{46988254-4BDB-4AB0-BEF9-128E89FA4ED1}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IntoTheCodeExample</RootNamespace>
-    <AssemblyName>IntoTheCodeExample</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\IntoTheCode\IntoTheCode.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Basic\CommandInformation.cs" />
-    <Compile Include="Basic\DelegateCommand.cs" />
-    <Compile Include="CsvData\CsvDataVievModel.cs" />
-    <Compile Include="DomainLanguage\DomainLanguageVievModel.cs" />
-    <Compile Include="DomainLanguage\Executers\Assign.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpFuncCall.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpFloat.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpBool.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpString.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpVariable.cs" />
-    <Compile Include="DomainLanguage\Executers\CmdFuncCall.cs" />
-    <Compile Include="DomainLanguage\Executers\FuncCall.cs" />
-    <Compile Include="DomainLanguage\Executers\Program.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpressionBuilder.cs" />
-    <Compile Include="DomainLanguage\Executers\Return.cs" />
-    <Compile Include="DomainLanguage\Executers\While.cs" />
-    <Compile Include="DomainLanguage\Executers\If.cs" />
-    <Compile Include="DomainLanguage\Executers\Declare.cs" />
-    <Compile Include="DomainLanguage\Executers\OperationBase.cs" />
-    <Compile Include="DomainLanguage\Executers\ProgramBuilder.cs" />
-    <Compile Include="DomainLanguage\Executers\Scope.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpTyped.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpDivide.cs" />
-    <Compile Include="DomainLanguage\Executers\ExpBase.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpEquals.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpLt.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpGt.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpMultiplyFloat.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpMinusFloat.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpSumString.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpSumFloat.cs" />
-    <Compile Include="DomainLanguage\Executers\DefType.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpMinusInt.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpMultiplyInt.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpInt.cs" />
-    <Compile Include="DomainLanguage\Executers\Expression\ExpSumInt.cs" />
-    <Compile Include="DomainLanguage\Executers\Variables.cs" />
-    <Compile Include="DomainLanguage\Executers\Function.cs" />
-    <Compile Include="DomainLanguage\Executers\VariableDef.cs" />
-    <Compile Include="DomainLanguage\Executers\ValueBase.cs" />
-    <Compile Include="DomainLanguage\Executers\ValueTyped.cs" />
-    <Compile Include="Blank\BlankVievModel.cs" />
-    <Compile Include="ExamplesForArticle.cs" />
-    <Compile Include="ExampleVievModelBase.cs" />
-    <Compile Include="Expression\Executers\Divide.cs" />
-    <Compile Include="Expression\Executers\ExpressionBuilder.cs" />
-    <Compile Include="Expression\Executers\ExpressionBase.cs" />
-    <Compile Include="Expression\Executers\Minus.cs" />
-    <Compile Include="Expression\Executers\Power.cs" />
-    <Compile Include="Expression\Executers\Multiply.cs" />
-    <Compile Include="Expression\Executers\Number.cs" />
-    <Compile Include="Expression\Executers\Parenthese.cs" />
-    <Compile Include="Expression\Executers\Sum.cs" />
-    <Compile Include="Expression\ExpressionVievModel.cs" />
-    <Compile Include="Performance\BenchmarkResult.cs" />
-    <Compile Include="Performance\PerformanceVievModel.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\IntoTheCode\IntoTheCode.csproj">
-      <Project>{a447dba4-a164-4cea-8385-0f1dde5c046e}</Project>
-      <Name>IntoTheCode</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>
