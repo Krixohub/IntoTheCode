@@ -19,27 +19,35 @@ namespace IntoTheCode.Read.Words
         public List<CommentElement> CommentBuffer { get; private set; }
         public  bool Load(IList<TextElement> outElements, bool lineEnd)
         {
-            // Read comments on form '// rest of line cr nl'
-            const string nl = "\r\n";
+            // Read comments on form '// rest of line [cr] nl'
+            const string nl = "\n";
 
             if (TextBuffer.IsEnd(1) || '/' != TextBuffer.GetChar() || '/' != TextBuffer.GetChar(1)) return false;
 
             TextSubString subStr = new TextSubString(TextBuffer.PointerNextChar + 2);
 
             // add comment
+            int nlLenght = 1;
             TextBuffer.SetToIndexOf(subStr, nl);
-            if (subStr.To < 0) subStr.To = TextBuffer.Length;
-
-            if (lineEnd && outElements != null)
-                outElements.Add(new CommentElement(TextBuffer, subStr));
+            if (subStr.To < 0)
+            {
+                subStr.To = TextBuffer.Length;
+                TextBuffer.PointerNextChar = TextBuffer.Length;
+            }
+            else
+            { 
+                if ('\r' == TextBuffer.GetChar(1 + subStr.To - subStr.From))
+                {
+                    subStr.To--;
+                    nlLenght = 2;
+                }
+                TextBuffer.PointerNextChar = subStr.To + nlLenght;
+            }
 
             if (!lineEnd)
                 CommentBuffer.Add(new CommentElement(TextBuffer, subStr));
-
-            if (subStr.To != TextBuffer.Length)
-                TextBuffer.PointerNextChar = subStr.To + 2;
-            else
-                TextBuffer.PointerNextChar = TextBuffer.Length;
+            else if (outElements != null)
+                outElements.Add(new CommentElement(TextBuffer, subStr));
 
             return true;
         }
