@@ -1,0 +1,44 @@
+@page "/cthelight"
+@using IntoTheCodeExample.DomainLanguage
+
+<h1>Expression Calculator</h1>
+
+<p>An example of using IntoTheCode to parse expressions.</p>
+
+<EditForm Model="expressionVM">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Input</th>
+                <th>Output</th>
+                <th>Markup</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><InputTextArea class="control" @bind-Value="expressionVM.Input" style="width:100%; height:20em" /></td>
+                <td><textarea readonly="readonly" style="width:100%; height:20em">@expressionVM.Output</textarea></td>
+                <td><textarea readonly="readonly" style="width:100%; height:20em">@expressionVM.Markup</textarea></td>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th>Grammar</th>
+                <th>Grammar Output</th>
+                <th>Grammar Markup</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><InputTextArea class="control" @bind-Value="expressionVM.Grammar" style="width: 100%; height:20em" /></td>
+                <td><textarea readonly="readonly" style="width:100%; height:20em">@expressionVM.GrammarOutput</textarea></td>
+                <td><textarea readonly="readonly" style="width:100%; height:20em">@expressionVM.GrammarMarkup</textarea></td>
+            </tr>
+        </tbody>
+    </table>
+</EditForm>
+@code {
+    private DomainLanguageVievModel expressionVM = new DomainLanguageVievModel();
+
+
+}

@@ -1,0 +1,37 @@
+---
+Title: Examples
+---
+
+## The demo WebApp
+
+This demo runs IntoTheCode as a web application. The webApp has no backend; It's just an isolated web page running IntoTheCode.
+
+The source code contains 2 examples of programming with IntoTheCode.
+
+* A math expression calculator
+* A programming language (C the Light)
+
+[The WebApp can be opened here](/webasm/)
+
+## The WebApp user interface
+
+The examples are all shown in the same user interface. Here is a screen dump from the math expression calculator example
+![image](WebAppScreendump1.png)
+
+1. Input data editor.
+2. Result: Shows an error message if input is not valid or some output from the ViewModel if input is readable according to grammar.
+3. Output tree: The output from parser as markup, if input is valid.
+4. Grammar Editor: 
+5. Grammar result: Shows an error message if grammar is not valid or the text ‘Grammar is ok’ and the same grammar, nicely formatted.
+6. Grammar tree:	Just for parser experts. This is the metaparser output as markup, if input is valid.
+
+After each change to the **input** and focus changes, the parser makes a new output tree. The 'Business logic' get a message to work the tree again.
+
+After each change to the **grammar** and focus changes, a new parser is created. If this succeeds, then the input is parsed with the new parser. You can change the input to match the new grammar, and then the ‘Output tree’ does work, though the ViewModel result may not work. 
+
+## The WebApp technology
+
+The WebApp demo uses the same ViewModel (business logic / assembly) as the WPF demo. The assembly is.NET Standard 2.0.
+
+The WebApp is a Blazor WebAssembly (.NET Core 3.1). The Blazor assembly references the ViewModel assembly. The WebApp i a Single Page Application (SPI) and a Progressive Web Application (PWA).
+
