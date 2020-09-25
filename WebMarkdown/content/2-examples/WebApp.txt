@@ -4,7 +4,7 @@ Title: Examples
 
 ## The demo WebApp
 
-This demo runs IntoTheCode as a web application. The webApp has no backend; It's just an isolated web page running IntoTheCode.
+This demo runs IntoTheCode as a web application. The webApp has no backend; It's just an isolated web page running IntoTheCode. The purpose is just to demonstrate IntoTheCode running in a WebAssembly; The UI is not fantastic.
 
 The source code contains 2 examples of programming with IntoTheCode.
 
@@ -33,5 +33,5 @@ After each change to the **grammar** and focus changes, a new parser is created.
 
 The WebApp demo uses the same ViewModel (business logic / assembly) as the WPF demo. The assembly is.NET Standard 2.0.
 
-The WebApp is a Blazor WebAssembly (.NET Core 3.1). The Blazor assembly references the ViewModel assembly. The WebApp i a Single Page Application (SPI) and a Progressive Web Application (PWA).
+The WebApp is a Blazor WebAssembly (.NET Core 3.1). The Blazor assembly references the ViewModel assembly. The WebApp i a Single Page Application (SPI) and a Progressive Web Application (PWA). It is hosted on a Linux/Apache2 web server.
 
