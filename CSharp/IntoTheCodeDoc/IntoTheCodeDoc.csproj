@@ -15,6 +15,10 @@
     <PropertyGroup>
         <TargetFramework>net48</TargetFramework>
     </PropertyGroup>
+    
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <OutputPath>bin\Doc\</OutputPath>
+    </PropertyGroup>
 
     <!-- This Import is present to make the AfterBuild work -->
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

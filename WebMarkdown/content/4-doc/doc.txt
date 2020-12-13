@@ -4,10 +4,12 @@ Title: Documentation
 
 Parts of documentation:
 
-[Classes](/doc/classes): Read about classes, functions and properties.<br/>
 [Grammar](grammar): How to define a grammar.<br/>
 [Parser settings](settings): Configuration of grammar.<br/>
 [Expressions](expressions)<br/> 
 [Comments](comments)<br/>
 [Whitespace](whitespace)<br/>
+
+[Classes](/doc/classes): Read about classes in the source code, functions and properties.<br/>
+
 [Download](/download/): How to install and get started.<br/>
