@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\Kode\IntoTheCode\CSharp\IntoTheCode\bin\Debug\IntoTheCode.xml</DocumentationFile>
+    <DocumentationFile>.\bin\Debug\IntoTheCode.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>
