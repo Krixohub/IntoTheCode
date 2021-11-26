@@ -3,14 +3,8 @@
 namespace IntoTheCode.Grammar
 {
     /// <remarks>Inherids <see cref="SetOfElements"/></remarks>
-    internal class Parentheses : SetOfElements
+    internal partial class Parentheses : SetOfElements
     {
-        /// <summary>Creator for <see cref="Parentheses"/>.</summary>
-        internal Parentheses(params ParserElementBase[] elements)
-            : base(elements)
-        {
-        }
-
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
             return new Parentheses(CloneSubElementsForParse(buffer)) { TextBuffer = buffer };

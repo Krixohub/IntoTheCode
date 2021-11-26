@@ -8,25 +8,11 @@ using System;
 namespace IntoTheCode.Grammar
 {
     /// <remarks>Inherids <see cref="SetOfElementsBase"/></remarks>
-    public class Rule : SetOfElementsBase
+    public partial class Rule : SetOfElementsBase
     {
         internal Parser Parser { get; set; }
 
-        /// <summary>
-        /// Statement, Action, 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="elements"></param>
-        internal Rule(string name, params ParserElementBase[] elements) : base(elements)
-        {
-            Name = name;
-
-            // Set 'trust' property if this is the last of many elements
-            Trust = GetTrustAuto();
-
-            _simplify = elements.Length == 1 && elements[0] is WordBase;
-        }
-
+        
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
             var element = new Rule(Name, CloneSubElementsForParse(buffer))

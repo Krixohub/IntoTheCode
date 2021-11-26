@@ -8,14 +8,8 @@ using IntoTheCode.Basic.Util;
 namespace IntoTheCode.Grammar
 {
     /// <remarks>Inherids <see cref="SetOfElementsBase"/></remarks>
-    internal class Sequence : SetOfElementsBase
+    internal partial class Sequence : SetOfElementsBase
     {
-        /// <summary>Creator for <see cref="Sequence"/>.</summary>
-        internal Sequence(params ParserElementBase[] elements) : base(elements)
-        {
-            //Attributter = new ObservableCollection<Attribute>();
-        }
-
         /// <summary>To create an unlinked Grammar.</summary>
         internal Sequence()
         {

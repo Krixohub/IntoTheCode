@@ -7,13 +7,8 @@ using System;
 
 namespace IntoTheCode.Grammar
 {
-    internal class Comment
+    internal partial class Comment
     {
-        internal Comment()
-        {
-            CommentBuffer = new List<CommentElement>();
-        }
-
         internal TextBuffer TextBuffer;
 
         public List<CommentElement> CommentBuffer { get; private set; }

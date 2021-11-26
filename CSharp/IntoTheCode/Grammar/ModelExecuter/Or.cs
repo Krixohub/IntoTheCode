@@ -7,15 +7,8 @@ using System;
 namespace IntoTheCode.Grammar
 {
     /// <remarks>Inherids <see cref="ParserElementBase"/></remarks>
-    internal class Or : ParserElementBase
+    internal partial class Or : ParserElementBase
     {
-        /// <summary>Creator for <see cref="Or"/>.</summary>
-        internal Or(ParserElementBase element1, ParserElementBase element2)
-        {
-            Add(element1);
-            Add(element2);
-        }
-
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
             var element = new Or(((ParserElementBase)ChildNodes[0]).CloneForParse(buffer),

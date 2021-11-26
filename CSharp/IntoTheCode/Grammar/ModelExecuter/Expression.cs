@@ -24,35 +24,8 @@ namespace IntoTheCode.Grammar
     /// A value elements can be a new operator element or one of the other alternatives.
     /// </summary>
     /// <remarks>Inherids <see cref="Or"/></remarks>
-    internal class Expression : Or
+    internal partial class Expression : Or
     {
-        internal List<ParserElementBase> _otherForms = new List<ParserElementBase>();
-        //private List<ParserElementBase> _unaryOperators = new List<ParserElementBase>();
-        internal List<WordBinaryOperator> _binaryOperators = new List<WordBinaryOperator>();
-        //private List<ParserElementBase> _variables = new List<ParserElementBase>();
-        //private List<ParserElementBase> _values = new List<ParserElementBase>();
-
-        internal List<CodeElement> _completeOperations = new List<CodeElement>();
-
-        /// <summary>Create the Expression from the alternatives in an Or object.</summary>
-        internal Expression(Rule ExprRule, Or or) :
-            base(or.ChildNodes[0], or.ChildNodes[1])
-        {
-            // The elements in the base class are only used for getting the grammar and cloning.
-
-            // the elements are split into alternatives.
-            // Each alternative is put in the _binaryOperators list or the _otherForms list.
-
-            // A binary operator is reconized by the form "Expression Symbol Expression" 
-            // where the symbol i the operator. The form can be inline or have its ovn rule.
-            // The operator precedence is given by the order of operators. If two operators 
-            // have the same precedence, there must be rules and the "Precedence" property 
-            // of the rules set to the same.
-            TextBuffer = or.TextBuffer;
-            AddAlternatives(ExprRule, or);
-            SetPrecedence();
-        }
-
         private void AddAlternatives(Rule ExprRule, ParserElementBase alternative)
         {
             // is it more alternatives?

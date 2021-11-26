@@ -5,15 +5,8 @@ using IntoTheCode.Buffer;
 namespace IntoTheCode.Grammar
 {
     /// <remarks>Inherids <see cref="SetOfElementsBase"/></remarks>
-    internal class Optional : SetOfElementsBase
+    internal partial class Optional : SetOfElementsBase
     {
-        /// <summary>Creator for <see cref="Optional"/>.</summary>
-        internal Optional(params ParserElementBase[] elements)
-            : base(elements)
-        {
-            //Attributter = new ObservableCollection<Attribute>();
-        }
-
         public override ParserElementBase CloneForParse(TextBuffer buffer)
         {
             var element = new Optional(ChildNodes.Select(r => ((ParserElementBase)r).CloneForParse(buffer)).ToArray());// { Parser = Parser };
