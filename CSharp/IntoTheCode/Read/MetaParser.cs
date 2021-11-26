@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
-using IntoTheCode.Read.Structure;
+using IntoTheCode.Grammar;
 using System;
 using IntoTheCode.Buffer;
-using IntoTheCode.Read.Words;
+using IntoTheCode.Grammar;
 
-namespace IntoTheCode.Read
+namespace IntoTheCode.Grammar
 {
     /// <summary>The meta-grammar for proces grammar definitions.
     /// The Instance property is a singleton parser of grammares.

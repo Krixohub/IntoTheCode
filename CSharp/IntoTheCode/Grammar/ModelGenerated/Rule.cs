@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic.Util;
-using IntoTheCode.Read.Words;
+using IntoTheCode.Grammar;
 using System.Linq;
 using System;
 
-namespace IntoTheCode.Read.Structure
+namespace IntoTheCode.Grammar
 {
     /// <remarks>Inherids <see cref="SetOfElementsBase"/></remarks>
     public class Rule : SetOfElementsBase

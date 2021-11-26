@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using IntoTheCode.Read.Structure;
-using IntoTheCode.Read.Words;
+using IntoTheCode.Grammar;
 using IntoTheCodeUnitTest.Read;
 using IntoTheCode.Message;
 

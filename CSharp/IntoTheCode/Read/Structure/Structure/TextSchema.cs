@@ -1,4 +1,4 @@
-﻿namespace IntoTheCode.Read.Structure.Structure
+﻿namespace IntoTheCode.Grammar.Structure
 {
     // <summary>
     // A TextSchema defines fields and validation in a text file. The file can be eg. csv, ini-file-style, defined in GrammarDefinition.

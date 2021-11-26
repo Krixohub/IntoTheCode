@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-
-using IntoTheCode.Basic;
-using IntoTheCode.Read.Structure;
-using IntoTheCode.Read.Words;
 using IntoTheCode.Basic.Util;
 using IntoTheCode.Message;
 
-namespace IntoTheCode.Read
+namespace IntoTheCode.Grammar
 {
     /// <summary>Build Grammar elements for a parser from dokument</summary>
     internal class ParserBuilder

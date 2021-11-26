@@ -2,7 +2,7 @@
 using IntoTheCode.Buffer;
 using System.Collections.Generic;
 
-namespace IntoTheCode.Read.Words
+namespace IntoTheCode.Grammar
 {
     /// <remarks>Inherids <see cref="WordSymbol"/></remarks>
     internal class WordBinaryOperator : WordSymbol

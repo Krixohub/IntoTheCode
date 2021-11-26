@@ -1,7 +1,4 @@
-﻿
-using IntoTheCode.Basic;
-
-namespace IntoTheCode.Read
+﻿namespace IntoTheCode.Grammar
 {
     /// <summary>A hard coded element.</summary>
     /// <remarks>Inherids <see cref="TextElement"/></remarks>

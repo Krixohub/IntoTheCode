@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using IntoTheCode;
 using IntoTheCode.Buffer;
-using IntoTheCode.Read;
+using IntoTheCode.Grammar;
 using IntoTheCodeUnitTest.Read;
 
 namespace Read

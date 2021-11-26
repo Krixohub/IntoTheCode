@@ -5,7 +5,7 @@ using IntoTheCode.Basic;
 using IntoTheCode.Message;
 using System;
 
-namespace IntoTheCode.Read.Words
+namespace IntoTheCode.Grammar
 {
     internal class Comment
     {

@@ -1,6 +1,5 @@
 ﻿using IntoTheCode.Buffer;
-using IntoTheCode.Read;
-using IntoTheCode.Read.Words;
+using IntoTheCode.Grammar;
 using System.Xml.Linq;
 
 #pragma warning disable 1591 // no warning for missing comments

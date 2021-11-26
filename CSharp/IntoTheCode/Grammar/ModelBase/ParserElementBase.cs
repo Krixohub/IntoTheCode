@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
-using IntoTheCode.Read.Structure;
 
-namespace IntoTheCode.Read
+namespace IntoTheCode.Grammar
 {
     /// <summary>A basic element (or symbol) of a Grammar. Can read a peace of code/text.</summary>
     /// <remarks>Inherids <see cref="TreeNode"/></remarks>
@@ -55,7 +53,7 @@ namespace IntoTheCode.Read
 
         public abstract string GetGrammar();
 
-        public virtual void GetSettings(List<Tuple<string, string>> settings) 
+        public virtual void GetSettings(List<Tuple<string, string>> settings)
         {
             if (ChildNodes == null) return;
 
@@ -116,7 +114,7 @@ namespace IntoTheCode.Read
         internal Rule GetRule(ParserElementBase e)
         {
             if (e is Rule) return (Rule)e;
-            else return GetRule((ParserElementBase)e.Parent);
+            else return GetRule(e.Parent);
         }
     }
 

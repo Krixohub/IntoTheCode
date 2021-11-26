@@ -1,6 +1,4 @@
-﻿using IntoTheCode.Read;
-using IntoTheCode.Read.Structure;
-using IntoTheCode.Read.Words;
+﻿using IntoTheCode.Grammar;
 using System.Collections.Generic;
 using System.Linq;
 

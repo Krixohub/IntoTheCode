@@ -5,7 +5,7 @@ using System.Linq;
 using IntoTheCode.Buffer;
 using IntoTheCode.Basic.Util;
 
-namespace IntoTheCode.Read.Structure
+namespace IntoTheCode.Grammar
 {
     /// <remarks>Inherids <see cref="ParserElementBase"/></remarks>
     public abstract class SetOfElementsBase : ParserElementBase

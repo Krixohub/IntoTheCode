@@ -1,10 +1,8 @@
 ﻿using IntoTheCode;
 using IntoTheCode.Basic.Util;
 using IntoTheCode.Buffer;
+using IntoTheCode.Grammar;
 using IntoTheCode.Message;
-using IntoTheCode.Read;
-using IntoTheCode.Read.Structure;
-using IntoTheCode.Read.Words;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

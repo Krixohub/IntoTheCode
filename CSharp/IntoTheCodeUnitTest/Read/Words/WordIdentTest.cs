@@ -1,5 +1,4 @@
-﻿using IntoTheCode.Read;
-using IntoTheCode.Read.Words;
+﻿using IntoTheCode.Grammar;
 using IntoTheCodeUnitTest.Read;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

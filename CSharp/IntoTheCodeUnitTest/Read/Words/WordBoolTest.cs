@@ -1,8 +1,8 @@
 ﻿using System;
 using IntoTheCode.Message;
-using IntoTheCode.Read.Words;
-using IntoTheCodeUnitTest.Read;
+using IntoTheCode.Grammar;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using IntoTheCodeUnitTest.Read;
 
 namespace Read.Words
 {

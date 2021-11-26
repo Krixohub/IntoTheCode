@@ -3,7 +3,7 @@
 using IntoTheCode.Buffer;
 using IntoTheCode.Message;
 
-namespace IntoTheCode.Read.Words
+namespace IntoTheCode.Grammar
 {
     /// <remarks>Inherids <see cref="WordBase"/></remarks>
     internal class WordString : WordBase

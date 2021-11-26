@@ -4,7 +4,7 @@ using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
 using System;
 
-namespace IntoTheCode.Read.Structure
+namespace IntoTheCode.Grammar
 {
     /// <remarks>Inherids <see cref="ParserElementBase"/></remarks>
     internal class Or : ParserElementBase

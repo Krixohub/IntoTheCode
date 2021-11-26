@@ -1,12 +1,10 @@
 ﻿using IntoTheCode.Basic.Util;
 using IntoTheCode.Buffer;
-using IntoTheCode.Read.Structure;
-using IntoTheCode.Read.Words;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace IntoTheCode.Read
+namespace IntoTheCode.Grammar
 {
     public class ParserStatus
     {

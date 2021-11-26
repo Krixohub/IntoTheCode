@@ -2,7 +2,7 @@
 using System.Linq;
 using IntoTheCode.Buffer;
 
-namespace IntoTheCode.Read.Structure
+namespace IntoTheCode.Grammar
 {
     /// <remarks>Inherids <see cref="SetOfElementsBase"/></remarks>
     internal class Optional : SetOfElementsBase

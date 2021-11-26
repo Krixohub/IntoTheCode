@@ -1,7 +1,7 @@
 ﻿using IntoTheCode.Buffer;
 using System;
 
-namespace IntoTheCode.Read
+namespace IntoTheCode.Grammar
 {
     public class ParserError
     {

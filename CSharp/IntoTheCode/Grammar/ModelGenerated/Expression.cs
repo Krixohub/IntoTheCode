@@ -3,10 +3,10 @@
 using IntoTheCode.Buffer;
 using System;
 using System.Linq;
-using IntoTheCode.Read.Words;
+using IntoTheCode.Grammar;
 using IntoTheCode.Message;
 
-namespace IntoTheCode.Read.Structure
+namespace IntoTheCode.Grammar
 {
     /// <summary>Expressions read strings like this 'a + b * - c * ( 2 + d )' (Infix notation).
     /// The expression rule must look like this "expr = mul | sum | value".

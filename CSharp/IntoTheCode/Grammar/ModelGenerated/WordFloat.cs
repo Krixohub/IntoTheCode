@@ -4,10 +4,10 @@ using IntoTheCode.Buffer;
 using IntoTheCode.Basic;
 using IntoTheCode.Message;
 using System.Linq;
-using IntoTheCode.Read.Structure;
+using IntoTheCode.Grammar;
 using System.Globalization;
 
-namespace IntoTheCode.Read.Words
+namespace IntoTheCode.Grammar
 {
     /// <remarks>Inherids <see cref="WordBase"/></remarks>
     internal class WordFloat : WordBase

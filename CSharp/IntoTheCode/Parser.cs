@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 using IntoTheCode.Buffer;
 using IntoTheCode.Message;
-using IntoTheCode.Read;
-using IntoTheCode.Read.Structure;
+using IntoTheCode.Grammar;
 using System.Linq;
 using IntoTheCode.Basic.Util;
 

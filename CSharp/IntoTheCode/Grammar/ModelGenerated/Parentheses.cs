@@ -1,11 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using IntoTheCode.Buffer;
 
-using IntoTheCode.Buffer;
-using IntoTheCode.Basic;
-using IntoTheCode.Read;
-using System.Linq;
-
-namespace IntoTheCode.Read.Structure
+namespace IntoTheCode.Grammar
 {
     /// <remarks>Inherids <see cref="SetOfElements"/></remarks>
     internal class Parentheses : SetOfElements

@@ -1,9 +1,7 @@
-﻿
-using IntoTheCode.Buffer;
-using IntoTheCode.Read.Structure;
+﻿using IntoTheCode.Buffer;
 using System.Collections.Generic;
 
-namespace IntoTheCode.Read.Words
+namespace IntoTheCode.Grammar
 {
     /// <summary>A Grammar element that can read charecters (a word).</summary>
     /// <remarks>Inherids <see cref="ParserElementBase"/></remarks>

@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using IntoTheCode.Buffer;
+using System.Collections.Generic;
 
-using IntoTheCode.Buffer;
-using IntoTheCode.Basic;
-using IntoTheCode.Read;
-using System.Linq;
-
-namespace IntoTheCode.Read.Structure
+namespace IntoTheCode.Grammar
 {
     /// <remarks>Inherids <see cref="SetOfElementsBase"/></remarks>
     internal class SetOfElements : SetOfElementsBase
