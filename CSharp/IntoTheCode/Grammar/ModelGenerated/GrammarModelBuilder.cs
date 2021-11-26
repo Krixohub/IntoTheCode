@@ -6,7 +6,7 @@ using IntoTheCode.Message;
 namespace IntoTheCode.Grammar
 {
     /// <summary>Build Grammar elements for a parser from dokument</summary>
-    internal class ParserBuilder
+    internal class GrammarModelBuilder
     {
         ///
         internal static bool BuildRules(Parser parser, CodeDocument doc, ParserStatus status)

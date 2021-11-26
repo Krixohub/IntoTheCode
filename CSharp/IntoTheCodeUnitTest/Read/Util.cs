@@ -25,8 +25,8 @@ namespace IntoTheCodeUnitTest.Read
 
             TextBuffer buffer = Util.NewBufferWs(code);
             parser.Rules = rules.Select(r => r.CloneForParse(buffer) as Rule).ToList();
-            ParserBuilder.InitializeGrammar(parser, parser.Rules, buffer.Status);
-            ParserBuilder.ValidateGrammar(parser, buffer.Status);
+            GrammarModelBuilder.InitializeGrammar(parser, parser.Rules, buffer.Status);
+            GrammarModelBuilder.ValidateGrammar(parser, buffer.Status);
 
             string syntax = parser.GetGrammar();
 
